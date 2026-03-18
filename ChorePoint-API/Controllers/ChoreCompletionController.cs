@@ -1,5 +1,6 @@
 ﻿using ChorePoint_API.Enums;
 using ChorePoint_API.Models;
+using ChorePoint_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,55 +11,22 @@ namespace ChorePoint_API.Controllers
     public class ChoreCompletionController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly ChoreCompletionService _service;
 
-        public ChoreCompletionController(AppDbContext context)
+        public ChoreCompletionController(AppDbContext context, ChoreCompletionService service)
         {
             _context = context;
+            _service = service;
         }
 
         [HttpPost("{id}/complete")]
-        public async Task<IActionResult> CompleteChore(uint id)
+        public async Task<IActionResult> CompleteChore(int id)
         {
-            var chore = await _context.Chores
-                .FirstOrDefaultAsync(c => c.Id == id && c.IsVisible);
+            var result = await _service.CompleteChore(id);
+            if (!result.Success)
+                return BadRequest(result.ErrorMessage);
 
-            if (chore == null)
-                return NotFound("Chore not found.");
-
-            if (chore.Frequency == ChoreFrequency.Daily)
-            {
-                var today = DateTime.UtcNow.Date;
-
-                bool alreadyCompletedToday = await _context.ChoreCompletions
-                    .AnyAsync(c =>
-                        c.ChoreId == id &&
-                        c.CompletedAt >= today &&
-                        c.CompletedAt < today.AddDays(1));
-
-                if (alreadyCompletedToday)
-                    return BadRequest("Chore already completed today.");
-            }
-
-            var completion = new ChoreCompletion
-            {
-                ChoreId = chore.Id,
-                UserId = chore.UserId,
-                CompletedAt = DateTime.UtcNow,
-                ApprovalStatus = ChoreApprovalStatus.Pending
-            };
-
-            _context.ChoreCompletions.Add(completion);
-
-            chore.LastCompletedAt = DateTime.UtcNow;
-            chore.CompletionCount += 1;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(new
-            {
-                message = "Chore marked as completed.",
-                completionId = completion.Id
-            });
+            return Ok(new { message = "Chore marked as completed.", completionId = result.Code });
         }
 
         [HttpGet("current/{userId}")]

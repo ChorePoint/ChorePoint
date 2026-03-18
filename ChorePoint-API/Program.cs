@@ -1,6 +1,7 @@
 
 using ChorePoint_API.Models;
 using ChorePoint_API.Repositories;
+using ChorePoint_API.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -31,6 +32,8 @@ namespace ChorePoint_API
             });
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped<ChoreCompletionService>();
 
             var app = builder.Build();
 
