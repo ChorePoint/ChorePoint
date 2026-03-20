@@ -1,5 +1,4 @@
-﻿using ChorePoint_API.Enums;
-using ChorePoint_API.Models;
+﻿using ChorePoint_API.Models;
 using ChorePoint_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

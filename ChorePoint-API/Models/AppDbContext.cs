@@ -25,6 +25,13 @@ namespace ChorePoint_API.Models
                       .HasConversion<string>()
                       .HasMaxLength(10);
             });
+
+            modelBuilder.Entity<ChoreCompletion>(entity =>
+            {
+                entity.Property(e => e.ApprovalStatus)
+                        .HasConversion<string>()
+                        .HasMaxLength(10);
+            });
         }
     }
 }

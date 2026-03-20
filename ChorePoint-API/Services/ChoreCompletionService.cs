@@ -67,7 +67,10 @@ namespace ChorePoint_API.Services
             var completion = new ChoreCompletion
             {
                 ChoreId = choreId,
-                CompletedAt = DateTime.UtcNow
+                UserId = 1,
+                CompletedAt = DateTime.UtcNow,
+                ApprovalStatus = ChoreApprovalStatus.Approved,
+                ApprovedAt = DateTime.Now
             };
 
             await _repository.AddAsync(completion);
