@@ -8,6 +8,7 @@ namespace ChorePoint_API.Models
     : base(options) { }
 
         public DbSet<User> Users => Set<User>();
+        public DbSet<Parent> Parents => Set<Parent>();
         public DbSet<Chore> Chores => Set<Chore>();
         public DbSet<ChoreCompletion> ChoreCompletions => Set<ChoreCompletion>();
 
