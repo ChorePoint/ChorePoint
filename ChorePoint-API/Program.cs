@@ -1,9 +1,12 @@
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ChorePoint_API.Models;
 using ChorePoint_API.Repositories;
 using ChorePoint_API.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ChorePoint_API
 {
@@ -33,9 +36,33 @@ namespace ChorePoint_API
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IChoreCompletionRepository, ChoreCompletionRepository>();
+            builder.Services.AddScoped<IParentRepository, ParentRepository>();
             builder.Services.AddScoped<UserService>();
             builder.Services.AddScoped<ChoreCompletionService>();
             builder.Services.AddScoped<ChoreService>();
+            builder.Services.AddScoped<AuthService>();
+            builder.Services.AddScoped<TokenService>();
+            builder.Services.AddScoped<IPasswordHasher<Parent>, PasswordHasher<Parent>>();
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                };
+            });
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
@@ -49,6 +76,7 @@ namespace ChorePoint_API
 
             app.UseCors("AllowAngular");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
