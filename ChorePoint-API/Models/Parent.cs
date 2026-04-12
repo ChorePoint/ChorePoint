@@ -12,8 +12,13 @@ namespace ChorePoint_API.Models
 
         [Required]
         [MaxLength(100)]
-        [Column("name")]
-        public string Name { get; set; } = null!;
+        [Column("first_name")]
+        public string FirstName { get; set; } = null!;
+
+        [Required]
+        [MaxLength(100)]
+        [Column("last_name")]
+        public string LastName { get; set; } = null!;
 
         [Required]
         [Column("email")]

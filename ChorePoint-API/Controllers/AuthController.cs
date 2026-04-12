@@ -21,7 +21,7 @@ namespace ChorePoint_API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterRequest request)
         {
-            var success = await _authService.Register(request.Name, request.Email, request.Password);
+            var success = await _authService.Register(request.FirstName, request.LastName, request.Email, request.Password);
 
             if (!success)
                 return BadRequest("A user with this email already exists!");
@@ -40,6 +40,19 @@ namespace ChorePoint_API.Controllers
             var token = _tokenService.CreateToken(parent);
 
             return Ok(new { token });
+        }
+
+        [HttpPost("create-account")]
+        public async Task<IActionResult> CreateAccount(RegisterRequest request)
+        {
+            var parent = await _authService.Register(request.FirstName, request.LastName, request.Email, request.Password);
+
+            if (parent == null)
+                return Unauthorized("Invalid email or password");
+
+            //var token = _tokenService.CreateToken(parent);
+
+            return Ok();
         }
     }
 }

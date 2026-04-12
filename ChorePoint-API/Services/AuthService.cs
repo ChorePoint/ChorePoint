@@ -15,7 +15,12 @@ namespace ChorePoint_API.Services
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<bool> Register(string name, string email, string password)
+        public async Task<bool> Register(
+            string firstName,
+            string lastName,
+            string email,
+            string password
+        )
         {
             var existingUser = await _repository.GetByEmail(email);
             if (existingUser != null)
@@ -23,7 +28,8 @@ namespace ChorePoint_API.Services
 
             var parent = new Parent
             {
-                Name = name,
+                FirstName = firstName,
+                LastName = lastName,
                 Email = email,
                 CreatedAt = DateTime.UtcNow
             };
@@ -34,7 +40,7 @@ namespace ChorePoint_API.Services
             return true;
         }
 
-        public async Task<Parent> Login(string email, string password)
+        public async Task<Parent?> Login(string email, string password)
         {
             var parent = await _repository.GetByEmail(email);
             if (parent == null)
