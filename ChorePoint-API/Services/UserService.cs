@@ -5,9 +5,9 @@ namespace ChorePoint_API.Services
 {
     public class UserService
     {
-        private readonly IRepository<User> _repository;
+        private readonly IUserRepository _repository;
 
-        public UserService(IRepository<User> userRepository)
+        public UserService(IUserRepository userRepository)
         {
             _repository = userRepository;
         }
@@ -20,6 +20,11 @@ namespace ChorePoint_API.Services
         public async Task<User?> GetUserById(int id)
         {
             return await _repository.GetByIdAsync(id);
+        }
+
+        public async Task<IEnumerable<User>> GetKidsByParentId(int parentId)
+        {
+            return await _repository.GetKidsByParentId(parentId);
         }
     }
 }
