@@ -41,7 +41,12 @@ namespace ChorePoint_API.Models
         [Column("updated_at")]
         public DateTime? UpdatedAt { get; set; }
 
+        [Column("parent_id")]
+        public int ParentId { get; set; }
+        
         // Navigation property
         public ICollection<Chore> Chores { get; set; } = [];
+        public Parent Parent { get; set; } = null!;
+
     }
 }
