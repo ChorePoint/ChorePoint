@@ -7,7 +7,7 @@ namespace ChorePoint_API.Models
         public AppDbContext(DbContextOptions<AppDbContext> options)
     : base(options) { }
 
-        public DbSet<User> Users => Set<User>();
+        public DbSet<User> Users { get; set; }
         public DbSet<Parent> Parents => Set<Parent>();
         public DbSet<Chore> Chores => Set<Chore>();
         public DbSet<ChoreCompletion> ChoreCompletions => Set<ChoreCompletion>();

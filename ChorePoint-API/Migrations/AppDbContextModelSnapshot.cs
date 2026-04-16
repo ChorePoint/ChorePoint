@@ -227,6 +227,10 @@ namespace ChorePoint_API.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("name");
 
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int")
+                        .HasColumnName("parent_id");
+
                     b.Property<int>("PointsToday")
                         .HasColumnType("int")
                         .HasColumnName("points_today");
@@ -240,6 +244,8 @@ namespace ChorePoint_API.Migrations
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
 
                     b.ToTable("users");
                 });
@@ -278,6 +284,17 @@ namespace ChorePoint_API.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ChorePoint_API.Models.User", b =>
+                {
+                    b.HasOne("ChorePoint_API.Models.Parent", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("ChorePoint_API.Models.User", b =>

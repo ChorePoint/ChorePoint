@@ -37,5 +37,22 @@ namespace ChorePoint_API.Controllers
 
             return Ok(user);
         }
+
+        // GET: api/users/kids
+        [Authorize]
+        [HttpGet("kids")]
+        public async Task<ActionResult<User>> GetKids()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var kids = await _userService.GetKidsByParentId(int.Parse(userId));
+
+            return Ok(kids);
+        }
     }
 }
