@@ -6,14 +6,10 @@ namespace ChorePoint_API.Services
 {
     public class ChoreService
     {
-        private readonly IRepository<Chore> _repository;
-        private readonly IChoreCompletionRepository _choreCompletionRepository;
-        public ChoreService(IRepository<Chore> repository, IChoreCompletionRepository choreCompletionRepository)
+        private readonly IChoreRepository _repository;
+        public ChoreService(IChoreRepository repository)
         {
             _repository = repository;
-            _choreCompletionRepository = choreCompletionRepository;
         }
-
-
     }
 }

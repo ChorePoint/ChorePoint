@@ -8,6 +8,7 @@ namespace ChorePoint_API.Repositories
 
         public ChoreRepository(AppDbContext context) : base(context)
         {
+
         }
     }
 }

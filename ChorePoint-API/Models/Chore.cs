@@ -50,13 +50,13 @@ namespace ChorePoint_API.Models
         public DateTime? LastCompletedAt { get; set; }
 
         [Column("created_at")]
-        public DateTime? CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
 
         [Column("updated_at")]
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
         [Column("completion_count")]
-        public int CompletionCount { get; set; }
+        public int CompletionCount { get; set; } = 0;
 
         [Column("description")]
         public string? Description { get; set; }
