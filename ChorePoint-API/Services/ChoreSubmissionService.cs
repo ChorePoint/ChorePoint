@@ -5,23 +5,23 @@ using ChorePoint_API.Results;
 
 namespace ChorePoint_API.Services
 {
-    public class ChoreCompletionService
+    public class ChoreSubmissionService
     {
-        private readonly IChoreCompletionRepository _repository;
+        private readonly IChoreSubmissionRepository _repository;
         private readonly IRepository<Chore> _choreRepository;
 
-        public ChoreCompletionService(IChoreCompletionRepository choreCompletionRepository, IRepository<Chore> choreRepository)
+        public ChoreSubmissionService(IChoreSubmissionRepository choreCompletionRepository, IRepository<Chore> choreRepository)
         {
             _repository = choreCompletionRepository;
             _choreRepository = choreRepository;
         }
 
-        public async Task<IEnumerable<ChoreCompletion>> GetAllCompletions()
+        public async Task<IEnumerable<ChoreSubmission>> GetAllCompletions()
         {
             return await _repository.GetAllAsync();
         }
 
-        public async Task<ChoreCompletion?> GetCompletionById(int id)
+        public async Task<ChoreSubmission?> GetCompletionById(int id)
         {
             return await _repository.GetByIdAsync(id);
         }
@@ -64,7 +64,7 @@ namespace ChorePoint_API.Services
             if (!canComplete.Success)
                 return canComplete;
 
-            var completion = new ChoreCompletion
+            var completion = new ChoreSubmission
             {
                 ChoreId = choreId,
                 UserId = 1,
@@ -77,6 +77,22 @@ namespace ChorePoint_API.Services
             await _repository.SaveAsync();
 
             return new ServiceResult(true);
+        }
+
+        public async Task<KidStatsDto> GetChoreCompletionStatsByKidId(int kidId)
+        {
+            var startOfWeek = DateTime.UtcNow.Date.AddDays(-(int)DateTime.UtcNow.DayOfWeek);
+
+            var choreCompletions = await _repository.GetChoreCompletionsByKidIdAsync(kidId);
+
+            return new KidStatsDto
+            {
+                CompletedThisWeek = choreCompletions.Count(c =>
+                    c.ApprovalStatus == ChoreApprovalStatus.Approved && c.CompletedAt >= startOfWeek),
+
+                ApprovalRate = !choreCompletions.Any() ? 0 :
+                    (int)(choreCompletions.Count(c => c.ApprovalStatus == ChoreApprovalStatus.Approved) * 100.0 / choreCompletions.Count())
+            };
         }
     }
 }

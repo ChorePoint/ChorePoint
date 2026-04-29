@@ -35,11 +35,12 @@ namespace ChorePoint_API
             });
 
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            builder.Services.AddScoped<IChoreCompletionRepository, ChoreCompletionRepository>();
+            builder.Services.AddScoped<IChoreSubmissionRepository, ChoreSubmissionRepository>();
+            builder.Services.AddScoped<IChoreRepository, ChoreRepository>();
             builder.Services.AddScoped<IParentRepository, ParentRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<UserService>();
-            builder.Services.AddScoped<ChoreCompletionService>();
+            builder.Services.AddScoped<ChoreSubmissionService>();
             builder.Services.AddScoped<ChoreService>();
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddScoped<TokenService>();
