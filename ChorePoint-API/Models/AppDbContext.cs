@@ -10,7 +10,7 @@ namespace ChorePoint_API.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Parent> Parents => Set<Parent>();
         public DbSet<Chore> Chores => Set<Chore>();
-        public DbSet<ChoreCompletion> ChoreCompletions => Set<ChoreCompletion>();
+        public DbSet<ChoreSubmission> ChoreCompletions => Set<ChoreSubmission>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,7 +27,7 @@ namespace ChorePoint_API.Models
                       .HasMaxLength(10);
             });
 
-            modelBuilder.Entity<ChoreCompletion>(entity =>
+            modelBuilder.Entity<ChoreSubmission>(entity =>
             {
                 entity.Property(e => e.ApprovalStatus)
                         .HasConversion<string>()
