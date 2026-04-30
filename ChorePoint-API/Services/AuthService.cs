@@ -1,5 +1,6 @@
 ﻿using ChorePoint_API.Models;
 using ChorePoint_API.Repositories;
+using ChorePoint_API.Results;
 using Microsoft.AspNetCore.Identity;
 
 namespace ChorePoint_API.Services
@@ -15,7 +16,7 @@ namespace ChorePoint_API.Services
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<bool> Register(
+        public async Task<IServiceResult> Register(
             string firstName,
             string lastName,
             string email,
@@ -24,7 +25,7 @@ namespace ChorePoint_API.Services
         {
             var existingUser = await _repository.GetByEmail(email);
             if (existingUser != null)
-                return false;
+                return new ServiceResult(false, "User already exists!");
 
             var parent = new Parent
             {
@@ -33,11 +34,10 @@ namespace ChorePoint_API.Services
                 Email = email,
                 CreatedAt = DateTime.UtcNow
             };
-
             parent.Password = _passwordHasher.HashPassword(parent, password);
 
             await _repository.Create(parent);
-            return true;
+            return new ServiceResult(true);
         }
 
         public async Task<Parent?> Login(string email, string password)

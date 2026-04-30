@@ -21,10 +21,10 @@ namespace ChorePoint_API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterRequest request)
         {
-            var success = await _authService.Register(request.FirstName, request.LastName, request.Email, request.Password);
+            var authResult = await _authService.Register(request.FirstName, request.LastName, request.Email, request.Password);
 
-            if (!success)
-                return BadRequest("A user with this email already exists!");
+            if (!authResult.Success)
+                return BadRequest(authResult.ErrorMessage);
 
             return Ok();
         }
