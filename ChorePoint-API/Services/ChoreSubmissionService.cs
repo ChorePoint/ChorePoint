@@ -36,25 +36,16 @@ namespace ChorePoint_API.Services
                 return new ServiceResult(false, "Chore not found", ServiceResultCode.NotFound);
             }
 
-            if (chore.Frequency == Enums.ChoreFrequency.Daily)
+            return chore.Frequency switch
             {
-                if (lastCompletion != null && lastCompletion.CompletedAt.Date == DateTime.UtcNow.Date)
-                {
-                    return new ServiceResult(false, "Chore already completed today", ServiceResultCode.AlreadyCompleted);
-                }
-
-            }
-
-            if (chore.Frequency == Enums.ChoreFrequency.Weekly)
-            {
-                if (lastCompletion != null && lastCompletion.CompletedAt.AddDays(7) > DateTime.UtcNow)
-                {
-                    return new ServiceResult(false, "Chore already completed within the last week", ServiceResultCode.AlreadyCompleted);
-                }
-
-            }
-
-            return new ServiceResult(true);
+                Enums.ChoreFrequency.Daily when lastCompletion?.CompletedAt.Date == DateTime.UtcNow.Date =>
+                    new ServiceResult(false, "Chore already completed today", ServiceResultCode.AlreadyCompleted),
+                
+                Enums.ChoreFrequency.Weekly when lastCompletion?.CompletedAt.AddDays(7) > DateTime.UtcNow =>
+                    new ServiceResult(false, "Chore already completed within the last week", ServiceResultCode.AlreadyCompleted),
+                
+                _ => new ServiceResult(true)
+            };
         }
 
         public async Task<IServiceResult> CompleteChore(int choreId)
@@ -83,15 +74,16 @@ namespace ChorePoint_API.Services
         {
             var startOfWeek = DateTime.UtcNow.Date.AddDays(-(int)DateTime.UtcNow.DayOfWeek);
 
-            var choreCompletions = await _repository.GetChoreCompletionsByKidIdAsync(kidId);
-
+            var choreSubmissions = await _repository.GetChoreCompletionsByKidIdAsync(kidId);
+            var choreSubmissionsConcrete = choreSubmissions.ToList();
+            
             return new KidStatsDto
             {
-                CompletedThisWeek = choreCompletions.Count(c =>
+                CompletedThisWeek = choreSubmissionsConcrete.Count(c =>
                     c.ApprovalStatus == ChoreApprovalStatus.Approved && c.CompletedAt >= startOfWeek),
 
-                ApprovalRate = !choreCompletions.Any() ? 0 :
-                    (int)(choreCompletions.Count(c => c.ApprovalStatus == ChoreApprovalStatus.Approved) * 100.0 / choreCompletions.Count())
+                ApprovalRate = choreSubmissionsConcrete.Count == 0 ? 0 :
+                    (int)(choreSubmissionsConcrete.Count(c => c.ApprovalStatus == ChoreApprovalStatus.Approved) * 100.0 / choreSubmissionsConcrete.Count)
             };
         }
     }
