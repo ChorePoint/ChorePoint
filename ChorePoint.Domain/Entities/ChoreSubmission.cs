@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ChorePoint.API.Enums;
 
-namespace ChorePoint.API.Models
+namespace ChorePoint.Domain.Entities
 {
     [Table("chore_submissions")]
     public class ChoreSubmission

@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ChorePoint.API.Models
+namespace ChorePoint.Infrastructure
 {
-    public partial class AppDbContext : DbContext
+    public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-    : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Parent> Parents => Set<Parent>();

@@ -6,4 +6,19 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Behaviours\" />
+      <Folder Include="Handlers\Auth\CreateAccount\" />
+      <Folder Include="Handlers\Auth\Login\" />
+      <Folder Include="Handlers\Auth\Register\" />
+      <Folder Include="Handlers\ChoreSubmission\CompleteChore\" />
+      <Folder Include="Handlers\ChoreSubmission\GetCurrent\" />
+      <Folder Include="Handlers\ChoreSubmission\GetKidsStats\" />
+      <Folder Include="Handlers\Chore\GetChoresByUser\" />
+      <Folder Include="Handlers\Chore\GetUser\" />
+      <Folder Include="Handlers\Users\GetKids\" />
+      <Folder Include="Handlers\Users\GetUser\" />
+      <Folder Include="Interfaces\" />
+    </ItemGroup>
+
 </Project>

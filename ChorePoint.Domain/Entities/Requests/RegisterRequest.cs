@@ -1,4 +1,4 @@
-﻿namespace ChorePoint.API.Models.Requests
+﻿namespace ChorePoint.Domain.Entities.Requests
 {
     public class RegisterRequest
     {

@@ -1,4 +1,4 @@
-﻿namespace ChorePoint.API.Models
+﻿namespace ChorePoint.Domain.Entities
 {
     public class KidStatsDto
     {

@@ -1,4 +1,4 @@
-﻿namespace ChorePoint.API.Enums
+﻿namespace ChorePoint.Domain.Enums
 {
     public enum ChoreFrequency
     {

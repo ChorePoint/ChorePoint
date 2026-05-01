@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ChorePoint.API.Models
+namespace ChorePoint.Domain.Entities
 {
     [Table("parents")]
     public class Parent
