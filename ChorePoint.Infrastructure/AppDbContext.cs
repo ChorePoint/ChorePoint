@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ChorePoint.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Infrastructure
 {

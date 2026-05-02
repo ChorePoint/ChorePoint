@@ -7,9 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Behaviours\" />
       <Folder Include="Handlers\Auth\CreateAccount\" />
-      <Folder Include="Handlers\Auth\Login\" />
       <Folder Include="Handlers\Auth\Register\" />
       <Folder Include="Handlers\ChoreSubmission\CompleteChore\" />
       <Folder Include="Handlers\ChoreSubmission\GetCurrent\" />
@@ -18,7 +16,17 @@
       <Folder Include="Handlers\Chore\GetUser\" />
       <Folder Include="Handlers\Users\GetKids\" />
       <Folder Include="Handlers\Users\GetUser\" />
-      <Folder Include="Interfaces\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="12.1.1" />
+      <PackageReference Include="MediatR" Version="14.1.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.7" />
+      <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="10.0.7" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ChorePoint.Domain\ChorePoint.Domain.csproj" />
     </ItemGroup>
 
 </Project>

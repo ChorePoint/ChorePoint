@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="14.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
@@ -22,7 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Middleware\" />
+    <ProjectReference Include="..\ChorePoint.Application\ChorePoint.Application.csproj" />
+    <ProjectReference Include="..\ChorePoint.Domain\ChorePoint.Domain.csproj" />
   </ItemGroup>
 
 </Project>

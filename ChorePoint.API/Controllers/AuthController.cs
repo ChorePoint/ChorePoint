@@ -1,5 +1,8 @@
 ﻿using ChorePoint.API.Models.Requests;
 using ChorePoint.API.Services;
+using ChorePoint.Application.Handlers.Auth.Login;
+using ChorePoint.Domain.Entities.Requests;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers
@@ -8,13 +11,11 @@ namespace ChorePoint.API.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly AuthService _authService;
-        private readonly TokenService _tokenService;
+        private readonly IMediator _mediator;
 
-        public AuthController(AuthService authService, TokenService tokenService)
+        public AuthController(IMediator mediator)
         {
-            _authService = authService;
-            _tokenService = tokenService;
+            _mediator = mediator;
         }
 
         [HttpPost("register")]
@@ -29,16 +30,18 @@ namespace ChorePoint.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginRequest request)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
-            var parent = await _authService.Login(request.Email, request.Password);
-
-            if (parent == null)
-                return Unauthorized("Invalid email or password");
-
-            var token = _tokenService.CreateToken(parent);
-
-            return Ok(new { token });
+            var result = await _mediator.Send(command);
+            return Ok(new
+            {
+                success = true,
+                message = "Login successful",
+                data = result
+            });
         }
 
         [HttpPost("create-account")]
