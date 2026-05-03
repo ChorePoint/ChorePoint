@@ -1,8 +1,5 @@
-﻿using ChorePoint.API.Models.Requests;
-using ChorePoint.API.Services;
-using ChorePoint.Application.Handlers.Auth.Login;
+﻿using ChorePoint.Application.Handlers.Auth.Login;
 using ChorePoint.Application.Handlers.Auth.Register;
-using ChorePoint.Domain.Entities.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
