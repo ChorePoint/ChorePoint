@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
-using ChorePoint.Domain.Exceptions.BaseException;
+using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -47,9 +42,6 @@ public class LoginHandler : IRequestHandler<LoginCommand, LoginResponse>
             new { parent.Id, parent.Email, parent.FirstName, parent.LastName },
             TimeSpan.FromHours(1), cancellationToken);
 
-        return new LoginResponse(
-            token
-        );
-
+        return new LoginResponse(token);
     }
 }
