@@ -9,4 +9,5 @@ public interface IAppDbContext
     public DbSet<Parent> Parents  { get; set; }
     public DbSet<Chore> Chores  { get; set; }
     public DbSet<ChoreSubmission> ChoreSubmissions  { get; set; }
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

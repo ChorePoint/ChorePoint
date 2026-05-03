@@ -1,16 +1,17 @@
-﻿using ChorePoint.Domain.Entities;
+﻿using ChorePoint.Application.Interfaces;
+using ChorePoint.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Infrastructure
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : DbContext, IAppDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Parent> Parents => Set<Parent>();
-        public DbSet<Chore> Chores => Set<Chore>();
-        public DbSet<ChoreSubmission> ChoreCompletions => Set<ChoreSubmission>();
+        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Parent> Parents { get; set; } = null!;
+        public DbSet<Chore> Chores { get; set; } = null!;
+        public DbSet<ChoreSubmission> ChoreSubmissions { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +34,13 @@ namespace ChorePoint.Infrastructure
                         .HasConversion<string>()
                         .HasMaxLength(10);
             });
+        }
+        
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            // Here as an override if we want to add UpdatedAt columns on tables
+
+            return await base.SaveChangesAsync(cancellationToken);
         }
     }
 }

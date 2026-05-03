@@ -7,8 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Handlers\Auth\CreateAccount\" />
-      <Folder Include="Handlers\Auth\Register\" />
       <Folder Include="Handlers\ChoreSubmission\CompleteChore\" />
       <Folder Include="Handlers\ChoreSubmission\GetCurrent\" />
       <Folder Include="Handlers\ChoreSubmission\GetKidsStats\" />
