@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ChorePoint.Domain.Enums;
+using ChorePoint.Domain.Exceptions;
 
 namespace ChorePoint.Domain.Entities
 {
@@ -62,5 +64,36 @@ namespace ChorePoint.Domain.Entities
 
         // Navigation property
         public User User { get; set; } = null!;
+
+
+        public ChoreSubmission CreateSubmission(DateTime now)
+        {
+            return new ChoreSubmission
+            {
+                ChoreId = Id,
+                UserId = UserId,
+                CompletedAt = now,
+                ApprovalStatus = ChoreApprovalStatus.Approved,
+                ApprovedAt = now
+            };
+        }
+        
+        public void EnsureCanBeCompleted(ChoreSubmission? lastCompletion, DateTime now)
+        {
+            switch (Frequency)
+            {
+                case ChoreFrequency.Daily:
+                    if (lastCompletion?.CompletedAt.Date == now.Date)
+                        throw new ChoreAlreadyCompletedException("Chore already completed today");
+                    break;
+                case ChoreFrequency.Weekly:
+                    if (lastCompletion?.CompletedAt.AddDays(7) > now)
+                        throw new ChoreAlreadyCompletedException("Chore already completed within the last week");
+                    break;
+                case ChoreFrequency.Bonus:
+                default:
+                    throw new DomainException($"Unexpected frequency: {Frequency}");
+            }
+        }
     }
 }

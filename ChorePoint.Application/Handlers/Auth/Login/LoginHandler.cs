@@ -12,17 +12,14 @@ public class LoginHandler : IRequestHandler<LoginCommand, LoginResponse>
     private readonly IAppDbContext _context;
     private readonly IPasswordHasher<Parent> _passwordHasher;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
-    private readonly ICacheService _cacheService;
     
     public LoginHandler(IAppDbContext context,
         IPasswordHasher<Parent> passwordHasher,
-        IJwtTokenGenerator jwtTokenGenerator,
-        ICacheService cacheService)
+        IJwtTokenGenerator jwtTokenGenerator)
     {
         _context = context;
         _passwordHasher = passwordHasher;
         _jwtTokenGenerator = jwtTokenGenerator;
-        _cacheService = cacheService;
     }
 
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -31,16 +28,9 @@ public class LoginHandler : IRequestHandler<LoginCommand, LoginResponse>
             .FirstOrDefaultAsync(p => p.Email.ToLower() == request.Email.ToLower(), cancellationToken);
 
         if (parent == null || _passwordHasher.VerifyHashedPassword(parent, parent.Password, request.Password) == PasswordVerificationResult.Failed)
-        {
             throw new DomainException("Invalid email or password");
-        }
         
         var token =  _jwtTokenGenerator.GenerateJwtToken(parent.Id, parent.Email);
-        
-        var cacheKey = $"parent:{parent.Id}";
-        await _cacheService.SetAsync(cacheKey,
-            new { parent.Id, parent.FirstName, parent.LastName, parent.Email },
-            TimeSpan.FromHours(1), cancellationToken);
 
         return new LoginResponse(token);
     }

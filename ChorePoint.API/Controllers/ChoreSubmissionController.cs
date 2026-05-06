@@ -1,58 +1,69 @@
-﻿using ChorePoint.API.Models;
-using ChorePoint.API.Services;
+﻿using ChorePoint.Application.Handlers.ChoreSubmission.CompleteChore;
+using ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
+using ChorePoint.Application.Handlers.ChoreSubmission.GetKidsStats;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.API.Controllers
 {
     [ApiController]
-    [Route("api/Chore")]
+    [Route("api/chore/submissions")]
     public class ChoreSubmissionController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        private readonly ChoreSubmissionService _service;
+        private readonly IMediator _mediator;
 
-        public ChoreSubmissionController(AppDbContext context, ChoreSubmissionService service)
+        public ChoreSubmissionController(IMediator mediator)
         {
-            _context = context;
-            _service = service;
+            _mediator = mediator;
         }
 
-        [HttpPost("{id}/complete")]
+        [HttpPost("{id:int}/complete")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> CompleteChore(int id)
         {
-            var result = await _service.CompleteChore(id);
-            if (!result.Success)
-                return BadRequest(result.ErrorMessage);
-
-            return Ok(new { message = "Chore marked as completed.", completionId = result.Code });
+            await _mediator.Send(new CompleteChoreCommand(id));
+            return Ok(new
+            {
+                success = true,
+                message = "Chore completed successfully",
+            });
         }
 
-        [HttpGet("current/{userId}")]
-        public async Task<ActionResult<ChoreSubmission>> GetCurrent(int userId)
+        [HttpGet("current/{userId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetCurrent(int userId)
         {
-            var choreCompletions = await _context.ChoreCompletions.Where(c => c.UserId == userId).ToListAsync();
-            if (choreCompletions == null || choreCompletions.Count == 0)
-                return NotFound();
-
-            var choreCompletion = choreCompletions
-                .OrderByDescending(x => x.CompletedAt)
-                .FirstOrDefault();
-
-            return choreCompletion;
+            var result = await _mediator.Send(new GetCurrentQuery(userId));
+            return Ok(new
+            {
+                success = true,
+                message = "Current chore successfully retrieved",
+                data = result
+            });
         }
-
-        // GET: api/chore/stats?kidId=1
+        
         [Authorize]
-        [HttpGet("stats/{kidId}")]
-        public async Task<ActionResult<KidStatsDto>> GetKidStats(int kidId)
+        [HttpGet("stats/{kidId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetKidStats(int kidId)
         {
-            var stats = await _service.GetChoreCompletionStatsByKidId(kidId);
-            if (stats == null)
-                return NotFound();
-
-            return Ok(stats);
+            var result = await _mediator.Send(new GetKidsStatsQuery(kidId));
+            return Ok(new
+            {
+                success = true,
+                message = "Kid's stats retrieved successfully",
+                data = result
+            });
         }
     }
 }

@@ -1,49 +1,54 @@
-﻿using ChorePoint.Application.Handlers.Chore.GetChoreById;
-using ChorePoint.Application.Handlers.Chore.GetChoresByUser;
+﻿using ChorePoint.Application.Handlers.Users.GetKids;
+using ChorePoint.Application.Handlers.Users.GetUser;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers
 {
     [ApiController]
-    [Route("api/chore")]
-    public class ChoreController : ControllerBase
+    [Route("api/user")]
+    public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public ChoreController(IMediator mediator)
+        public UserController(IMediator mediator)
         {
             _mediator = mediator;
         }
         
-        [HttpGet("{id:int}")]
+        [Authorize]
+        [HttpGet("me")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetChoreById(int id)
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetUser()
         {
-            var result = await _mediator.Send(new GetChoreByIdQuery(id));
+            var result = await _mediator.Send(new GetUserQuery());
             return Ok(new
             {
                 success = true,
-                message = $"Chore with id {id} successfully retrieved",
+                message = "User details retrieved successfully",
                 data = result
             });
         }
-
-        [HttpGet("user/{userId:int}")]
+        
+        [Authorize]
+        [HttpGet("kids")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetChoresByUser(int userId)
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetKids()
         {
-            var result = await _mediator.Send(new GetChoresByUserQuery(userId));
+            var result = await _mediator.Send(new GetKidsQuery());
             return Ok(new
             {
                 success = true,
-                message = $"Chores from user id {userId} successfully retrieved",
+                message = "Kids details retrieved successfully",
                 data = result
             });
         }

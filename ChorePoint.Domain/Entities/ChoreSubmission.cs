@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ChorePoint.Domain.Enums;
 
 namespace ChorePoint.Domain.Entities
 {
@@ -24,8 +25,7 @@ namespace ChorePoint.Domain.Entities
 
         [Required]
         [Column("approval_status")]
-        public ChoreApprovalStatus ApprovalStatus { get; set; }
-            = ChoreApprovalStatus.Pending;
+        public ChoreApprovalStatus ApprovalStatus { get; set; } = ChoreApprovalStatus.Pending;
 
         [Column("approved_at")]
         public DateTime? ApprovedAt { get; set; }
@@ -47,5 +47,13 @@ namespace ChorePoint.Domain.Entities
 
         [ForeignKey(nameof(ApprovedByUserId))]
         public User? ApprovedBy { get; set; }
+        
+        
+
+
+        public bool CompletedThisWeek(DateTime startOfWeek)
+        {
+            return ApprovalStatus == ChoreApprovalStatus.Approved && CompletedAt >= startOfWeek;
+        }
     }
 }

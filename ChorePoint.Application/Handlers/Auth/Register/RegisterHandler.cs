@@ -11,18 +11,11 @@ public class RegisterHandler : IRequestHandler<RegisterCommand>
 {
     private readonly IAppDbContext _context;
     private readonly IPasswordHasher<Parent> _passwordHasher;
-    private readonly IJwtTokenGenerator _jwtTokenGenerator;
-    private readonly ICacheService _cacheService;
     
-    public RegisterHandler(IAppDbContext context,
-        IPasswordHasher<Parent> passwordHasher,
-        IJwtTokenGenerator jwtTokenGenerator,
-        ICacheService cacheService)
+    public RegisterHandler(IAppDbContext context, IPasswordHasher<Parent> passwordHasher)
     {
         _context = context;
         _passwordHasher = passwordHasher;
-        _jwtTokenGenerator = jwtTokenGenerator;
-        _cacheService = cacheService;
     }
 
     public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -43,10 +36,5 @@ public class RegisterHandler : IRequestHandler<RegisterCommand>
 
         _context.Parents.Add(parent);
         await _context.SaveChangesAsync(cancellationToken);
-        
-        var cacheKey = $"parent:{parent.Id}";
-        await _cacheService.SetAsync(cacheKey,
-            new { parent.Id, parent.FirstName, parent.LastName, parent.Email },
-            TimeSpan.FromHours(1), cancellationToken);
     }
 }
