@@ -2,4 +2,4 @@ using MediatR;
 
 namespace ChorePoint.Application.Handlers.Users.GetUser;
 
-public record GetUserQuery() : IRequest<GetUserResponse>;
+public record GetUserQuery : IRequest<GetUserResponse>;

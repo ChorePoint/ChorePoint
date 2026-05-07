@@ -1,10 +1,9 @@
-﻿namespace ChorePoint.Domain.Enums
+﻿namespace ChorePoint.Domain.Enums;
+
+public enum ChoreApprovalStatus
 {
-    public enum ChoreApprovalStatus
-    {
-        Incomplete,
-        Pending,
-        Approved,
-        Rejected
-    }
+    Incomplete,
+    Pending,
+    Approved,
+    Rejected
 }

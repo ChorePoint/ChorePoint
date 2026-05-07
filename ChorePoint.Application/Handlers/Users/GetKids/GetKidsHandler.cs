@@ -10,20 +10,21 @@ public class GetKidsHandler : IRequestHandler<GetKidsQuery, IReadOnlyCollection<
 {
     private readonly IAppDbContext _context;
     private readonly IUserService _userService;
-    
+
     public GetKidsHandler(IAppDbContext context, IUserService userService)
     {
         _context = context;
         _userService = userService;
     }
 
-    public async Task<IReadOnlyCollection<GetKidsResponse>> Handle(GetKidsQuery request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<GetKidsResponse>> Handle(GetKidsQuery request,
+        CancellationToken cancellationToken)
     {
         var userId = _userService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authorised");
-        
-        var kids =  await _context.Users
+
+        var kids = await _context.Users
             .Where(u => u.ParentId == userId)
             .ProjectToType<GetKidsResponse>()
             .ToListAsync(cancellationToken);

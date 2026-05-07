@@ -23,7 +23,7 @@ public class UserService : IUserService
         var userId = GetUser()?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (userId == null)
             return null;
-        
+
         return int.Parse(userId);
     }
 }

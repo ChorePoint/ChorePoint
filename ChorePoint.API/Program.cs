@@ -28,8 +28,8 @@ builder.Services
     .AddDbContext<AppDbContext>(options => options
         .UseMySql(builder.Configuration
             .GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 45)), options => options
-            .EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null)));
-        
+            .EnableRetryOnFailure(5, TimeSpan.FromSeconds(30), null)));
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular", policy =>
@@ -39,7 +39,7 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
-        
+
 builder.Services.AddScoped<IPasswordHasher<Parent>, PasswordHasher<Parent>>();
 builder.Services.AddAuthentication(options =>
 {

@@ -1,8 +1,8 @@
-﻿using FluentValidation;
+﻿using System.Net;
+using ChorePoint.Domain.Exceptions;
+using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using ChorePoint.Domain.Exceptions;
-using System.Net;
 
 namespace ChorePoint.API.Middleware;
 
@@ -26,7 +26,7 @@ public class GlobalExceptionHandler : IExceptionHandler
         {
             Instance = $"{httpContext.Request.Method} {httpContext.Request.Path}"
         };
-        
+
         (problemDetails.Status, problemDetails.Title, problemDetails.Detail) = exception switch
         {
             DomainException domainEx =>
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler : IExceptionHandler
 
             ValidationException validationEx =>
                 ((int)HttpStatusCode.BadRequest, "Validation Error", "One or more validation errors occurred."),
-            
+
             NotFoundException notFoundEx =>
                 ((int)HttpStatusCode.NotFound, "Not Found", notFoundEx.Message),
 
@@ -47,10 +47,8 @@ public class GlobalExceptionHandler : IExceptionHandler
         };
 
         if (exception is ValidationException validationException)
-        {
             problemDetails.Extensions["errors"] = validationException.Errors
                 .Select(e => new { property = e.PropertyName, error = e.ErrorMessage });
-        }
 
         httpContext.Response.StatusCode = problemDetails.Status.Value;
 
@@ -58,4 +56,4 @@ public class GlobalExceptionHandler : IExceptionHandler
 
         return true;
     }
-}     
+}

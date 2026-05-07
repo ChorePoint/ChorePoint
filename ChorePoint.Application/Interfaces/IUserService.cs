@@ -2,7 +2,8 @@ using System.Security.Claims;
 
 namespace ChorePoint.Application.Interfaces;
 
-public interface IUserService {
+public interface IUserService
+{
     ClaimsPrincipal? GetUser();
-    int ? GetUserId();
+    int? GetUserId();
 }

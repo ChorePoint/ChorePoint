@@ -9,7 +9,7 @@ namespace ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
 public class GetCurrentHandler : IRequestHandler<GetCurrentQuery, GetCurrentResponse>
 {
     private readonly IAppDbContext _context;
-    
+
     public GetCurrentHandler(IAppDbContext context)
     {
         _context = context;
@@ -22,8 +22,8 @@ public class GetCurrentHandler : IRequestHandler<GetCurrentQuery, GetCurrentResp
             .OrderByDescending(c => c.CompletedAt)
             .ProjectToType<GetCurrentResponse>()
             .FirstOrDefaultAsync(cancellationToken);
-        
-        return currentCompletion 
+
+        return currentCompletion
                ?? throw new NotFoundException($"No completed chores exist for user id: {request.Id}");
     }
 }

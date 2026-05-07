@@ -1,9 +1,8 @@
-﻿namespace ChorePoint.Domain.Enums
+﻿namespace ChorePoint.Domain.Enums;
+
+public enum ChoreDifficulty
 {
-    public enum ChoreDifficulty
-    {
-        Easy,
-        Medium,
-        Hard
-    }
+    Easy,
+    Medium,
+    Hard
 }

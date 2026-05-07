@@ -11,7 +11,7 @@ public class RegisterHandler : IRequestHandler<RegisterCommand>
 {
     private readonly IAppDbContext _context;
     private readonly IPasswordHasher<Parent> _passwordHasher;
-    
+
     public RegisterHandler(IAppDbContext context, IPasswordHasher<Parent> passwordHasher)
     {
         _context = context;

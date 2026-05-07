@@ -9,8 +9,9 @@ namespace ChorePoint.Infrastructure.Authentication;
 
 public class JwtTokenGenerator : IJwtTokenGenerator
 {
-    private readonly string _key = "supersecretkey";
     private readonly IConfiguration _config;
+    private readonly string _key = "supersecretkey";
+
     public JwtTokenGenerator(IConfiguration config)
     {
         _config = config;
@@ -28,9 +29,9 @@ public class JwtTokenGenerator : IJwtTokenGenerator
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer: _config["Jwt:Issuer"],
-            audience: _config["Jwt:Audience"],
-            claims: claims,
+            _config["Jwt:Issuer"],
+            _config["Jwt:Audience"],
+            claims,
             expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(_config["Jwt:DurationInMinutes"])),
             signingCredentials: creds
         );
