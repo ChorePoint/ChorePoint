@@ -22,7 +22,7 @@ namespace ChorePoint_API.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("ChorePoint_API.Models.Chore", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Chore", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -100,7 +100,7 @@ namespace ChorePoint_API.Migrations
                     b.ToTable("chores");
                 });
 
-            modelBuilder.Entity("ChorePoint_API.Models.ChoreSubmission", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.ChoreSubmission", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -154,7 +154,7 @@ namespace ChorePoint_API.Migrations
                     b.ToTable("chore_submissions");
                 });
 
-            modelBuilder.Entity("ChorePoint_API.Models.Parent", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities..Parent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -194,7 +194,7 @@ namespace ChorePoint_API.Migrations
                     b.ToTable("parents");
                 });
 
-            modelBuilder.Entity("ChorePoint_API.Models.User", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -250,9 +250,9 @@ namespace ChorePoint_API.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("ChorePoint_API.Models.Chore", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Chore", b =>
                 {
-                    b.HasOne("ChorePoint_API.Models.User", "User")
+                    b.HasOne("ChorePoint.Domain.Entities.User", "User")
                         .WithMany("Chores")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -261,19 +261,19 @@ namespace ChorePoint_API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ChorePoint_API.Models.ChoreSubmission", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.ChoreSubmission", b =>
                 {
-                    b.HasOne("ChorePoint_API.Models.User", "ApprovedBy")
+                    b.HasOne("ChorePoint.Domain.Entities.User", "ApprovedBy")
                         .WithMany()
                         .HasForeignKey("ApprovedByUserId");
 
-                    b.HasOne("ChorePoint_API.Models.Chore", "Chore")
+                    b.HasOne("ChorePoint.Domain.Entities.Chore", "Chore")
                         .WithMany()
                         .HasForeignKey("ChoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ChorePoint_API.Models.User", "User")
+                    b.HasOne("ChorePoint.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -286,9 +286,9 @@ namespace ChorePoint_API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ChorePoint_API.Models.User", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.User", b =>
                 {
-                    b.HasOne("ChorePoint_API.Models.Parent", "Parent")
+                    b.HasOne("ChorePoint.Domain.Entities.Parent", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -297,7 +297,7 @@ namespace ChorePoint_API.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("ChorePoint_API.Models.User", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.User", b =>
                 {
                     b.Navigation("Chores");
                 });
