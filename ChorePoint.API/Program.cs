@@ -25,9 +25,9 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 builder.Services
-    .AddDbContext<AppDbContext>(options => options
+    .AddDbContext<AppDbContext>(contextOptions => contextOptions
         .UseMySql(builder.Configuration
-            .GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 45)), options => options
+            .GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 45)), sqlOptions => sqlOptions
             .EnableRetryOnFailure(5, TimeSpan.FromSeconds(30), null)));
 
 builder.Services.AddCors(options =>
@@ -56,7 +56,7 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     };
 });
 

@@ -15,7 +15,7 @@ public class UserService : IUserService
 
     public ClaimsPrincipal? GetUser()
     {
-        return accessor?.HttpContext?.User;
+        return accessor.HttpContext?.User;
     }
 
     public int? GetUserId()

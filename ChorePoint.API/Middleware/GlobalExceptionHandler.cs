@@ -32,7 +32,7 @@ public class GlobalExceptionHandler : IExceptionHandler
             DomainException domainEx =>
                 ((int)HttpStatusCode.BadRequest, "Bad Request", domainEx.Message),
 
-            ValidationException validationEx =>
+            ValidationException =>
                 ((int)HttpStatusCode.BadRequest, "Validation Error", "One or more validation errors occurred."),
 
             NotFoundException notFoundEx =>

@@ -10,7 +10,6 @@ namespace ChorePoint.Infrastructure.Authentication;
 public class JwtTokenGenerator : IJwtTokenGenerator
 {
     private readonly IConfiguration _config;
-    private readonly string _key = "supersecretkey";
 
     public JwtTokenGenerator(IConfiguration config)
     {
@@ -25,7 +24,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             new Claim(ClaimTypes.Email, email)
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(

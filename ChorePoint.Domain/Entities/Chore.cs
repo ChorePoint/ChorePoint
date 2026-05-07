@@ -22,7 +22,7 @@ public sealed class Chore
     [Column("icon")]
     public string Icon { get; set; } = "🎯";
 
-    [Required] [Column("points")] public int Points { get; set; } = 0;
+    [Required] [Column("points")] public int Points { get; set; }
 
     [Required] [Column("difficulty")] public ChoreDifficulty Difficulty { get; set; }
 
@@ -41,7 +41,7 @@ public sealed class Chore
 
     [Column("updated_at")] public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    [Column("completion_count")] public int CompletionCount { get; set; } = 0;
+    [Column("completion_count")] public int CompletionCount { get; set; }
 
     [Column("description")] public string? Description { get; set; }
 

@@ -20,11 +20,11 @@ public class User
 
     [Column("age")] public int? Age { get; set; }
 
-    [Required] [Column("day_streak")] public int DayStreak { get; set; } = 0;
+    [Required] [Column("day_streak")] public int DayStreak { get; set; }
 
-    [Required] [Column("total_points")] public int TotalPoints { get; set; } = 0;
+    [Required] [Column("total_points")] public int TotalPoints { get; set; }
 
-    [Required] [Column("points_today")] public int PointsToday { get; set; } = 0;
+    [Required] [Column("points_today")] public int PointsToday { get; set; }
 
     [Column("created_at")] public DateTime? CreatedAt { get; set; }
 
