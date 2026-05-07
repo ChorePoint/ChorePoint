@@ -3,6 +3,7 @@ using ChorePoint.API.Middleware;
 using ChorePoint.Application.Behaviours;
 using ChorePoint.Domain.Entities;
 using ChorePoint.Infrastructure;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;

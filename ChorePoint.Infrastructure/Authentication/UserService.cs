@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using ChorePoint.Application.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace ChorePoint.Infrastructure.Authentication;
 
