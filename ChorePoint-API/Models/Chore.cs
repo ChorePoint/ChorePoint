@@ -37,6 +37,9 @@ namespace ChorePoint_API.Models
         [Column("frequency")]
         public ChoreFrequency Frequency { get; set; } = ChoreFrequency.Daily;
 
+        [Column("due_date")]
+        public DayOfWeek? DueDate { get; set; }
+
         [Required]
         [MaxLength(50)]
         [Column("time_of_day")]
