@@ -22,17 +22,17 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
 
         (problemDetails.Status, problemDetails.Title, problemDetails.Detail) = exception switch
         {
-            DomainException domainEx =>
-                ((int)HttpStatusCode.BadRequest, "Bad Request", domainEx.Message),
+            NotFoundException notFoundEx =>
+                ((int)HttpStatusCode.NotFound, "Not Found", notFoundEx.Message),
 
             ValidationException =>
                 ((int)HttpStatusCode.BadRequest, "Validation Error", "One or more validation errors occurred."),
 
-            NotFoundException notFoundEx =>
-                ((int)HttpStatusCode.NotFound, "Not Found", notFoundEx.Message),
-
             UnauthorizedAccessException unauthorizedEx =>
                 ((int)HttpStatusCode.Unauthorized, "Unauthorized", unauthorizedEx.Message),
+
+            DomainException domainEx =>
+                ((int)HttpStatusCode.BadRequest, "Bad Request", domainEx.Message),
 
             _ =>
                 ((int)HttpStatusCode.InternalServerError, "An internal server error has occurred.",
