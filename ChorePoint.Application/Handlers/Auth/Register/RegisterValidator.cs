@@ -19,6 +19,6 @@ public class RegisterValidator : AbstractValidator<RegisterCommand>
         RuleFor(x => x.LastName)
             .NotEmpty().WithMessage("Last name is required")
             .MaximumLength(50).WithMessage("Last name does not exceed 50 characters")
-            .Matches(@"^[a-zA-Z]+$").WithMessage("Last name can only contain letters and spaces");
+            .Matches("^[a-zA-Z]+$").WithMessage("Last name can only contain letters and spaces");
     }
 }

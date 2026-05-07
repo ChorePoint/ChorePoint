@@ -16,7 +16,8 @@ public class LoginHandler(
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var parent = await context.Parents
-            .FirstOrDefaultAsync(p => p.Email.ToLower() == request.Email.ToLower(), cancellationToken);
+            .FirstOrDefaultAsync(p => p.Email.Equals(request.Email, StringComparison.CurrentCultureIgnoreCase),
+                cancellationToken);
 
         if (parent == null || passwordHasher.VerifyHashedPassword(parent, parent.Password, request.Password) ==
             PasswordVerificationResult.Failed)
