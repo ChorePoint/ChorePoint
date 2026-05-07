@@ -5,21 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.CompleteChore;
 
-public class CompleteChoreHandler : IRequestHandler<CompleteChoreCommand>
+public class CompleteChoreHandler(IAppDbContext context) : IRequestHandler<CompleteChoreCommand>
 {
-    private readonly IAppDbContext _context;
-
-    public CompleteChoreHandler(IAppDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task Handle(CompleteChoreCommand request, CancellationToken cancellationToken)
     {
-        var chore = await _context.Chores
+        var chore = await context.Chores
             .FindAsync(request.Id, cancellationToken);
 
-        var lastCompletion = await _context.ChoreSubmissions
+        var lastCompletion = await context.ChoreSubmissions
             .Where(c => c.ChoreId == request.Id)
             .OrderByDescending(c => c.CompletedAt)
             .FirstOrDefaultAsync(cancellationToken);
@@ -30,7 +23,7 @@ public class CompleteChoreHandler : IRequestHandler<CompleteChoreCommand>
         chore.EnsureCanBeCompleted(lastCompletion, now);
         var completion = chore.CreateSubmission(now);
 
-        await _context.ChoreSubmissions.AddAsync(completion, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.ChoreSubmissions.AddAsync(completion, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

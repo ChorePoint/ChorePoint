@@ -5,18 +5,11 @@ using MediatR;
 
 namespace ChorePoint.Application.Handlers.Chore.GetChoreById;
 
-public class GetChoreByIdHandler : IRequestHandler<GetChoreByIdQuery, GetChoreByIdResponse>
+public class GetChoreByIdHandler(IAppDbContext context) : IRequestHandler<GetChoreByIdQuery, GetChoreByIdResponse>
 {
-    private readonly IAppDbContext _context;
-
-    public GetChoreByIdHandler(IAppDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<GetChoreByIdResponse> Handle(GetChoreByIdQuery request, CancellationToken cancellationToken)
     {
-        var chore = await _context.Chores
+        var chore = await context.Chores
             .FindAsync(request.Id, cancellationToken);
 
         return chore.Adapt<GetChoreByIdResponse>()

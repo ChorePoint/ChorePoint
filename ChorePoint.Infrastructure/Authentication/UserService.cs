@@ -4,15 +4,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace ChorePoint.Infrastructure.Authentication;
 
-public class UserService : IUserService
+public class UserService(IHttpContextAccessor accessor) : IUserService
 {
-    private readonly IHttpContextAccessor accessor;
-
-    public UserService(IHttpContextAccessor accessor)
-    {
-        this.accessor = accessor;
-    }
-
     public ClaimsPrincipal? GetUser()
     {
         return accessor.HttpContext?.User;

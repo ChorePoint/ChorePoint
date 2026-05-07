@@ -7,15 +7,8 @@ namespace ChorePoint.API.Controllers;
 
 [ApiController]
 [Route("api/chore")]
-public class ChoreController : ControllerBase
+public class ChoreController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public ChoreController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpGet("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -23,7 +16,7 @@ public class ChoreController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetChoreById(int id)
     {
-        var result = await _mediator.Send(new GetChoreByIdQuery(id));
+        var result = await mediator.Send(new GetChoreByIdQuery(id));
         return Ok(new
         {
             success = true,
@@ -39,7 +32,7 @@ public class ChoreController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetChoresByUser(int userId)
     {
-        var result = await _mediator.Send(new GetChoresByUserQuery(userId));
+        var result = await mediator.Send(new GetChoresByUserQuery(userId));
         return Ok(new
         {
             success = true,

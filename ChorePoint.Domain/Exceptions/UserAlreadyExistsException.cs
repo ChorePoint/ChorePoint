@@ -1,9 +1,3 @@
 namespace ChorePoint.Domain.Exceptions;
 
-public class UserAlreadyExistsException : DomainException
-{
-    public UserAlreadyExistsException(string email)
-        : base($"User with email {email} already exists!")
-    {
-    }
-}
+public class UserAlreadyExistsException(string email) : DomainException($"User with email {email} already exists!");

@@ -8,15 +8,8 @@ namespace ChorePoint.API.Controllers;
 
 [ApiController]
 [Route("api/user")]
-public class UserController : ControllerBase
+public class UserController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public UserController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [Authorize]
     [HttpGet("me")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -26,7 +19,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetUser()
     {
-        var result = await _mediator.Send(new GetUserQuery());
+        var result = await mediator.Send(new GetUserQuery());
         return Ok(new
         {
             success = true,
@@ -44,7 +37,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetKids()
     {
-        var result = await _mediator.Send(new GetKidsQuery());
+        var result = await mediator.Send(new GetKidsQuery());
         return Ok(new
         {
             success = true,

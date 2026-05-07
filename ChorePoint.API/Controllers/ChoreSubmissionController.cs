@@ -9,15 +9,8 @@ namespace ChorePoint.API.Controllers;
 
 [ApiController]
 [Route("api/chore/submissions")]
-public class ChoreSubmissionController : ControllerBase
+public class ChoreSubmissionController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public ChoreSubmissionController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpPost("{id:int}/complete")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -25,7 +18,7 @@ public class ChoreSubmissionController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CompleteChore(int id)
     {
-        await _mediator.Send(new CompleteChoreCommand(id));
+        await mediator.Send(new CompleteChoreCommand(id));
         return Ok(new
         {
             success = true,
@@ -40,7 +33,7 @@ public class ChoreSubmissionController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetCurrent(int userId)
     {
-        var result = await _mediator.Send(new GetCurrentQuery(userId));
+        var result = await mediator.Send(new GetCurrentQuery(userId));
         return Ok(new
         {
             success = true,
@@ -57,7 +50,7 @@ public class ChoreSubmissionController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetKidStats(int kidId)
     {
-        var result = await _mediator.Send(new GetKidsStatsQuery(kidId));
+        var result = await mediator.Send(new GetKidsStatsQuery(kidId));
         return Ok(new
         {
             success = true,

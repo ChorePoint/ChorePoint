@@ -3,16 +3,10 @@ using MediatR;
 
 namespace ChorePoint.Application.Behaviours;
 
-public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
+    : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    private readonly IEnumerable<IValidator<TRequest>> _validators;
-
-    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
-    {
-        _validators = validators;
-    }
-
     public async Task<TResponse> Handle(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
@@ -20,7 +14,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
     {
         var context = new ValidationContext<TRequest>(request);
 
-        var failures = _validators
+        var failures = validators
             .Select(v => v.Validate(context))
             .SelectMany(result => result.Errors)
             .Where(vf => vf != null)

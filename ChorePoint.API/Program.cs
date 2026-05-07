@@ -27,8 +27,9 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 builder.Services
     .AddDbContext<AppDbContext>(contextOptions => contextOptions
         .UseMySql(builder.Configuration
-            .GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 45)), sqlOptions => sqlOptions
-            .EnableRetryOnFailure(5, TimeSpan.FromSeconds(30), null)));
+            .GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 45)),
+            sqlOptions => sqlOptions
+                .EnableRetryOnFailure(5, TimeSpan.FromSeconds(30), null)));
 
 builder.Services.AddCors(options =>
 {

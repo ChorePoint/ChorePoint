@@ -6,18 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetKidsStats;
 
-public class GetKidsStatsHandler : IRequestHandler<GetKidsStatsQuery, GetKidsStatsResponse>
+public class GetKidsStatsHandler(IAppDbContext context) : IRequestHandler<GetKidsStatsQuery, GetKidsStatsResponse>
 {
-    private readonly IAppDbContext _context;
-
-    public GetKidsStatsHandler(IAppDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<GetKidsStatsResponse> Handle(GetKidsStatsQuery request, CancellationToken cancellationToken)
     {
-        var choreSubmissions = await _context.ChoreSubmissions
+        var choreSubmissions = await context.ChoreSubmissions
             .Where(c => c.UserId == request.Id)
             .ToListAsync(cancellationToken);
 

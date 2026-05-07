@@ -7,22 +7,15 @@ namespace ChorePoint.API.Controllers;
 
 [ApiController]
 [Route("api/auth")]
-public class AuthController : ControllerBase
+public class AuthController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public AuthController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     [HttpPost("register")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Register([FromBody] RegisterCommand command)
     {
-        await _mediator.Send(command);
+        await mediator.Send(command);
         return Ok(new
         {
             success = true,
@@ -36,7 +29,7 @@ public class AuthController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Login([FromBody] LoginCommand command)
     {
-        var result = await _mediator.Send(command);
+        var result = await mediator.Send(command);
         return Ok(new
         {
             success = true,

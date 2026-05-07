@@ -7,15 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace ChorePoint.Infrastructure.Authentication;
 
-public class JwtTokenGenerator : IJwtTokenGenerator
+public class JwtTokenGenerator(IConfiguration config) : IJwtTokenGenerator
 {
-    private readonly IConfiguration _config;
-
-    public JwtTokenGenerator(IConfiguration config)
-    {
-        _config = config;
-    }
-
     public string GenerateJwtToken(int id, string email)
     {
         var claims = new[]
@@ -24,14 +17,14 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             new Claim(ClaimTypes.Email, email)
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            _config["Jwt:Issuer"],
-            _config["Jwt:Audience"],
+            config["Jwt:Issuer"],
+            config["Jwt:Audience"],
             claims,
-            expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(_config["Jwt:DurationInMinutes"])),
+            expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(config["Jwt:DurationInMinutes"])),
             signingCredentials: creds
         );
 

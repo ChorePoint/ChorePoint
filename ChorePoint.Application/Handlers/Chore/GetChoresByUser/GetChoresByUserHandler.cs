@@ -6,19 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Chore.GetChoresByUser;
 
-public class GetChoresByUserHandler : IRequestHandler<GetChoresByUserQuery, IReadOnlyList<GetChoresByUserResponse>>
+public class GetChoresByUserHandler(IAppDbContext context)
+    : IRequestHandler<GetChoresByUserQuery, IReadOnlyList<GetChoresByUserResponse>>
 {
-    private readonly IAppDbContext _context;
-
-    public GetChoresByUserHandler(IAppDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<IReadOnlyList<GetChoresByUserResponse>> Handle(GetChoresByUserQuery request,
         CancellationToken cancellationToken)
     {
-        var chores = await _context.Chores
+        var chores = await context.Chores
             .Where(c => c.UserId == request.Id)
             .ProjectToType<GetChoresByUserResponse>()
             .ToListAsync(cancellationToken);

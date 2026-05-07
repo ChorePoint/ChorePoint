@@ -4,12 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Infrastructure;
 
-public class AppDbContext : DbContext, IAppDbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options), IAppDbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    {
-    }
-
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Parent> Parents { get; set; } = null!;
     public DbSet<Chore> Chores { get; set; } = null!;

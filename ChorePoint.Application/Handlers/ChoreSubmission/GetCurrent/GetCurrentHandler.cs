@@ -6,18 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
 
-public class GetCurrentHandler : IRequestHandler<GetCurrentQuery, GetCurrentResponse>
+public class GetCurrentHandler(IAppDbContext context) : IRequestHandler<GetCurrentQuery, GetCurrentResponse>
 {
-    private readonly IAppDbContext _context;
-
-    public GetCurrentHandler(IAppDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<GetCurrentResponse> Handle(GetCurrentQuery request, CancellationToken cancellationToken)
     {
-        var currentCompletion = await _context.ChoreSubmissions
+        var currentCompletion = await context.ChoreSubmissions
             .Where(c => c.UserId == request.Id)
             .OrderByDescending(c => c.CompletedAt)
             .ProjectToType<GetCurrentResponse>()
