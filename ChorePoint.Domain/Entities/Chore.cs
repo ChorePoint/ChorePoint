@@ -28,10 +28,8 @@ public sealed class Chore
 
     [Required] [Column("frequency")] public ChoreFrequency Frequency { get; set; } = ChoreFrequency.Daily;
 
-    [Required]
-    [MaxLength(50)]
-    [Column("time_of_day")]
-    public string TimeOfDay { get; set; } = null!;
+    [Column("due_day")] // Only set when frequency is weekly. Determines which day of the week the chore cycles on.
+    public DayOfWeek? DueDay { get; set; } = DayOfWeek.Monday; 
 
     [Required] [Column("is_visible")] public bool IsVisible { get; set; } = true;
 

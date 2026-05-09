@@ -5,7 +5,7 @@
 namespace ChorePoint_API.Migrations
 {
     /// <inheritdoc />
-    public partial class Changedchorecompletiontochoresubmissionagain : Migration
+    public partial class Addednullabletoduedaypropertyforchore : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
