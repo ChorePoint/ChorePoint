@@ -26,7 +26,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
             data = result
         });
     }
-    
+
     [Authorize]
     [HttpGet("user/{userId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

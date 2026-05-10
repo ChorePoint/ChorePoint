@@ -26,7 +26,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
             message = "Chore completed successfully"
         });
     }
-    
+
     [Authorize]
     [HttpGet("current/{userId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

@@ -24,7 +24,7 @@ public class AuthController(IMediator mediator) : ControllerBase
             message = "User registered successfully"
         });
     }
-    
+
     [AllowAnonymous]
     [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status200OK)]

@@ -1,4 +1,4 @@
-using ChorePoint.API.Internal;
+using ChorePoint.API.Documentation;
 using ChorePoint.API.Middleware;
 using ChorePoint.Application.Behaviours;
 using ChorePoint.Application.Handlers.Auth.Login;
@@ -10,10 +10,7 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi(options =>
-{
-    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
-});
+builder.Services.AddOpenApi(options => { options.AddDocumentTransformer<BearerSecuritySchemeTransformer>(); });
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
