@@ -1,4 +1,4 @@
-import { ApprovalStatus } from './chore';
+import { ApprovalStatus } from './enums/approval-status.enum';
 
 export type ChoreSubmission = {
   id: number;

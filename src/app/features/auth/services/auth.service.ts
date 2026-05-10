@@ -4,7 +4,7 @@ import { catchError, tap, throwError } from 'rxjs';
 import { AUTH_ERROR_MAP } from '../models/auth.error';
 import { AuthError, AuthErrorType } from '../models/auth.types';
 import { CreateAccountRequest } from '../models/create-account-request';
-import { LoginRequest } from '../models/login-request';
+import { LoginRequest, LoginResponse } from '../models/login-request';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -47,9 +47,9 @@ export class AuthService {
   }
 
   login(request: LoginRequest) {
-    return this.http.post<{ token: string }>(`${this.baseUrl}/login`, request).pipe(
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, request).pipe(
       tap((response) => {
-        localStorage.setItem('authToken', response.token);
+        localStorage.setItem('authToken', response.data.token);
       }),
       catchError((err: HttpErrorResponse) => {
         const type = AUTH_ERROR_MAP[err.status] ?? AuthErrorType.LoginFailed;

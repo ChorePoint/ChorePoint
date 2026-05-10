@@ -1,4 +1,4 @@
-import { Frequency } from './chore';
+import { Frequency } from '../models/enums/frequency.enum';
 
 export const FrequencyOptions = [
   { value: Frequency.Daily, label: 'Daily' },

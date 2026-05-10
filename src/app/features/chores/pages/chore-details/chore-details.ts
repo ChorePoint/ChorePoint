@@ -4,13 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowLeft, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { catchError, combineLatest, map, merge, Observable, of, Subject, switchMap } from 'rxjs';
+import { ActionButton } from '../../../../core/types/action-button';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
-import { Chore, Difficulty, Frequency } from '../../models/chore';
+import { ChoreSubmissionService } from '../../api/services/chore-submission.service';
+import { ChoreService } from '../../api/services/chore.service';
+import { Chore } from '../../models/chore';
 import { ChoreSubmission } from '../../models/chore-submission';
-import { ChoreSubmissionService } from '../../services/chore-submission.service';
-import { ChoreService } from '../../services/chore.service';
-import { APPROVAL_STATUS_CONFIG, DEFAULT_STATUS } from './config';
-import { ActionButton } from './types';
+import { Difficulty } from '../../models/enums/difficulty.enum';
+import { Frequency } from '../../models/enums/frequency.enum';
+import { APPROVAL_STATUS_CONFIG, DEFAULT_STATUS } from './approval-status.config';
 
 @Component({
   selector: 'app-chore-details',

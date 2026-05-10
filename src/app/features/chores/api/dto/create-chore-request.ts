@@ -3,7 +3,7 @@ export type CreateChoreRequest = {
   icon: string;
   kidId: number;
   frequency: number;
-  dueDate: string;
+  dueDay: number | null;
   points: number;
-  description: number;
+  description: string;
 };

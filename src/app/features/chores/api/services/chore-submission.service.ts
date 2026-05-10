@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators/catchError';
-import { ChoreSubmission } from '../models/chore-submission';
+import { ChoreSubmission } from '../../models/chore-submission';
 
 @Injectable({ providedIn: 'root' })
 export class ChoreSubmissionService {

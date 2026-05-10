@@ -1,5 +1,5 @@
-import { ApprovalStatus } from '../../models/chore';
-import { ActionButton } from './types';
+import { ActionButton } from '../../../../core/types/action-button';
+import { ApprovalStatus } from '../../models/enums/approval-status.enum';
 
 export const APPROVAL_STATUS_CONFIG: Record<ApprovalStatus, ActionButton> = {
   [ApprovalStatus.Approved]: {
@@ -20,7 +20,4 @@ export const APPROVAL_STATUS_CONFIG: Record<ApprovalStatus, ActionButton> = {
   },
 };
 
-export const DEFAULT_STATUS = {
-  text: 'Mark Complete!',
-  class: 'btn-primary',
-};
+export const DEFAULT_STATUS = APPROVAL_STATUS_CONFIG[ApprovalStatus.Incomplete];

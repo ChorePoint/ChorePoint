@@ -5,7 +5,9 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from '../../../../core/services/api.service';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
 import { User } from '../../../kids/models/user';
-import { Chore, Difficulty, Frequency } from '../../models/chore';
+import { Chore } from '../../models/chore';
+import { Difficulty } from '../../models/enums/difficulty.enum';
+import { Frequency } from '../../models/enums/frequency.enum';
 
 @Component({
   selector: 'app-chore-dashboard',

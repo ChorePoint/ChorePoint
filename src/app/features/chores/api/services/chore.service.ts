@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { catchError } from 'rxjs/internal/operators/catchError';
-import { Chore } from '../models/chore';
+import { Chore } from '../../models/chore';
+import { CreateChoreRequest } from '../dto/create-chore-request';
 
 @Injectable({ providedIn: 'root' })
 export class ChoreService {
@@ -20,5 +21,9 @@ export class ChoreService {
 
   getAll() {
     return this.http.get<Chore[]>(this.baseUrl);
+  }
+
+  createChore(request: CreateChoreRequest) {
+    return this.http.post<void>(`${this.baseUrl}/create`, request);
   }
 }
