@@ -1,15 +1,19 @@
+using ChorePoint.API.Internal;
 using ChorePoint.API.Middleware;
 using ChorePoint.Application.Behaviours;
 using ChorePoint.Application.Handlers.Auth.Login;
 using ChorePoint.Infrastructure;
 using FluentValidation;
 using MediatR;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+});
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -35,8 +39,18 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.MapScalarApiReference(options =>
+    {
+        options.WithTitle("ChorePoint API")
+            .WithClassicLayout()
+            .ForceDarkMode()
+            .ExpandAllTags()
+            .HideSearch()
+            .HideModels();
+
+        options.Theme = ScalarTheme.Solarized;
+    });
 }
 
 app.UseHttpsRedirection();
