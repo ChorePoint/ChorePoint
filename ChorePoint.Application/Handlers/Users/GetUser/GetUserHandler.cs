@@ -5,16 +5,14 @@ using MediatR;
 
 namespace ChorePoint.Application.Handlers.Users.GetUser;
 
-public class GetUserHandler(IAppDbContext context, IUserService userService)
+public class GetUserHandler(IAppDbContext context, IUserContextService userContextService)
     : IRequestHandler<GetUserQuery, GetUserResponse>
 {
     public async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
     {
-        var userId = userService.GetUserId();
-        if (userId == null)
-            throw new UnauthorizedAccessException("User not authorised");
+        var userId = userContextService.GetParentId();
 
-        var user = await context.Users
+        var user = await context.Parents
             .FindAsync(userId, cancellationToken);
 
         return user.Adapt<GetUserResponse>()

@@ -1,0 +1,39 @@
+﻿using ChorePoint.Application.Interfaces;
+using ChorePoint.Domain.Exceptions;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+namespace ChorePoint.Application.Handlers.Chore.Create;
+
+public class CreateChoreHandler(IAppDbContext context, IUserContextService userContextService)
+    : IRequestHandler<CreateChoreCommand>
+{
+    public async Task Handle(CreateChoreCommand request, CancellationToken cancellationToken)
+    {
+        var parentId = userContextService.GetParentId();
+
+        var existingKid = await context.Users
+            .FirstOrDefaultAsync(u => u.Id == request.KidId, cancellationToken);
+
+        if (existingKid == null)
+            throw new NotFoundException($"No kid exists for this kid id: {request.KidId}");
+
+        if (existingKid.ParentId != parentId)
+            throw new DomainException($"Kid ID does not belong to the current parent: {parentId}");
+
+        var chore = new Domain.Entities.Chore
+        {
+            Name = request.Name,
+            Icon = request.Icon,
+            Points = request.Points,
+            Difficulty = request.Difficulty,
+            Frequency = request.Frequency,
+            DueDay = request.DueDay,
+            UserId = request.KidId,
+            Description = request.Description
+        };
+
+        context.Chores.Add(chore);
+        await context.SaveChangesAsync(cancellationToken);
+    }
+}
