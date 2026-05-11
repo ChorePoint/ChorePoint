@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace ChorePoint_API.Migrations
+namespace ChorePoint.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class Removedrequiredattributetoduedaypropertyforchore : Migration

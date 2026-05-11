@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ChorePoint_API.Migrations
+namespace ChorePoint.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class Changedchorecompletiontochoresubmission : Migration

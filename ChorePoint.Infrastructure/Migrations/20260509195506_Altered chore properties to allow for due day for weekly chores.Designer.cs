@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ChorePoint_API.Migrations
+namespace ChorePoint.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20260509195506_Altered chore properties to allow for due day for weekly chores")]

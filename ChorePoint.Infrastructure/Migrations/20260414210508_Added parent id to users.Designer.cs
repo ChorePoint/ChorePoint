@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ChorePoint_API.Migrations
+namespace ChorePoint.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20260414210508_Added parent id to users")]
@@ -79,7 +79,7 @@ namespace ChorePoint_API.Migrations
                     b.ToTable("chore_completions");
                 });
 
-            modelBuilder.Entity("ChorePoint_API.Models.Chore", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Chore", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -157,7 +157,7 @@ namespace ChorePoint_API.Migrations
                     b.ToTable("chores");
                 });
 
-            modelBuilder.Entity("ChorePoint_API.Models.Parent", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Parent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -197,7 +197,7 @@ namespace ChorePoint_API.Migrations
                     b.ToTable("parents");
                 });
 
-            modelBuilder.Entity("ChorePoint_API.Models.User", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -255,17 +255,17 @@ namespace ChorePoint_API.Migrations
 
             modelBuilder.Entity("ChoreCompletion", b =>
                 {
-                    b.HasOne("ChorePoint_API.Models.User", "ApprovedBy")
+                    b.HasOne("ChorePoint.Domain.Entities.User", "ApprovedBy")
                         .WithMany()
                         .HasForeignKey("ApprovedByUserId");
 
-                    b.HasOne("ChorePoint_API.Models.Chore", "Chore")
+                    b.HasOne("ChorePoint.Domain.Entities.Chore", "Chore")
                         .WithMany()
                         .HasForeignKey("ChoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ChorePoint_API.Models.User", "User")
+                    b.HasOne("ChorePoint.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -278,9 +278,9 @@ namespace ChorePoint_API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ChorePoint_API.Models.Chore", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Chore", b =>
                 {
-                    b.HasOne("ChorePoint_API.Models.User", "User")
+                    b.HasOne("ChorePoint.Domain.Entities.User", "User")
                         .WithMany("Chores")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -289,9 +289,9 @@ namespace ChorePoint_API.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ChorePoint_API.Models.User", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.User", b =>
                 {
-                    b.HasOne("ChorePoint_API.Models.Parent", "Parent")
+                    b.HasOne("ChorePoint.Domain.Entities.Parent", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -300,7 +300,7 @@ namespace ChorePoint_API.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("ChorePoint_API.Models.User", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.User", b =>
                 {
                     b.Navigation("Chores");
                 });
