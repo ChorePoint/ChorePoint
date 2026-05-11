@@ -1,5 +1,5 @@
-import { Difficulty } from './enums/difficulty.enum';
-import { Frequency } from './enums/frequency.enum';
+import { ChoreDifficulty } from '../../../core/types/enums/chore-difficulty';
+import { ChoreFrequency } from '../../../core/types/enums/chore-frequency';
 
 export type Chore = {
   id: number;
@@ -7,8 +7,8 @@ export type Chore = {
   name: string;
   icon: string;
   points: number;
-  difficulty: Difficulty;
-  frequency: Frequency;
+  difficulty: ChoreDifficulty;
+  frequency: ChoreFrequency;
   timeOfDay: string;
   isVisible: boolean;
   lastCompletedAt: Date | null;

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
-import { GetKidsResponse } from './get-kids.response';
+import { GetKidsResponse } from './kids.dtos';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { User } from '../../../kids/models/user';
+import { Kid } from '../../../kids/models/user';
 
 @Component({
   selector: 'app-leaderboard',
@@ -8,9 +8,9 @@ import { User } from '../../../kids/models/user';
   styleUrl: './leaderboard.scss',
 })
 export class Leaderboard {
-  @Input() kids: User[] = [];
+  @Input() kids: Kid[] = [];
 
-  leaderboardKids: User[] = [];
+  leaderboardKids: Kid[] = [];
   rankClasses = ['gold', 'silver', 'bronze'];
   rankEmojis = ['🥇', '🥈', '🥉'];
 

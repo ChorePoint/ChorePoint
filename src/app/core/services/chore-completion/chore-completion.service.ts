@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { catchError } from 'rxjs/internal/operators/catchError';
-import { KidStats } from '../../features/parents/models/kid-stats';
+import { KidStats } from './chore-completion.dtos';
 
 @Injectable({ providedIn: 'root' })
 export class ChoreCompletionService {

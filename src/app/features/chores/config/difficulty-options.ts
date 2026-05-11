@@ -1,7 +1,7 @@
-import { Difficulty } from '../models/enums/difficulty.enum';
+import { ChoreDifficulty } from '../../../core/types/enums/chore-difficulty';
 
 export const DifficultyOptions = [
-  { value: Difficulty.Easy, label: 'Easy' },
-  { value: Difficulty.Medium, label: 'Medium' },
-  { value: Difficulty.Hard, label: 'Hard' },
+  { value: ChoreDifficulty.Easy, label: 'Easy' },
+  { value: ChoreDifficulty.Medium, label: 'Medium' },
+  { value: ChoreDifficulty.Hard, label: 'Hard' },
 ];

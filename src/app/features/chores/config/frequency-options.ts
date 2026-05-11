@@ -1,7 +1,7 @@
-import { Frequency } from '../models/enums/frequency.enum';
+import { ChoreFrequency } from '../../../core/types/enums/chore-frequency';
 
 export const FrequencyOptions = [
-  { value: Frequency.Daily, label: 'Daily' },
-  { value: Frequency.Weekly, label: 'Weekly' },
-  { value: Frequency.Bonus, label: 'Bonus' },
+  { value: ChoreFrequency.Daily, label: 'Daily' },
+  { value: ChoreFrequency.Weekly, label: 'Weekly' },
+  { value: ChoreFrequency.Bonus, label: 'Bonus' },
 ];

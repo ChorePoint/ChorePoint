@@ -1,13 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { ApiService } from '../../../../core/services/api.service';
+import { ChoreDifficulty } from '../../../../core/types/enums/chore-difficulty';
+import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
-import { User } from '../../../kids/models/user';
+import { Kid } from '../../../kids/models/user';
 import { Chore } from '../../models/chore';
-import { Difficulty } from '../../models/enums/difficulty.enum';
-import { Frequency } from '../../models/enums/frequency.enum';
 
 @Component({
   selector: 'app-chore-dashboard',
@@ -16,13 +15,11 @@ import { Frequency } from '../../models/enums/frequency.enum';
   styleUrl: './chore-dashboard.scss',
 })
 export class ChoreDashboard {
-  private apiService = inject(ApiService);
-
-  user: User | null = null;
+  user: Kid | null = null;
   chores: Chore[] = [];
 
-  Difficulty = Difficulty;
-  Frequency = Frequency;
+  Difficulty = ChoreDifficulty;
+  Frequency = ChoreFrequency;
 
   loading = true;
   spinner = faSpinner;
@@ -36,24 +33,30 @@ export class ChoreDashboard {
   }
 
   async loadUser() {
-    this.user = await this.apiService.processGet('Users/me');
+    // this.user = await this.apiService.processGet('Users/me');
   }
 
   async loadChores() {
     if (this.user) {
-      this.chores = await this.apiService.processGet(`Chore/user/${this.user.id}`);
+      // this.chores = await this.apiService.processGet(`Chore/user/${this.user.id}`);
     }
   }
 
   getDailyChores(): Chore[] {
-    return this.chores.filter((chore) => chore.isVisible && chore.frequency == Frequency.Daily);
+    return this.chores.filter(
+      (chore) => chore.isVisible && chore.frequency == ChoreFrequency.Daily,
+    );
   }
 
   getWeeklyChores(): Chore[] {
-    return this.chores.filter((chore) => chore.isVisible && chore.frequency == Frequency.Weekly);
+    return this.chores.filter(
+      (chore) => chore.isVisible && chore.frequency == ChoreFrequency.Weekly,
+    );
   }
 
   getBonusChores(): Chore[] {
-    return this.chores.filter((chore) => chore.isVisible && chore.frequency == Frequency.Bonus);
+    return this.chores.filter(
+      (chore) => chore.isVisible && chore.frequency == ChoreFrequency.Bonus,
+    );
   }
 }

@@ -1,13 +1,13 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Observable, map, of, switchMap } from 'rxjs';
-import { ChoreCompletionService } from '../../../../core/services/chore-completion.service';
-import { KidsService } from '../../../../core/services/kids.service';
-import { UserService } from '../../../../core/services/user/users.service';
+import { KidStats } from '../../../../core/services/chore-completion/chore-completion.dtos';
+import { ChoreCompletionService } from '../../../../core/services/chore-completion/chore-completion.service';
+import { KidsService } from '../../../../core/services/kids/kids-data.service';
+import { UserService } from '../../../../core/services/kids/kids.service';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
 import { ChoreSubmission } from '../../../chores/models/chore-submission';
-import { User } from '../../../kids/models/user';
-import { KidStats } from '../../models/kid-stats';
+import { Kid } from '../../../kids/models/user';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -21,8 +21,8 @@ export class DashboardHome {
   private kidsService = inject(KidsService);
 
   vm$!: Observable<{
-    kids: User[];
-    selectedKid: User | null;
+    kids: Kid[];
+    selectedKid: Kid | null;
     stats?: KidStats;
     pendingApprovals?: ChoreSubmission[];
   }>;
@@ -57,7 +57,7 @@ export class DashboardHome {
     );
   }
 
-  selectKid(kid: User) {
+  selectKid(kid: Kid) {
     this.vm$ = this.vm$.pipe(map((vm) => ({ ...vm, selectedKid: kid })));
   }
 }

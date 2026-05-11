@@ -3,16 +3,16 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { map, Observable } from 'rxjs';
 import { CHORE_EMOJIS } from '../../../../consts/chore-emojis';
-import { KidsService } from '../../../../core/services/kids.service';
+import { KidsService } from '../../../../core/services/kids/kids-data.service';
+import { ChoreDifficulty } from '../../../../core/types/enums/chore-difficulty';
+import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
 import { LoadingEmoji } from '../../../../shared/components/loading-emoji/loading-emoji';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
-import { User } from '../../../kids/models/user';
+import { Kid } from '../../../kids/models/user';
 import { ChoreService } from '../../api/services/chore.service';
 import { DAYS_OF_WEEK } from '../../config/days-of-week';
 import { DifficultyOptions } from '../../config/difficulty-options';
 import { FrequencyOptions } from '../../config/frequency-options';
-import { Difficulty } from '../../models/enums/difficulty.enum';
-import { Frequency } from '../../models/enums/frequency.enum';
 
 @Component({
   selector: 'app-add-chore',
@@ -32,18 +32,18 @@ export class AddChore {
   choreEmojis = CHORE_EMOJIS;
   daysOfWeek = DAYS_OF_WEEK;
   choreFrequencyOptions = FrequencyOptions;
-  choreFrequency = Frequency;
+  choreFrequency = ChoreFrequency;
 
   vm$!: Observable<{
-    kids: User[];
+    kids: Kid[];
   }>;
 
   form = this.fb.nonNullable.group({
     name: ['', { validators: [Validators.required] }],
     icon: ['', { validators: [Validators.required] }],
     kidId: [0, { validators: [Validators.required] }],
-    frequency: [Frequency.Daily, { validators: [Validators.required] }],
-    difficulty: [Difficulty.Easy, { validators: [Validators.required] }],
+    frequency: [ChoreFrequency.Daily, { validators: [Validators.required] }],
+    difficulty: [ChoreDifficulty.Easy, { validators: [Validators.required] }],
     dueDay: [null],
     points: [0, { validators: [Validators.required, Validators.min(0)] }],
     description: [''],

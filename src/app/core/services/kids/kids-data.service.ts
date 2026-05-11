@@ -1,18 +1,18 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of, shareReplay, tap } from 'rxjs';
-import { User } from '../../features/kids/models/user';
-import { UserService } from './user/users.service';
+import { Kid } from '../../../features/kids/models/user';
+import { UserService } from './kids.service';
 
 @Injectable({ providedIn: 'root' })
 export class KidsService {
   private userService = inject(UserService);
 
-  private kidsSubject = new BehaviorSubject<User[] | null>(null);
+  private kidsSubject = new BehaviorSubject<Kid[] | null>(null);
   kids$ = this.kidsSubject.asObservable();
 
-  private loading$: Observable<User[]> | null = null;
+  private loading$: Observable<Kid[]> | null = null;
 
-  getKids$(): Observable<User[]> {
+  getKids$(): Observable<Kid[]> {
     if (this.kidsSubject.value) {
       return of(this.kidsSubject.value);
     }

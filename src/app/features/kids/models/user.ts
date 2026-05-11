@@ -1,4 +1,4 @@
-export type User = {
+export type Kid = {
   id: number;
   name: string;
   age: number;
