@@ -1,6 +1,7 @@
 ﻿using ChorePoint.Application.Handlers.Auth.Login;
 using ChorePoint.Application.Handlers.Auth.Register;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers;
@@ -9,6 +10,7 @@ namespace ChorePoint.API.Controllers;
 [Route("api/auth")]
 public class AuthController(IMediator mediator) : ControllerBase
 {
+    [AllowAnonymous]
     [HttpPost("register")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -23,6 +25,7 @@ public class AuthController(IMediator mediator) : ControllerBase
         });
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

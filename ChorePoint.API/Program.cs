@@ -1,53 +1,88 @@
+using ChorePoint.API.Documentation;
 using ChorePoint.API.Middleware;
 using ChorePoint.Application.Behaviours;
 using ChorePoint.Application.Handlers.Auth.Login;
 using ChorePoint.Infrastructure;
 using FluentValidation;
 using MediatR;
+using Scalar.AspNetCore;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .WriteTo.Console(theme: AnsiConsoleTheme.Code)
+    .CreateLogger();
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddProblemDetails();
-
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly));
-builder.Services.AddValidatorsFromAssembly(typeof(LoginValidator).Assembly);
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
-builder.Services.AddInfrastructure(builder.Configuration);
-
-builder.Services.AddCors(options =>
+try
 {
-    options.AddPolicy("AllowAngular", policy =>
+    Log.Information("Program.cs starting host ≧◡≦");
+
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Services.AddControllers();
+    builder.Services.AddOpenApi(options => { options.AddDocumentTransformer<BearerSecuritySchemeTransformer>(); });
+
+    builder.Services.AddSerilog();
+    builder.Services.AddHttpContextAccessor();
+    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+    builder.Services.AddProblemDetails();
+
+    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly));
+    builder.Services.AddValidatorsFromAssembly(typeof(LoginValidator).Assembly);
+
+    builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+    builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+
+    builder.Services.AddInfrastructure(builder.Configuration);
+
+    builder.Services.AddCors(options =>
     {
-        policy.WithOrigins("http://localhost:4200")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        options.AddPolicy("AllowAngular", policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
     });
-});
 
-var app = builder.Build();
+    var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    if (app.Environment.IsDevelopment())
+    {
+        app.MapOpenApi();
+        app.MapScalarApiReference(options =>
+        {
+            options.WithTitle("ChorePoint API")
+                .WithClassicLayout()
+                .ForceDarkMode()
+                .ExpandAllTags()
+                .HideSearch()
+                .HideModels();
+
+            options.Theme = ScalarTheme.Solarized;
+        });
+    }
+
+    app.UseHttpsRedirection();
+
+    app.UseExceptionHandler();
+
+    app.UseCors("AllowAngular");
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.UseExceptionHandler();
-
-app.UseCors("AllowAngular");
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+    Log.Information("Bye bye... (ㄒoㄒ)");
+    Log.CloseAndFlush();
+}

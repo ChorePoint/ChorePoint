@@ -13,7 +13,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         Exception exception,
         CancellationToken cancellationToken)
     {
-        logger.LogError(exception, "An unhandled exception occurred: {Message}", exception.Message);
+        logger.LogError("A global exception occurred: {Message}", exception.Message);
 
         var problemDetails = new ProblemDetails
         {

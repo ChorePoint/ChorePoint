@@ -11,6 +11,7 @@ namespace ChorePoint.API.Controllers;
 [Route("api/chore")]
 public class ChoreController(IMediator mediator) : ControllerBase
 {
+    [Authorize]
     [HttpGet("{id:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -27,6 +28,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
         });
     }
 
+    [Authorize]
     [HttpGet("user/{userId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
