@@ -30,7 +30,9 @@ try
 
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly));
     builder.Services.AddValidatorsFromAssembly(typeof(LoginValidator).Assembly);
+
     builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+    builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
     builder.Services.AddInfrastructure(builder.Configuration);
 
