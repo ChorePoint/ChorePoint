@@ -17,7 +17,7 @@ public class JwtTokenGenerator(IConfiguration config, ILogger<JwtTokenGenerator>
             new Claim(ClaimTypes.NameIdentifier, id.ToString()),
             new Claim(ClaimTypes.Email, email)
         };
-        logger.LogInformation("New claims for user with id {UserId} and email {UserEmail}", id, email);
+        logger.LogInformation("New claims created for user id: {UserId}", id);
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
