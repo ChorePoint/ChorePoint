@@ -1,4 +1,5 @@
-﻿using ChorePoint.Application.Handlers.Chore.GetChoreById;
+﻿using ChorePoint.Application.Handlers.Chore.Create;
+using ChorePoint.Application.Handlers.Chore.GetChoreById;
 using ChorePoint.Application.Handlers.Chore.GetChoresByUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -41,6 +42,21 @@ public class ChoreController(IMediator mediator) : ControllerBase
             success = true,
             message = $"Chores from user id {userId} successfully retrieved",
             data = result
+        });
+    }
+
+    [Authorize]
+    [HttpPost("create")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Create([FromBody] CreateChoreCommand command)
+    {
+        await mediator.Send(command);
+        return Ok(new
+        {
+            success = true,
+            message = $"Chore with name {command.Name} successfully created"
         });
     }
 }
