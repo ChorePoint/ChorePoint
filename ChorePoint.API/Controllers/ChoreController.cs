@@ -2,6 +2,7 @@
 using ChorePoint.Application.Handlers.Chore.GetChoreById;
 using ChorePoint.Application.Handlers.Chore.GetChoresByUser;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers;
@@ -42,6 +43,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
         });
     }
 
+    [Authorize]
     [HttpPost("create")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -54,6 +56,5 @@ public class ChoreController(IMediator mediator) : ControllerBase
             success = true,
             message = $"Chore with name {command.Name} successfully created"
         });
-
     }
 }
