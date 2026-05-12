@@ -27,8 +27,8 @@ public class LoggingBehavior<TRequest, TResponse>(ILogger<TRequest> logger)
             }
             catch (NotSupportedException ex)
             {
-                logger.LogError("{RequestNameWithGuid} Could not serialise the request due to: {ExceptionMessage}",
-                    requestNameWithGuid, ex.Message);
+                logger.LogError(ex, "{RequestNameWithGuid} Could not serialise the request.",
+                    requestNameWithGuid);
             }
 
             response = await next(cancellationToken);
