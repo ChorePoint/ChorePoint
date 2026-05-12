@@ -27,6 +27,9 @@ try
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();
+    
+    builder.Services.AddMemoryCache();
+    builder.Services.AddFusionCache();
 
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly));
     builder.Services.AddValidatorsFromAssembly(typeof(LoginValidator).Assembly);
