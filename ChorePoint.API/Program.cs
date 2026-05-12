@@ -8,6 +8,7 @@ using MediatR;
 using Scalar.AspNetCore;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
+using ZiggyCreatures.Caching.Fusion;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
@@ -29,7 +30,11 @@ try
     builder.Services.AddProblemDetails();
     
     builder.Services.AddMemoryCache();
-    builder.Services.AddFusionCache();
+    builder.Services.AddFusionCache()
+        .WithDefaultEntryOptions(new FusionCacheEntryOptions
+        {
+            Duration = TimeSpan.FromMinutes(5),
+        });
 
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly));
     builder.Services.AddValidatorsFromAssembly(typeof(LoginValidator).Assembly);
