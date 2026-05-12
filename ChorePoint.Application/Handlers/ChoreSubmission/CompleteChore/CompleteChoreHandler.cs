@@ -10,7 +10,7 @@ public class CompleteChoreHandler(IAppDbContext context) : IRequestHandler<Compl
     public async Task Handle(CompleteChoreCommand request, CancellationToken cancellationToken)
     {
         var chore = await context.Chores
-            .FindAsync(request.Id, cancellationToken);
+            .FindAsync([request.Id], cancellationToken);
 
         var lastCompletion = await context.ChoreSubmissions
             .Where(c => c.ChoreId == request.Id)
