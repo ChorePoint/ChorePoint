@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi;
 
@@ -11,13 +12,13 @@ internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvi
         CancellationToken cancellationToken)
     {
         var authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
-        if (authenticationSchemes.All(a => a.Name != "Bearer"))
+        if (authenticationSchemes.All(a => a.Name != JwtBearerDefaults.AuthenticationScheme))
             return;
 
         var bearerScheme = new OpenApiSecurityScheme
         {
             Type = SecuritySchemeType.Http,
-            Scheme = "Bearer",
+            Scheme = JwtBearerDefaults.AuthenticationScheme,
             BearerFormat = "JWT",
             In = ParameterLocation.Header,
             Description = "JWT Authorization header using the Bearer scheme."
@@ -25,14 +26,14 @@ internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvi
 
         document.Components ??= new OpenApiComponents();
 
-        document.AddComponent("Bearer", bearerScheme);
+        document.AddComponent(JwtBearerDefaults.AuthenticationScheme, bearerScheme);
 
         var securityRequirement = new OpenApiSecurityRequirement
         {
-            [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+            [new OpenApiSecuritySchemeReference(JwtBearerDefaults.AuthenticationScheme, document)] = []
         };
 
-        foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations.Values))
+        foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations!.Values))
         {
             operation.Security ??= new List<OpenApiSecurityRequirement>();
             operation.Security.Add(securityRequirement);

@@ -13,7 +13,7 @@ public class GetUserHandler(IAppDbContext context, IUserContextService userConte
         var userId = userContextService.GetParentId();
 
         var user = await context.Parents
-            .FindAsync(userId, cancellationToken);
+            .FindAsync([userId], cancellationToken);
 
         return user.Adapt<GetUserResponse>()
                ?? throw new NotFoundException($"No user exists with id: {userId}");

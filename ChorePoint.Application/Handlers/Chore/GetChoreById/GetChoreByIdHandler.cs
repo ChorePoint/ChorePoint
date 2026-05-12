@@ -10,7 +10,7 @@ public class GetChoreByIdHandler(IAppDbContext context) : IRequestHandler<GetCho
     public async Task<GetChoreByIdResponse> Handle(GetChoreByIdQuery request, CancellationToken cancellationToken)
     {
         var chore = await context.Chores
-            .FindAsync(request.Id, cancellationToken);
+            .FindAsync([request.Id], cancellationToken);
 
         return chore.Adapt<GetChoreByIdResponse>()
                ?? throw new NotFoundException($"No chores exist with id: {request.Id}");

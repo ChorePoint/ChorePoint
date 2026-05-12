@@ -21,10 +21,8 @@ public class GetKidsStatsHandler(IAppDbContext context) : IRequestHandler<GetKid
         return new GetKidsStatsResponse
         (
             choreSubmissions.Count(cs => cs.CompletedThisWeek(startOfWeek)),
-            choreSubmissions.Count == 0
-                ? 0
-                : (int)(choreSubmissions.Count(cs => cs.ApprovalStatus == ChoreApprovalStatus.Approved) * 100.0 /
-                        choreSubmissions.Count)
+            (int)(choreSubmissions.Count(cs => cs.ApprovalStatus == ChoreApprovalStatus.Approved) * 100.0 /
+                  choreSubmissions.Count)
         );
     }
 }
