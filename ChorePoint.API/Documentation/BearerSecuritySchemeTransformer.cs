@@ -33,7 +33,7 @@ internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvi
             [new OpenApiSecuritySchemeReference(JwtBearerDefaults.AuthenticationScheme, document)] = []
         };
 
-        foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations.Values))
+        foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations!.Values))
         {
             operation.Security ??= new List<OpenApiSecurityRequirement>();
             operation.Security.Add(securityRequirement);
