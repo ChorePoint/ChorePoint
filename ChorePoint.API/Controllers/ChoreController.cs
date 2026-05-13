@@ -46,6 +46,23 @@ public class ChoreController(IMediator mediator) : ControllerBase
     }
 
     [Authorize]
+    [HttpGet("user")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetChoresByParent([FromQuery] bool visible = true)
+    {
+        var result = await mediator.Send(new GetChoresByParentQuery(visible));
+        return Ok(new
+        {
+            success = true,
+            message = $"Chores successfully retrieved",
+            data = result
+        });
+    }
+
+    [Authorize]
     [HttpPost("create")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
