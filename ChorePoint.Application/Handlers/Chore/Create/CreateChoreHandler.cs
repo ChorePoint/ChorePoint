@@ -1,19 +1,24 @@
 ﻿using ChorePoint.Application.Interfaces;
+using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using ZiggyCreatures.Caching.Fusion;
 
 namespace ChorePoint.Application.Handlers.Chore.Create;
 
-public class CreateChoreHandler(IAppDbContext context, IUserContextService userContextService)
+public class CreateChoreHandler(IAppDbContext context, IUserContextService userContextService, IFusionCache cache)
     : IRequestHandler<CreateChoreCommand>
 {
     public async Task Handle(CreateChoreCommand request, CancellationToken cancellationToken)
     {
         var parentId = userContextService.GetParentId();
 
-        var existingKid = await context.Users
-            .FirstOrDefaultAsync(u => u.Id == request.KidId, cancellationToken);
+        var existingKid = await cache.GetOrSetAsync<User?>(
+            $"kid:{request.KidId}",
+            async _ => await GetKidForChoreFromDb(request, cancellationToken),
+            token: cancellationToken
+        );
 
         if (existingKid == null)
             throw new NotFoundException($"No kid exists for this kid id: {request.KidId}");
@@ -35,5 +40,13 @@ public class CreateChoreHandler(IAppDbContext context, IUserContextService userC
 
         context.Chores.Add(chore);
         await context.SaveChangesAsync(cancellationToken);
+    }
+
+    private async Task<User?> GetKidForChoreFromDb(CreateChoreCommand request, CancellationToken cancellationToken)
+    {
+        var existingKid = await context.Users
+            .FirstOrDefaultAsync(u => u.Id == request.KidId, cancellationToken);
+
+        return existingKid;
     }
 }

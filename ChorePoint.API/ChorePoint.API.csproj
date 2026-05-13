@@ -27,6 +27,7 @@
         <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0"/>
         <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1"/>
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.18.0"/>
+        <PackageReference Include="ZiggyCreatures.FusionCache" Version="2.6.0"/>
     </ItemGroup>
 
     <ItemGroup>
