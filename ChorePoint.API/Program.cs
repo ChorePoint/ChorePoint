@@ -33,7 +33,15 @@ try
     builder.Services.AddFusionCache()
         .WithDefaultEntryOptions(new FusionCacheEntryOptions
         {
-            Duration = TimeSpan.FromMinutes(5)
+            Duration = TimeSpan.FromMinutes(5),
+
+            IsFailSafeEnabled = true,
+            FailSafeMaxDuration = TimeSpan.FromHours(1),
+            FailSafeThrottleDuration = TimeSpan.FromSeconds(30),
+
+            EagerRefreshThreshold = 0.9f,
+
+            FactorySoftTimeout = TimeSpan.FromSeconds(100)
         });
 
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly));
