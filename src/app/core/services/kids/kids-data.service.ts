@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of, shareReplay, tap } from 'rxjs';
-import { Kid } from '../../../features/kids/models/user';
+import { Kid } from '../../types/dtos/kid';
 import { UserService } from './kids.service';
 
 @Injectable({ providedIn: 'root' })

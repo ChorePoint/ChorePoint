@@ -3,9 +3,8 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
-import { CreateChoreRequest } from '../../../features/chores/api/dto/create-chore-request';
 import { Chore } from '../../types/dtos/chore';
-import { GetChoresResponse } from './chore.dtos';
+import { CreateChoreRequest, GetChoresResponse } from './chore.dtos';
 
 @Injectable({ providedIn: 'root' })
 export class ChoreService {
