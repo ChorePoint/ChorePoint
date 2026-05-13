@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Chore } from '../../../../core/types/dtos/chore';
+import { Kid } from '../../../../core/types/dtos/kid';
 import { ChoreDifficulty } from '../../../../core/types/enums/chore-difficulty';
 import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
-import { Kid } from '../../../kids/models/user';
-import { Chore } from '../../models/chore';
 
 @Component({
   selector: 'app-chore-dashboard',

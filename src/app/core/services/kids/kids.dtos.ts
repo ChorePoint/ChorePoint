@@ -1,7 +1,4 @@
-import { Kid } from '../../../features/kids/models/user';
+import { Kid } from '../../types/dtos/kid';
+import { ApiResponse } from '../dtos/response';
 
-export type GetKidsResponse = {
-  success: boolean;
-  message: string;
-  data: Kid[];
-};
+export type GetKidsResponse = ApiResponse<Kid[]>;

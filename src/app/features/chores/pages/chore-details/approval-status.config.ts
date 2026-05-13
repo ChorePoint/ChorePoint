@@ -1,5 +1,5 @@
 import { ActionButton } from '../../../../core/types/action-button';
-import { ApprovalStatus } from '../../models/enums/approval-status.enum';
+import { ApprovalStatus } from '../../../../core/types/enums/approval-status';
 
 export const APPROVAL_STATUS_CONFIG: Record<ApprovalStatus, ActionButton> = {
   [ApprovalStatus.Approved]: {

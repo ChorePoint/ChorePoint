@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Kid } from '../../../kids/models/user';
+import { Kid } from '../../../../core/types/dtos/kid';
 
 @Component({
   selector: 'app-leaderboard',

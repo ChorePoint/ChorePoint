@@ -1,4 +1,4 @@
-import { ApprovalStatus } from './enums/approval-status.enum';
+import { ApprovalStatus } from '../enums/approval-status';
 
 export type ChoreSubmission = {
   id: number;
@@ -8,6 +8,6 @@ export type ChoreSubmission = {
   approvalStatus: ApprovalStatus;
   approvedAt: Date | null;
   approvedByUserId: number | null;
-  notes: string;
-  createdAt: Date;
+  notes: string | null;
+  createdAt: Date | null;
 };

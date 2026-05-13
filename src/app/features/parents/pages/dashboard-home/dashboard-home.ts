@@ -1,13 +1,12 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Observable, map, of, switchMap } from 'rxjs';
-import { KidStats } from '../../../../core/services/chore-completion/chore-completion.dtos';
-import { ChoreCompletionService } from '../../../../core/services/chore-completion/chore-completion.service';
+import { KidStats } from '../../../../core/services/chore-submission/chore-submission.dtos';
+import { ChoreSubmissionService } from '../../../../core/services/chore-submission/chore-submission.service';
 import { KidsService } from '../../../../core/services/kids/kids-data.service';
-import { UserService } from '../../../../core/services/kids/kids.service';
+import { ChoreSubmission } from '../../../../core/types/dtos/chore-submission';
+import { Kid } from '../../../../core/types/dtos/kid';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
-import { ChoreSubmission } from '../../../chores/models/chore-submission';
-import { Kid } from '../../../kids/models/user';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -16,8 +15,7 @@ import { Kid } from '../../../kids/models/user';
   styleUrl: './dashboard-home.scss',
 })
 export class DashboardHome {
-  private userService = inject(UserService);
-  private choreCompletionService = inject(ChoreCompletionService);
+  private choreCompletionService = inject(ChoreSubmissionService);
   private kidsService = inject(KidsService);
 
   vm$!: Observable<{
@@ -46,7 +44,7 @@ export class DashboardHome {
           });
         }
 
-        return this.choreCompletionService.getChoreCompletionStats(selectedKid.id).pipe(
+        return this.choreCompletionService.getChoreSubmissionStats(selectedKid.id).pipe(
           map((stats) => ({
             kids,
             selectedKid,

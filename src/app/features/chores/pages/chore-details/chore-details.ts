@@ -4,14 +4,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowLeft, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { catchError, combineLatest, map, merge, Observable, of, Subject, switchMap } from 'rxjs';
+import { ChoreService } from '../../../../core/services/chore/chore.service';
 import { ActionButton } from '../../../../core/types/action-button';
+import { Chore } from '../../../../core/types/dtos/chore';
+import { ChoreSubmission } from '../../../../core/types/dtos/chore-submission';
 import { ChoreDifficulty } from '../../../../core/types/enums/chore-difficulty';
 import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
 import { ChoreSubmissionService } from '../../api/services/chore-submission.service';
-import { ChoreService } from '../../api/services/chore.service';
-import { Chore } from '../../models/chore';
-import { ChoreSubmission } from '../../models/chore-submission';
 import { APPROVAL_STATUS_CONFIG, DEFAULT_STATUS } from './approval-status.config';
 
 @Component({
