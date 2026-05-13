@@ -46,7 +46,7 @@ public class CreateChoreHandler(IAppDbContext context, IUserContextService userC
     {
         var existingKid = await context.Users
             .FirstOrDefaultAsync(u => u.Id == request.KidId, cancellationToken);
-        
+
         return existingKid;
     }
 }

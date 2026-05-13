@@ -13,22 +13,22 @@ public class GetUserHandler(IAppDbContext context, IUserContextService userConte
     public async Task<GetUserResponse> Handle(GetUserQuery request, CancellationToken cancellationToken)
     {
         var parentId = userContextService.GetParentId();
-        
-        var user = await cache.GetOrSetAsync<Parent?>(
+
+        var parent = await cache.GetOrSetAsync<Parent?>(
             $"parent:{parentId}",
             async _ => await GetParentDetailsFromDb(parentId, cancellationToken),
             token: cancellationToken
         );
 
-        return user.Adapt<GetUserResponse>()
-               ?? throw new NotFoundException($"No user exists with id: {parentId}");
+        return parent.Adapt<GetUserResponse>()
+               ?? throw new NotFoundException($"No parent exists with id: {parentId}");
     }
 
     private async Task<Parent?> GetParentDetailsFromDb(int userId, CancellationToken cancellationToken)
     {
         var user = await context.Parents
             .FindAsync([userId], cancellationToken);
-        
+
         return user;
     }
 }

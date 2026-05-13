@@ -59,16 +59,16 @@ public sealed class Chore
         };
     }
 
-    public void EnsureCanBeCompleted(ChoreSubmission? lastCompletion, DateTime now)
+    public void EnsureCanBeCompleted(ChoreSubmission? currentSubmission, DateTime now)
     {
         switch (Frequency)
         {
             case ChoreFrequency.Daily:
-                if (lastCompletion?.CompletedAt.Date == now.Date)
+                if (currentSubmission?.CompletedAt.Date == now.Date)
                     throw new ChoreAlreadyCompletedException("Chore already completed today");
                 break;
             case ChoreFrequency.Weekly:
-                if (lastCompletion?.CompletedAt.AddDays(7) > now)
+                if (currentSubmission?.CompletedAt.AddDays(7) > now)
                     throw new ChoreAlreadyCompletedException("Chore already completed within the last week");
                 break;
             case ChoreFrequency.Bonus:

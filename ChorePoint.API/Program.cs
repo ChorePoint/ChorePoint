@@ -28,12 +28,12 @@ try
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();
-    
+
     builder.Services.AddMemoryCache();
     builder.Services.AddFusionCache()
         .WithDefaultEntryOptions(new FusionCacheEntryOptions
         {
-            Duration = TimeSpan.FromMinutes(5),
+            Duration = TimeSpan.FromMinutes(5)
         });
 
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly));
