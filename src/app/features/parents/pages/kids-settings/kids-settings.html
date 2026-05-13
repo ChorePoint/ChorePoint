@@ -35,42 +35,43 @@
 
     <div class="kids-list">
       @if (vm.kids.length > 0) {
-        <!-- Zach -->
-        <div class="kid-card">
-          <div class="kid-card-top">
-            <div class="kid-avatar avatar-blue">🧒</div>
-            <div class="kid-info">
-              <div class="kid-name">Zach</div>
-              <div class="kid-meta">Age 10 · 4 active chores</div>
+        @for (kid of vm.kids; track kid.id) {
+          <div class="kid-card">
+            <div class="kid-card-top">
+              <div class="kid-avatar avatar-blue">{{ kid.avatar }}</div>
+              <div class="kid-info">
+                <div class="kid-name">{{ kid.name }}</div>
+                <div class="kid-meta">Age {{ kid.age }} · {{ kid.activeChores }} active chores</div>
+              </div>
+              <div class="kid-points-badge">1,500 ⭐</div>
             </div>
-            <div class="kid-points-badge">1,500 ⭐</div>
+            <div class="kid-progress">
+              <div class="progress-label">Weekly goal <span>75% done</span></div>
+              <div class="progress-track">
+                <div class="progress-fill fill-blue" style="width: 75%"></div>
+              </div>
+            </div>
+            <div class="kid-stats">
+              <div class="kid-stat">
+                <div class="kid-stat-val">🔥 3</div>
+                <div class="kid-stat-lbl">Day Streak</div>
+              </div>
+              <div class="kid-stat">
+                <div class="kid-stat-val">85%</div>
+                <div class="kid-stat-lbl">Completion</div>
+              </div>
+              <div class="kid-stat">
+                <div class="kid-stat-val">4</div>
+                <div class="kid-stat-lbl">Badges</div>
+              </div>
+            </div>
+            <div class="kid-actions">
+              <button class="kid-action-btn">📋 Chores</button>
+              <button class="kid-action-btn">🎁 Rewards</button>
+              <button class="kid-action-btn primary">✏️ Edit</button>
+            </div>
           </div>
-          <div class="kid-progress">
-            <div class="progress-label">Weekly goal <span>75% done</span></div>
-            <div class="progress-track">
-              <div class="progress-fill fill-blue" style="width: 75%"></div>
-            </div>
-          </div>
-          <div class="kid-stats">
-            <div class="kid-stat">
-              <div class="kid-stat-val">🔥 3</div>
-              <div class="kid-stat-lbl">Day Streak</div>
-            </div>
-            <div class="kid-stat">
-              <div class="kid-stat-val">85%</div>
-              <div class="kid-stat-lbl">Completion</div>
-            </div>
-            <div class="kid-stat">
-              <div class="kid-stat-val">4</div>
-              <div class="kid-stat-lbl">Badges</div>
-            </div>
-          </div>
-          <div class="kid-actions">
-            <button class="kid-action-btn">📋 Chores</button>
-            <button class="kid-action-btn">🎁 Rewards</button>
-            <button class="kid-action-btn primary">✏️ Edit</button>
-          </div>
-        </div>
+        }
 
         <!-- Emma -->
         <div class="kid-card">
