@@ -1,6 +1,7 @@
+using ChorePoint.Application.Handlers.Chore.GetChoresByUser;
 using FluentValidation;
 
-namespace ChorePoint.Application.Handlers.Chore.GetChoresByUser;
+namespace ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 
 public class GetChoresByParentValidator : AbstractValidator<GetChoresByUserQuery>
 {

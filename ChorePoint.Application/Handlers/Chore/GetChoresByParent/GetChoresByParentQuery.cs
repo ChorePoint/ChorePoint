@@ -1,7 +1,7 @@
 using MediatR;
 
-namespace ChorePoint.Application.Handlers.Chore.GetChoresByUser;
+namespace ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 
 public record GetChoresByParentQuery(
-    bool visible
+    bool IsVisible
 ) : IRequest<IReadOnlyList<GetChoresByParentResponse>>;

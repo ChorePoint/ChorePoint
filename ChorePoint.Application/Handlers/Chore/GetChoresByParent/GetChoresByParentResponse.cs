@@ -1,9 +1,9 @@
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Enums;
 
-namespace ChorePoint.Application.Handlers.Chore.GetChoresByUser;
+namespace ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 
-public record GetChoresByUserResponse(
+public record GetChoresByParentResponse(
     int Id,
     int UserId,
     string Name,

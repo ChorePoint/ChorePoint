@@ -1,5 +1,6 @@
 ﻿using ChorePoint.Application.Handlers.Chore.Create;
 using ChorePoint.Application.Handlers.Chore.GetChoreById;
+using ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 using ChorePoint.Application.Handlers.Chore.GetChoresByUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -57,7 +58,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
         return Ok(new
         {
             success = true,
-            message = $"Chores successfully retrieved",
+            message = "Chores successfully retrieved",
             data = result
         });
     }

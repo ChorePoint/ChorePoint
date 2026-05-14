@@ -4,7 +4,7 @@ using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ChorePoint.Application.Handlers.Chore.GetChoresByUser;
+namespace ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 
 public class GetChoresByParentHandler(IAppDbContext context, IUserContextService userContextService)
     : IRequestHandler<GetChoresByParentQuery, IReadOnlyList<GetChoresByParentResponse>>
@@ -12,12 +12,11 @@ public class GetChoresByParentHandler(IAppDbContext context, IUserContextService
     public async Task<IReadOnlyList<GetChoresByParentResponse>> Handle(GetChoresByParentQuery request,
         CancellationToken cancellationToken)
     {
-
         var parentId = userContextService.GetParentId();
 
         var chores = await context.Chores
             .Where(c => c.User.ParentId == parentId)
-            .Where(c => c.IsVisible == request.visible)
+            .Where(c => c.IsVisible == request.IsVisible)
             .ProjectToType<GetChoresByParentResponse>()
             .ToListAsync(cancellationToken);
 
