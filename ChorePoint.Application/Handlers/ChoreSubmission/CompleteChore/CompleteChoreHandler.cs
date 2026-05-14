@@ -11,19 +11,19 @@ public class CompleteChoreHandler(IAppDbContext context, IFusionCache cache) : I
     public async Task Handle(CompleteChoreCommand request, CancellationToken cancellationToken)
     {
         var chore = await cache.GetOrSetAsync<Domain.Entities.Chore?>(
-            $"chore:{request.Id}",
-            async _ => await GetChoreByIdFromDb(request, cancellationToken),
+            $"chore:{request.ChoreId}",
+            async _ => await GetChoreByIdFromDb(request.ChoreId, cancellationToken),
             token: cancellationToken
         );
 
         var currentSubmission = await cache.GetOrSetAsync<Domain.Entities.ChoreSubmission?>(
-            $"chore_submission:{request.Id}",
-            async _ => await GetCurrentSubmissionFromDb(request, cancellationToken),
+            $"complete_chore_chore_submission:{request.ChoreId}",
+            async _ => await GetCurrentSubmissionFromDb(request.ChoreId, cancellationToken),
             token: cancellationToken
         );
 
         if (chore == null)
-            throw new NotFoundException($"No chores exist with id: {request.Id}");
+            throw new NotFoundException($"No chores exist with ID: {request.ChoreId}");
 
         var now = DateTime.UtcNow;
         chore.EnsureCanBeCompleted(currentSubmission, now);
@@ -33,20 +33,19 @@ public class CompleteChoreHandler(IAppDbContext context, IFusionCache cache) : I
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    private async Task<Domain.Entities.Chore?> GetChoreByIdFromDb(CompleteChoreCommand request,
-        CancellationToken cancellationToken)
+    private async Task<Domain.Entities.Chore?> GetChoreByIdFromDb(int choreId, CancellationToken cancellationToken)
     {
         var chore = await context.Chores
-            .FindAsync([request.Id], cancellationToken);
+            .FindAsync([choreId], cancellationToken);
 
         return chore;
     }
 
-    private async Task<Domain.Entities.ChoreSubmission?> GetCurrentSubmissionFromDb(CompleteChoreCommand request,
+    private async Task<Domain.Entities.ChoreSubmission?> GetCurrentSubmissionFromDb(int choreId,
         CancellationToken cancellationToken)
     {
         var lastSubmission = await context.ChoreSubmissions
-            .Where(c => c.ChoreId == request.Id)
+            .Where(c => c.ChoreId == choreId)
             .OrderByDescending(c => c.CompletedAt)
             .FirstOrDefaultAsync(cancellationToken);
 

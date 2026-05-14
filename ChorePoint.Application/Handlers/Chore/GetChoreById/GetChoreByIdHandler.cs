@@ -12,20 +12,19 @@ public class GetChoreByIdHandler(IAppDbContext context, IFusionCache cache)
     public async Task<GetChoreByIdResponse> Handle(GetChoreByIdQuery request, CancellationToken cancellationToken)
     {
         var chore = await cache.GetOrSetAsync<Domain.Entities.Chore?>(
-            $"chore:{request.Id}",
-            async _ => await GetChoreByIdFromDb(request, cancellationToken),
+            $"chore:{request.ChoreId}",
+            async _ => await GetChoreByIdFromDb(request.ChoreId, cancellationToken),
             token: cancellationToken
         );
 
         return chore.Adapt<GetChoreByIdResponse>()
-               ?? throw new NotFoundException($"No chores exist with id: {request.Id}");
+               ?? throw new NotFoundException($"No chores exist with ID: {request.ChoreId}");
     }
 
-    private async Task<Domain.Entities.Chore?> GetChoreByIdFromDb(GetChoreByIdQuery request,
-        CancellationToken cancellationToken)
+    private async Task<Domain.Entities.Chore?> GetChoreByIdFromDb(int choreId, CancellationToken cancellationToken)
     {
         var chore = await context.Chores
-            .FindAsync([request.Id], cancellationToken);
+            .FindAsync([choreId], cancellationToken);
 
         return chore;
     }

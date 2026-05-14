@@ -3,5 +3,5 @@ using MediatR;
 namespace ChorePoint.Application.Handlers.Chore.GetChoresByUser;
 
 public record GetChoresByUserQuery(
-    int Id
+    int UserId
 ) : IRequest<IReadOnlyList<GetChoresByUserResponse>>;

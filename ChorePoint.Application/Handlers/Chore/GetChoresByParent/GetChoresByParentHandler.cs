@@ -16,23 +16,23 @@ public class GetChoresByParentHandler(IAppDbContext context, IUserContextService
         var parentId = userContextService.GetParentId();
 
         var chores = await cache.GetOrSetAsync<IReadOnlyList<Domain.Entities.Chore>>(
-            $"chores:{parentId}",
-            async _ => await GetChoresByParentFromDb(request, parentId, cancellationToken),
+            $"get_chores_by_parent:{parentId}",
+            async _ => await GetChoresByParentFromDb(parentId, request.IsVisible, cancellationToken),
             token: cancellationToken
         );
 
         if (chores == null || chores.Count == 0)
-            throw new NotFoundException($"No chores exist for parent id: {parentId}");
+            throw new NotFoundException($"No chores exist for parent ID: {parentId}");
 
         return chores.Adapt<IReadOnlyList<GetChoresByParentResponse>>();
     }
 
-    private async Task<IReadOnlyList<Domain.Entities.Chore>> GetChoresByParentFromDb(GetChoresByParentQuery request,
-        int parentId, CancellationToken cancellationToken)
+    private async Task<IReadOnlyList<Domain.Entities.Chore>> GetChoresByParentFromDb(int parentId, bool isVisible,
+        CancellationToken cancellationToken)
     {
         var chores = await context.Chores
             .Where(c => c.User.ParentId == parentId)
-            .Where(c => c.IsVisible == request.IsVisible)
+            .Where(c => c.IsVisible == isVisible)
             .ToListAsync(cancellationToken);
 
         return chores;

@@ -3,5 +3,5 @@ using MediatR;
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
 
 public record GetCurrentQuery(
-    int Id
+    int UserId
 ) : IRequest<GetCurrentResponse>;

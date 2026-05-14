@@ -6,7 +6,7 @@ public class CompleteChoreValidator : AbstractValidator<CompleteChoreCommand>
 {
     public CompleteChoreValidator()
     {
-        RuleFor(x => x.Id)
-            .NotEmpty().WithMessage("Id is required");
+        RuleFor(x => x.ChoreId)
+            .NotEmpty().WithMessage("ChoreId is required");
     }
 }

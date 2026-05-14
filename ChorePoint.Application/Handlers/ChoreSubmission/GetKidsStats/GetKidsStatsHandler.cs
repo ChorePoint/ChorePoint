@@ -13,13 +13,13 @@ public class GetKidsStatsHandler(IAppDbContext context, IFusionCache cache)
     public async Task<GetKidsStatsResponse> Handle(GetKidsStatsQuery request, CancellationToken cancellationToken)
     {
         var choreSubmissions = await cache.GetOrSetAsync<IReadOnlyList<Domain.Entities.ChoreSubmission>>(
-            $"chore_submissions:{request.Id}",
-            async _ => await GetSubmissionsForUserFromDb(request, cancellationToken),
+            $"get_kids_stats:{request.UserId}",
+            async _ => await GetSubmissionsForUserFromDb(request.UserId, cancellationToken),
             token: cancellationToken
         );
 
         if (choreSubmissions.Count == 0)
-            throw new NotFoundException($"No chore submissions found for user id: {request.Id}");
+            throw new NotFoundException($"No chore submissions found for user ID: {request.UserId}");
 
         var startOfWeek = DateTime.UtcNow.Date.AddDays(-(int)DateTime.UtcNow.DayOfWeek);
         return new GetKidsStatsResponse
@@ -30,11 +30,11 @@ public class GetKidsStatsHandler(IAppDbContext context, IFusionCache cache)
         );
     }
 
-    private async Task<IReadOnlyList<Domain.Entities.ChoreSubmission>> GetSubmissionsForUserFromDb(
-        GetKidsStatsQuery request, CancellationToken cancellationToken)
+    private async Task<IReadOnlyList<Domain.Entities.ChoreSubmission>> GetSubmissionsForUserFromDb(int userId,
+        CancellationToken cancellationToken)
     {
         var choreSubmissions = await context.ChoreSubmissions
-            .Where(c => c.UserId == request.Id)
+            .Where(c => c.UserId == userId)
             .ToListAsync(cancellationToken);
 
         return choreSubmissions;

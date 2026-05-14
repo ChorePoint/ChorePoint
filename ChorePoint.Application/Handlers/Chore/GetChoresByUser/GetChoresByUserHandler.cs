@@ -14,22 +14,22 @@ public class GetChoresByUserHandler(IAppDbContext context, IFusionCache cache)
         CancellationToken cancellationToken)
     {
         var chores = await cache.GetOrSetAsync<IReadOnlyList<Domain.Entities.Chore>>(
-            $"chores:{request.Id}",
-            async _ => await GetChoresByUserIdFromDb(request, cancellationToken),
+            $"get_chores_by_user:{request.UserId}",
+            async _ => await GetChoresByUserIdFromDb(request.UserId, cancellationToken),
             token: cancellationToken
         );
 
         if (chores == null || chores.Count == 0)
-            throw new NotFoundException($"No chores exist for user id: {request.Id}");
+            throw new NotFoundException($"No chores exist for user ID: {request.UserId}");
 
         return chores.Adapt<IReadOnlyList<GetChoresByUserResponse>>();
     }
 
-    private async Task<IReadOnlyList<Domain.Entities.Chore>> GetChoresByUserIdFromDb(GetChoresByUserQuery request,
+    private async Task<IReadOnlyList<Domain.Entities.Chore>> GetChoresByUserIdFromDb(int userId,
         CancellationToken cancellationToken)
     {
         var chores = await context.Chores
-            .Where(c => c.UserId == request.Id)
+            .Where(c => c.UserId == userId)
             .ToListAsync(cancellationToken);
 
         return chores;

@@ -17,13 +17,13 @@ public class GetKidsHandler(IAppDbContext context, IUserContextService userConte
         var parentId = userContextService.GetParentId();
 
         var kids = await cache.GetOrSetAsync<IReadOnlyList<User>>(
-            $"chore_submissions:{parentId}",
+            $"get_kids:{parentId}",
             async _ => await GetKidsAssignedToParentFromDb(parentId, cancellationToken),
             token: cancellationToken
         );
 
         return kids.Count == 0
-            ? throw new NotFoundException($"No kids exist for parent id: {parentId}")
+            ? throw new NotFoundException($"No kids exist for parent ID: {parentId}")
             : kids.Adapt<IReadOnlyCollection<GetKidsResponse>>();
     }
 

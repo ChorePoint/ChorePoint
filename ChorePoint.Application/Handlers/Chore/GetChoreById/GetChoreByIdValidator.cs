@@ -6,7 +6,7 @@ public class GetChoreByIdValidator : AbstractValidator<GetChoreByIdQuery>
 {
     public GetChoreByIdValidator()
     {
-        RuleFor(x => x.Id)
-            .NotEmpty().WithMessage("Id is required");
+        RuleFor(x => x.ChoreId)
+            .NotEmpty().WithMessage("ChoreId is required");
     }
 }

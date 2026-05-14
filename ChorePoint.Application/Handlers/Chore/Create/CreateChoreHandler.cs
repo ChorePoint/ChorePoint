@@ -15,13 +15,13 @@ public class CreateChoreHandler(IAppDbContext context, IUserContextService userC
         var parentId = userContextService.GetParentId();
 
         var existingKid = await cache.GetOrSetAsync<User?>(
-            $"kid:{request.KidId}",
-            async _ => await GetKidForChoreFromDb(request, cancellationToken),
+            $"create_chore:{request.KidId}",
+            async _ => await GetKidForChoreFromDb(request.KidId, cancellationToken),
             token: cancellationToken
         );
 
         if (existingKid == null)
-            throw new NotFoundException($"No kid exists for this kid id: {request.KidId}");
+            throw new NotFoundException($"No kid exists for this kid ID: {request.KidId}");
 
         if (existingKid.ParentId != parentId)
             throw new DomainException($"Kid ID does not belong to the current parent: {parentId}");
@@ -42,10 +42,10 @@ public class CreateChoreHandler(IAppDbContext context, IUserContextService userC
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    private async Task<User?> GetKidForChoreFromDb(CreateChoreCommand request, CancellationToken cancellationToken)
+    private async Task<User?> GetKidForChoreFromDb(int kidId, CancellationToken cancellationToken)
     {
         var existingKid = await context.Users
-            .FirstOrDefaultAsync(u => u.Id == request.KidId, cancellationToken);
+            .FirstOrDefaultAsync(u => u.Id == kidId, cancellationToken);
 
         return existingKid;
     }
