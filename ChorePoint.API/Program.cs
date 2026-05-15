@@ -30,7 +30,7 @@ try
     builder.Services.AddProblemDetails();
 
     builder.Services.AddMemoryCache();
-    builder.Services.AddFusionCache()
+    var cacheBuilder = builder.Services.AddFusionCache()
         .WithDefaultEntryOptions(new FusionCacheEntryOptions
         {
             Duration = TimeSpan.FromMinutes(5),
@@ -43,6 +43,10 @@ try
 
             FactorySoftTimeout = TimeSpan.FromSeconds(100)
         });
+    if (builder.Environment.IsDevelopment())
+    {
+        cacheBuilder.WithNullImplementation();
+    }
 
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly));
     builder.Services.AddValidatorsFromAssembly(typeof(LoginValidator).Assembly);
