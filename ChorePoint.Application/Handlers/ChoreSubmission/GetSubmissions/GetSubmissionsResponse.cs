@@ -1,6 +1,7 @@
 ﻿using ChorePoint.Domain.Enums;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
+
 public record GetSubmissionsResponse(
     int Id,
     int ChoreId,

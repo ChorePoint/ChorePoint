@@ -9,20 +9,21 @@ using ZiggyCreatures.Caching.Fusion;
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
 
 public class GetSubmissionsHandler(
-    IAppDbContext context, 
-    IUserContextService userContextService, 
+    IAppDbContext context,
+    IUserContextService userContextService,
     IFusionCache cache)
     : IRequestHandler<GetSubmissionsQuery, IReadOnlyList<GetSubmissionsResponse>>
 {
-    public async Task<IReadOnlyList<GetSubmissionsResponse>> Handle(GetSubmissionsQuery request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<GetSubmissionsResponse>> Handle(GetSubmissionsQuery request,
+        CancellationToken cancellationToken)
     {
         var parentId = userContextService.GetParentId();
 
         var choreSubmissions = await cache.GetOrSetAsync<IReadOnlyList<Domain.Entities.ChoreSubmission>>(
-            $"get_chore_submissions:{parentId}",
+            $"get_chore_submissions:{parentId}:{request.Pending}",
             async _ => await GetSubmissionsForUserFromDb(parentId, request.Pending, cancellationToken),
             token: cancellationToken
-            );
+        );
 
         if (choreSubmissions == null || choreSubmissions.Count == 0)
             throw new NotFoundException($"No pending chore submissions found for user ID: {parentId}");
@@ -38,13 +39,8 @@ public class GetSubmissionsHandler(
         var query = context.ChoreSubmissions
             .Where(c => c.UserId == userId);
 
-        if (pending)
-        {
-            query = query.Where(c => c.ApprovalStatus == ChoreApprovalStatus.Pending);
-        }
+        if (pending) query = query.Where(c => c.ApprovalStatus == ChoreApprovalStatus.Pending);
 
-        var choreSubmissions = await query.ToListAsync(cancellationToken);
-
-        return choreSubmissions;
+        return await query.ToListAsync(cancellationToken);
     }
 }

@@ -22,34 +22,37 @@ public class GetKidsStatsHandler(IAppDbContext context, IFusionCache cache)
             $"get_kids_stats_chores:{request.UserId}",
             async _ => await GetChoresForUserFromDb(request.UserId, cancellationToken),
             token: cancellationToken
-            );
+        );
 
         if (choreSubmissions.Count == 0)
             throw new NotFoundException($"No chore submissions found for user ID: {request.UserId}");
 
         var startOfWeek = DateTime.UtcNow.Date.AddDays(-(int)DateTime.UtcNow.DayOfWeek);
 
-        var completedThisWeek = choreSubmissions.Count(cs => cs.CompletedThisWeek(startOfWeek) && cs.Chore.Frequency != ChoreFrequency.Bonus);
-        var dueThisWeek = chores.Count(c => c.Frequency == ChoreFrequency.Weekly || c.Frequency == ChoreFrequency.Daily);
+        var completedThisWeek = choreSubmissions.Count(cs =>
+            cs.CompletedThisWeek(startOfWeek) && cs.Chore.Frequency != ChoreFrequency.Bonus);
+        var dueThisWeek = chores.Count(c => c.Frequency is ChoreFrequency.Weekly or ChoreFrequency.Daily);
+        var approvalRate = (int)(choreSubmissions.Count(cs => cs.ApprovalStatus == ChoreApprovalStatus.Approved) *
+            100.0 / choreSubmissions.Count);
+        var dueToday = chores.Count(c => c.DueDay == DateTime.Today.DayOfWeek);
 
         return new GetKidsStatsResponse
         (
             choreSubmissions.Count,
             completedThisWeek,
-            (int)(choreSubmissions.Count(cs => cs.ApprovalStatus == ChoreApprovalStatus.Approved) * 100.0 /
-                  choreSubmissions.Count),
-            chores.Count(c => c.DueDay == DateTime.Today.DayOfWeek),
+            approvalRate,
+            dueToday,
             dueThisWeek,
-            (completedThisWeek / dueThisWeek) * 100
+            completedThisWeek / dueThisWeek * 100
         );
     }
 
-    private async Task<IReadOnlyList<Domain.Entities.Chore>> GetChoresForUserFromDb(int userId, 
+    private async Task<IReadOnlyList<Domain.Entities.Chore>> GetChoresForUserFromDb(int userId,
         CancellationToken cancellationToken)
     {
         var chores = await context.Chores
             .Where(c => c.UserId == userId)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return chores;
     }
