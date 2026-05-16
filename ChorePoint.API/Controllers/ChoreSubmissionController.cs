@@ -1,6 +1,7 @@
 ﻿using ChorePoint.Application.Handlers.ChoreSubmission.CompleteChore;
 using ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
 using ChorePoint.Application.Handlers.ChoreSubmission.GetKidsStats;
+using ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,23 @@ namespace ChorePoint.API.Controllers;
 [Route("api/chore/submissions")]
 public class ChoreSubmissionController(IMediator mediator) : ControllerBase
 {
+    [Authorize]
+    [HttpGet("")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetSubmissions([FromQuery] bool pending = false)
+    {
+        var result = await mediator.Send(new GetSubmissionsQuery(pending));
+        return Ok(new
+        {
+            success = true,
+            message = "Chore submissions retrieved successfully",
+            data = result
+        });
+    }
+
     [Authorize]
     [HttpPost("{id:int}/complete")]
     [ProducesResponseType(StatusCodes.Status200OK)]
