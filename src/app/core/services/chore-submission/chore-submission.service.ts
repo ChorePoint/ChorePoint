@@ -1,9 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { of } from 'rxjs';
+import { map, of } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { ChoreSubmission } from '../../types/dtos/chore-submission';
-import { DEFAULT_KID_STATS, KidStats } from './chore-submission.dtos';
+import {
+  DEFAULT_KID_STATS,
+  GetChoreSubmissionsResponse,
+  GetKidStatsResponse,
+  KidStats,
+} from './chore-submission.dtos';
 
 @Injectable({ providedIn: 'root' })
 export class ChoreSubmissionService {
@@ -11,16 +16,39 @@ export class ChoreSubmissionService {
 
   private baseUrl = 'https://localhost:7087/api/chore/submissions';
 
-  getChoreSubmissionStats(kidId: number) {
-    return this.http.get<KidStats>(`${this.baseUrl}/stats/${kidId}`).pipe(
+  getSubmissions$() {
+    return this.http.get<GetChoreSubmissionsResponse>(`${this.baseUrl}?pending=false`).pipe(
       catchError((error) => {
         if (error.status === 404) {
-          return of(DEFAULT_KID_STATS);
+          return of({
+            success: true,
+            message: 'No chore submissions found',
+            data: [],
+          } satisfies GetChoreSubmissionsResponse);
+        } else {
+          console.error('Error fetching chore submissions:', error);
+          throw error;
+        }
+      }),
+      map((response) => response.data),
+    );
+  }
+
+  getChoreSubmissionStats(kidId: number) {
+    return this.http.get<GetKidStatsResponse>(`${this.baseUrl}/stats/${kidId}`).pipe(
+      catchError((error) => {
+        if (error.status === 404) {
+          return of({
+            success: true,
+            message: 'No stats found',
+            data: DEFAULT_KID_STATS as KidStats,
+          } satisfies GetKidStatsResponse);
         } else {
           console.error('Error fetching chore submission stats:', error);
           throw error;
         }
       }),
+      map((response) => response.data),
     );
   }
 

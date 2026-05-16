@@ -25,75 +25,31 @@
   </div>
 
   <div class="content">
-    <!-- Stats Overview -->
-    <div class="stats-overview">
-      <div class="stat-card">
-        <div class="stat-icon">✅</div>
-        <div class="stat-value">{{ vm.stats?.completedThisWeek }}</div>
-        <div class="stat-label">This Week</div>
-        <div class="stat-trend">↑ +25%</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">🔥</div>
-        <div class="stat-value">{{ vm.selectedKid?.dayStreak }}</div>
-        <div class="stat-label">Current Streak</div>
-      </div>
-      <div class="stat-card full">
-        <div class="stat-icon">📊</div>
-        <div class="stat-value">{{ vm.stats?.approvalRate }}%</div>
-        <div class="stat-label">Completion Rate (Last 30 Days)</div>
-        <div class="stat-trend">↑ +0%</div>
-      </div>
-    </div>
+    <app-dashboard-stats
+      [stats]="{
+        completedThisWeek: vm.stats?.completedThisWeek ?? 0,
+        dayStreak: vm.selectedKid?.dayStreak ?? 0,
+        approvalRate: vm.stats?.approvalRate ?? 0,
+      }"
+    />
 
     <!-- Pending Approvals -->
     <div class="section-header">
       <div class="section-title">Pending Approvals</div>
-      <div class="badge">3</div>
+      <div class="badge">{{ vm.pendingApprovals?.length }}</div>
     </div>
 
     <div class="pending-list">
-      <div class="pending-item">
-        <div class="pending-header">
-          <div class="pending-info">
-            <div class="pending-chore">Made Bed</div>
-            <div class="pending-meta">Today, 8:30 AM • +250 pts</div>
-          </div>
-          <div class="pending-photo">📸</div>
-        </div>
-        <div class="pending-actions">
-          <button class="action-btn reject-btn">Reject</button>
-          <button class="action-btn approve-btn">Approve ✓</button>
-        </div>
-      </div>
-
-      <div class="pending-item">
-        <div class="pending-header">
-          <div class="pending-info">
-            <div class="pending-chore">Homework Time</div>
-            <div class="pending-meta">Yesterday, 4:15 PM • +400 pts</div>
-          </div>
-          <div class="pending-photo">📸</div>
-        </div>
-        <div class="pending-actions">
-          <button class="action-btn reject-btn">Reject</button>
-          <button class="action-btn approve-btn">Approve ✓</button>
-        </div>
-      </div>
-
-      <div class="pending-item">
-        <div class="pending-header">
-          <div class="pending-info">
-            <div class="pending-chore">Vacuum Living Room</div>
-            <div class="pending-meta">Yesterday, 2:30 PM • +600 pts</div>
-          </div>
-          <div class="pending-photo">📸</div>
-        </div>
-        <div class="pending-actions">
-          <button class="action-btn reject-btn">Reject</button>
-          <button class="action-btn approve-btn">Approve ✓</button>
-        </div>
-      </div>
+      @for (approval of vm.pendingApprovals; track approval.id) {
+        <app-pending-approval
+          [pendingApproval]="{
+            choreName: approval.chore.name,
+            completedAt: approval.completedAt,
+            points: approval.chore.points,
+            icon: approval.chore.icon,
+          }"
+        />
+      }
     </div>
 
     <!-- Quick Actions -->

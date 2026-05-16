@@ -1,4 +1,5 @@
 import { ApprovalStatus } from '../enums/approval-status';
+import { Chore } from './chore';
 
 export type ChoreSubmission = {
   id: number;
@@ -10,4 +11,5 @@ export type ChoreSubmission = {
   approvedByUserId: number | null;
   notes: string | null;
   createdAt: Date | null;
+  chore: Chore;
 };

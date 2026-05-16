@@ -20,51 +20,21 @@
       <!-- Emoji picker -->
       <div class="form-group">
         <label class="form-label">Pick an Icon</label>
-        <div class="emoji-grid">
-          @for (emoji of choreEmojis; track emoji) {
-            <div
-              class="emoji-opt"
-              [class.selected]="form.get('icon')?.value === emoji"
-              (click)="form.patchValue({ icon: emoji })"
-            >
-              {{ emoji }}
-            </div>
-          }
-        </div>
+        <app-emoji-picker
+          [selectedEmoji]="form.get('icon')?.value"
+          (selectedEmojiChange)="form.patchValue({ icon: $event })"
+        />
       </div>
 
       <!-- Assign to -->
       <div class="form-group">
         <label class="form-label">Assign To</label>
         <div class="assign-row">
-          @for (kid of vm.kids; track kid.id) {
-            <div
-              class="assign-chip"
-              [class.selected]="form.get('kidId')?.value === kid.id"
-              (click)="form.patchValue({ kidId: kid.id })"
-            >
-              <div
-                class="assign-avatar avatar-blue"
-                style="background: linear-gradient(135deg, #87ceeb, #5aafd4)"
-              >
-                {{ kid.avatar }}
-              </div>
-              <div class="assign-name">{{ kid.name }}</div>
-            </div>
-          }
-          <div
-            class="assign-chip"
-            [class.selected]="form.value.kidId === -1"
-            (click)="form.patchValue({ kidId: -1 })"
-          >
-            <div
-              class="assign-avatar avatar-blue"
-              style="background: linear-gradient(135deg, #87ceeb, #5aafd4)"
-            >
-              ➕
-            </div>
-            <div class="assign-name">All</div>
-          </div>
+          <app-kid-assign
+            [kids]="vm.kids"
+            [selectedKid]="form.get('kidId')?.value"
+            (selectedKidChange)="form.patchValue({ kidId: $event })"
+          />
         </div>
       </div>
 

@@ -10,13 +10,15 @@ import { ChoreDifficulty } from '../../../../core/types/enums/chore-difficulty';
 import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
 import { LoadingEmoji } from '../../../../shared/components/loading-emoji/loading-emoji';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
+import { EmojiPicker } from '../../components/emoji-picker/emoji-picker';
+import { KidAssign } from '../../components/kid-assign/kid-assign';
 import { DAYS_OF_WEEK } from '../../config/days-of-week';
 import { DifficultyOptions } from '../../config/difficulty-options';
 import { FrequencyOptions } from '../../config/frequency-options';
 
 @Component({
   selector: 'app-add-chore',
-  imports: [ReactiveFormsModule, AsyncPipe, LoadingScreen, LoadingEmoji],
+  imports: [ReactiveFormsModule, AsyncPipe, LoadingScreen, LoadingEmoji, EmojiPicker, KidAssign],
   templateUrl: './add-chore.html',
   styleUrl: './add-chore.scss',
 })
