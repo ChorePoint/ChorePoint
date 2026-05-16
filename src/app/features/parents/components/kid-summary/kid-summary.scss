@@ -1,0 +1,27 @@
+.kids-summary {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    .summary-pill {
+        flex: 1;
+        background: white;
+        border-radius: 14px;
+        padding: 12px 10px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+        .summary-pill-val {
+            font-size: 22px;
+            font-weight: 800;
+            color: #2c3e50;
+        }
+
+        .summary-pill-lbl {
+            font-size: 11px;
+            color: #7f8c8d;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+    }
+}
