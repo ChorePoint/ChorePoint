@@ -9,20 +9,21 @@ using ZiggyCreatures.Caching.Fusion;
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
 
 public class GetSubmissionsHandler(
-    IAppDbContext context, 
-    IUserContextService userContextService, 
+    IAppDbContext context,
+    IUserContextService userContextService,
     IFusionCache cache)
     : IRequestHandler<GetSubmissionsQuery, IReadOnlyList<GetSubmissionsResponse>>
 {
-    public async Task<IReadOnlyList<GetSubmissionsResponse>> Handle(GetSubmissionsQuery request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<GetSubmissionsResponse>> Handle(GetSubmissionsQuery request,
+        CancellationToken cancellationToken)
     {
         var parentId = userContextService.GetParentId();
 
         var choreSubmissions = await cache.GetOrSetAsync<IReadOnlyList<Domain.Entities.ChoreSubmission>>(
-            $"get_chore_submissions:{parentId}",
+            $"get_chore_submissions:{parentId}:{request.Pending}",
             async _ => await GetSubmissionsForUserFromDb(parentId, request.Pending, cancellationToken),
             token: cancellationToken
-            );
+        );
 
         if (choreSubmissions == null || choreSubmissions.Count == 0)
             throw new NotFoundException($"No pending chore submissions found for user ID: {parentId}");

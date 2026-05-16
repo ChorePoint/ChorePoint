@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 
-namespace ChorePoint.Application.Handlers.ChoreSubmission.GetKidsStats;
+namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
 
-public class GetSubmissionsValidator : AbstractValidator<GetKidsStatsQuery>
+public class GetSubmissionsValidator : AbstractValidator<GetSubmissionsQuery>
 {
     public GetSubmissionsValidator()
     {
-        RuleFor(x => x.UserId)
-            .NotEmpty().WithMessage("UserId is required");
+        RuleFor(x => x.Pending)
+            .NotEmpty().WithMessage("Pending is required");
     }
 }

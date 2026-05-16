@@ -16,7 +16,7 @@ public class GetChoresByParentHandler(IAppDbContext context, IUserContextService
         var parentId = userContextService.GetParentId();
 
         var chores = await cache.GetOrSetAsync<IReadOnlyList<Domain.Entities.Chore>>(
-            $"get_chores_by_parent:{parentId}",
+            $"get_chores_by_parent:{parentId}:{request.IsVisible}",
             async _ => await GetChoresByParentFromDb(parentId, request.IsVisible, cancellationToken),
             token: cancellationToken
         );
