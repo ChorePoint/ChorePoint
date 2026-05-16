@@ -7,27 +7,18 @@
   </div>
 
   <div class="content">
-    <!-- Summary pills -->
-    <div class="kids-summary">
-      <div class="summary-pill">
-        <div class="summary-pill-val">{{ vm.kids.length }}</div>
-        <div class="summary-pill-lbl">Kids</div>
-      </div>
-      <div class="summary-pill">
-        <div class="summary-pill-val">0</div>
-        <div class="summary-pill-lbl">Chores Done</div>
-      </div>
-      <div class="summary-pill">
-        <div class="summary-pill-val">0</div>
-        <div class="summary-pill-lbl">Total Points</div>
-      </div>
-    </div>
+    <app-kid-summary
+      [summary]="{
+        kidCount: vm.kids.length,
+        choresDone: vm.summaryStats.choresDone,
+        totalPoints: vm.summaryStats.totalPoints,
+      }"
+    />
 
     @if (vm.kids.length > 0) {
       <app-leaderboard [kids]="vm.kids" />
     }
 
-    <!-- Kid cards -->
     <div class="section-header">
       <div class="section-title">Profiles</div>
       <div class="section-link">Manage all</div>
@@ -36,82 +27,10 @@
     <div class="kids-list">
       @if (vm.kids.length > 0) {
         @for (kid of vm.kids; track kid.id) {
-          <div class="kid-card">
-            <div class="kid-card-top">
-              <div class="kid-avatar avatar-blue">{{ kid.avatar }}</div>
-              <div class="kid-info">
-                <div class="kid-name">{{ kid.name }}</div>
-                <div class="kid-meta">Age {{ kid.age }} · {{ kid.activeChores }} active chores</div>
-              </div>
-              <div class="kid-points-badge">1,500 ⭐</div>
-            </div>
-            <div class="kid-progress">
-              <div class="progress-label">Weekly goal <span>75% done</span></div>
-              <div class="progress-track">
-                <div class="progress-fill fill-blue" style="width: 75%"></div>
-              </div>
-            </div>
-            <div class="kid-stats">
-              <div class="kid-stat">
-                <div class="kid-stat-val">🔥 3</div>
-                <div class="kid-stat-lbl">Day Streak</div>
-              </div>
-              <div class="kid-stat">
-                <div class="kid-stat-val">85%</div>
-                <div class="kid-stat-lbl">Completion</div>
-              </div>
-              <div class="kid-stat">
-                <div class="kid-stat-val">4</div>
-                <div class="kid-stat-lbl">Badges</div>
-              </div>
-            </div>
-            <div class="kid-actions">
-              <button class="kid-action-btn">📋 Chores</button>
-              <button class="kid-action-btn">🎁 Rewards</button>
-              <button class="kid-action-btn primary">✏️ Edit</button>
-            </div>
-          </div>
+          <app-kid-profile [kid]="kid" />
         }
-
-        <!-- Emma -->
-        <div class="kid-card">
-          <div class="kid-card-top">
-            <div class="kid-avatar avatar-purple">👧</div>
-            <div class="kid-info">
-              <div class="kid-name">Emma</div>
-              <div class="kid-meta">Age 8 · 3 active chores</div>
-            </div>
-            <div class="kid-points-badge">950 ⭐</div>
-          </div>
-          <div class="kid-progress">
-            <div class="progress-label">Weekly goal <span>50% done</span></div>
-            <div class="progress-track">
-              <div class="progress-fill fill-purple" style="width: 50%"></div>
-            </div>
-          </div>
-          <div class="kid-stats">
-            <div class="kid-stat">
-              <div class="kid-stat-val">🔥 1</div>
-              <div class="kid-stat-lbl">Day Streak</div>
-            </div>
-            <div class="kid-stat">
-              <div class="kid-stat-val">60%</div>
-              <div class="kid-stat-lbl">Completion</div>
-            </div>
-            <div class="kid-stat">
-              <div class="kid-stat-val">2</div>
-              <div class="kid-stat-lbl">Badges</div>
-            </div>
-          </div>
-          <div class="kid-actions">
-            <button class="kid-action-btn">📋 Chores</button>
-            <button class="kid-action-btn">🎁 Rewards</button>
-            <button class="kid-action-btn primary">✏️ Edit</button>
-          </div>
-        </div>
       }
 
-      <!-- Add child -->
       <div [routerLink]="'/dashboard/kids/add'" class="add-kid-card">
         <div class="add-kid-icon">➕</div>
         <div class="add-kid-text">Add another child</div>
