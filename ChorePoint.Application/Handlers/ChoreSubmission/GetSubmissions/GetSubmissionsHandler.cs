@@ -37,9 +37,13 @@ public class GetSubmissionsHandler(
         CancellationToken cancellationToken)
     {
         var query = context.ChoreSubmissions
-            .Where(c => c.UserId == userId);
+            .Include(s => s.Chore)
+            .Where(s => s.UserId == userId);
 
-        if (pending) query = query.Where(c => c.ApprovalStatus == ChoreApprovalStatus.Pending);
+        if (pending)
+        {
+            query = query.Where(s => s.ApprovalStatus == ChoreApprovalStatus.Pending);
+        }
 
         return await query.ToListAsync(cancellationToken);
     }

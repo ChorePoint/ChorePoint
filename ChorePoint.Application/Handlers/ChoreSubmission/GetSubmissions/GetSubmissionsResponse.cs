@@ -11,5 +11,6 @@ public record GetSubmissionsResponse(
     DateTime? ApprovedAt,
     int? ApprovedByUserId,
     string? Notes,
-    DateTime? CreatedAt
+    DateTime? CreatedAt,
+    Domain.Entities.Chore Chore
 );
