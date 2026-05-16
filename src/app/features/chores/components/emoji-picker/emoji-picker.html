@@ -1,0 +1,11 @@
+<div class="emoji-grid">
+  @for (emoji of choreEmojis; track emoji) {
+    <div
+      class="emoji-opt"
+      [class.selected]="selectedEmoji === emoji"
+      (click)="selectedEmojiChange.emit(emoji)"
+    >
+      {{ emoji }}
+    </div>
+  }
+</div>
