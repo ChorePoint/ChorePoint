@@ -5,7 +5,7 @@ import { map } from 'rxjs/internal/operators/map';
 import { GetKidsResponse } from './kids.dtos';
 
 @Injectable({ providedIn: 'root' })
-export class UserService {
+export class KidsService {
   private http = inject(HttpClient);
 
   private baseUrl = 'https://localhost:7087/api/user';

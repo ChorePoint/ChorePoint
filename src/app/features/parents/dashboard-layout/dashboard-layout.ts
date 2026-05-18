@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { map, Observable } from 'rxjs';
-import { UserService } from '../../../core/services/kids/kids.service';
+import { KidsService } from '../../../core/services/kids/kids.service';
 import { Kid } from '../../../core/types/dtos/kid';
 import { DashboardFooterMenu } from '../../../shared/components/dashboard-footer-menu/dashboard-footer-menu';
 
@@ -12,13 +12,13 @@ import { DashboardFooterMenu } from '../../../shared/components/dashboard-footer
   styleUrl: './dashboard-layout.scss',
 })
 export class DashboardLayout {
-  private userService = inject(UserService);
+  private kidsService = inject(KidsService);
 
   vm$!: Observable<{
     kids: Kid[];
   }>;
 
   ngOnInit() {
-    this.vm$ = this.userService.getKids().pipe(map((kids) => ({ kids })));
+    this.vm$ = this.kidsService.getKids().pipe(map((kids) => ({ kids })));
   }
 }

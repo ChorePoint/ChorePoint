@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { KidStats } from '../../../../core/services/chore-submission/chore-submission.dtos';
 import { ChoreSubmissionService } from '../../../../core/services/chore-submission/chore-submission.service';
-import { KidsService } from '../../../../core/services/kids/kids-data.service';
+import { KidsDataService } from '../../../../core/services/kids/kids-data.service';
 import { ChoreSubmission } from '../../../../core/types/dtos/chore-submission';
 import { Kid } from '../../../../core/types/dtos/kid';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
@@ -18,7 +18,7 @@ import { PendingApproval } from '../../components/pending-approval/pending-appro
 })
 export class DashboardHome {
   private choreCompletionService = inject(ChoreSubmissionService);
-  private kidsService = inject(KidsService);
+  private kidsDataService = inject(KidsDataService);
 
   vm$!: Observable<{
     kids: Kid[];
@@ -33,7 +33,7 @@ export class DashboardHome {
 
   private loadKids() {
     this.vm$ = combineLatest([
-      this.kidsService.getKids$(),
+      this.kidsDataService.getKids$(),
       this.choreCompletionService.getSubmissions$(),
     ]).pipe(
       map(([kids, pendingApprovals]) => ({

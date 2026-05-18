@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { map, Observable } from 'rxjs';
 import { CHORE_EMOJIS } from '../../../../consts/chore-emojis';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
-import { KidsService } from '../../../../core/services/kids/kids-data.service';
+import { KidsDataService } from '../../../../core/services/kids/kids-data.service';
 import { Kid } from '../../../../core/types/dtos/kid';
 import { ChoreDifficulty } from '../../../../core/types/enums/chore-difficulty';
 import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
@@ -24,7 +24,7 @@ import { FrequencyOptions } from '../../config/frequency-options';
 })
 export class AddChore {
   private choreService = inject(ChoreService);
-  private kidsService = inject(KidsService);
+  private kidsDataService = inject(KidsDataService);
   private fb = inject(FormBuilder);
 
   loading = signal(false);
@@ -51,14 +51,14 @@ export class AddChore {
     description: [''],
   });
 
-  kids$ = this.kidsService.kids$;
+  kids$ = this.kidsDataService.kids$;
 
   ngOnInit() {
     this.loadKids();
   }
 
   loadKids() {
-    this.vm$ = this.kidsService.getKids$().pipe(
+    this.vm$ = this.kidsDataService.getKids$().pipe(
       map((kids) => {
         if (kids.length && !this.form.value.kidId) {
           this.form.patchValue({ kidId: kids[0].id });

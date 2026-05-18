@@ -5,7 +5,7 @@ import { combineLatest, Observable, switchMap } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { ChoreSubmissionService } from '../../../../core/services/chore-submission/chore-submission.service';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
-import { UserService } from '../../../../core/services/kids/kids.service';
+import { KidsService } from '../../../../core/services/kids/kids.service';
 import { Chore } from '../../../../core/types/dtos/chore';
 import { Kid } from '../../../../core/types/dtos/kid';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
@@ -23,7 +23,7 @@ import { KidDetails } from './types';
 export class KidsSettings {
   private choreCompletionService = inject(ChoreSubmissionService);
   private choreService = inject(ChoreService);
-  private userService = inject(UserService);
+  private kidService = inject(KidsService);
 
   vm$!: Observable<{
     kids: KidDetails[];
@@ -34,7 +34,7 @@ export class KidsSettings {
   }>;
 
   ngOnInit() {
-    this.vm$ = combineLatest([this.userService.getKids(), this.choreService.getChores()]).pipe(
+    this.vm$ = combineLatest([this.kidService.getKids(), this.choreService.getChores()]).pipe(
       switchMap(([kids, chores]) => {
         const kidDetails$ = kids.map((kid) => this.buildKidVm(kid, chores));
 

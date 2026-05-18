@@ -1,11 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of, shareReplay, tap } from 'rxjs';
 import { Kid } from '../../types/dtos/kid';
-import { UserService } from './kids.service';
+import { KidsService } from './kids.service';
 
 @Injectable({ providedIn: 'root' })
-export class KidsService {
-  private userService = inject(UserService);
+export class KidsDataService {
+  private kidsService = inject(KidsService);
 
   private kidsSubject = new BehaviorSubject<Kid[] | null>(null);
   kids$ = this.kidsSubject.asObservable();
@@ -21,7 +21,7 @@ export class KidsService {
       return this.loading$;
     }
 
-    this.loading$ = this.userService.getKids().pipe(
+    this.loading$ = this.kidsService.getKids().pipe(
       tap((response) => {
         this.kidsSubject.next(response);
       }),
