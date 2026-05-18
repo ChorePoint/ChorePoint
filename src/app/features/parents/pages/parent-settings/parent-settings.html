@@ -1,1 +1,295 @@
-<p>parent-settings works!</p>
+@if (vm$ | async; as vm) {
+  <div class="header">
+    <div class="header-top">
+      <div class="back-button">←</div>
+      <div class="page-title">Parent Settings</div>
+    </div>
+
+    <div class="parent-badge">👨‍👩‍👧‍👦 Parent Account</div>
+  </div>
+
+  <div class="content">
+    <!-- Subscription Info -->
+    <div class="subscription-card">
+      <div class="sub-header">
+        <div class="sub-title">Premium Family</div>
+        <div class="sub-badge">ACTIVE</div>
+      </div>
+      <div class="sub-description">Unlimited kids • Advanced analytics • Custom rewards</div>
+      <button class="sub-button">Manage Subscription</button>
+    </div>
+
+    <!-- Children Management -->
+    <div class="section">
+      <div class="section-title">Children</div>
+      <app-kid-list [kids]="vm.kids" />
+    </div>
+    <!-- Chore Management -->
+    <div class="section">
+      <div class="section-title">Chore Management</div>
+      <div class="settings-list">
+        <div class="setting-item">
+          <div class="setting-icon blue">✅</div>
+          <div class="setting-info">
+            <div class="setting-title">Auto-Approve Chores</div>
+            <div class="setting-description">Automatically approve certain chores</div>
+          </div>
+          <div class="setting-action">
+            <div class="toggle-switch" onclick="this.classList.toggle('active')"></div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-icon orange">📸</div>
+          <div class="setting-info">
+            <div class="setting-title">Require Photo Proof</div>
+            <div class="setting-description">Kids must upload completion photos</div>
+          </div>
+          <div class="setting-action">
+            <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-icon green">💰</div>
+          <div class="setting-info">
+            <div class="setting-title">Point Values</div>
+            <div class="setting-description">Customize points for each chore</div>
+          </div>
+          <div class="setting-action">
+            <div class="chevron">›</div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-icon purple">📅</div>
+          <div class="setting-info">
+            <div class="setting-title">Chore Templates</div>
+            <div class="setting-description">Create and manage chore lists</div>
+          </div>
+          <div class="setting-action">
+            <div class="chevron">›</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rewards & Limits -->
+    <div class="section">
+      <div class="section-title">Rewards & Limits</div>
+      <div class="settings-list">
+        <div class="setting-item">
+          <div class="setting-icon orange">🎁</div>
+          <div class="setting-info">
+            <div class="setting-title">Reward Catalog</div>
+            <div class="setting-description">Add and edit available rewards</div>
+          </div>
+          <div class="setting-action">
+            <div class="chevron">›</div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-icon blue">💳</div>
+          <div class="setting-info">
+            <div class="setting-title">Spending Limits</div>
+            <div class="setting-description">Max points per week</div>
+          </div>
+          <div class="setting-action">
+            <div class="setting-value">2,000 pts</div>
+            <div class="chevron">›</div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-icon green">✓</div>
+          <div class="setting-info">
+            <div class="setting-title">Approval Required</div>
+            <div class="setting-description">Review before kids redeem rewards</div>
+          </div>
+          <div class="setting-action">
+            <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="section">
+      <div class="section-title">Notifications</div>
+      <div class="settings-list">
+        <div class="setting-item">
+          <div class="setting-icon blue">🔔</div>
+          <div class="setting-info">
+            <div class="setting-title">Completion Alerts</div>
+            <div class="setting-description">Notify when chores are completed</div>
+          </div>
+          <div class="setting-action">
+            <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-icon orange">📊</div>
+          <div class="setting-info">
+            <div class="setting-title">Weekly Reports</div>
+            <div class="setting-description">Sunday summary of activity</div>
+          </div>
+          <div class="setting-action">
+            <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-icon red">⚠️</div>
+          <div class="setting-info">
+            <div class="setting-title">Missed Chore Alerts</div>
+            <div class="setting-description">Alert when daily chores are skipped</div>
+          </div>
+          <div class="setting-action">
+            <div class="toggle-switch" onclick="this.classList.toggle('active')"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy & Safety -->
+    <div class="section">
+      <div class="section-title">Privacy & Safety</div>
+
+      <!-- <div class="info-card">
+        <div class="info-title">🔒 COPPA Compliant</div>
+        <div class="info-text">
+          We protect children's privacy and follow all safety regulations.
+        </div>
+      </div> -->
+
+      <div class="settings-list">
+        <div class="setting-item">
+          <div class="setting-icon purple">👥</div>
+          <div class="setting-info">
+            <div class="setting-title">Leaderboard Visibility</div>
+            <div class="setting-description">Control who sees your family</div>
+          </div>
+          <div class="setting-action">
+            <div class="setting-value">Family Only</div>
+            <div class="chevron">›</div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-icon blue">🔐</div>
+          <div class="setting-info">
+            <div class="setting-title">Parent PIN</div>
+            <div class="setting-description">Change your access code</div>
+          </div>
+          <div class="setting-action">
+            <div class="chevron">›</div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-icon green">📱</div>
+          <div class="setting-info">
+            <div class="setting-title">Device Management</div>
+            <div class="setting-description">See all logged-in devices</div>
+          </div>
+          <div class="setting-action">
+            <div class="setting-value">2 devices</div>
+            <div class="chevron">›</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data & Backup -->
+    <div class="section">
+      <div class="section-title">Data & Backup</div>
+      <div class="settings-list">
+        <div class="setting-item">
+          <div class="setting-icon blue">📥</div>
+          <div class="setting-info">
+            <div class="setting-title">Export Data</div>
+            <div class="setting-description">Download your family's data</div>
+          </div>
+          <div class="setting-action">
+            <div class="chevron">›</div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-icon green">☁️</div>
+          <div class="setting-info">
+            <div class="setting-title">Cloud Backup</div>
+            <div class="setting-description">Auto-sync to cloud storage</div>
+          </div>
+          <div class="setting-action">
+            <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Support -->
+    <div class="section">
+      <div class="section-title">Support</div>
+      <div class="settings-list">
+        <div class="setting-item">
+          <div class="setting-icon blue">💬</div>
+          <div class="setting-info">
+            <div class="setting-title">Contact Support</div>
+            <div class="setting-description">Get help from our team</div>
+          </div>
+          <div class="setting-action">
+            <div class="chevron">›</div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-icon orange">📚</div>
+          <div class="setting-info">
+            <div class="setting-title">Parent Guide</div>
+            <div class="setting-description">Tips for success</div>
+          </div>
+          <div class="setting-action">
+            <div class="chevron">›</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Danger Zone -->
+    <div class="section">
+      <div class="alert-box">
+        <div class="alert-title">⚠️ Danger Zone</div>
+        <div class="alert-text">These actions cannot be undone.</div>
+      </div>
+
+      <div class="settings-list danger-zone">
+        <div class="setting-item">
+          <div class="setting-icon red">🗑️</div>
+          <div class="setting-info">
+            <div class="setting-title">Reset All Data</div>
+            <div class="setting-description">Clear all chores and points</div>
+          </div>
+          <div class="setting-action">
+            <div class="chevron">›</div>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-icon red">❌</div>
+          <div class="setting-info">
+            <div class="setting-title">Delete Account</div>
+            <div class="setting-description">Permanently delete family account</div>
+          </div>
+          <div class="setting-action">
+            <div class="chevron">›</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <app-loading-screen />
+}
