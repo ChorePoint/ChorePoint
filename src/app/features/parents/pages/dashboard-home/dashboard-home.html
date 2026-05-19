@@ -4,23 +4,11 @@
       <div class="page-title">Parent Dashboard</div>
     </div>
 
-    @if (vm.kids.length > 0) {
-      <div class="child-selector">
-        @for (kid of vm.kids; track kid.id) {
-          <div
-            (click)="selectKid(kid)"
-            class="child-chip"
-            [class]="kid.id === vm.selectedKid?.id ? 'active' : ''"
-          >
-            {{ kid.name }}
-          </div>
-        }
-      </div>
-    } @else {
-      <div>
-        <div class="no-kids">Add a child from the kids tab to get started!</div>
-      </div>
-    }
+    <app-kid-selector-header
+      [kids]="vm.kids"
+      [selectedKidId]="vm.selectedKid?.id"
+      (kidSelected)="vm.selectedKid = $event"
+    />
   </div>
 
   <div class="content">
@@ -42,6 +30,7 @@
       @for (approval of vm.pendingApprovals; track approval.id) {
         <app-pending-approval
           [pendingApproval]="{
+            id: approval.id,
             choreName: approval.chore.name,
             completedAt: approval.completedAt,
             points: approval.chore.points,

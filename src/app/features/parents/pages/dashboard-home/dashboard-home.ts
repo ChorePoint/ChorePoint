@@ -7,12 +7,13 @@ import { KidsDataService } from '../../../../core/services/kids/kids-data.servic
 import { ChoreSubmission } from '../../../../core/types/dtos/chore-submission';
 import { Kid } from '../../../../core/types/dtos/kid';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
+import { KidSelectorHeader } from '../../../chores/components/kid-selector-header/kid-selector-header';
 import { DashboardStats } from '../../components/dashboard-stats/dashboard-stats';
 import { PendingApproval } from '../../components/pending-approval/pending-approval';
 
 @Component({
   selector: 'app-dashboard-home',
-  imports: [AsyncPipe, LoadingScreen, DashboardStats, PendingApproval],
+  imports: [AsyncPipe, LoadingScreen, DashboardStats, PendingApproval, KidSelectorHeader],
   templateUrl: './dashboard-home.html',
   styleUrl: './dashboard-home.scss',
 })
