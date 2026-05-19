@@ -1,5 +1,4 @@
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +13,7 @@ public class RegisterHandler(IAppDbContext context, IPasswordHasher<Domain.Entit
     {
         var existingParent = await context.Parents
             .FirstOrDefaultAsync(p => p.Email == request.Email, cancellationToken);
-        
+
         if (existingParent != null)
             throw new ParentAlreadyExistsException(request.Email);
 

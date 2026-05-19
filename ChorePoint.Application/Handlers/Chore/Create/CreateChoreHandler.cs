@@ -24,7 +24,8 @@ public class CreateChoreHandler(IAppDbContext context, IParentContextService par
             throw new NotFoundException($"No kid exists with ID [{request.KidId}]");
 
         if (existingKid.ParentId != parentId)
-            throw new DomainException($"Kid with assigned parent ID [{existingKid.ParentId}] does not belong to the logged in parent with ID [{parentId}]");
+            throw new DomainException(
+                $"Kid with assigned parent ID [{existingKid.ParentId}] does not belong to the logged in parent with ID [{parentId}]");
 
         var chore = new Domain.Entities.Chore
         {

@@ -1,7 +1,7 @@
-﻿using ChorePoint.Application.Interfaces;
+﻿using System.Text.Json;
+using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace ChorePoint.Infrastructure;
 
@@ -49,6 +49,5 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                     v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
                     v => JsonSerializer.Deserialize<List<DayOfWeek>>(v, (JsonSerializerOptions?)null)!);
         });
-
     }
 }

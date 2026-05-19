@@ -1,5 +1,4 @@
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

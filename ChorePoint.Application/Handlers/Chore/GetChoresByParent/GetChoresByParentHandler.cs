@@ -7,7 +7,10 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 
-public class GetChoresByParentHandler(IAppDbContext context, IParentContextService parentContextService, IFusionCache cache)
+public class GetChoresByParentHandler(
+    IAppDbContext context,
+    IParentContextService parentContextService,
+    IFusionCache cache)
     : IRequestHandler<GetChoresByParentQuery, IReadOnlyList<GetChoresByParentResponse>>
 {
     public async Task<IReadOnlyList<GetChoresByParentResponse>> Handle(GetChoresByParentQuery request,
