@@ -1,8 +1,6 @@
-using ChorePoint.Domain.Entities;
+namespace ChorePoint.Application.Handlers.Parent.GetMe;
 
-namespace ChorePoint.Application.Handlers.Users.GetKids;
-
-public record GetKidsResponse(
+public record GetMeResponse(
     int Id,
     string Name,
     string Avatar,
@@ -14,5 +12,5 @@ public record GetKidsResponse(
     DateTime? UpdatedAt,
     int ParentId,
     ICollection<Domain.Entities.Chore> Chores,
-    Parent Parent
+    Domain.Entities.Parent Parent
 );

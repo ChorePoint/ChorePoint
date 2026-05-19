@@ -1,6 +1,6 @@
 namespace ChorePoint.Application.Interfaces;
 
-public interface IUserContextService
+public interface IParentContextService
 {
     int GetParentId();
 }

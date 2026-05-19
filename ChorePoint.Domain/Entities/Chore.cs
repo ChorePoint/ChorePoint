@@ -10,7 +10,7 @@ public sealed class Chore
 {
     [Key] [Column("id")] public int Id { get; set; }
 
-    [Required] [Column("user_id")] public int UserId { get; set; }
+    [Required] [Column("user_id")] public int KidId { get; set; }
 
     [Required]
     [MaxLength(150)]
@@ -44,7 +44,7 @@ public sealed class Chore
     [Column("description")] public string? Description { get; set; }
 
     // Navigation property
-    public User User { get; set; } = null!;
+    public Kid Kid { get; set; } = null!;
 
 
     public ChoreSubmission CreateSubmission(DateTime now)
@@ -52,7 +52,7 @@ public sealed class Chore
         return new ChoreSubmission
         {
             ChoreId = Id,
-            UserId = UserId,
+            KidId = KidId,
             CompletedAt = now,
             ApprovalStatus = ChoreApprovalStatus.Approved,
             ApprovedAt = now

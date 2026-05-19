@@ -237,7 +237,7 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.ToTable("parent_settings");
                 });
 
-            modelBuilder.Entity("ChorePoint.Domain.Entities.User", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -295,18 +295,18 @@ namespace ChorePoint.Infrastructure.Migrations
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Chore", b =>
                 {
-                    b.HasOne("ChorePoint.Domain.Entities.User", "User")
+                    b.HasOne("ChorePoint.Domain.Entities.Kid", "Kid")
                         .WithMany("Chores")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Kid");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ChoreSubmission", b =>
                 {
-                    b.HasOne("ChorePoint.Domain.Entities.User", "ApprovedBy")
+                    b.HasOne("ChorePoint.Domain.Entities.Kid", "ApprovedBy")
                         .WithMany()
                         .HasForeignKey("ApprovedByUserId");
 
@@ -316,7 +316,7 @@ namespace ChorePoint.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ChorePoint.Domain.Entities.User", "User")
+                    b.HasOne("ChorePoint.Domain.Entities.Kid", "Kid")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -326,7 +326,7 @@ namespace ChorePoint.Infrastructure.Migrations
 
                     b.Navigation("Chore");
 
-                    b.Navigation("User");
+                    b.Navigation("Kid");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ParentSettings", b =>
@@ -340,7 +340,7 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("ChorePoint.Domain.Entities.User", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
                 {
                     b.HasOne("ChorePoint.Domain.Entities.Parent", "Parent")
                         .WithMany()
@@ -351,7 +351,7 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("ChorePoint.Domain.Entities.User", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
                 {
                     b.Navigation("Chores");
                 });

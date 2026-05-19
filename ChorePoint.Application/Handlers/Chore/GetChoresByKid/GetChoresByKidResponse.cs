@@ -1,11 +1,11 @@
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Enums;
 
-namespace ChorePoint.Application.Handlers.Chore.GetChoresByUser;
+namespace ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 
-public record GetChoresByUserResponse(
+public record GetChoresByKidResponse(
     int Id,
-    int UserId,
+    int KidId,
     string Name,
     string Icon,
     int Points,
@@ -18,5 +18,5 @@ public record GetChoresByUserResponse(
     DateTime? UpdatedAt,
     int CompletionCount,
     string? Description,
-    User User
+    Kid Kid
 );

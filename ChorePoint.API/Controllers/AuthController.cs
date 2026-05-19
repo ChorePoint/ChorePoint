@@ -21,7 +21,7 @@ public class AuthController(IMediator mediator) : ControllerBase
         return Ok(new
         {
             success = true,
-            message = "User registered successfully"
+            message = "Parent registered successfully"
         });
     }
 

@@ -9,7 +9,7 @@ namespace ChorePoint.Application.Handlers.Auth.Login;
 
 public class LoginHandler(
     IAppDbContext context,
-    IPasswordHasher<Parent> passwordHasher,
+    IPasswordHasher<Domain.Entities.Parent> passwordHasher,
     IJwtTokenGenerator jwtTokenGenerator)
     : IRequestHandler<LoginCommand, LoginResponse>
 {

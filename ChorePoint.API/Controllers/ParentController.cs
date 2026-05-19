@@ -1,5 +1,5 @@
-﻿using ChorePoint.Application.Handlers.Users.GetKids;
-using ChorePoint.Application.Handlers.Users.GetUser;
+﻿using ChorePoint.Application.Handlers.Parent.GetKids;
+using ChorePoint.Application.Handlers.Parent.GetMe;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace ChorePoint.API.Controllers;
 
 [ApiController]
-[Route("api/user")]
-public class UserController(IMediator mediator) : ControllerBase
+[Route("api/parent")]
+public class ParentController(IMediator mediator) : ControllerBase
 {
     [Authorize]
     [HttpGet("me")]
@@ -17,13 +17,13 @@ public class UserController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> GetUser()
+    public async Task<IActionResult> GetMe()
     {
-        var result = await mediator.Send(new GetUserQuery());
+        var result = await mediator.Send(new GetMeQuery());
         return Ok(new
         {
             success = true,
-            message = "User details retrieved successfully",
+            message = "Parent details retrieved successfully",
             data = result
         });
     }

@@ -5,7 +5,7 @@ namespace ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
 
 public record GetCurrentResponse(
     int Id,
-    int UserId,
+    int KidId,
     string Name,
     string Icon,
     int Points,
@@ -18,5 +18,5 @@ public record GetCurrentResponse(
     DateTime? UpdatedAt,
     int CompletionCount,
     string? Description,
-    User User
+    Kid Kid
 );

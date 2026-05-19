@@ -10,14 +10,14 @@ namespace ChorePoint.Infrastructure.Authentication;
 
 public class JwtTokenGenerator(IConfiguration config, ILogger<JwtTokenGenerator> logger) : IJwtTokenGenerator
 {
-    public string GenerateJwtToken(int id, string email)
+    public string GenerateJwtToken(int parentId, string email)
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, id.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, parentId.ToString()),
             new Claim(ClaimTypes.Email, email)
         };
-        logger.LogInformation("New claims created for user ID: {UserId}", id);
+        logger.LogInformation("New claims created for parent ID: {ParentId}", parentId);
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

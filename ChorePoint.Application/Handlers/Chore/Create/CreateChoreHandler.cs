@@ -7,24 +7,24 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace ChorePoint.Application.Handlers.Chore.Create;
 
-public class CreateChoreHandler(IAppDbContext context, IUserContextService userContextService, IFusionCache cache)
+public class CreateChoreHandler(IAppDbContext context, IParentContextService parentContextService, IFusionCache cache)
     : IRequestHandler<CreateChoreCommand>
 {
     public async Task Handle(CreateChoreCommand request, CancellationToken cancellationToken)
     {
-        var parentId = userContextService.GetParentId();
+        var parentId = parentContextService.GetParentId();
 
-        var existingKid = await cache.GetOrSetAsync<User?>(
+        var existingKid = await cache.GetOrSetAsync<Kid?>(
             $"create_chore:{request.KidId}",
             async _ => await GetKidForChoreFromDb(request.KidId, cancellationToken),
             token: cancellationToken
         );
 
         if (existingKid == null)
-            throw new NotFoundException($"No kid exists for this kid ID: {request.KidId}");
+            throw new NotFoundException($"No kid exists with ID [{request.KidId}]");
 
         if (existingKid.ParentId != parentId)
-            throw new DomainException($"Kid ID does not belong to the current parent: {parentId}");
+            throw new DomainException($"Kid with assigned parent ID [{existingKid.ParentId}] does not belong to the logged in parent with ID [{parentId}]");
 
         var chore = new Domain.Entities.Chore
         {
@@ -34,7 +34,7 @@ public class CreateChoreHandler(IAppDbContext context, IUserContextService userC
             Difficulty = request.Difficulty,
             Frequency = request.Frequency,
             DueDay = request.DueDay,
-            UserId = request.KidId,
+            KidId = request.KidId,
             Description = request.Description
         };
 
@@ -42,11 +42,9 @@ public class CreateChoreHandler(IAppDbContext context, IUserContextService userC
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    private async Task<User?> GetKidForChoreFromDb(int kidId, CancellationToken cancellationToken)
+    private async Task<Kid?> GetKidForChoreFromDb(int kidId, CancellationToken cancellationToken)
     {
-        var existingKid = await context.Users
-            .FirstOrDefaultAsync(u => u.Id == kidId, cancellationToken);
-
-        return existingKid;
+        return await context.Kids
+            .FirstOrDefaultAsync(k => k.Id == kidId, cancellationToken);
     }
 }

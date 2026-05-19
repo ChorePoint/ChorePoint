@@ -5,7 +5,7 @@ namespace ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 
 public record GetChoresByParentResponse(
     int Id,
-    int UserId,
+    int KidId,
     string Name,
     string Icon,
     int Points,
@@ -18,5 +18,5 @@ public record GetChoresByParentResponse(
     DateTime? UpdatedAt,
     int CompletionCount,
     string? Description,
-    User User
+    Kid Kid
 );

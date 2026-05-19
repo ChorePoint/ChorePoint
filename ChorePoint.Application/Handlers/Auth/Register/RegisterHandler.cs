@@ -7,17 +7,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Auth.Register;
 
-public class RegisterHandler(IAppDbContext context, IPasswordHasher<Parent> passwordHasher)
+public class RegisterHandler(IAppDbContext context, IPasswordHasher<Domain.Entities.Parent> passwordHasher)
     : IRequestHandler<RegisterCommand>
 {
     public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var existingUser = await context.Parents
+        var existingParent = await context.Parents
             .FirstOrDefaultAsync(p => p.Email == request.Email, cancellationToken);
-        if (existingUser != null)
-            throw new UserAlreadyExistsException(request.Email);
+        
+        if (existingParent != null)
+            throw new ParentAlreadyExistsException(request.Email);
 
-        var parent = new Parent
+        var parent = new Domain.Entities.Parent
         {
             FirstName = request.FirstName,
             LastName = request.LastName,

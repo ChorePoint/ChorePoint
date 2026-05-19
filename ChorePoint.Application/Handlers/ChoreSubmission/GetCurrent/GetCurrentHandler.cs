@@ -13,23 +13,21 @@ public class GetCurrentHandler(IAppDbContext context, IFusionCache cache)
     public async Task<GetCurrentResponse> Handle(GetCurrentQuery request, CancellationToken cancellationToken)
     {
         var currentSubmission = await cache.GetOrSetAsync<Domain.Entities.ChoreSubmission?>(
-            $"get_current:{request.UserId}",
-            async _ => await GetCurrentSubmissionFromDb(request.UserId, cancellationToken),
+            $"get_current:{request.KidId}",
+            async _ => await GetCurrentSubmissionFromDb(request.KidId, cancellationToken),
             token: cancellationToken
         );
 
         return currentSubmission.Adapt<GetCurrentResponse>()
-               ?? throw new NotFoundException($"No completed chores exist for user ID: {request.UserId}");
+               ?? throw new NotFoundException($"No submission exists for kid ID [{request.KidId}]");
     }
 
-    private async Task<Domain.Entities.ChoreSubmission?> GetCurrentSubmissionFromDb(int userId,
+    private async Task<Domain.Entities.ChoreSubmission?> GetCurrentSubmissionFromDb(int kidId,
         CancellationToken cancellationToken)
     {
-        var currentCompletion = await context.ChoreSubmissions
-            .Where(c => c.UserId == userId)
-            .OrderByDescending(c => c.CompletedAt)
+        return await context.ChoreSubmissions
+            .Where(cs => cs.KidId == kidId)
+            .OrderByDescending(cs => cs.CompletedAt)
             .FirstOrDefaultAsync(cancellationToken);
-
-        return currentCompletion;
     }
 }
