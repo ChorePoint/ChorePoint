@@ -1,0 +1,17 @@
+@if (kids.length > 0) {
+  <div class="child-selector">
+    @for (kid of kids; track kid.id) {
+      <div
+        (click)="onKidSelected(kid)"
+        class="child-chip"
+        [class]="kid.id === selectedKidId ? 'active' : ''"
+      >
+        {{ kid.name }}
+      </div>
+    }
+  </div>
+} @else {
+  <div>
+    <div class="no-kids">Add a child from the kids tab to get started!</div>
+  </div>
+}
