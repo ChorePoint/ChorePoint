@@ -1,7 +1,7 @@
 ﻿using ChorePoint.Application.Handlers.Chore.Create;
 using ChorePoint.Application.Handlers.Chore.GetChoreById;
+using ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 using ChorePoint.Application.Handlers.Chore.GetChoresByParent;
-using ChorePoint.Application.Handlers.Chore.GetChoresByUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,45 +13,48 @@ namespace ChorePoint.API.Controllers;
 public class ChoreController(IMediator mediator) : ControllerBase
 {
     [Authorize]
-    [HttpGet("{id:int}")]
+    [HttpGet("{choreId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetChoreById(int id)
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetChoreById(int choreId)
     {
-        var result = await mediator.Send(new GetChoreByIdQuery(id));
+        var result = await mediator.Send(new GetChoreByIdQuery(choreId));
         return Ok(new
         {
             success = true,
-            message = $"Chore with id {id} successfully retrieved",
+            message = $"Chore with ID [{choreId}] successfully retrieved",
             data = result
         });
     }
 
     [Authorize]
-    [HttpGet("user/{userId:int}")]
+    [HttpGet("kid/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetChoresByUser(int userId)
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetChoresByKid(int kidId)
     {
-        var result = await mediator.Send(new GetChoresByUserQuery(userId));
+        var result = await mediator.Send(new GetChoresByKidQuery(kidId));
         return Ok(new
         {
             success = true,
-            message = $"Chores from user id {userId} successfully retrieved",
+            message = $"Chores with kid ID [{kidId}] successfully retrieved",
             data = result
         });
     }
 
     [Authorize]
-    [HttpGet("user")]
+    [HttpGet("parent")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetChoresByParent([FromQuery] bool visible = true)
     {
         var result = await mediator.Send(new GetChoresByParentQuery(visible));
@@ -68,13 +71,14 @@ public class ChoreController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Create([FromBody] CreateChoreCommand command)
     {
         await mediator.Send(command);
         return Ok(new
         {
             success = true,
-            message = $"Chore with name {command.Name} successfully created"
+            message = $"Chore with name [{command.Name}] successfully created"
         });
     }
 }

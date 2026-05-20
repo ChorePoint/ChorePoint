@@ -23,7 +23,7 @@ public static class DependencyInjection
                     .EnableRetryOnFailure(5, TimeSpan.FromSeconds(30), null)));
 
         services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
-        services.AddScoped<IUserContextService, UserContextService>();
+        services.AddScoped<IParentContextService, ParentContextService>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IPasswordHasher<Parent>, PasswordHasher<Parent>>();
 

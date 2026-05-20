@@ -11,7 +11,7 @@ public class ChoreSubmission
 
     [Required] [Column("chore_id")] public int ChoreId { get; set; }
 
-    [Required] [Column("user_id")] public int UserId { get; set; }
+    [Required] [Column("user_id")] public int KidId { get; set; }
 
     [Required] [Column("completed_at")] public DateTime CompletedAt { get; set; } = DateTime.UtcNow;
 
@@ -29,9 +29,9 @@ public class ChoreSubmission
 
     [ForeignKey(nameof(ChoreId))] public Chore Chore { get; set; } = null!;
 
-    [ForeignKey(nameof(UserId))] public User User { get; set; } = null!;
+    [ForeignKey(nameof(KidId))] public Kid Kid { get; set; } = null!;
 
-    [ForeignKey(nameof(ApprovedByUserId))] public User? ApprovedBy { get; set; }
+    [ForeignKey(nameof(ApprovedByUserId))] public Kid? ApprovedBy { get; set; }
 
 
     public bool CompletedThisWeek(DateTime startOfWeek)

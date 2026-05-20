@@ -1,5 +1,4 @@
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +8,7 @@ namespace ChorePoint.Application.Handlers.Auth.Login;
 
 public class LoginHandler(
     IAppDbContext context,
-    IPasswordHasher<Parent> passwordHasher,
+    IPasswordHasher<Domain.Entities.Parent> passwordHasher,
     IJwtTokenGenerator jwtTokenGenerator)
     : IRequestHandler<LoginCommand, LoginResponse>
 {

@@ -23,7 +23,7 @@ public class CompleteChoreHandler(IAppDbContext context, IFusionCache cache) : I
         );
 
         if (chore == null)
-            throw new NotFoundException($"No chores exist with ID: {request.ChoreId}");
+            throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");
 
         var now = DateTime.UtcNow;
         chore.EnsureCanBeCompleted(currentSubmission, now);
@@ -35,20 +35,16 @@ public class CompleteChoreHandler(IAppDbContext context, IFusionCache cache) : I
 
     private async Task<Domain.Entities.Chore?> GetChoreByIdFromDb(int choreId, CancellationToken cancellationToken)
     {
-        var chore = await context.Chores
+        return await context.Chores
             .FindAsync([choreId], cancellationToken);
-
-        return chore;
     }
 
     private async Task<Domain.Entities.ChoreSubmission?> GetCurrentSubmissionFromDb(int choreId,
         CancellationToken cancellationToken)
     {
-        var lastSubmission = await context.ChoreSubmissions
-            .Where(c => c.ChoreId == choreId)
-            .OrderByDescending(c => c.CompletedAt)
+        return await context.ChoreSubmissions
+            .Where(cs => cs.ChoreId == choreId)
+            .OrderByDescending(cs => cs.CompletedAt)
             .FirstOrDefaultAsync(cancellationToken);
-
-        return lastSubmission;
     }
 }

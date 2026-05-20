@@ -13,19 +13,19 @@ public class GetKidsStatsHandler(IAppDbContext context, IFusionCache cache)
     public async Task<GetKidsStatsResponse> Handle(GetKidsStatsQuery request, CancellationToken cancellationToken)
     {
         var choreSubmissions = await cache.GetOrSetAsync(
-            $"get_kids_stats:{request.UserId}",
-            async _ => await GetSubmissionsForUserFromDb(request.UserId, cancellationToken),
+            $"get_kids_stats:{request.KidId}",
+            async _ => await GetSubmissionsFromKidFromDb(request.KidId, cancellationToken),
             token: cancellationToken
         );
 
         var chores = await cache.GetOrSetAsync(
-            $"get_kids_stats_chores:{request.UserId}",
-            async _ => await GetChoresForUserFromDb(request.UserId, cancellationToken),
+            $"get_kids_stats_chores:{request.KidId}",
+            async _ => await GetChoresForKidFromDb(request.KidId, cancellationToken),
             token: cancellationToken
         );
 
         if (choreSubmissions.Count == 0)
-            throw new NotFoundException($"No chore submissions found for user ID: {request.UserId}");
+            throw new NotFoundException($"No submissions found with kid ID [{request.KidId}]");
 
         var startOfWeek = DateTime.UtcNow.Date.AddDays(-(int)DateTime.UtcNow.DayOfWeek);
 
@@ -47,23 +47,19 @@ public class GetKidsStatsHandler(IAppDbContext context, IFusionCache cache)
         );
     }
 
-    private async Task<IReadOnlyList<Domain.Entities.Chore>> GetChoresForUserFromDb(int userId,
+    private async Task<IReadOnlyList<Domain.Entities.Chore>> GetChoresForKidFromDb(int kidId,
         CancellationToken cancellationToken)
     {
-        var chores = await context.Chores
-            .Where(c => c.UserId == userId)
+        return await context.Chores
+            .Where(c => c.KidId == kidId)
             .ToListAsync(cancellationToken);
-
-        return chores;
     }
 
-    private async Task<IReadOnlyList<Domain.Entities.ChoreSubmission>> GetSubmissionsForUserFromDb(int userId,
+    private async Task<IReadOnlyList<Domain.Entities.ChoreSubmission>> GetSubmissionsFromKidFromDb(int kidId,
         CancellationToken cancellationToken)
     {
-        var choreSubmissions = await context.ChoreSubmissions
-            .Where(c => c.UserId == userId)
+        return await context.ChoreSubmissions
+            .Where(cs => cs.KidId == kidId)
             .ToListAsync(cancellationToken);
-
-        return choreSubmissions;
     }
 }

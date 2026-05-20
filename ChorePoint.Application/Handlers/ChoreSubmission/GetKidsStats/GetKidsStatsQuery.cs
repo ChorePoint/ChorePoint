@@ -3,5 +3,5 @@ using MediatR;
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetKidsStats;
 
 public record GetKidsStatsQuery(
-    int UserId
+    int KidId
 ) : IRequest<GetKidsStatsResponse>;

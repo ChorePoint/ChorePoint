@@ -7,13 +7,16 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 
-public class GetChoresByParentHandler(IAppDbContext context, IUserContextService userContextService, IFusionCache cache)
+public class GetChoresByParentHandler(
+    IAppDbContext context,
+    IParentContextService parentContextService,
+    IFusionCache cache)
     : IRequestHandler<GetChoresByParentQuery, IReadOnlyList<GetChoresByParentResponse>>
 {
     public async Task<IReadOnlyList<GetChoresByParentResponse>> Handle(GetChoresByParentQuery request,
         CancellationToken cancellationToken)
     {
-        var parentId = userContextService.GetParentId();
+        var parentId = parentContextService.GetParentId();
 
         var chores = await cache.GetOrSetAsync<IReadOnlyList<Domain.Entities.Chore>>(
             $"get_chores_by_parent:{parentId}:{request.IsVisible}",
@@ -22,7 +25,7 @@ public class GetChoresByParentHandler(IAppDbContext context, IUserContextService
         );
 
         if (chores == null || chores.Count == 0)
-            throw new NotFoundException($"No chores exist for parent ID: {parentId}");
+            throw new NotFoundException($"No chores exist for parent ID [{parentId}]");
 
         return chores.Adapt<IReadOnlyList<GetChoresByParentResponse>>();
     }
@@ -30,11 +33,9 @@ public class GetChoresByParentHandler(IAppDbContext context, IUserContextService
     private async Task<IReadOnlyList<Domain.Entities.Chore>> GetChoresByParentFromDb(int parentId, bool isVisible,
         CancellationToken cancellationToken)
     {
-        var chores = await context.Chores
-            .Where(c => c.User.ParentId == parentId)
+        return await context.Chores
+            .Where(c => c.Kid.ParentId == parentId)
             .Where(c => c.IsVisible == isVisible)
             .ToListAsync(cancellationToken);
-
-        return chores;
     }
 }

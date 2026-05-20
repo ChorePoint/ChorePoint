@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ChorePoint.Domain.Entities;
 
 [Table("users")]
-public class User
+public class Kid
 {
     [Key] [Column("id")] public int Id { get; set; }
 

@@ -6,34 +6,32 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ZiggyCreatures.Caching.Fusion;
 
-namespace ChorePoint.Application.Handlers.Users.GetKids;
+namespace ChorePoint.Application.Handlers.Parent.GetKids;
 
-public class GetKidsHandler(IAppDbContext context, IUserContextService userContextService, IFusionCache cache)
+public class GetKidsHandler(IAppDbContext context, IParentContextService parentContextService, IFusionCache cache)
     : IRequestHandler<GetKidsQuery, IReadOnlyCollection<GetKidsResponse>>
 {
     public async Task<IReadOnlyCollection<GetKidsResponse>> Handle(GetKidsQuery request,
         CancellationToken cancellationToken)
     {
-        var parentId = userContextService.GetParentId();
+        var parentId = parentContextService.GetParentId();
 
-        var kids = await cache.GetOrSetAsync<IReadOnlyList<User>>(
+        var kids = await cache.GetOrSetAsync<IReadOnlyList<Kid>>(
             $"get_kids:{parentId}",
             async _ => await GetKidsAssignedToParentFromDb(parentId, cancellationToken),
             token: cancellationToken
         );
 
         return kids.Count == 0
-            ? throw new NotFoundException($"No kids exist for parent ID: {parentId}")
+            ? throw new NotFoundException($"No kids exist with parent ID [{parentId}]")
             : kids.Adapt<IReadOnlyCollection<GetKidsResponse>>();
     }
 
-    private async Task<IReadOnlyList<User>> GetKidsAssignedToParentFromDb(int parentId,
+    private async Task<IReadOnlyList<Kid>> GetKidsAssignedToParentFromDb(int parentId,
         CancellationToken cancellationToken)
     {
-        var kids = await context.Users
-            .Where(u => u.ParentId == parentId)
+        return await context.Kids
+            .Where(k => k.ParentId == parentId)
             .ToListAsync(cancellationToken);
-
-        return kids;
     }
 }

@@ -18,14 +18,12 @@ public class GetChoreByIdHandler(IAppDbContext context, IFusionCache cache)
         );
 
         return chore.Adapt<GetChoreByIdResponse>()
-               ?? throw new NotFoundException($"No chores exist with ID: {request.ChoreId}");
+               ?? throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");
     }
 
     private async Task<Domain.Entities.Chore?> GetChoreByIdFromDb(int choreId, CancellationToken cancellationToken)
     {
-        var chore = await context.Chores
+        return await context.Chores
             .FindAsync([choreId], cancellationToken);
-
-        return chore;
     }
 }

@@ -5,7 +5,7 @@ namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
 public record GetSubmissionsResponse(
     int Id,
     int ChoreId,
-    int UserId,
+    int KidId,
     DateTime CompletedAt,
     ChoreApprovalStatus ApprovalStatus,
     DateTime? ApprovedAt,

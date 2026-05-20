@@ -6,7 +6,7 @@ public class GetKidsStatsValidator : AbstractValidator<GetKidsStatsQuery>
 {
     public GetKidsStatsValidator()
     {
-        RuleFor(x => x.UserId)
-            .NotEmpty().WithMessage("UserId is required");
+        RuleFor(x => x.KidId)
+            .NotEmpty().WithMessage("KidId is required");
     }
 }
