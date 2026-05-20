@@ -48,7 +48,7 @@ public class GetKidsStatsHandler(IAppDbContext context, IFusionCache cache)
             completedThisWeek / dueThisWeek * 100
         );
     }
-    
+
     private async Task<IReadOnlyList<ChoreSubmissionE>> GetSubmissionsFromKidFromDb(int kidId,
         CancellationToken cancellationToken)
     {
