@@ -41,7 +41,7 @@ public class GetSubmissionsHandler(
     {
         var query = context.ChoreSubmissions
             .Include(cs => cs.Chore)
-            .Where(cs => cs.KidId == parentId);
+            .Where(cs => cs.Kid.ParentId == parentId);
 
         if (pending) query = query.Where(cs => cs.ApprovalStatus == ChoreApprovalStatus.Pending);
 
