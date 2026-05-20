@@ -7,6 +7,6 @@ public class GetSubmissionsValidator : AbstractValidator<GetSubmissionsQuery>
     public GetSubmissionsValidator()
     {
         RuleFor(x => x.Pending)
-            .NotEmpty().WithMessage("Pending is required");
+            .NotNull().WithMessage("Pending is required");
     }
 }
