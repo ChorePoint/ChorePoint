@@ -85,7 +85,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("{choreSubmissionId:int}/review")]
+    [HttpPut("{choreSubmissionId:int}/review")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -97,7 +97,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
         return Ok(new
         {
             success = true,
-            message = $"Chore with ID [{choreSubmissionId}] reviewed successfully"
+            message = $"Chore submission with ID [{choreSubmissionId}] reviewed successfully"
         });
     }
 }

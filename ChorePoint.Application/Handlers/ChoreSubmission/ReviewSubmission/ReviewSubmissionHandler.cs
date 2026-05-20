@@ -3,10 +3,6 @@ using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using ZiggyCreatures.Caching.Fusion;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.ReviewSubmission;
@@ -16,27 +12,28 @@ public class ReviewSubmissionHandler(IAppDbContext context, IParentContextServic
     public async Task Handle(ReviewSubmissionCommand request, CancellationToken cancellationToken)
     {
         var submission = await cache.GetOrSetAsync<Domain.Entities.ChoreSubmission?>(
-            $"review_chore_submission_{request.ChoreSubmissionId}",
-            async _ => await GetCurrentSubmissionFromDb(request.ChoreSubmissionId, cancellationToken)
+            $"review_submission:{request.ChoreSubmissionId}:{request.Approve}",
+            async _ => await GetPendingSubmissionFromDb(request.ChoreSubmissionId, cancellationToken)
         );
 
         if (submission == null)
-            throw new NotFoundException("Chore submission not found");
+            throw new NotFoundException($"No pending chore submission exists with ID [{request.ChoreSubmissionId}]");
 
         var parentId = parentContextService.GetParentId();
 
-        submission.ApprovalStatus = request.IsApproved ? ChoreApprovalStatus.Approved : ChoreApprovalStatus.Rejected;
+        submission.ApprovalStatus = request.Approve ? ChoreApprovalStatus.Approved : ChoreApprovalStatus.Rejected;
         submission.ApprovedAt = DateTime.UtcNow;
-        submission.ApprovedByUserId = request.IsApproved ? parentId : null;
+        submission.ApprovedByUserId = request.Approve ? parentId : null;
 
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    private async Task<Domain.Entities.ChoreSubmission?> GetCurrentSubmissionFromDb(int choreId,
+    private async Task<Domain.Entities.ChoreSubmission?> GetPendingSubmissionFromDb(int choreSubmissionId,
         CancellationToken cancellationToken)
     {
         return await context.ChoreSubmissions
-            .Where(cs => cs.ApprovalStatus == ChoreApprovalStatus.Pending)
+            .Where(cs => cs.Id == choreSubmissionId &&
+                cs.ApprovalStatus == ChoreApprovalStatus.Pending)
             .FirstOrDefaultAsync(cancellationToken);
     }
 }
