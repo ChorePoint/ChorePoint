@@ -3,6 +3,8 @@ using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ZiggyCreatures.Caching.Fusion;
+using ChoreE = ChorePoint.Domain.Entities.Chore;
+using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.CompleteChore;
 
@@ -10,13 +12,13 @@ public class CompleteChoreHandler(IAppDbContext context, IFusionCache cache) : I
 {
     public async Task Handle(CompleteChoreCommand request, CancellationToken cancellationToken)
     {
-        var chore = await cache.GetOrSetAsync<Domain.Entities.Chore?>(
+        var chore = await cache.GetOrSetAsync<ChoreE?>(
             $"chore:{request.ChoreId}",
             async _ => await GetChoreByIdFromDb(request.ChoreId, cancellationToken),
             token: cancellationToken
         );
 
-        var currentSubmission = await cache.GetOrSetAsync<Domain.Entities.ChoreSubmission?>(
+        var currentSubmission = await cache.GetOrSetAsync<ChoreSubmissionE?>(
             $"complete_chore_chore_submission:{request.ChoreId}",
             async _ => await GetCurrentSubmissionFromDb(request.ChoreId, cancellationToken),
             token: cancellationToken
@@ -33,13 +35,13 @@ public class CompleteChoreHandler(IAppDbContext context, IFusionCache cache) : I
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    private async Task<Domain.Entities.Chore?> GetChoreByIdFromDb(int choreId, CancellationToken cancellationToken)
+    private async Task<ChoreE?> GetChoreByIdFromDb(int choreId, CancellationToken cancellationToken)
     {
         return await context.Chores
             .FindAsync([choreId], cancellationToken);
     }
 
-    private async Task<Domain.Entities.ChoreSubmission?> GetCurrentSubmissionFromDb(int choreId,
+    private async Task<ChoreSubmissionE?> GetCurrentSubmissionFromDb(int choreId,
         CancellationToken cancellationToken)
     {
         return await context.ChoreSubmissions

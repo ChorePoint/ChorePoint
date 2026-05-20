@@ -4,6 +4,7 @@ using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ZiggyCreatures.Caching.Fusion;
+using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.Chore.Create;
 
@@ -27,7 +28,7 @@ public class CreateChoreHandler(IAppDbContext context, IParentContextService par
             throw new DomainException(
                 $"Kid with assigned parent ID [{existingKid.ParentId}] does not belong to the logged in parent with ID [{parentId}]");
 
-        var chore = new Domain.Entities.Chore
+        var chore = new ChoreE
         {
             Name = request.Name,
             Icon = request.Icon,

@@ -1,4 +1,5 @@
 ﻿using ChorePoint.Domain.Enums;
+using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
 
@@ -12,5 +13,5 @@ public record GetSubmissionsResponse(
     int? ApprovedByUserId,
     string? Notes,
     DateTime? CreatedAt,
-    Domain.Entities.Chore Chore
+    ChoreE Chore
 );
