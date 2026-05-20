@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { map, of } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { ChoreSubmission } from '../../types/dtos/chore-submission';
+import { ApiResponse } from '../dtos/response';
 import {
   DEFAULT_KID_STATS,
   GetChoreSubmissionsResponse,
@@ -65,5 +66,15 @@ export class ChoreSubmissionService {
 
   completeChore(id: number) {
     return this.http.post(`${this.baseUrl}/${id}/complete`, {});
+  }
+
+  approveChore(id: number) {
+    return this.http.post<ApiResponse<string>>(`${this.baseUrl}/${id}/approve`, {}).pipe(
+      catchError((error) => {
+        console.error('Error approving chore:', error);
+        throw error;
+      }),
+      map((response) => response.data),
+    );
   }
 }
