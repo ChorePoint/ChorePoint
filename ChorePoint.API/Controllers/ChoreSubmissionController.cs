@@ -2,6 +2,7 @@
 using ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
 using ChorePoint.Application.Handlers.ChoreSubmission.GetKidsStats;
 using ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
+using ChorePoint.Application.Handlers.ChoreSubmission.ReviewSubmission;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -80,6 +81,23 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
             success = true,
             message = $"Kid with ID [{kidId}] stats retrieved successfully",
             data = result
+        });
+    }
+
+    [Authorize]
+    [HttpPut("{choreSubmissionId:int}/review")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> ReviewChore(int choreSubmissionId, [FromQuery] bool approve = true)
+    {
+        await mediator.Send(new ReviewSubmissionCommand(choreSubmissionId, approve));
+        return Ok(new
+        {
+            success = true,
+            message = $"Chore submission with ID [{choreSubmissionId}] reviewed successfully"
         });
     }
 }
