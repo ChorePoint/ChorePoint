@@ -4,6 +4,7 @@ using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ZiggyCreatures.Caching.Fusion;
+using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 
@@ -18,7 +19,7 @@ public class GetChoresByParentHandler(
     {
         var parentId = parentContextService.GetParentId();
 
-        var chores = await cache.GetOrSetAsync<IReadOnlyList<Domain.Entities.Chore>>(
+        var chores = await cache.GetOrSetAsync<IReadOnlyList<ChoreE>>(
             $"get_chores_by_parent:{parentId}:{request.IsVisible}",
             async _ => await GetChoresByParentFromDb(parentId, request.IsVisible, cancellationToken),
             token: cancellationToken
@@ -30,7 +31,7 @@ public class GetChoresByParentHandler(
         return chores.Adapt<IReadOnlyList<GetChoresByParentResponse>>();
     }
 
-    private async Task<IReadOnlyList<Domain.Entities.Chore>> GetChoresByParentFromDb(int parentId, bool isVisible,
+    private async Task<IReadOnlyList<ChoreE>> GetChoresByParentFromDb(int parentId, bool isVisible,
         CancellationToken cancellationToken)
     {
         return await context.Chores

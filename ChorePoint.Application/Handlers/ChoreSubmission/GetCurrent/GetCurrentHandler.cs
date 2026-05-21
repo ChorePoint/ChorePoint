@@ -4,6 +4,7 @@ using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ZiggyCreatures.Caching.Fusion;
+using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
 
@@ -12,7 +13,7 @@ public class GetCurrentHandler(IAppDbContext context, IFusionCache cache)
 {
     public async Task<GetCurrentResponse> Handle(GetCurrentQuery request, CancellationToken cancellationToken)
     {
-        var currentSubmission = await cache.GetOrSetAsync<Domain.Entities.ChoreSubmission?>(
+        var currentSubmission = await cache.GetOrSetAsync<ChoreSubmissionE?>(
             $"get_current:{request.KidId}",
             async _ => await GetCurrentSubmissionFromDb(request.KidId, cancellationToken),
             token: cancellationToken
@@ -22,7 +23,7 @@ public class GetCurrentHandler(IAppDbContext context, IFusionCache cache)
                ?? throw new NotFoundException($"No submission exists for kid ID [{request.KidId}]");
     }
 
-    private async Task<Domain.Entities.ChoreSubmission?> GetCurrentSubmissionFromDb(int kidId,
+    private async Task<ChoreSubmissionE?> GetCurrentSubmissionFromDb(int kidId,
         CancellationToken cancellationToken)
     {
         return await context.ChoreSubmissions

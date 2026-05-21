@@ -5,6 +5,7 @@ using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ZiggyCreatures.Caching.Fusion;
+using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
 
@@ -19,7 +20,7 @@ public class GetSubmissionsHandler(
     {
         var parentId = parentContextService.GetParentId();
 
-        var choreSubmissions = await cache.GetOrSetAsync<IReadOnlyList<Domain.Entities.ChoreSubmission>>(
+        var choreSubmissions = await cache.GetOrSetAsync<IReadOnlyList<ChoreSubmissionE>>(
             $"get_submissions:{parentId}:{request.Pending}",
             async _ => await GetSubmissionsFromParentFromDb(parentId, request.Pending, cancellationToken),
             token: cancellationToken
@@ -34,7 +35,7 @@ public class GetSubmissionsHandler(
         return choreSubmissions.Adapt<IReadOnlyList<GetSubmissionsResponse>>();
     }
 
-    private async Task<IReadOnlyList<Domain.Entities.ChoreSubmission>> GetSubmissionsFromParentFromDb(
+    private async Task<IReadOnlyList<ChoreSubmissionE>> GetSubmissionsFromParentFromDb(
         int parentId,
         bool pending,
         CancellationToken cancellationToken)

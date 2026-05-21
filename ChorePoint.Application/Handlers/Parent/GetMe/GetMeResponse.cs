@@ -1,3 +1,6 @@
+using ChoreE = ChorePoint.Domain.Entities.Chore;
+using ParentE = ChorePoint.Domain.Entities.Parent;
+
 namespace ChorePoint.Application.Handlers.Parent.GetMe;
 
 public record GetMeResponse(
@@ -11,6 +14,6 @@ public record GetMeResponse(
     DateTime? CreatedAt,
     DateTime? UpdatedAt,
     int ParentId,
-    ICollection<Domain.Entities.Chore> Chores,
-    Domain.Entities.Parent Parent
+    ICollection<ChoreE> Chores,
+    ParentE Parent
 );

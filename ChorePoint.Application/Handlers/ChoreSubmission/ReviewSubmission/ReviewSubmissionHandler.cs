@@ -4,16 +4,21 @@ using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ZiggyCreatures.Caching.Fusion;
+using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.ReviewSubmission;
 
-public class ReviewSubmissionHandler(IAppDbContext context, IParentContextService parentContextService, IFusionCache cache) : IRequestHandler<ReviewSubmissionCommand>
+public class ReviewSubmissionHandler(
+    IAppDbContext context,
+    IParentContextService parentContextService,
+    IFusionCache cache) : IRequestHandler<ReviewSubmissionCommand>
 {
     public async Task Handle(ReviewSubmissionCommand request, CancellationToken cancellationToken)
     {
-        var submission = await cache.GetOrSetAsync<Domain.Entities.ChoreSubmission?>(
+        var submission = await cache.GetOrSetAsync<ChoreSubmissionE?>(
             $"review_submission:{request.ChoreSubmissionId}:{request.Approve}",
-            async _ => await GetPendingSubmissionFromDb(request.ChoreSubmissionId, cancellationToken)
+            async _ => await GetPendingSubmissionFromDb(request.ChoreSubmissionId, cancellationToken),
+            token: cancellationToken
         );
 
         if (submission == null)
@@ -28,12 +33,12 @@ public class ReviewSubmissionHandler(IAppDbContext context, IParentContextServic
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    private async Task<Domain.Entities.ChoreSubmission?> GetPendingSubmissionFromDb(int choreSubmissionId,
+    private async Task<ChoreSubmissionE?> GetPendingSubmissionFromDb(int choreSubmissionId,
         CancellationToken cancellationToken)
     {
         return await context.ChoreSubmissions
             .Where(cs => cs.Id == choreSubmissionId &&
-                cs.ApprovalStatus == ChoreApprovalStatus.Pending)
+                         cs.ApprovalStatus == ChoreApprovalStatus.Pending)
             .FirstOrDefaultAsync(cancellationToken);
     }
 }

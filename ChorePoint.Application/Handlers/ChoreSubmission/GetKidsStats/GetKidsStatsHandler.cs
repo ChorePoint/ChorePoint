@@ -4,6 +4,8 @@ using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ZiggyCreatures.Caching.Fusion;
+using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
+using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetKidsStats;
 
@@ -12,13 +14,13 @@ public class GetKidsStatsHandler(IAppDbContext context, IFusionCache cache)
 {
     public async Task<GetKidsStatsResponse> Handle(GetKidsStatsQuery request, CancellationToken cancellationToken)
     {
-        var choreSubmissions = await cache.GetOrSetAsync(
+        var choreSubmissions = await cache.GetOrSetAsync<IReadOnlyList<ChoreSubmissionE>>(
             $"get_kids_stats:{request.KidId}",
             async _ => await GetSubmissionsFromKidFromDb(request.KidId, cancellationToken),
             token: cancellationToken
         );
 
-        var chores = await cache.GetOrSetAsync(
+        var chores = await cache.GetOrSetAsync<IReadOnlyList<ChoreE>>(
             $"get_kids_stats_chores:{request.KidId}",
             async _ => await GetChoresForKidFromDb(request.KidId, cancellationToken),
             token: cancellationToken
@@ -47,19 +49,19 @@ public class GetKidsStatsHandler(IAppDbContext context, IFusionCache cache)
         );
     }
 
-    private async Task<IReadOnlyList<Domain.Entities.Chore>> GetChoresForKidFromDb(int kidId,
-        CancellationToken cancellationToken)
-    {
-        return await context.Chores
-            .Where(c => c.KidId == kidId)
-            .ToListAsync(cancellationToken);
-    }
-
-    private async Task<IReadOnlyList<Domain.Entities.ChoreSubmission>> GetSubmissionsFromKidFromDb(int kidId,
+    private async Task<IReadOnlyList<ChoreSubmissionE>> GetSubmissionsFromKidFromDb(int kidId,
         CancellationToken cancellationToken)
     {
         return await context.ChoreSubmissions
             .Where(cs => cs.KidId == kidId)
+            .ToListAsync(cancellationToken);
+    }
+
+    private async Task<IReadOnlyList<ChoreE>> GetChoresForKidFromDb(int kidId,
+        CancellationToken cancellationToken)
+    {
+        return await context.Chores
+            .Where(c => c.KidId == kidId)
             .ToListAsync(cancellationToken);
     }
 }

@@ -3,12 +3,13 @@ using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ParentE = ChorePoint.Domain.Entities.Parent;
 
 namespace ChorePoint.Application.Handlers.Auth.Login;
 
 public class LoginHandler(
     IAppDbContext context,
-    IPasswordHasher<Domain.Entities.Parent> passwordHasher,
+    IPasswordHasher<ParentE> passwordHasher,
     IJwtTokenGenerator jwtTokenGenerator)
     : IRequestHandler<LoginCommand, LoginResponse>
 {
