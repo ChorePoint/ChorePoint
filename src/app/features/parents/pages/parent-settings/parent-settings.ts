@@ -23,7 +23,10 @@ export class ParentSettings {
   ngOnInit() {
     this.vm$ = this.userService.getKids().pipe(
       map((kids) => {
-        return { kids };
+        if (kids != null) {
+          return { kids };
+        }
+        return { kids: [] };
       }),
     );
   }

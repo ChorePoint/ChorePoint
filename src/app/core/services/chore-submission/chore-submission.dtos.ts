@@ -1,8 +1,12 @@
 import { ChoreSubmission } from '../../types/dtos/chore-submission';
+import { RequestState } from '../../types/interfaces/request-state';
 import { ApiResponse } from '../dtos/response';
 
-export type GetKidStatsResponse = ApiResponse<KidStats>;
-export type GetChoreSubmissionsResponse = ApiResponse<ChoreSubmission[] | []>;
+export type GetKidStatsResponse = ApiResponse<KidStats> & {
+  isLoading: boolean;
+};
+
+export type GetChoreSubmissionsResponse = RequestState<ChoreSubmission[]>;
 
 export type KidStats = {
   completed: number;
@@ -12,12 +16,3 @@ export type KidStats = {
   dueThisWeek: number;
   weeklyCompletionPercentage: number;
 };
-
-export const DEFAULT_KID_STATS = Object.freeze<KidStats>({
-  completed: 0,
-  completedThisWeek: 0,
-  approvalRate: 0,
-  dueToday: 0,
-  dueThisWeek: 0,
-  weeklyCompletionPercentage: 100,
-});

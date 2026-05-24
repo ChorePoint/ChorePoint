@@ -36,7 +36,7 @@ export class KidsSettings {
   ngOnInit() {
     this.vm$ = combineLatest([this.kidService.getKids(), this.choreService.getChores()]).pipe(
       switchMap(([kids, chores]) => {
-        const kidDetails$ = kids.map((kid) => this.buildKidVm(kid, chores));
+        const kidDetails$ = kids!.map((kid) => this.buildKidVm(kid, chores!));
 
         return combineLatest(kidDetails$).pipe(
           map((kidsWithStats) => ({
@@ -60,9 +60,9 @@ export class KidsSettings {
         ...kid,
         chores: chores.filter((c) => c.userId === kid.id),
         kidStats: {
-          ...stats,
+          ...stats!,
           weeklyCompletionPercentage:
-            stats.dueThisWeek > 0 ? (stats.completedThisWeek / stats.dueThisWeek) * 100 : 100,
+            stats!.dueThisWeek > 0 ? (stats!.completedThisWeek / stats!.dueThisWeek) * 100 : 100,
         },
       })),
     );

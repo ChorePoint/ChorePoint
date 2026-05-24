@@ -15,7 +15,7 @@ export class DashboardLayout {
   private kidsService = inject(KidsService);
 
   vm$!: Observable<{
-    kids: Kid[];
+    kids: Kid[] | null;
   }>;
 
   ngOnInit() {
