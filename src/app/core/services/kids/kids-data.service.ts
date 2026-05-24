@@ -22,8 +22,8 @@ export class KidsDataService {
     }
 
     this.loading$ = this.kidsService.getKids().pipe(
-      tap((response) => {
-        this.kidsSubject.next(response);
+      tap((response: any) => {
+        this.kidsSubject.next(response as any);
       }),
       shareReplay(1),
     );

@@ -10,7 +10,17 @@
     <div class="pending-photo">{{ pendingApproval.icon }}</div>
   </div>
   <div class="pending-actions">
-    <button class="action-btn reject-btn">Reject</button>
-    <button (click)="approve()" class="action-btn approve-btn">Approve ✓</button>
+    <button (click)="review(false)" class="action-btn reject-btn">
+      Reject
+      @if (loading) {
+        <app-loading-emoji />
+      }
+    </button>
+    <button (click)="review(true)" class="action-btn approve-btn">
+      Approve
+      @if (loading) {
+        <app-loading-emoji />
+      }
+    </button>
   </div>
 </div>

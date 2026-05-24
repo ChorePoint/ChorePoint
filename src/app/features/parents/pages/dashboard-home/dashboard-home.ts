@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
+import { Observable, Subject, combineLatest, map, startWith, switchMap } from 'rxjs';
 import { KidStats } from '../../../../core/services/chore-submission/chore-submission.dtos';
 import { ChoreSubmissionService } from '../../../../core/services/chore-submission/chore-submission.service';
 import { KidsDataService } from '../../../../core/services/kids/kids-data.service';
@@ -21,6 +21,8 @@ export class DashboardHome {
   private choreCompletionService = inject(ChoreSubmissionService);
   private kidsDataService = inject(KidsDataService);
 
+  private refresh$ = new Subject<void>();
+
   vm$!: Observable<{
     kids: Kid[];
     selectedKid: Kid | null;
@@ -29,39 +31,27 @@ export class DashboardHome {
   }>;
 
   ngOnInit() {
-    this.loadKids();
+    // This ties the refresh signal to data fetching so that whenever refresh is
+    //  triggered, the latest data is fetched and emitted to the vm$ observable.
+    this.vm$ = this.refresh$.pipe(
+      startWith(void 0),
+      switchMap(() =>
+        combineLatest([
+          this.kidsDataService.getKids$(),
+          this.choreCompletionService.getSubmissions$(true),
+        ]),
+      ),
+      map(([kidsState, submissionsState]) => ({
+        kids: kidsState ?? [],
+        selectedKid: kidsState[0] ?? null,
+        pendingApprovals: submissionsState.data ?? [],
+        loading: submissionsState.isLoading,
+      })),
+    );
   }
 
-  private loadKids() {
-    this.vm$ = combineLatest([
-      this.kidsDataService.getKids$(),
-      this.choreCompletionService.getSubmissions$(),
-    ]).pipe(
-      map(([kids, pendingApprovals]) => ({
-        kids,
-        selectedKid: kids[0] || null,
-        pendingApprovals: pendingApprovals,
-      })),
-      switchMap(({ kids, selectedKid, pendingApprovals }) => {
-        if (!selectedKid) {
-          return of({
-            kids,
-            selectedKid: null,
-            stats: undefined,
-            pendingApprovals: pendingApprovals,
-          });
-        }
-
-        return this.choreCompletionService.getChoreSubmissionStats(selectedKid.id).pipe(
-          map((stats) => ({
-            kids,
-            selectedKid,
-            stats,
-            pendingApprovals: pendingApprovals,
-          })),
-        );
-      }),
-    );
+  refresh() {
+    this.refresh$.next();
   }
 
   selectKid(kid: Kid) {
