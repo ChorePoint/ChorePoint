@@ -5,7 +5,7 @@ import { Login } from './features/auth/pages/login/login';
 import { AddChore } from './features/chores/pages/add-chore/add-chore';
 import { ChoreDetails } from './features/chores/pages/chore-details/chore-details';
 import { DashboardLayout } from './features/parents/dashboard-layout/dashboard-layout';
-import { ChoreSettings } from './features/parents/pages/chore-settings/chore-settings';
+import { ChoreView } from './features/parents/pages/chore-view/chore-view';
 import { DashboardHome } from './features/parents/pages/dashboard-home/dashboard-home';
 import { KidsSettings } from './features/parents/pages/kids-settings/kids-settings';
 import { ParentSettings } from './features/parents/pages/parent-settings/parent-settings';
@@ -21,7 +21,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'home', component: DashboardHome, pathMatch: 'full' },
-      { path: 'chores', component: ChoreSettings },
+      { path: 'chores', component: ChoreView },
       { path: 'chores/add', component: AddChore },
       {
         path: 'kids',
