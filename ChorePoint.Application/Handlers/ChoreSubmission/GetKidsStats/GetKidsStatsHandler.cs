@@ -1,6 +1,7 @@
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
+using ChorePoint.Domain.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ZiggyCreatures.Caching.Fusion;
@@ -26,7 +27,7 @@ public class GetKidsStatsHandler(IAppDbContext context, IFusionCache cache)
             token: cancellationToken
         );
 
-        if (choreSubmissions.Count == 0)
+        if (choreSubmissions.Empty())
             throw new NotFoundException($"No submissions found with kid ID [{request.KidId}]");
 
         var startOfWeek = DateTime.UtcNow.Date.AddDays(-(int)DateTime.UtcNow.DayOfWeek);

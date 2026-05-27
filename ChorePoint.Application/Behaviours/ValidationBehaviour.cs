@@ -17,7 +17,7 @@ public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TReq
         var failures = validators
             .Select(v => v.Validate(context))
             .SelectMany(result => result.Errors)
-            .Where(vf => vf != null)
+            .Where(vf => vf is not null)
             .ToList();
 
         if (failures.Count != 0)

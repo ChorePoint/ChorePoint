@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace ChorePoint.Infrastructure.Authentication;
 
-public class JwtTokenGenerator(IConfiguration config, ILogger<JwtTokenGenerator> logger) : IJwtTokenGenerator
+public partial class JwtTokenGenerator(IConfiguration config, ILogger<JwtTokenGenerator> logger) : IJwtTokenGenerator
 {
     public string GenerateJwtToken(int parentId, string email)
     {
@@ -17,7 +17,7 @@ public class JwtTokenGenerator(IConfiguration config, ILogger<JwtTokenGenerator>
             new Claim(ClaimTypes.NameIdentifier, parentId.ToString()),
             new Claim(ClaimTypes.Email, email)
         };
-        logger.LogInformation("New claims created for parent ID: {ParentId}", parentId);
+        LogNewClaimsCreated(parentId);
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -32,4 +32,8 @@ public class JwtTokenGenerator(IConfiguration config, ILogger<JwtTokenGenerator>
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
+
+    [LoggerMessage(LogLevel.Information, "New claims created for parent ID: {ParentId}")]
+    partial void LogNewClaimsCreated(int parentId);
 }

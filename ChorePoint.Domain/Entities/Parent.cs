@@ -23,4 +23,21 @@ public class Parent
     [Required] [Column("password")] public string Password { get; set; } = null!;
 
     [Column("created_at")] public DateTime? CreatedAt { get; set; }
+
+
+    public static Parent CreateWithoutPassword(string firstName, string lastName, string email, DateTime now)
+    {
+        return new Parent
+        {
+            FirstName = firstName,
+            LastName = lastName,
+            Email = email,
+            CreatedAt = now
+        };
+    }
+
+    public void SetPassword(string password)
+    {
+        Password = password;
+    }
 }

@@ -9,7 +9,7 @@ public class ParentContextService(IHttpContextAccessor accessor) : IParentContex
     public int GetParentId()
     {
         var parentId = GetParent()?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (parentId == null)
+        if (parentId is null)
             throw new UnauthorizedAccessException("Parent is not authorised!");
 
         return int.Parse(parentId);

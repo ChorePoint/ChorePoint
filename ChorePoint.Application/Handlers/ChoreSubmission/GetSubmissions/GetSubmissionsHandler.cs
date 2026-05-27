@@ -1,6 +1,7 @@
 ﻿using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
+using ChorePoint.Domain.Extensions;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ public class GetSubmissionsHandler(
             token: cancellationToken
         );
 
-        if (choreSubmissions.Count == 0)
+        if (choreSubmissions.Empty())
         {
             var pendingText = request.Pending ? "pending" : string.Empty;
             throw new NotFoundException($"No {pendingText} submissions found with parent ID [{parentId}]");
