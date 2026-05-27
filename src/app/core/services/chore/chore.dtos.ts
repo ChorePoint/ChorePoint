@@ -1,8 +1,7 @@
 import { Chore } from '../../types/dtos/chore';
-import { ApiResponse } from '../dtos/response';
+import { ApiGetResponse } from '../dtos/response';
 
-export type GetChoresResponse = ApiResponse<Chore[]>;
-
+export type GetChoresResponse = ApiGetResponse<Chore[]>;
 export type CreateChoreRequest = {
   name: string;
   icon: string;

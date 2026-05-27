@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { combineLatest, Observable, switchMap } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
+import { KidStats } from '../../../../core/services/chore-submission/chore-submission.dtos';
 import { ChoreSubmissionService } from '../../../../core/services/chore-submission/chore-submission.service';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
 import { KidsService } from '../../../../core/services/kids/kids.service';
@@ -34,20 +35,14 @@ export class KidsSettings {
   }>;
 
   ngOnInit() {
-    this.vm$ = combineLatest([this.kidService.getKids(), this.choreService.getChores()]).pipe(
+    this.vm$ = combineLatest([this.kidService.getKids$(), this.choreService.getChores$()]).pipe(
       switchMap(([kids, chores]) => {
-        const kidDetails$ = kids!.map((kid) => this.buildKidVm(kid, chores!));
+        const kidDetails$ = kids.map((kid) => this.buildKidVm(kid, chores));
 
         return combineLatest(kidDetails$).pipe(
           map((kidsWithStats) => ({
             kids: kidsWithStats,
-            summaryStats: {
-              totalPoints: kidsWithStats.reduce((sum, kid) => sum + kid.totalPoints, 0),
-              choresDone: kidsWithStats.reduce(
-                (sum, kid) => sum + kid.kidStats.completedThisWeek,
-                0,
-              ),
-            },
+            summaryStats: this.calcSummary(kidsWithStats),
           })),
         );
       }),
@@ -55,16 +50,26 @@ export class KidsSettings {
   }
 
   private buildKidVm(kid: Kid, chores: Chore[]): Observable<KidDetails> {
-    return this.choreCompletionService.getChoreSubmissionStats(kid.id).pipe(
+    return this.choreCompletionService.getChoreSubmissionStats$(kid.id).pipe(
       map((stats) => ({
         ...kid,
         chores: chores.filter((c) => c.userId === kid.id),
         kidStats: {
           ...stats!,
-          weeklyCompletionPercentage:
-            stats!.dueThisWeek > 0 ? (stats!.completedThisWeek / stats!.dueThisWeek) * 100 : 100,
+          weeklyCompletionPercentage: this.calcWeeklyCompletion(stats!),
         },
       })),
     );
+  }
+
+  private calcSummary(kids: KidDetails[]) {
+    return {
+      totalPoints: kids.reduce((sum, kid) => sum + kid.totalPoints, 0),
+      choresDone: kids.reduce((sum, kid) => sum + kid.kidStats.completedThisWeek, 0),
+    };
+  }
+
+  private calcWeeklyCompletion(stats: KidStats) {
+    return stats.dueThisWeek > 0 ? (stats.completedThisWeek / stats.dueThisWeek) * 100 : 100;
   }
 }

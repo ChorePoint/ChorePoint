@@ -1,5 +1,10 @@
-export interface ApiResponse<T> {
+export interface ApiGetResponse<T> {
   success: boolean;
   message: string;
-  data: T | null;
+  data: T;
+}
+
+export interface ApiPutResponse {
+  success: boolean;
+  message: string;
 }

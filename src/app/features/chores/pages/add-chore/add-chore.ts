@@ -88,7 +88,7 @@ export class AddChore {
     this.loading.set(true);
     this.error.set(null);
 
-    this.choreService.createChore(this.form.getRawValue()).subscribe({
+    this.choreService.createChore$(this.form.getRawValue()).subscribe({
       next: () => {
         console.log('Chore created successfully');
         this.loading.set(false);

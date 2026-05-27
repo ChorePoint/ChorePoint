@@ -1,10 +1,5 @@
 import { ChoreSubmission } from '../../types/dtos/chore-submission';
 import { RequestState } from '../../types/interfaces/request-state';
-import { ApiResponse } from '../dtos/response';
-
-export type GetKidStatsResponse = ApiResponse<KidStats> & {
-  isLoading: boolean;
-};
 
 export type GetChoreSubmissionsResponse = RequestState<ChoreSubmission[]>;
 

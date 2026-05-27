@@ -19,6 +19,6 @@ export class DashboardLayout {
   }>;
 
   ngOnInit() {
-    this.vm$ = this.kidsService.getKids().pipe(map((kids) => ({ kids })));
+    this.vm$ = this.kidsService.getKids$().pipe(map((kids) => ({ kids })));
   }
 }

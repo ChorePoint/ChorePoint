@@ -22,7 +22,7 @@ export class PendingApproval {
   review(approve: boolean) {
     this.loading = true;
 
-    this.choreSubmissionService.reviewChore(this.pendingApproval.id, approve).subscribe({
+    this.choreSubmissionService.reviewChore$(this.pendingApproval.id, approve).subscribe({
       next: () => {
         this.loading = false;
         this.refresh.emit();

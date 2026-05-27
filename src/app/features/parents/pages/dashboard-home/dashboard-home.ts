@@ -44,8 +44,7 @@ export class DashboardHome {
       map(([kidsState, submissionsState]) => ({
         kids: kidsState ?? [],
         selectedKid: kidsState[0] ?? null,
-        pendingApprovals: submissionsState.data ?? [],
-        loading: submissionsState.isLoading,
+        pendingApprovals: submissionsState ?? [],
       })),
     );
   }

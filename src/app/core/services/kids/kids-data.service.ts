@@ -21,7 +21,7 @@ export class KidsDataService {
       return this.loading$;
     }
 
-    this.loading$ = this.kidsService.getKids().pipe(
+    this.loading$ = this.kidsService.getKids$().pipe(
       tap((response: any) => {
         this.kidsSubject.next(response as any);
       }),

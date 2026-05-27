@@ -60,12 +60,12 @@ export class ChoreDetails {
     const load$ = of(null);
 
     const complete$ = this.completeChore$.pipe(
-      switchMap(() => this.choreSubmissionService.completeChore(id)),
+      switchMap(() => this.choreSubmissionService.completeChore$(id)),
     );
 
     this.vm$ = merge(load$, complete$).pipe(
       switchMap(() =>
-        combineLatest([this.choreService.getById(id), this.choreSubmissionService.getCurrent(1)]),
+        combineLatest([this.choreService.getById$(id), this.choreSubmissionService.getCurrent$(1)]),
       ),
       map(([chore, choreSubmission]) => {
         const status = choreSubmission?.approvalStatus;

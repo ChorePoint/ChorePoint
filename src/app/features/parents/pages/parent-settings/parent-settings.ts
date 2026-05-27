@@ -14,14 +14,14 @@ import { KidList } from '../../../chores/components/kid-list/kid-list';
   styleUrl: './parent-settings.scss',
 })
 export class ParentSettings {
-  private userService = inject(KidsService);
+  private kidService = inject(KidsService);
 
   vm$!: Observable<{
     kids: Kid[];
   }>;
 
   ngOnInit() {
-    this.vm$ = this.userService.getKids().pipe(
+    this.vm$ = this.kidService.getKids$().pipe(
       map((kids) => {
         if (kids != null) {
           return { kids };
