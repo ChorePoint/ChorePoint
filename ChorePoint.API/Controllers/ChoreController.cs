@@ -55,7 +55,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> GetChoresByParent([FromQuery] bool visible = true)
+    public async Task<IActionResult> GetChoresByParent([FromQuery] bool? visible)
     {
         var result = await mediator.Send(new GetChoresByParentQuery(visible));
         return Ok(new
