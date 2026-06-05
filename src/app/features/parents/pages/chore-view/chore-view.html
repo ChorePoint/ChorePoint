@@ -2,166 +2,71 @@
   <div class="header">
     <div class="header-top">
       <div class="page-title">Chores</div>
-      <div class="add-button">+</div>
+      <div [routerLink]="['add']" class="add-button">+</div>
     </div>
     <app-kid-selector-header
       [kids]="vm.kids"
-      [selectedKidId]="vm.selectedKid?.id"
+      [selectedKidId]="vm.selectedKid?.id ?? -1"
       (kidSelected)="vm.selectedKid = $event"
     ></app-kid-selector-header>
   </div>
 
-  <div class="search-bar">
-    <span class="search-icon">🔍</span>
-    <input class="search-input" placeholder="Search chores…" type="text" />
-  </div>
-
   <div class="filter-row">
-    <div class="filter-pill active">All</div>
-    <div class="filter-pill">Daily</div>
-    <div class="filter-pill">Weekly</div>
-    <div class="filter-pill">One-off</div>
+    <div
+      class="filter-pill"
+      [class.active]="selectedFrequency == null"
+      (click)="filterByFrequency(null)"
+    >
+      All
+    </div>
+    <div
+      class="filter-pill"
+      [class.active]="selectedFrequency == ChoreFrequency.Daily"
+      (click)="filterByFrequency(ChoreFrequency.Daily)"
+    >
+      Daily
+    </div>
+    <div
+      class="filter-pill"
+      [class.active]="selectedFrequency == ChoreFrequency.Weekly"
+      (click)="filterByFrequency(ChoreFrequency.Weekly)"
+    >
+      Weekly
+    </div>
+    <div
+      class="filter-pill"
+      [class.active]="selectedFrequency == ChoreFrequency.Bonus"
+      (click)="filterByFrequency(ChoreFrequency.Bonus)"
+    >
+      Bonus
+    </div>
   </div>
 
   <div class="content">
-    <!-- Daily chores -->
-    <div class="section-header">
-      <div class="section-title">Daily Chores</div>
-      <div class="section-count">3 active</div>
-    </div>
-
-    <div class="chore-list">
-      <div class="chore-card daily">
-        <div class="chore-emoji-wrap bg-blue">🛏️</div>
-        <div class="chore-info">
-          <div class="chore-name">Make Bed</div>
-          <div class="chore-meta">
-            <span class="meta-tag tag-daily">Daily</span>
-            <span class="chore-assignee">Zach · Emma</span>
-          </div>
-        </div>
-        <div class="chore-right">
-          <div class="chore-pts">+250 ⭐</div>
-          <div class="chore-status status-active">Active</div>
-        </div>
-        <div class="chore-menu">⋮</div>
-      </div>
-
-      <div class="chore-card daily">
-        <div class="chore-emoji-wrap bg-orange">📚</div>
-        <div class="chore-info">
-          <div class="chore-name">Homework Time</div>
-          <div class="chore-meta">
-            <span class="meta-tag tag-daily">Daily</span>
-            <span class="chore-assignee">Zach · Emma</span>
-          </div>
-        </div>
-        <div class="chore-right">
-          <div class="chore-pts">+400 ⭐</div>
-          <div class="chore-status status-active">Active</div>
-        </div>
-        <div class="chore-menu">⋮</div>
-      </div>
-
-      <div class="chore-card daily">
-        <div class="chore-emoji-wrap bg-green">🦷</div>
-        <div class="chore-info">
-          <div class="chore-name">Brush Teeth</div>
-          <div class="chore-meta">
-            <span class="meta-tag tag-daily">Daily</span>
-            <span class="chore-assignee">Emma</span>
-          </div>
-        </div>
-        <div class="chore-right">
-          <div class="chore-pts">+150 ⭐</div>
-          <div class="chore-status status-active">Active</div>
-        </div>
-        <div class="chore-menu">⋮</div>
-      </div>
-    </div>
-
-    <!-- Weekly chores -->
-    <div class="section-header">
-      <div class="section-title">Weekly Chores</div>
-      <div class="section-count">2 active</div>
-    </div>
-
-    <div class="chore-list">
-      <div class="chore-card weekly">
-        <div class="chore-emoji-wrap bg-purple">🧹</div>
-        <div class="chore-info">
-          <div class="chore-name">Vacuum Living Room</div>
-          <div class="chore-meta">
-            <span class="meta-tag tag-weekly">Weekly</span>
-            <span class="chore-assignee">Zach</span>
-          </div>
-        </div>
-        <div class="chore-right">
-          <div class="chore-pts">+600 ⭐</div>
-          <div class="chore-status status-pending">Pending</div>
-        </div>
-        <div class="chore-menu">⋮</div>
-      </div>
-
-      <div class="chore-card weekly">
-        <div class="chore-emoji-wrap bg-blue">🗑️</div>
-        <div class="chore-info">
-          <div class="chore-name">Take Out Bins</div>
-          <div class="chore-meta">
-            <span class="meta-tag tag-weekly">Weekly</span>
-            <span class="chore-assignee">Zach</span>
-          </div>
-        </div>
-        <div class="chore-right">
-          <div class="chore-pts">+350 ⭐</div>
-          <div class="chore-status status-paused">Paused</div>
-        </div>
-        <div class="chore-menu">⋮</div>
-      </div>
-    </div>
-
-    <!-- One-off -->
-    <div class="section-header">
-      <div class="section-title">One-off Tasks</div>
-      <div class="section-count">1 active</div>
-    </div>
-
-    <div class="chore-list">
-      <div class="chore-card once">
-        <div class="chore-emoji-wrap bg-green">🌱</div>
-        <div class="chore-info">
-          <div class="chore-name">Plant the Garden</div>
-          <div class="chore-meta">
-            <span class="meta-tag tag-once">One-off</span>
-            <span class="chore-assignee">Zach · Emma</span>
-          </div>
-        </div>
-        <div class="chore-right">
-          <div class="chore-pts">+1000 ⭐</div>
-          <div class="chore-status status-active">Active</div>
-        </div>
-        <div class="chore-menu">⋮</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="bottom-nav">
-    <div class="nav-item">
-      <div class="nav-icon">📊</div>
-      <div class="nav-label">Dashboard</div>
-    </div>
-    <div class="nav-item active">
-      <div class="nav-icon">📋</div>
-      <div class="nav-label">Chores</div>
-    </div>
-    <div class="nav-item">
-      <div class="nav-icon">👥</div>
-      <div class="nav-label">Kids</div>
-    </div>
-    <div class="nav-item">
-      <div class="nav-icon">⚙️</div>
-      <div class="nav-label">Settings</div>
-    </div>
+    @if (isSelectedFrequency(ChoreFrequency.Daily)) {
+      <app-chore-card-wrapper
+        [chores]="getFilteredChores(vm.dailyChores, vm.selectedKid)"
+        [kidsDictionary]="vm.kidsDictionary"
+        (deleteEmitter)="deleteChore($event)"
+        (toggleActiveEmitter)="toggleActive($event)"
+      />
+    }
+    @if (isSelectedFrequency(ChoreFrequency.Weekly)) {
+      <app-chore-card-wrapper
+        [chores]="getFilteredChores(vm.weeklyChores, vm.selectedKid)"
+        [kidsDictionary]="vm.kidsDictionary"
+        (deleteEmitter)="deleteChore($event)"
+        (toggleActiveEmitter)="toggleActive($event)"
+      />
+    }
+    @if (isSelectedFrequency(ChoreFrequency.Bonus)) {
+      <app-chore-card-wrapper
+        [chores]="getFilteredChores(vm.bonusChores, vm.selectedKid)"
+        [kidsDictionary]="vm.kidsDictionary"
+        (deleteEmitter)="deleteChore($event)"
+        (toggleActiveEmitter)="toggleActive($event)"
+      />
+    }
   </div>
 } @else {
   <app-loading-screen />
