@@ -53,7 +53,7 @@ export class KidsSettings {
     return this.choreCompletionService.getChoreSubmissionStats$(kid.id).pipe(
       map((stats) => ({
         ...kid,
-        chores: chores.filter((c) => c.userId === kid.id),
+        chores: chores.filter((c) => c.kidId === kid.id),
         kidStats: {
           ...stats!,
           weeklyCompletionPercentage: this.calcWeeklyCompletion(stats!),
