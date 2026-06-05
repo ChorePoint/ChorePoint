@@ -23,4 +23,11 @@
         <ProjectReference Include="..\ChorePoint.Domain\ChorePoint.Domain.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Handlers\Shop\BuyShopItem\" />
+      <Folder Include="Handlers\Shop\GetShopItems\" />
+      <Folder Include="Handlers\Shop\ReviewShopItem\" />
+      <Folder Include="Handlers\Shop\UpdateShopItem\" />
+    </ItemGroup>
+
 </Project>

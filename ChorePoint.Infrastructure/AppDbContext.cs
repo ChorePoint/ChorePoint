@@ -11,6 +11,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Parent> Parents { get; set; } = null!;
     public DbSet<Chore> Chores { get; set; } = null!;
     public DbSet<ChoreSubmission> ChoreSubmissions { get; set; } = null!;
+    public DbSet<ShopItem> ShopItems { get; set; } = null!;
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

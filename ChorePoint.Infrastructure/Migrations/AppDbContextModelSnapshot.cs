@@ -95,7 +95,7 @@ namespace ChorePoint.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("chores");
+                    b.ToTable("chores", (string)null);
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ChoreSubmission", b =>
@@ -149,7 +149,7 @@ namespace ChorePoint.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("chore_submissions");
+                    b.ToTable("chore_submissions", (string)null);
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Parent", b =>
@@ -189,7 +189,7 @@ namespace ChorePoint.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("parents");
+                    b.ToTable("parents", (string)null);
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ParentSettings", b =>
@@ -234,10 +234,10 @@ namespace ChorePoint.Infrastructure.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("parent_settings");
+                    b.ToTable("parent_settings", (string)null);
                 });
 
-            modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -290,23 +290,23 @@ namespace ChorePoint.Infrastructure.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("users");
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Chore", b =>
                 {
-                    b.HasOne("ChorePoint.Domain.Entities.Kid", "Kid")
+                    b.HasOne("ChorePoint.Domain.Entities.User", "User")
                         .WithMany("Chores")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Kid");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ChoreSubmission", b =>
                 {
-                    b.HasOne("ChorePoint.Domain.Entities.Kid", "ApprovedBy")
+                    b.HasOne("ChorePoint.Domain.Entities.User", "ApprovedBy")
                         .WithMany()
                         .HasForeignKey("ApprovedByUserId");
 
@@ -316,7 +316,7 @@ namespace ChorePoint.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ChorePoint.Domain.Entities.Kid", "Kid")
+                    b.HasOne("ChorePoint.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -326,7 +326,7 @@ namespace ChorePoint.Infrastructure.Migrations
 
                     b.Navigation("Chore");
 
-                    b.Navigation("Kid");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ParentSettings", b =>
@@ -340,7 +340,7 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.User", b =>
                 {
                     b.HasOne("ChorePoint.Domain.Entities.Parent", "Parent")
                         .WithMany()
@@ -351,7 +351,7 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.User", b =>
                 {
                     b.Navigation("Chores");
                 });
