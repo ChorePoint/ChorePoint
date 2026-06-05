@@ -25,4 +25,8 @@ export class ChoreCardWrapper {
   delete(chore: Chore) {
     this.deleteEmitter.emit(chore);
   }
+
+  getActive() {
+    return this.chores.filter((chore) => chore.isVisible).length;
+  }
 }

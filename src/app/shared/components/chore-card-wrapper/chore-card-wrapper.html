@@ -1,6 +1,6 @@
 <div class="section-header">
   <div class="section-title">{{ timeframe | titlecase }} Chores</div>
-  <div class="section-count">{{ chores.length }} active</div>
+  <div class="section-count">{{ getActive() }} active</div>
 </div>
 <div class="chore-list">
   @if (chores.length === 0) {
