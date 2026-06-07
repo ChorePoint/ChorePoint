@@ -6,5 +6,6 @@ namespace ChorePoint.Application.Handlers.Shop.NewShopItem;
 public record NewShopItemCommand(
     int KidId,
     string Name,
-    int Cost
+    int Cost,
+    bool SinglePurchaseOnly
 ) : IRequest;

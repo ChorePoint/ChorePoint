@@ -34,6 +34,6 @@ public partial class JwtTokenGenerator(IConfiguration config, ILogger<JwtTokenGe
     }
 
 
-    [LoggerMessage(LogLevel.Information, "New claims created for parent ID: {ParentId}")]
+    [LoggerMessage(LogLevel.Information, "New claims created for parent with ID [{ParentId}]")]
     partial void LogNewClaimsCreated(int parentId);
 }

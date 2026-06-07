@@ -28,6 +28,10 @@ public class ShopItem
     [Column("status")]
     public ShopItemStatus Status { get; set; }
     
+    [Required]
+    [Column("single_purchase_only")]
+    public bool SinglePurchaseOnly { get; set; }
+    
     [Column("created_at")] public DateTime? CreatedAt { get; set; }
 
     [Column("updated_at")] public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
@@ -37,7 +41,7 @@ public class ShopItem
     [ForeignKey(nameof(KidId))] public Kid Kid { get; set; } = null!;
     
     
-    public static ShopItem Create(int parentId, int kidId, string name, int cost, DateTime now)
+    public static ShopItem Create(int parentId, int kidId, string name, int cost, bool singlePurchaseOnly, DateTime now)
     {
         return new ShopItem
         {
@@ -46,6 +50,7 @@ public class ShopItem
             Name = name,
             Cost = cost,
             Status = ShopItemStatus.Available,
+            SinglePurchaseOnly = singlePurchaseOnly,
             CreatedAt = now
         };
     }

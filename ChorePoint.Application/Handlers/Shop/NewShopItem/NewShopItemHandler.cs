@@ -1,5 +1,4 @@
-﻿using ChorePoint.Application.Handlers.Chore.Create;
-using ChorePoint.Application.Interfaces;
+﻿using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
@@ -13,8 +12,7 @@ public class NewShopItemHandler(IAppDbContext context, IParentContextService par
 {
     public async Task Handle(NewShopItemCommand request, CancellationToken cancellationToken)
     {
-        var existingKid = await context.Kids
-            .FirstOrDefaultAsync(k => k.Id == request.KidId, cancellationToken);
+        var existingKid = await context.Kids.FindAsync([request.KidId], cancellationToken);
         
         if (existingKid is null)
             throw new NotFoundException($"No kid exists with ID [{request.KidId}]");
@@ -31,6 +29,7 @@ public class NewShopItemHandler(IAppDbContext context, IParentContextService par
             request.KidId,
             request.Name,
             request.Cost,
+            request.SinglePurchaseOnly,
             DateTime.UtcNow
         );
 

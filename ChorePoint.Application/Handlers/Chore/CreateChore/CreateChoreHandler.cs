@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using ZiggyCreatures.Caching.Fusion;
 using ChoreE = ChorePoint.Domain.Entities.Chore;
 
-namespace ChorePoint.Application.Handlers.Chore.Create;
+namespace ChorePoint.Application.Handlers.Chore.CreateChore;
 
 public class CreateChoreHandler(IAppDbContext context, IParentContextService parentContextService, IFusionCache cache)
     : IRequestHandler<CreateChoreCommand>

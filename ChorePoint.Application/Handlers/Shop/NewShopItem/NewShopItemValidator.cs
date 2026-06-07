@@ -1,5 +1,4 @@
-﻿using ChorePoint.Application.Handlers.Chore.Create;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace ChorePoint.Application.Handlers.Shop.NewShopItem;
 

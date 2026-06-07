@@ -1,7 +1,7 @@
 ﻿using ChorePoint.Domain.Enums;
 using MediatR;
 
-namespace ChorePoint.Application.Handlers.Chore.Create;
+namespace ChorePoint.Application.Handlers.Chore.CreateChore;
 
 public record CreateChoreCommand(
     string Name,

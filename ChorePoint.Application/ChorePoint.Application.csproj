@@ -25,7 +25,7 @@
 
     <ItemGroup>
       <Folder Include="Handlers\Shop\BuyShopItem\" />
-      <Folder Include="Handlers\Shop\GetShopItems\" />
+      <Folder Include="Handlers\Shop\GetShopItemsByKid\" />
       <Folder Include="Handlers\Shop\ReviewShopItem\" />
       <Folder Include="Handlers\Shop\UpdateShopItem\" />
     </ItemGroup>
