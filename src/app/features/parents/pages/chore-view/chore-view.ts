@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { combineLatest, map, Observable, Subject } from 'rxjs';
+import { combineLatest, finalize, map, Observable, startWith, Subject, switchMap } from 'rxjs';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
 import { KidsService } from '../../../../core/services/kids/kids.service';
 import { Chore } from '../../../../core/types/dtos/chore';
@@ -11,6 +11,7 @@ import { ChoreCardWrapper } from '../../../../shared/components/chore-card-wrapp
 import { ChoreCard } from '../../../../shared/components/chore-card/chore-card';
 import { GetBonus, GetDaily, GetWeekly } from '../../../../shared/helpers/chore.helpers';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
+import { LoadingAction } from '../../../../shared/types/loading-action';
 import { KidSelectorHeader } from '../../../chores/components/kid-selector-header/kid-selector-header';
 
 @Component({
@@ -28,6 +29,8 @@ export class ChoreView {
   selectedFrequency: ChoreFrequency | null = null;
   ChoreFrequency: typeof ChoreFrequency = ChoreFrequency;
 
+  loadingAction: LoadingAction | null = null;
+
   vm$!: Observable<{
     kids: Kid[];
     kidsDictionary: Record<number, Kid>;
@@ -38,21 +41,27 @@ export class ChoreView {
   }>;
 
   ngOnInit() {
-    this.vm$ = combineLatest([this.kidService.getKids$(), this.choreService.getChores$()]).pipe(
-      map(([kids, chores]) => ({
-        kids: kids,
-        kidsDictionary: kids.reduce(
-          (acc, kid) => {
-            acc[kid.id] = kid;
-            return acc;
-          },
-          {} as Record<number, Kid>,
+    this.vm$ = this.refresh$.pipe(
+      startWith(void 0),
+      switchMap(() =>
+        combineLatest([this.kidService.getKids$(), this.choreService.getChores$()]).pipe(
+          map(([kids, chores]) => ({
+            kids: kids,
+            kidsDictionary: kids.reduce(
+              (acc, kid) => {
+                acc[kid.id] = kid;
+                return acc;
+              },
+              {} as Record<number, Kid>,
+            ),
+            dailyChores: GetDaily(chores),
+            weeklyChores: GetWeekly(chores),
+            bonusChores: GetBonus(chores),
+            selectedKid: null,
+          })),
+          finalize(() => (this.loadingAction = null)),
         ),
-        dailyChores: GetDaily(chores),
-        weeklyChores: GetWeekly(chores),
-        bonusChores: GetBonus(chores),
-        selectedKid: null,
-      })),
+      ),
     );
   }
 
@@ -70,17 +79,23 @@ export class ChoreView {
   }
 
   toggleActive(chore: Chore) {
-    this.choreService.updateChore$({
-      id: chore.id,
-      name: chore.name,
-      icon: chore.icon,
-      kidId: chore.kidId,
-      frequency: chore.frequency,
-      dueDay: chore.dueDay,
-      points: chore.points,
-      description: chore.description,
-      isVisible: !chore.isVisible,
-    });
+    this.loadingAction = { choreId: chore.id, type: 'activate' };
+
+    this.choreService
+      .updateChore$({
+        id: chore.id,
+        name: chore.name,
+        icon: chore.icon,
+        kidId: chore.kidId,
+        frequency: chore.frequency,
+        dueDay: chore.dueDay,
+        points: chore.points,
+        description: chore.description,
+        isVisible: !chore.isVisible,
+      })
+      .subscribe(() => {
+        this.refresh$.next();
+      });
   }
 
   isSelectedFrequency(frequency: ChoreFrequency) {

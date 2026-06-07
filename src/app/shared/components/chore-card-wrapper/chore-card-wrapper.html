@@ -13,6 +13,7 @@
       <app-chore-card
         [chore]="chore"
         [kidsDictionary]="kidsDictionary"
+        [loadingAction]="loadingAction"
         (toggleActiveEmitter)="toggleActive($event)"
         (deleteEmitter)="delete($event)"
       />

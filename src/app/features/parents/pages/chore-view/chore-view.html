@@ -47,6 +47,7 @@
       <app-chore-card-wrapper
         [chores]="getFilteredChores(vm.dailyChores, vm.selectedKid)"
         [kidsDictionary]="vm.kidsDictionary"
+        [loadingAction]="loadingAction"
         (deleteEmitter)="deleteChore($event)"
         (toggleActiveEmitter)="toggleActive($event)"
       />

@@ -2,6 +2,7 @@ import { TitleCasePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Chore } from '../../../core/types/dtos/chore';
 import { Kid } from '../../../core/types/dtos/kid';
+import { LoadingAction } from '../../types/loading-action';
 import { ChoreCard } from '../chore-card/chore-card';
 
 @Component({
@@ -14,6 +15,7 @@ export class ChoreCardWrapper {
   @Input() chores!: Chore[];
   @Input() kidsDictionary!: Record<number, Kid>;
   @Input() timeframe!: 'daily' | 'weekly' | 'bonus';
+  @Input() loadingAction: LoadingAction | null = null;
 
   @Output() deleteEmitter = new EventEmitter<Chore>();
   @Output() toggleActiveEmitter = new EventEmitter<Chore>();
