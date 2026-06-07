@@ -1,6 +1,5 @@
 ﻿using ChorePoint.Application.Handlers.Chore.Update;
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +8,7 @@ using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.Chore.Create;
 
-public class UpdateChoreHandler(IAppDbContext context, IParentContextService parentContextService, IFusionCache cache)
+public class UpdateChoreHandler(IAppDbContext context, IParentContextService parentContextService)
     : IRequestHandler<UpdateChoreCommand>
 {
     public async Task Handle(UpdateChoreCommand request, CancellationToken cancellationToken)
@@ -18,18 +17,18 @@ public class UpdateChoreHandler(IAppDbContext context, IParentContextService par
 
         var existingChore = await GetChoreFromDb(request.Id, parentId, cancellationToken);
 
-        if (existingChore == null)
+        if (existingChore is null)
             throw new NotFoundException($"No chore exists with ID [{request.Id}]");
 
-        existingChore.KidId = request.KidId;
-        existingChore.Name = request.Name;
-        existingChore.Icon = request.Icon;
-        existingChore.Points = request.Points;
-        existingChore.Difficulty = request.Difficulty;
-        existingChore.Frequency = request.Frequency;
-        existingChore.IsVisible = request.IsVisible;
-        existingChore.Description = request.Description;
-        existingChore.DueDay = request.DueDay;
+        existingChore.Update(request.KidId,
+                             request.Name,
+                             request.Icon,
+                             request.Points,
+                             request.Difficulty,
+                             request.Frequency,
+                             request.IsVisible,
+                             request.Description,
+                             request.DueDay);
 
         await context.SaveChangesAsync(cancellationToken);
     }

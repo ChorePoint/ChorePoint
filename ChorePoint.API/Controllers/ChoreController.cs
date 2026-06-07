@@ -95,7 +95,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
         return Ok(new
         {
             success = true,
-            message = $"Chore with name [{command.Name}] successfully updated"
+            message = $"Chore with name [{command.Id}] successfully updated"
         });
     }
 }
