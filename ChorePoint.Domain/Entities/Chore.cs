@@ -59,6 +59,29 @@ public sealed class Chore
         };
     }
 
+    public void Update(
+        int kidId,
+        string name,
+        string icon,
+        int points,
+        ChoreDifficulty difficulty,
+        ChoreFrequency frequency,
+        bool isVisible,
+        string? description,
+        DayOfWeek? dueDay
+    )
+    {
+        KidId = kidId;
+        Name = name;
+        Icon = icon;
+        Points = points;
+        Difficulty = difficulty;
+        Frequency = frequency;
+        IsVisible = isVisible;
+        Description = description;
+        DueDay = dueDay;
+    }
+
     public void EnsureCanBeCompleted(ChoreSubmission? currentSubmission, DateTime now)
     {
         switch (Frequency)

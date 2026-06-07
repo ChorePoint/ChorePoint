@@ -2,6 +2,7 @@
 using ChorePoint.Application.Handlers.Chore.GetChoreById;
 using ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 using ChorePoint.Application.Handlers.Chore.GetChoresByParent;
+using ChorePoint.Application.Handlers.Chore.UpdateChore;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -72,13 +73,29 @@ public class ChoreController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> Create([FromBody] CreateChoreCommand command)
+    public async Task<IActionResult> CreateChore([FromBody] CreateChoreCommand command)
     {
         await mediator.Send(command);
         return Ok(new
         {
             success = true,
             message = $"Chore with name [{command.Name}] successfully created"
+        });
+    }
+
+    [Authorize]
+    [HttpPut("update")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> UpdateChore([FromBody] UpdateChoreCommand command)
+    {
+        await mediator.Send(command);
+        return Ok(new
+        {
+            success = true,
+            message = $"Chore with ID [{command.Id}] successfully updated"
         });
     }
 }

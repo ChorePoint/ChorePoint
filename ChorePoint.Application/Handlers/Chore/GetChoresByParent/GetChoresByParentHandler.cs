@@ -34,14 +34,9 @@ public class GetChoresByParentHandler(
     private async Task<IReadOnlyList<ChoreE>> GetChoresByParentFromDb(int parentId, bool? isVisible,
         CancellationToken cancellationToken)
     {
-        var query = context.Chores
-            .Where(c => c.Kid.ParentId == parentId);
-
-        if (isVisible is not null)
-        {
-            query = query.Where(c => c.IsVisible == isVisible);
-        }
-
-        return await query.ToListAsync(cancellationToken);
+        return await context.Chores
+            .Where(c => c.Kid.ParentId == parentId)
+            .Where(c => isVisible == null || c.IsVisible == isVisible)
+            .ToListAsync(cancellationToken);
     }
 }
