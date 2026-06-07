@@ -1,16 +1,16 @@
 ﻿using FluentValidation;
 
-namespace ChorePoint.Application.Handlers.Chore.Update;
+namespace ChorePoint.Application.Handlers.Chore.UpdateChore;
 
 public class UpdateChoreValidator : AbstractValidator<UpdateChoreCommand>
 {
     public UpdateChoreValidator()
     {
-            RuleFor(x => x.Id)
-        .NotEmpty().WithMessage("Id is required");
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage("ID is required");
 
-            RuleFor(x => x.Name)
-        .NotEmpty().WithMessage("Name is required");
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Name is required");
 
         RuleFor(x => x.Icon)
             .NotEmpty().WithMessage("Icon is required");

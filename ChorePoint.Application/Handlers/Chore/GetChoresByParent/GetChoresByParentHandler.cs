@@ -36,7 +36,7 @@ public class GetChoresByParentHandler(
     {
         return await context.Chores
             .Where(c => c.Kid.ParentId == parentId)
-            .Where(c => (isVisible == null || c.IsVisible == isVisible))
+            .Where(c => isVisible == null || c.IsVisible == isVisible)
             .ToListAsync(cancellationToken);
     }
 }

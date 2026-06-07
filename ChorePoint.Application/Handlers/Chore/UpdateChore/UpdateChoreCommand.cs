@@ -1,7 +1,7 @@
 ﻿using ChorePoint.Domain.Enums;
 using MediatR;
 
-namespace ChorePoint.Application.Handlers.Chore.Update;
+namespace ChorePoint.Application.Handlers.Chore.UpdateChore;
 
 public record UpdateChoreCommand(
     int Id,
