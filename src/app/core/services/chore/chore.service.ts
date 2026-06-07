@@ -45,7 +45,10 @@ export class ChoreService {
   }
 
   updateChore$(request: UpdateChoreRequest) {
-    //TODO: Implement update chore API call
+    return this.http.put<void>(`${this.baseUrl}/update`, request).pipe(
+      map((res) => res),
+      catchError((err) => (err.status === 404 ? of(null) : throwError(() => err))),
+    );
   }
 
   deleteChore(id: number) {
