@@ -5,3 +5,8 @@ export interface IPendingApproval {
   points: number;
   icon: string;
 }
+
+export enum ButtonType {
+  Reject,
+  Approve,
+}

@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ChoreSubmissionService } from '../../../../core/services/chore-submission/chore-submission.service';
 import { LoadingEmoji } from '../../../../shared/components/loading-emoji/loading-emoji';
-import { IPendingApproval } from './types';
+import { ButtonType, IPendingApproval } from './types';
 
 @Component({
   selector: 'app-pending-approval',
@@ -14,21 +14,21 @@ export class PendingApproval {
   private choreSubmissionService = inject(ChoreSubmissionService);
 
   @Input() pendingApproval!: IPendingApproval;
+  @Input() loading = false;
 
   @Output() refresh = new EventEmitter<void>();
 
-  loading = false;
+  loadingButton: ButtonType | null = null;
+
+  ButtonType: typeof ButtonType = ButtonType;
 
   review(approve: boolean) {
     this.loading = true;
+    this.loadingButton = approve ? ButtonType.Approve : ButtonType.Reject;
 
     this.choreSubmissionService.reviewChore$(this.pendingApproval.id, approve).subscribe({
       next: () => {
-        this.loading = false;
         this.refresh.emit();
-      },
-      error: () => {
-        this.loading = false;
       },
     });
   }
