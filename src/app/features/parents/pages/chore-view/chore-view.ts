@@ -8,15 +8,15 @@ import { Chore } from '../../../../core/types/dtos/chore';
 import { Kid } from '../../../../core/types/dtos/kid';
 import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
 import { ChoreCardWrapper } from '../../../../shared/components/chore-card-wrapper/chore-card-wrapper';
-import { ChoreCard } from '../../../../shared/components/chore-card/chore-card';
 import { GetBonus, GetDaily, GetWeekly } from '../../../../shared/helpers/chore.helpers';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
 import { LoadingAction } from '../../../../shared/types/loading-action';
+import { TimeFrame } from '../../../../shared/types/timeframe';
 import { KidSelectorHeader } from '../../../chores/components/kid-selector-header/kid-selector-header';
 
 @Component({
   selector: 'app-chore-view',
-  imports: [KidSelectorHeader, LoadingScreen, AsyncPipe, ChoreCard, RouterLink, ChoreCardWrapper],
+  imports: [KidSelectorHeader, LoadingScreen, AsyncPipe, RouterLink, ChoreCardWrapper],
   templateUrl: './chore-view.html',
   styleUrl: './chore-view.scss',
 })
@@ -27,7 +27,9 @@ export class ChoreView implements OnInit {
   private refresh$ = new Subject<void>();
 
   selectedFrequency: ChoreFrequency | null = null;
+
   ChoreFrequency: typeof ChoreFrequency = ChoreFrequency;
+  TimeFrame: typeof TimeFrame = TimeFrame;
 
   loadingAction: LoadingAction | null = null;
 

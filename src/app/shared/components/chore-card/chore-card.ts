@@ -13,6 +13,7 @@ import { RouterLink } from '@angular/router';
 import { Chore } from '../../../core/types/dtos/chore';
 import { Kid } from '../../../core/types/dtos/kid';
 import { LoadingAction } from '../../types/loading-action';
+import { TimeFrame } from '../../types/timeframe';
 import { LoadingEmoji } from '../loading-emoji/loading-emoji';
 
 @Component({
@@ -29,7 +30,7 @@ export class ChoreCard {
 
   @Input() chore!: Chore;
   @Input() kidsDictionary!: Record<number, Kid>;
-  @Input() timeframe!: 'daily' | 'weekly' | 'bonus';
+  @Input() timeframe!: TimeFrame;
   @Input() loadingAction: LoadingAction | null = null;
 
   @Output() deleteEmitter = new EventEmitter<Chore>();
