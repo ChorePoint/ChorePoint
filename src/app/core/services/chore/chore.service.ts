@@ -51,7 +51,8 @@ export class ChoreService {
     );
   }
 
-  // deleteChore(id: number) {
-  //   //TODO: Implement delete chore API call
-  // }
+  deleteChore(id: number) {
+    console.log('Delete chore with id:', id);
+    //TODO: Implement delete chore API call
+  }
 }
