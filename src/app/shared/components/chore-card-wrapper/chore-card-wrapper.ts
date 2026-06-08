@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Chore } from '../../../core/types/dtos/chore';
 import { Kid } from '../../../core/types/dtos/kid';
 import { LoadingAction } from '../../types/loading-action';
+import { TimeFrame } from '../../types/timeframe';
 import { ChoreCard } from '../chore-card/chore-card';
 
 @Component({
@@ -14,7 +15,7 @@ import { ChoreCard } from '../chore-card/chore-card';
 export class ChoreCardWrapper {
   @Input() chores!: Chore[];
   @Input() kidsDictionary!: Record<number, Kid>;
-  @Input() timeframe!: 'daily' | 'weekly' | 'bonus';
+  @Input() timeframe!: TimeFrame;
   @Input() loadingAction: LoadingAction | null = null;
 
   @Output() deleteEmitter = new EventEmitter<Chore>();
