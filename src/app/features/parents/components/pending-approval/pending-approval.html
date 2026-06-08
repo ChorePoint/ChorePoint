@@ -12,13 +12,13 @@
   <div class="pending-actions">
     <button (click)="review(false)" class="action-btn reject-btn">
       Reject
-      @if (loading) {
+      @if (loadingButton === ButtonType.Reject && loading) {
         <app-loading-emoji />
       }
     </button>
     <button (click)="review(true)" class="action-btn approve-btn">
       Approve
-      @if (loading) {
+      @if (loadingButton === ButtonType.Approve && loading) {
         <app-loading-emoji />
       }
     </button>

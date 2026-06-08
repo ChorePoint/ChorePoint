@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { Observable, Subject, combineLatest, map, startWith, switchMap } from 'rxjs';
+import { combineLatest, map, Observable, startWith, Subject, switchMap, tap } from 'rxjs';
 import { KidStats } from '../../../../core/services/chore-submission/chore-submission.dtos';
 import { ChoreSubmissionService } from '../../../../core/services/chore-submission/chore-submission.service';
 import { KidsDataService } from '../../../../core/services/kids/kids-data.service';
@@ -22,6 +22,8 @@ export class DashboardHome implements OnInit {
   private kidsDataService = inject(KidsDataService);
 
   private refresh$ = new Subject<void>();
+
+  loading = false;
 
   vm$!: Observable<{
     kids: Kid[];
@@ -46,10 +48,11 @@ export class DashboardHome implements OnInit {
         selectedKid: kidsState[0] ?? null,
         pendingApprovals: submissionsState ?? [],
       })),
+      tap(() => (this.loading = false)),
     );
   }
 
-  refresh() {
+  onReviewComplete() {
     this.refresh$.next();
   }
 

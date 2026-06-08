@@ -36,7 +36,8 @@
             points: approval.chore.points,
             icon: approval.chore.icon,
           }"
-          (refresh)="refresh()"
+          [loading]="loading"
+          (refresh)="onReviewComplete()"
         />
       }
     </div>
