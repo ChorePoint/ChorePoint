@@ -105,8 +105,9 @@ public class ChoreController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> DeleteChore(int choreId)
+    public async Task<IActionResult> DeleteChoreById(int choreId)
     {
         await mediator.Send(new DeleteChoreByIdCommand(choreId));
         return Ok(new

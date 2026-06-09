@@ -2,21 +2,20 @@
 using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ZiggyCreatures.Caching.Fusion;
 using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.Chore.DeleteChoreById;
-public class DeleteChoreByIdHandler(IAppDbContext context, IParentContextService parentContextService, IFusionCache cache)
+public class DeleteChoreByIdHandler(IAppDbContext context, IParentContextService parentContextService)
     : IRequestHandler<DeleteChoreByIdCommand>
 {
     public async Task Handle(DeleteChoreByIdCommand request, CancellationToken cancellationToken)
     {
+        var chore = await GetChoreByIdFromDb(request.ChoreId, cancellationToken);
+
+        if (chore is null)
+            throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");
+
         var parentId = parentContextService.GetParentId();
-
-        var chore = await GetChoreByIdFromDb(request.Id, cancellationToken);
-
-        if (chore == null)
-            throw new NotFoundException($"No chore exists with ID [{request.Id}]");
 
         if (chore.Kid.ParentId != parentId)
             throw new DomainException(
