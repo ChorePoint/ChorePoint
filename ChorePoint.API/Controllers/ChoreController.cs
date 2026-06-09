@@ -1,4 +1,5 @@
 ﻿using ChorePoint.Application.Handlers.Chore.Create;
+using ChorePoint.Application.Handlers.Chore.DeleteChoreById;
 using ChorePoint.Application.Handlers.Chore.GetChoreById;
 using ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 using ChorePoint.Application.Handlers.Chore.GetChoresByParent;
@@ -96,6 +97,22 @@ public class ChoreController(IMediator mediator) : ControllerBase
         {
             success = true,
             message = $"Chore with ID [{command.Id}] successfully updated"
+        });
+    }
+
+    [Authorize]
+    [HttpDelete("delete/{choreId:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> DeleteChore(int choreId)
+    {
+        await mediator.Send(new DeleteChoreByIdCommand(choreId));
+        return Ok(new
+        {
+            success = true,
+            message = $"Chore with ID [{choreId}] successfully deleted"
         });
     }
 }
