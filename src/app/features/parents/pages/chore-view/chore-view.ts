@@ -10,7 +10,7 @@ import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
 import { ChoreCardWrapper } from '../../../../shared/components/chore-card-wrapper/chore-card-wrapper';
 import { GetBonus, GetDaily, GetWeekly } from '../../../../shared/helpers/chore.helpers';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
-import { LoadingAction } from '../../../../shared/types/loading-action';
+import { LoadingAction, LoadingType } from '../../../../shared/types/loading-action';
 import { TimeFrame } from '../../../../shared/types/timeframe';
 import { KidSelectorHeader } from '../../../chores/components/kid-selector-header/kid-selector-header';
 
@@ -76,12 +76,15 @@ export class ChoreView implements OnInit {
   }
 
   deleteChore(chore: Chore) {
-    this.choreService.deleteChore(chore.id);
-    this.refresh$.next();
+    this.loadingAction = { choreId: chore.id, type: LoadingType.Delete };
+
+    this.choreService.deleteChore$(chore.id).subscribe(() => {
+      this.refresh$.next();
+    });
   }
 
   toggleActive(chore: Chore) {
-    this.loadingAction = { choreId: chore.id, type: 'activate' };
+    this.loadingAction = { choreId: chore.id, type: LoadingType.Activate };
 
     this.choreService
       .updateChore$({

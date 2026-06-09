@@ -12,7 +12,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { Chore } from '../../../core/types/dtos/chore';
 import { Kid } from '../../../core/types/dtos/kid';
-import { LoadingAction } from '../../types/loading-action';
+import { LoadingAction, LoadingType } from '../../types/loading-action';
 import { TimeFrame } from '../../types/timeframe';
 import { LoadingEmoji } from '../loading-emoji/loading-emoji';
 
@@ -35,6 +35,8 @@ export class ChoreCard {
 
   @Output() deleteEmitter = new EventEmitter<Chore>();
   @Output() toggleActiveEmitter = new EventEmitter<Chore>();
+
+  LoadingType = LoadingType;
 
   menuOpen = -1;
 
