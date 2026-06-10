@@ -1,6 +1,7 @@
 ﻿using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.Chore.UpdateChore;
@@ -37,6 +38,8 @@ public class UpdateChoreHandler(IAppDbContext context, IParentContextService par
     private async Task<ChoreE?> GetChoreByIdFromDb(int choreId, CancellationToken cancellationToken)
     {
         return await context.Chores
-            .FindAsync([choreId], cancellationToken);
+            .Include(c => c.Kid)
+            .Where(c => c.Id == choreId)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }
