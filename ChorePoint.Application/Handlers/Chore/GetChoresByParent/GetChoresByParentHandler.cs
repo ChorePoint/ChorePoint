@@ -31,12 +31,12 @@ public class GetChoresByParentHandler(
             : chores.Adapt<IReadOnlyList<GetChoresByParentResponse>>();
     }
 
-    private async Task<IReadOnlyList<ChoreE>> GetChoresByParentFromDb(int parentId, bool isVisible,
+    private async Task<IReadOnlyList<ChoreE>> GetChoresByParentFromDb(int parentId, bool? isVisible,
         CancellationToken cancellationToken)
     {
         return await context.Chores
             .Where(c => c.Kid.ParentId == parentId)
-            .Where(c => c.IsVisible == isVisible)
+            .Where(c => isVisible == null || c.IsVisible == isVisible)
             .ToListAsync(cancellationToken);
     }
 }
