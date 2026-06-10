@@ -1,0 +1,12 @@
+@if (vm$ | async; as vm) {
+  <app-chore-form
+    [form]="form"
+    [kids]="vm.kids"
+    [title]="'✏️ Edit Chore'"
+    [submitText]="'Update Chore'"
+    [loading]="loading()"
+    (submitted)="submit()"
+  />
+} @else {
+  <app-loading-screen />
+}

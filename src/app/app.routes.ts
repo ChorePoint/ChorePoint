@@ -4,6 +4,7 @@ import { CreateAccount } from './features/auth/pages/create-account/create-accou
 import { Login } from './features/auth/pages/login/login';
 import { AddChore } from './features/chores/pages/add-chore/add-chore';
 import { ChoreDetails } from './features/chores/pages/chore-details/chore-details';
+import { EditChore } from './features/chores/pages/edit-chore/edit-chore';
 import { DashboardLayout } from './features/parents/dashboard-layout/dashboard-layout';
 import { ChoreView } from './features/parents/pages/chore-view/chore-view';
 import { DashboardHome } from './features/parents/pages/dashboard-home/dashboard-home';
@@ -23,6 +24,7 @@ export const routes: Routes = [
       { path: 'home', component: DashboardHome, pathMatch: 'full' },
       { path: 'chores', component: ChoreView },
       { path: 'chores/add', component: AddChore },
+      { path: 'chores/edit/:id', component: EditChore },
       {
         path: 'kids',
         component: KidsSettings,
