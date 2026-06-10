@@ -17,7 +17,7 @@ namespace ChorePoint.API.Controllers;
 public class ShopController(IMediator mediator) : ControllerBase
 {
     [Authorize]
-    [HttpPost("buy/{shopItemId:int}")]
+    [HttpPost("{shopItemId:int}/buy")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -34,7 +34,7 @@ public class ShopController(IMediator mediator) : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("delete/{shopItemId:int}")]
+    [HttpDelete("{shopItemId:int}/delete")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -138,7 +138,7 @@ public class ShopController(IMediator mediator) : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("update")]
+    [HttpPut("update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
