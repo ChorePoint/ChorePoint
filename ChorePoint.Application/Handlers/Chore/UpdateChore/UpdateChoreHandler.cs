@@ -37,10 +37,9 @@ public class UpdateChoreHandler(IAppDbContext context, IParentContextService par
 
     private async Task<ChoreE?> GetChoreByIdFromDb(int choreId, CancellationToken cancellationToken)
     {
-        var query = context.Chores
+        return await context.Chores
             .Include(c => c.Kid)
-            .Where(c => c.Id == choreId);
-
-        return await query.FirstOrDefaultAsync(cancellationToken);
+            .Where(c => c.Id == choreId)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }
