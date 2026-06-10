@@ -21,11 +21,12 @@ public class GetShopItemsByParentHandler(
         var shopItems = await GetShopItemsByParentFromDb(parentId, cancellationToken);
 
         return shopItems.Empty()
-            ? throw new NotFoundException($"No chores exist for parent ID [{parentId}]")
+            ? throw new NotFoundException($"No shop items are assigned to parent ID [{parentId}]")
             : shopItems.Adapt<IReadOnlyList<GetShopItemsByParentResponse>>();
     }
-    
-    private async Task<IReadOnlyList<ShopItem>> GetShopItemsByParentFromDb(int parentId, CancellationToken cancellationToken)
+
+    private async Task<IReadOnlyList<ShopItem>> GetShopItemsByParentFromDb(int parentId,
+        CancellationToken cancellationToken)
     {
         return await context.ShopItems
             .Where(si => si.ParentId == parentId)

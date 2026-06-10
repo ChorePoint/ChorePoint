@@ -1,5 +1,4 @@
-﻿using ChorePoint.Domain.Enums;
-using MediatR;
+﻿using MediatR;
 
 namespace ChorePoint.Application.Handlers.Shop.NewShopItem;
 
@@ -7,5 +6,5 @@ public record NewShopItemCommand(
     int KidId,
     string Name,
     int Cost,
-    bool SinglePurchaseOnly
+    int Quantity
 ) : IRequest;

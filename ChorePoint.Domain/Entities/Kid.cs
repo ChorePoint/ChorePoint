@@ -26,6 +26,10 @@ public class Kid
 
     [Required] [Column("points_today")] public int PointsToday { get; set; }
 
+    [Required]
+    [Column("spendable_points")]
+    public int SpendablePoints { get; set; }
+
     [Column("created_at")] public DateTime? CreatedAt { get; set; }
 
     [Column("updated_at")] public DateTime? UpdatedAt { get; set; }
@@ -35,4 +39,10 @@ public class Kid
     // Navigation property
     public ICollection<Chore> Chores { get; set; } = [];
     public Parent Parent { get; set; } = null!;
+
+
+    public void SpendPoints(int pointsToSubtract)
+    {
+        SpendablePoints -= pointsToSubtract;
+    }
 }

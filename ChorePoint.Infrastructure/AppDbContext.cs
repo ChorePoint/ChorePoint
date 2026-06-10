@@ -11,6 +11,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Parent> Parents { get; set; } = null!;
     public DbSet<Chore> Chores { get; set; } = null!;
     public DbSet<ChoreSubmission> ChoreSubmissions { get; set; } = null!;
+    public DbSet<ParentSettings> ParentSettings { get; set; } = null!;
     public DbSet<ShopItem> ShopItems { get; set; } = null!;
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -26,18 +27,18 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
         modelBuilder.Entity<Chore>(entity =>
         {
-            entity.Property(e => e.Difficulty)
+            entity.Property(c => c.Difficulty)
                 .HasConversion<string>()
                 .HasMaxLength(10);
 
-            entity.Property(e => e.Frequency)
+            entity.Property(c => c.Frequency)
                 .HasConversion<string>()
                 .HasMaxLength(10);
         });
 
         modelBuilder.Entity<ChoreSubmission>(entity =>
         {
-            entity.Property(e => e.ApprovalStatus)
+            entity.Property(cs => cs.ApprovalStatus)
                 .HasConversion<string>()
                 .HasMaxLength(10);
         });
@@ -45,10 +46,17 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         // Convert List<DayOfWeek> to a comma-separated string for storage
         modelBuilder.Entity<ParentSettings>(entity =>
         {
-            entity.Property(e => e.ShopOpeningDays)
+            entity.Property(ps => ps.ShopOpeningDays)
                 .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
-                    v => JsonSerializer.Deserialize<List<DayOfWeek>>(v, (JsonSerializerOptions?)null)!);
+                    dow => JsonSerializer.Serialize(dow, (JsonSerializerOptions?)null),
+                    dow => JsonSerializer.Deserialize<List<DayOfWeek>>(dow, (JsonSerializerOptions?)null)!);
+        });
+
+        modelBuilder.Entity<ShopItem>(entity =>
+        {
+            entity.Property(si => si.Status)
+                .HasConversion<string>()
+                .HasMaxLength(10);
         });
     }
 }

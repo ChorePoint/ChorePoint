@@ -1,8 +1,8 @@
 using ChorePoint.Domain.Enums;
 
-namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByParent;
+namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByKid;
 
-public record GetShopItemsByParentResponse(
+public record GetShopItemsByKidResponse(
     int Id,
     int ParentId,
     int KidId,

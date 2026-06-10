@@ -4,6 +4,5 @@ public enum ShopItemStatus
 {
     Available,
     Pending,
-    Bought,
     Hidden
 }

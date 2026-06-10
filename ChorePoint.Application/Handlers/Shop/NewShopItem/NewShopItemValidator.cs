@@ -11,5 +11,8 @@ public class NewShopItemValidator : AbstractValidator<NewShopItemCommand>
 
         RuleFor(x => x.Cost)
             .NotEmpty().WithMessage("Cost is required");
+
+        RuleFor(x => x.Quantity)
+            .NotEmpty().WithMessage("Quantity is required");
     }
 }
