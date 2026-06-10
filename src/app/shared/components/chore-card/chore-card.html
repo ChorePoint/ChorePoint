@@ -43,7 +43,13 @@
       </div>
       <div class="menu-divider"></div>
       <div class="menu-item mi-delete" (click)="delete(chore)">
-        <div class="mi-icon">🗑️</div>
+        <div class="mi-icon">
+          @if (loadingAction?.type === LoadingType.Delete && loadingAction?.choreId === chore.id) {
+            <app-loading-emoji />
+          } @else {
+            🗑️
+          }
+        </div>
         Delete chore
       </div>
     </div>

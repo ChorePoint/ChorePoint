@@ -51,8 +51,10 @@ export class ChoreService {
     );
   }
 
-  deleteChore(id: number) {
-    console.log('Delete chore with id:', id);
-    //TODO: Implement delete chore API call
+  deleteChore$(id: number) {
+    return this.http.delete<void>(`${this.baseUrl}/delete/${id}`).pipe(
+      map((res) => res),
+      catchError((err) => (err.status === 404 ? of(null) : throwError(() => err))),
+    );
   }
 }
