@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ChorePoint.Domain.Exceptions;
 
 namespace ChorePoint.Domain.Entities;
 
@@ -43,6 +44,9 @@ public class Kid
 
     public void SpendPoints(int pointsToSubtract)
     {
+        if (pointsToSubtract > SpendablePoints)
+            throw new DomainException($"Kid with ID [{Id}] does not have enough spendable points!");
+        
         SpendablePoints -= pointsToSubtract;
     }
 }
