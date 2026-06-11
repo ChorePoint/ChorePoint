@@ -24,14 +24,13 @@ public class BuyShopItemHandler(IAppDbContext context, IParentContextService par
 
         if (parentSettings is null)
             throw new NotFoundException($"No settings exist for parent ID [{shopItem.ParentId}]");
-
-        shopItem.Buy(parentSettings.ApprovePurchases);
-
+        
         var kid = await context.Kids.FindAsync([shopItem.KidId], cancellationToken);
 
         if (kid is null)
             throw new NotFoundException($"No kid exists with ID [{shopItem.KidId}]");
 
+        shopItem.Buy(parentSettings.ApprovePurchases);
         kid.SpendPoints(shopItem.Cost);
 
         await context.SaveChangesAsync(cancellationToken);
