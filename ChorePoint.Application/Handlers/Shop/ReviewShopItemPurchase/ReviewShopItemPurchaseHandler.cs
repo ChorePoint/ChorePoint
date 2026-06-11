@@ -29,13 +29,12 @@ public class ReviewShopItemPurchaseHandler(IAppDbContext context, IParentContext
 
         if (request.Approve)
         {
-            shopItem.Buy(false);
-
             var kid = await context.Kids.FindAsync([shopItem.KidId], cancellationToken);
 
             if (kid is null)
                 throw new NotFoundException($"No kid exists with ID [{shopItem.KidId}]");
-
+            
+            shopItem.Buy(false);
             kid.SpendPoints(shopItem.Cost);
         }
 
