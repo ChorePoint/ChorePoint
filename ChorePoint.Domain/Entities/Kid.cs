@@ -46,7 +46,7 @@ public class Kid
     {
         if (pointsToSubtract > SpendablePoints)
             throw new DomainException($"Kid with ID [{Id}] does not have enough spendable points!");
-        
+
         SpendablePoints -= pointsToSubtract;
     }
 }

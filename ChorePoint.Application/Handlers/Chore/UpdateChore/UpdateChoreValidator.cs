@@ -8,7 +8,7 @@ public class UpdateChoreValidator : AbstractValidator<UpdateChoreCommand>
     {
         RuleFor(x => x.Id)
             .NotEmpty().WithMessage("ID is required");
-        
+
         RuleFor(x => x.KidId)
             .NotEmpty().WithMessage("KidId is required");
 

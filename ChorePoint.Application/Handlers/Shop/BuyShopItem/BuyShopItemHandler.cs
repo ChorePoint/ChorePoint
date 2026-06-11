@@ -24,7 +24,7 @@ public class BuyShopItemHandler(IAppDbContext context, IParentContextService par
 
         if (parentSettings is null)
             throw new NotFoundException($"No settings exist for parent ID [{shopItem.ParentId}]");
-        
+
         var kid = await context.Kids.FindAsync([shopItem.KidId], cancellationToken);
 
         if (kid is null)

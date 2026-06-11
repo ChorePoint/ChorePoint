@@ -33,7 +33,7 @@ public class ReviewShopItemPurchaseHandler(IAppDbContext context, IParentContext
 
             if (kid is null)
                 throw new NotFoundException($"No kid exists with ID [{shopItem.KidId}]");
-            
+
             shopItem.Buy(false);
             kid.SpendPoints(shopItem.Cost);
         }
