@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.Chore.DeleteChoreById;
+
 public class DeleteChoreByIdHandler(IAppDbContext context, IParentContextService parentContextService)
     : IRequestHandler<DeleteChoreByIdCommand>
 {

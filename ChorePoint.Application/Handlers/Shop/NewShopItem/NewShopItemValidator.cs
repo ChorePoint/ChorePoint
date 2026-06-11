@@ -8,7 +8,7 @@ public class NewShopItemValidator : AbstractValidator<NewShopItemCommand>
     {
         RuleFor(x => x.KidId)
             .NotEmpty().WithMessage("KidId is required");
-        
+
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Name is required");
 
