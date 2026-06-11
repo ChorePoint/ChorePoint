@@ -38,4 +38,11 @@ public class ChoreSubmission
     {
         return ApprovalStatus == ChoreApprovalStatus.Approved && CompletedAt >= startOfWeek;
     }
+
+    public void Review(bool approve, DateTime approvedAt, int parentId)
+    {
+        ApprovalStatus = approve ? ChoreApprovalStatus.Approved : ChoreApprovalStatus.Rejected;
+        ApprovedAt = approvedAt;
+        ApprovedByUserId = parentId;
+    }
 }

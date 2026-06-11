@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace ChorePoint.Application.Handlers.Chore.Create;
+namespace ChorePoint.Application.Handlers.Chore.CreateChore;
 
 public class CreateChoreValidator : AbstractValidator<CreateChoreCommand>
 {

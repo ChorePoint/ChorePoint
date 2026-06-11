@@ -3,14 +3,12 @@ using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ZiggyCreatures.Caching.Fusion;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.ReviewSubmission;
 
 public class ReviewSubmissionHandler(
     IAppDbContext context,
-    IParentContextService parentContextService,
-    IFusionCache cache) : IRequestHandler<ReviewSubmissionCommand>
+    IParentContextService parentContextService) : IRequestHandler<ReviewSubmissionCommand>
 {
     public async Task Handle(ReviewSubmissionCommand request, CancellationToken cancellationToken)
     {
@@ -19,14 +17,10 @@ public class ReviewSubmissionHandler(
                          cs.ApprovalStatus == ChoreApprovalStatus.Pending)
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (submission == null)
+        if (submission is null)
             throw new NotFoundException($"No pending chore submission exists with ID [{request.ChoreSubmissionId}]");
 
-        var parentId = parentContextService.GetParentId();
-
-        submission.ApprovalStatus = request.Approve ? ChoreApprovalStatus.Approved : ChoreApprovalStatus.Rejected;
-        submission.ApprovedAt = DateTime.UtcNow;
-        submission.ApprovedByUserId = request.Approve ? parentId : null;
+        submission.Review(request.Approve, DateTime.Now, parentContextService.GetParentId());
 
         await context.SaveChangesAsync(cancellationToken);
     }

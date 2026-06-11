@@ -1,4 +1,4 @@
-﻿using ChorePoint.Application.Handlers.Chore.Create;
+using ChorePoint.Application.Handlers.Chore.CreateChore;
 using ChorePoint.Application.Handlers.Chore.DeleteChoreById;
 using ChorePoint.Application.Handlers.Chore.GetChoreById;
 using ChorePoint.Application.Handlers.Chore.GetChoresByKid;

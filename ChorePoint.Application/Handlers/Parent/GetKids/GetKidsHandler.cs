@@ -1,6 +1,7 @@
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
+using ChorePoint.Domain.Extensions;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +10,9 @@ using ZiggyCreatures.Caching.Fusion;
 namespace ChorePoint.Application.Handlers.Parent.GetKids;
 
 public class GetKidsHandler(IAppDbContext context, IParentContextService parentContextService, IFusionCache cache)
-    : IRequestHandler<GetKidsQuery, IReadOnlyCollection<GetKidsResponse>>
+    : IRequestHandler<GetKidsQuery, IReadOnlyList<GetKidsResponse>>
 {
-    public async Task<IReadOnlyCollection<GetKidsResponse>> Handle(GetKidsQuery request,
+    public async Task<IReadOnlyList<GetKidsResponse>> Handle(GetKidsQuery request,
         CancellationToken cancellationToken)
     {
         var parentId = parentContextService.GetParentId();
@@ -22,9 +23,9 @@ public class GetKidsHandler(IAppDbContext context, IParentContextService parentC
             token: cancellationToken
         );
 
-        return kids.Count == 0
+        return kids.Empty()
             ? throw new NotFoundException($"No kids exist with parent ID [{parentId}]")
-            : kids.Adapt<IReadOnlyCollection<GetKidsResponse>>();
+            : kids.Adapt<IReadOnlyList<GetKidsResponse>>();
     }
 
     private async Task<IReadOnlyList<Kid>> GetKidsAssignedToParentFromDb(int parentId,

@@ -18,7 +18,7 @@ public class LoginHandler(
         var parent = await context.Parents
             .FirstOrDefaultAsync(p => p.Email.Equals(request.Email), cancellationToken);
 
-        if (parent == null || passwordHasher.VerifyHashedPassword(parent, parent.Password, request.Password) ==
+        if (parent is null || passwordHasher.VerifyHashedPassword(parent, parent.Password, request.Password) ==
             PasswordVerificationResult.Failed)
             throw new DomainException("Invalid email or password");
 

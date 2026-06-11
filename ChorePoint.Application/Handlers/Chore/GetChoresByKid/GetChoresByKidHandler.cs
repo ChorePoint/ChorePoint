@@ -1,5 +1,6 @@
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
+using ChorePoint.Domain.Extensions;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,10 +21,9 @@ public class GetChoresByKidHandler(IAppDbContext context, IFusionCache cache)
             token: cancellationToken
         );
 
-        if (chores == null || chores.Count == 0)
-            throw new NotFoundException($"No chores exist with kid ID [{request.KidId}]");
-
-        return chores.Adapt<IReadOnlyList<GetChoresByKidResponse>>();
+        return chores.Empty()
+            ? throw new NotFoundException($"No chores exist with kid ID [{request.KidId}]")
+            : chores.Adapt<IReadOnlyList<GetChoresByKidResponse>>();
     }
 
     private async Task<IReadOnlyList<ChoreE>> GetChoresByKidIdFromDb(int kidId,

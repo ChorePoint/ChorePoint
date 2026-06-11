@@ -24,7 +24,7 @@ public class CompleteChoreHandler(IAppDbContext context, IFusionCache cache) : I
             token: cancellationToken
         );
 
-        if (chore == null)
+        if (chore is null)
             throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");
 
         var now = DateTime.UtcNow;

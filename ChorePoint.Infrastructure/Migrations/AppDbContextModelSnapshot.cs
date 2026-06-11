@@ -69,6 +69,10 @@ namespace ChorePoint.Infrastructure.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("is_visible");
 
+                    b.Property<int>("KidId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
+
                     b.Property<DateTime?>("LastCompletedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("last_completed_at");
@@ -87,13 +91,9 @@ namespace ChorePoint.Infrastructure.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("KidId");
 
                     b.ToTable("chores");
                 });
@@ -133,13 +133,13 @@ namespace ChorePoint.Infrastructure.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
+                    b.Property<int>("KidId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
+
                     b.Property<string>("Notes")
                         .HasColumnType("longtext")
                         .HasColumnName("notes");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
 
                     b.HasKey("Id");
 
@@ -147,9 +147,69 @@ namespace ChorePoint.Infrastructure.Migrations
 
                     b.HasIndex("ChoreId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("KidId");
 
                     b.ToTable("chore_submissions");
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("Age")
+                        .HasColumnType("int")
+                        .HasColumnName("age");
+
+                    b.Property<string>("Avatar")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("avatar");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("DayStreak")
+                        .HasColumnType("int")
+                        .HasColumnName("day_streak");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("name");
+
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int")
+                        .HasColumnName("parent_id");
+
+                    b.Property<int>("PointsToday")
+                        .HasColumnType("int")
+                        .HasColumnName("points_today");
+
+                    b.Property<int>("SpendablePoints")
+                        .HasColumnType("int")
+                        .HasColumnName("spendable_points");
+
+                    b.Property<int>("TotalPoints")
+                        .HasColumnType("int")
+                        .HasColumnName("total_points");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Parent", b =>
@@ -237,7 +297,7 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.ToTable("parent_settings");
                 });
 
-            modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.ShopItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -246,41 +306,37 @@ namespace ChorePoint.Infrastructure.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Age")
+                    b.Property<int>("Cost")
                         .HasColumnType("int")
-                        .HasColumnName("age");
-
-                    b.Property<string>("Avatar")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("avatar");
+                        .HasColumnName("cost");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
-                    b.Property<int>("DayStreak")
+                    b.Property<int>("KidId")
                         .HasColumnType("int")
-                        .HasColumnName("day_streak");
+                        .HasColumnName("kid_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("name");
 
                     b.Property<int>("ParentId")
                         .HasColumnType("int")
                         .HasColumnName("parent_id");
 
-                    b.Property<int>("PointsToday")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int")
-                        .HasColumnName("points_today");
+                        .HasColumnName("quantity");
 
-                    b.Property<int>("TotalPoints")
-                        .HasColumnType("int")
-                        .HasColumnName("total_points");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("status");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)")
@@ -288,16 +344,18 @@ namespace ChorePoint.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("KidId");
+
                     b.HasIndex("ParentId");
 
-                    b.ToTable("users");
+                    b.ToTable("shop_items");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Chore", b =>
                 {
                     b.HasOne("ChorePoint.Domain.Entities.Kid", "Kid")
                         .WithMany("Chores")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("KidId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -318,7 +376,7 @@ namespace ChorePoint.Infrastructure.Migrations
 
                     b.HasOne("ChorePoint.Domain.Entities.Kid", "Kid")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("KidId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -327,6 +385,17 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.Navigation("Chore");
 
                     b.Navigation("Kid");
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
+                {
+                    b.HasOne("ChorePoint.Domain.Entities.Parent", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ParentSettings", b =>
@@ -340,13 +409,21 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.ShopItem", b =>
                 {
+                    b.HasOne("ChorePoint.Domain.Entities.Kid", "Kid")
+                        .WithMany()
+                        .HasForeignKey("KidId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ChorePoint.Domain.Entities.Parent", "Parent")
                         .WithMany()
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Kid");
 
                     b.Navigation("Parent");
                 });

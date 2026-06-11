@@ -47,6 +47,23 @@ public sealed class Chore
     public Kid Kid { get; set; } = null!;
 
 
+    public static Chore Create(string name, string icon, int points, ChoreDifficulty difficulty,
+        ChoreFrequency frequency, DayOfWeek? dueDay, int kidId, string description, DateTime now)
+    {
+        return new Chore
+        {
+            Name = name,
+            Icon = icon,
+            Points = points,
+            Difficulty = difficulty,
+            Frequency = frequency,
+            DueDay = dueDay,
+            KidId = kidId,
+            Description = description,
+            CreatedAt = now
+        };
+    }
+
     public ChoreSubmission CreateSubmission(DateTime now)
     {
         return new ChoreSubmission

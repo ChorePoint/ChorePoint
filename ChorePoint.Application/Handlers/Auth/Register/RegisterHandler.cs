@@ -15,17 +15,17 @@ public class RegisterHandler(IAppDbContext context, IPasswordHasher<ParentE> pas
         var existingParent = await context.Parents
             .FirstOrDefaultAsync(p => p.Email == request.Email, cancellationToken);
 
-        if (existingParent != null)
+        if (existingParent is not null)
             throw new ParentAlreadyExistsException(request.Email);
 
-        var parent = new ParentE
-        {
-            FirstName = request.FirstName,
-            LastName = request.LastName,
-            Email = request.Email,
-            CreatedAt = DateTime.UtcNow
-        };
-        parent.Password = passwordHasher.HashPassword(parent, request.Password);
+        var parent = ParentE.CreateWithoutPassword
+        (
+            request.FirstName,
+            request.LastName,
+            request.Email,
+            DateTime.UtcNow
+        );
+        parent.SetPassword(passwordHasher.HashPassword(parent, request.Password));
 
         context.Parents.Add(parent);
         await context.SaveChangesAsync(cancellationToken);

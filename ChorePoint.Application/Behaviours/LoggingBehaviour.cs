@@ -4,18 +4,18 @@ using Microsoft.Extensions.Logging;
 
 namespace ChorePoint.Application.Behaviours;
 
-public class LoggingBehavior<TRequest, TResponse>(ILogger<TRequest> logger)
+public partial class LoggingBehavior<TRequest, TResponse>(ILogger<TRequest> logger)
     : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        var requestName = request?.GetType().Name;
+        var requestName = request.GetType().Name;
         var requestGuid = Guid.NewGuid().ToString();
 
         var requestNameWithGuid = $"{requestName} [{requestGuid}]";
 
-        logger.LogInformation("[START] {RequestNameWithGuid}", requestNameWithGuid);
+        LogRequestStart(requestNameWithGuid);
         TResponse response;
 
         var stopwatch = Stopwatch.StartNew();
@@ -23,7 +23,7 @@ public class LoggingBehavior<TRequest, TResponse>(ILogger<TRequest> logger)
         {
             try
             {
-                logger.LogDebug("[REQUEST_DEBUG] {RequestNameWithGuid} {Request}", requestNameWithGuid, request);
+                LogRequestInfoDebug(requestNameWithGuid, request);
             }
             catch (NotSupportedException ex)
             {
@@ -36,10 +36,20 @@ public class LoggingBehavior<TRequest, TResponse>(ILogger<TRequest> logger)
         finally
         {
             stopwatch.Stop();
-            logger.LogInformation("[END] {RequestNameWithGuid}; Execution time={StopwatchElapsedMilliseconds}ms",
-                requestNameWithGuid, stopwatch.ElapsedMilliseconds);
+            LogRequestEnd(requestNameWithGuid, stopwatch.ElapsedMilliseconds);
         }
 
         return response;
     }
+
+
+    [LoggerMessage(LogLevel.Information, "[START] {RequestNameWithGuid}")]
+    partial void LogRequestStart(string requestNameWithGuid);
+
+    [LoggerMessage(LogLevel.Debug, "[REQUEST_DEBUG] {RequestNameWithGuid} {Request}")]
+    partial void LogRequestInfoDebug(string requestNameWithGuid, object request);
+
+    [LoggerMessage(LogLevel.Information,
+        "[END] {RequestNameWithGuid}; Execution time={StopwatchElapsedMilliseconds}ms")]
+    partial void LogRequestEnd(string requestNameWithGuid, long stopwatchElapsedMilliseconds);
 }
