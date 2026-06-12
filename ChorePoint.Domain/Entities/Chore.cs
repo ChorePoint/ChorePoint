@@ -6,7 +6,7 @@ using ChorePoint.Domain.Exceptions;
 namespace ChorePoint.Domain.Entities;
 
 [Table("chores")]
-public sealed class Chore : EntityBase
+public class Chore : EntityBase
 {
     [Key] [Column("chore_id")] public int ChoreId { get; set; }
 
