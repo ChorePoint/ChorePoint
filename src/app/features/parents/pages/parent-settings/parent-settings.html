@@ -1,12 +1,11 @@
 @if (vm$ | async; as vm) {
-  <div class="header">
-    <div class="header-top">
-      <div class="back-button">←</div>
-      <div class="page-title">Parent Settings</div>
-    </div>
-
+  <app-header
+    [config]="{
+      pageTitle: 'Parent Settings',
+    }"
+  >
     <div class="parent-badge">👨‍👩‍👧‍👦 Parent Account</div>
-  </div>
+  </app-header>
 
   <div class="content">
     <!-- Subscription Info -->
@@ -156,14 +155,6 @@
     <!-- Privacy & Safety -->
     <div class="section">
       <div class="section-title">Privacy & Safety</div>
-
-      <!-- <div class="info-card">
-        <div class="info-title">🔒 COPPA Compliant</div>
-        <div class="info-text">
-          We protect children's privacy and follow all safety regulations.
-        </div>
-      </div> -->
-
       <div class="settings-list">
         <div class="setting-item">
           <div class="setting-icon purple">👥</div>
