@@ -1,4 +1,4 @@
-@use '../../../../shared/styles/buttons.scss' as buttons;
+@use "../../../../shared/styles/buttons.scss" as buttons;
 
 .header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -121,9 +121,6 @@
 }
 
 .section-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #2c3e50;
     margin-bottom: 12px;
 }
 
