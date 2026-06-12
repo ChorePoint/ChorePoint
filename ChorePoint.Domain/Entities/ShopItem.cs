@@ -5,32 +5,26 @@ using ChorePoint.Domain.Enums;
 namespace ChorePoint.Domain.Entities;
 
 [Table("shop_items")]
-public class ShopItem
+public class ShopItem : EntityBase
 {
-    [Key] [Column("id")] public int Id { get; set; }
+    [Key] [Column("shop_item_id")] public int ShopItemId { get; set; }
 
-    [Required] [Column("parent_id")] public int ParentId { get; set; }
+    [Column("parent_id")] public int ParentId { get; set; }
 
-    [Required] [Column("kid_id")] public int KidId { get; set; }
+    [Column("kid_id")] public int KidId { get; set; }
 
-    [Required]
-    [MaxLength(50)]
-    [Column("name")]
-    public string Name { get; set; }
+    [MaxLength(50)] [Column("name")] public string Name { get; set; }
 
-    [Required] [Column("cost")] public int Cost { get; set; }
+    [Column("cost")] public int Cost { get; set; }
 
-    [Required] [Column("status")] public ShopItemStatus Status { get; set; }
+    [MaxLength(10)] [Column("status")] public ShopItemStatus Status { get; set; }
 
-    [Required] [Column("quantity")] public int Quantity { get; set; }
+    [Column("quantity")] public int Quantity { get; set; }
 
-    [Column("created_at")] public DateTime? CreatedAt { get; set; }
 
-    [Column("updated_at")] public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+    [ForeignKey(nameof(ParentId))] public Parent Parent { get; set; }
 
-    [ForeignKey(nameof(ParentId))] public Parent Parent { get; set; } = null!;
-
-    [ForeignKey(nameof(KidId))] public Kid Kid { get; set; } = null!;
+    [ForeignKey(nameof(KidId))] public Kid Kid { get; set; }
 
 
     public static ShopItem Create(int parentId, int kidId, string name, int cost, int quantity, DateTime now)

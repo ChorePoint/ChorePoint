@@ -4,25 +4,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ChorePoint.Domain.Entities;
 
 [Table("parents")]
-public class Parent
+public class Parent : EntityBase
 {
-    [Key] [Column("id")] public int Id { get; set; }
+    [Key] [Column("parent_id")] public int ParentId { get; set; }
 
-    [Required]
     [MaxLength(100)]
     [Column("first_name")]
-    public string FirstName { get; set; } = null!;
+    public string FirstName { get; set; }
 
-    [Required]
-    [MaxLength(100)]
-    [Column("last_name")]
-    public string LastName { get; set; } = null!;
+    [MaxLength(100)] [Column("last_name")] public string LastName { get; set; }
 
-    [Required] [Column("email")] public string Email { get; set; } = null!;
+    [Column("email")] public string Email { get; set; }
 
-    [Required] [Column("password")] public string Password { get; set; } = null!;
-
-    [Column("created_at")] public DateTime? CreatedAt { get; set; }
+    [Column("password")] public string Password { get; set; }
 
 
     public static Parent CreateWithoutPassword(string firstName, string lastName, string email, DateTime now)

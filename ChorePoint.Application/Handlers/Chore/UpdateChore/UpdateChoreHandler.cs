@@ -39,7 +39,7 @@ public class UpdateChoreHandler(IAppDbContext context, IParentContextService par
     {
         return await context.Chores
             .Include(c => c.Kid)
-            .Where(c => c.Id == choreId)
+            .Where(c => c.ChoreId == choreId)
             .FirstOrDefaultAsync(cancellationToken);
     }
 }

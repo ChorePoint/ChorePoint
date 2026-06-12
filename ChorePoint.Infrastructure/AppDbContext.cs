@@ -7,12 +7,18 @@ namespace ChorePoint.Infrastructure;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options), IAppDbContext
 {
-    public DbSet<Kid> Kids { get; set; } = null!;
-    public DbSet<Parent> Parents { get; set; } = null!;
-    public DbSet<Chore> Chores { get; set; } = null!;
-    public DbSet<ChoreSubmission> ChoreSubmissions { get; set; } = null!;
-    public DbSet<ParentSettings> ParentSettings { get; set; } = null!;
-    public DbSet<ShopItem> ShopItems { get; set; } = null!;
+    public DbSet<Chore> Chores { get; set; }
+
+    public DbSet<ChoreSubmission> ChoreSubmissions { get; set; }
+
+    public DbSet<Kid> Kids { get; set; }
+
+    public DbSet<Parent> Parents { get; set; }
+
+    public DbSet<ParentSettings> ParentSettings { get; set; }
+
+    public DbSet<ShopItem> ShopItems { get; set; }
+
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -28,19 +34,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<Chore>(entity =>
         {
             entity.Property(c => c.Difficulty)
-                .HasConversion<string>()
-                .HasMaxLength(10);
+                .HasConversion<string>();
 
             entity.Property(c => c.Frequency)
-                .HasConversion<string>()
-                .HasMaxLength(10);
+                .HasConversion<string>();
         });
 
         modelBuilder.Entity<ChoreSubmission>(entity =>
         {
             entity.Property(cs => cs.ApprovalStatus)
-                .HasConversion<string>()
-                .HasMaxLength(10);
+                .HasConversion<string>();
         });
 
         // Convert List<DayOfWeek> to a comma-separated string for storage
@@ -49,14 +52,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(ps => ps.ShopOpeningDays)
                 .HasConversion(
                     dow => JsonSerializer.Serialize(dow, (JsonSerializerOptions?)null),
-                    dow => JsonSerializer.Deserialize<List<DayOfWeek>>(dow, (JsonSerializerOptions?)null)!);
+                    dow => JsonSerializer.Deserialize<IReadOnlyList<DayOfWeek>>(dow, (JsonSerializerOptions?)null)!);
         });
 
         modelBuilder.Entity<ShopItem>(entity =>
         {
             entity.Property(si => si.Status)
-                .HasConversion<string>()
-                .HasMaxLength(10);
+                .HasConversion<string>();
         });
     }
 }

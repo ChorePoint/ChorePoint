@@ -48,6 +48,6 @@ public class CreateChoreHandler(IAppDbContext context, IParentContextService par
     private async Task<Kid?> GetKidForChoreFromDb(int kidId, CancellationToken cancellationToken)
     {
         return await context.Kids
-            .FirstOrDefaultAsync(k => k.Id == kidId, cancellationToken);
+            .FirstOrDefaultAsync(k => k.KidId == kidId, cancellationToken);
     }
 }

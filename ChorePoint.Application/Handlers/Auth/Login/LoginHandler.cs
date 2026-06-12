@@ -22,7 +22,7 @@ public class LoginHandler(
             PasswordVerificationResult.Failed)
             throw new DomainException("Invalid email or password");
 
-        var token = jwtTokenGenerator.GenerateJwtToken(parent.Id, parent.Email);
+        var token = jwtTokenGenerator.GenerateJwtToken(parent.ParentId, parent.Email);
 
         return new LoginResponse(token);
     }

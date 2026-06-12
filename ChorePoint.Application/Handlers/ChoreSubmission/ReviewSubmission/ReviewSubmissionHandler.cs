@@ -13,7 +13,7 @@ public class ReviewSubmissionHandler(
     public async Task Handle(ReviewSubmissionCommand request, CancellationToken cancellationToken)
     {
         var submission = await context.ChoreSubmissions
-            .Where(cs => cs.Id == request.ChoreSubmissionId &&
+            .Where(cs => cs.ChoreSubmissionId == request.ChoreSubmissionId &&
                          cs.ApprovalStatus == ChoreApprovalStatus.Pending)
             .FirstOrDefaultAsync(cancellationToken);
 

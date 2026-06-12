@@ -30,6 +30,6 @@ public class DeleteChoreByIdHandler(IAppDbContext context, IParentContextService
     {
         return await context.Chores
             .Include(c => c.Kid)
-            .FirstOrDefaultAsync(c => c.Id == choreId, cancellationToken);
+            .FirstOrDefaultAsync(c => c.ChoreId == choreId, cancellationToken);
     }
 }

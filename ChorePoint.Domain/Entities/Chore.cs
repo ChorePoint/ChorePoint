@@ -6,45 +6,40 @@ using ChorePoint.Domain.Exceptions;
 namespace ChorePoint.Domain.Entities;
 
 [Table("chores")]
-public sealed class Chore
+public sealed class Chore : EntityBase
 {
-    [Key] [Column("id")] public int Id { get; set; }
+    [Key] [Column("chore_id")] public int ChoreId { get; set; }
 
-    [Required] [Column("user_id")] public int KidId { get; set; }
+    [Column("parent_id")] public int ParentId { get; set; }
 
-    [Required]
-    [MaxLength(150)]
-    [Column("name")]
-    public string Name { get; set; } = null!;
+    [Column("kid_id")] public int KidId { get; set; }
 
-    [Required]
-    [MaxLength(10)]
-    [Column("icon")]
-    public string Icon { get; set; } = "🎯";
+    [MaxLength(150)] [Column("name")] public string Name { get; set; }
 
-    [Required] [Column("points")] public int Points { get; set; }
+    [MaxLength(10)] [Column("icon")] public string Icon { get; set; }
 
-    [Required] [Column("difficulty")] public ChoreDifficulty Difficulty { get; set; }
+    [MaxLength(300)]
+    [Column("description")]
+    public string? Description { get; set; }
 
-    [Required] [Column("frequency")] public ChoreFrequency Frequency { get; set; } = ChoreFrequency.Daily;
+    [Column("points")] public int Points { get; set; }
 
-    [Column("due_day")] // Only set when frequency is weekly. Determines which day of the week the chore cycles on.
-    public DayOfWeek? DueDay { get; set; } = DayOfWeek.Monday;
+    [MaxLength(10)] [Column("difficulty")] public ChoreDifficulty Difficulty { get; set; }
 
-    [Required] [Column("is_visible")] public bool IsVisible { get; set; } = true;
+    [MaxLength(10)] [Column("frequency")] public ChoreFrequency Frequency { get; set; }
+
+    [Column("due_day")] public DayOfWeek? DueDay { get; set; }
 
     [Column("last_completed_at")] public DateTime? LastCompletedAt { get; set; }
 
-    [Column("created_at")] public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
-
-    [Column("updated_at")] public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
-
     [Column("completion_count")] public int CompletionCount { get; set; }
 
-    [Column("description")] public string? Description { get; set; }
+    [Column("is_visible")] public bool IsVisible { get; set; }
 
-    // Navigation property
-    public Kid Kid { get; set; } = null!;
+
+    [ForeignKey(nameof(ParentId))] public Parent Parent { get; set; }
+
+    [ForeignKey(nameof(KidId))] public Kid Kid { get; set; }
 
 
     public static Chore Create(string name, string icon, int points, ChoreDifficulty difficulty,
@@ -68,7 +63,7 @@ public sealed class Chore
     {
         return new ChoreSubmission
         {
-            ChoreId = Id,
+            ChoreId = ChoreId,
             KidId = KidId,
             CompletedAt = now,
             ApprovalStatus = ChoreApprovalStatus.Approved,
@@ -76,17 +71,8 @@ public sealed class Chore
         };
     }
 
-    public void Update(
-        int kidId,
-        string name,
-        string icon,
-        int points,
-        ChoreDifficulty difficulty,
-        ChoreFrequency frequency,
-        bool isVisible,
-        string? description,
-        DayOfWeek? dueDay
-    )
+    public void Update(int kidId, string name, string icon, int points, ChoreDifficulty difficulty,
+        ChoreFrequency frequency, bool isVisible, string? description, DayOfWeek? dueDay)
     {
         KidId = kidId;
         Name = name;

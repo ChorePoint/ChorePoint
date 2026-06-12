@@ -4,48 +4,35 @@ using ChorePoint.Domain.Exceptions;
 
 namespace ChorePoint.Domain.Entities;
 
-[Table("users")]
-public class Kid
+[Table("kids")]
+public class Kid : EntityBase
 {
-    [Key] [Column("id")] public int Id { get; set; }
-
-    [Required]
-    [MaxLength(100)]
-    [Column("name")]
-    public string Name { get; set; } = null!;
-
-    [Required]
-    [MaxLength(10)]
-    [Column("avatar")]
-    public string Avatar { get; set; } = null!;
-
-    [Column("age")] public int? Age { get; set; }
-
-    [Required] [Column("day_streak")] public int DayStreak { get; set; }
-
-    [Required] [Column("total_points")] public int TotalPoints { get; set; }
-
-    [Required] [Column("points_today")] public int PointsToday { get; set; }
-
-    [Required]
-    [Column("spendable_points")]
-    public int SpendablePoints { get; set; }
-
-    [Column("created_at")] public DateTime? CreatedAt { get; set; }
-
-    [Column("updated_at")] public DateTime? UpdatedAt { get; set; }
+    [Key] [Column("kid_id")] public int KidId { get; set; }
 
     [Column("parent_id")] public int ParentId { get; set; }
 
-    // Navigation property
-    public ICollection<Chore> Chores { get; set; } = [];
-    public Parent Parent { get; set; } = null!;
+    [MaxLength(100)] [Column("name")] public string Name { get; set; }
+
+    [MaxLength(10)] [Column("avatar")] public string Avatar { get; set; }
+
+    [Column("age")] public int? Age { get; set; }
+
+    [Column("day_streak")] public int DayStreak { get; set; }
+
+    [Column("total_points")] public int TotalPoints { get; set; }
+
+    [Column("points_today")] public int PointsToday { get; set; }
+
+    [Column("spendable_points")] public int SpendablePoints { get; set; }
+
+
+    [ForeignKey(nameof(ParentId))] public Parent Parent { get; set; }
 
 
     public void SpendPoints(int pointsToSubtract)
     {
         if (pointsToSubtract > SpendablePoints)
-            throw new DomainException($"Kid with ID [{Id}] does not have enough spendable points!");
+            throw new DomainException($"Kid with ID [{KidId}] does not have enough spendable points!");
 
         SpendablePoints -= pointsToSubtract;
     }
