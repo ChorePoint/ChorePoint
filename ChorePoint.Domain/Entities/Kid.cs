@@ -41,6 +41,20 @@ public class Kid
     public ICollection<Chore> Chores { get; set; } = [];
     public Parent Parent { get; set; } = null!;
 
+    public void Update(
+        string name,
+        int age,
+        string avatar,
+        int spendablePoints,
+        int dayStreak
+    )
+    {
+        Name = name;
+        Age = age;
+        Avatar = avatar;
+        SpendablePoints = spendablePoints;
+        DayStreak = dayStreak;
+    }
 
     public void SpendPoints(int pointsToSubtract)
     {
