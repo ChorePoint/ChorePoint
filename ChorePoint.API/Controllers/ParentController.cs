@@ -1,4 +1,5 @@
-﻿using ChorePoint.Application.Handlers.Parent.GetKids;
+﻿using ChorePoint.Application.Handlers.Parent.GetKidById;
+using ChorePoint.Application.Handlers.Parent.GetKids;
 using ChorePoint.Application.Handlers.Parent.GetMe;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -42,6 +43,24 @@ public class ParentController(IMediator mediator) : ControllerBase
         {
             success = true,
             message = "Kids details retrieved successfully",
+            data = result
+        });
+    }
+
+    [Authorize]
+    [HttpGet("kid/{kidId:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetKidById(int kidId)
+    {
+        var result = await mediator.Send(new GetKidByIdQuery(kidId));
+        return Ok(new
+        {
+            success = true,
+            message = $"Kid details with ID [{kidId}] retrieved successfully",
             data = result
         });
     }
