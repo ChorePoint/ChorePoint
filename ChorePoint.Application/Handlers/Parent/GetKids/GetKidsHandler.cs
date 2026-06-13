@@ -17,7 +17,7 @@ public class GetKidsHandler(IAppDbContext context, IParentContextService parentC
     {
         var parentId = parentContextService.GetParentId();
 
-        var kids = await cache.GetOrSetAsync<IReadOnlyList<Kid>>(
+        var kids = await cache.GetOrSetAsync(
             $"get_kids:{parentId}",
             async _ => await GetKidsAssignedToParentFromDb(parentId, cancellationToken),
             token: cancellationToken
