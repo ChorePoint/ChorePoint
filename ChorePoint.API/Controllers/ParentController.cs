@@ -85,7 +85,7 @@ public class ParentController(IMediator mediator) : ControllerBase
     }
 
     [Authorize]
-    [HttpPut("kid/delete/{kidId:int}")]
+    [HttpDelete("kid/delete/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
