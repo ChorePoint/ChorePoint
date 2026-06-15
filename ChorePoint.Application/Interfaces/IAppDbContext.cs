@@ -11,5 +11,6 @@ public interface IAppDbContext
     public DbSet<ChoreSubmission> ChoreSubmissions { get; }
     public DbSet<ParentSettings> ParentSettings { get; }
     public DbSet<ShopItem> ShopItems { get; }
+    int SaveChanges();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
