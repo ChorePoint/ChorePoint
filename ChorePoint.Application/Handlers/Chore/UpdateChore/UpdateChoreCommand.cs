@@ -11,7 +11,7 @@ public record UpdateChoreCommand(
     int Points,
     ChoreDifficulty Difficulty,
     ChoreFrequency Frequency,
-    int KidId,
-    DayOfWeek DueDay,
-    bool IsVisible
+    IReadOnlyList<int> KidIds,
+    IReadOnlyList<DayOfWeek>? DueDays,
+    IReadOnlyList<bool> Visibilities
 ) : IRequest;

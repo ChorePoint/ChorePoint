@@ -11,6 +11,6 @@ public record CreateChoreCommand(
     ChoreDifficulty Difficulty,
     ChoreFrequency Frequency,
     IReadOnlyList<int> KidIds,
-    DayOfWeek? DueDay,
-    bool IsVisible
+    IReadOnlyList<DayOfWeek>? DueDays,
+    IReadOnlyList<bool> Visibilities
 ) : IRequest;

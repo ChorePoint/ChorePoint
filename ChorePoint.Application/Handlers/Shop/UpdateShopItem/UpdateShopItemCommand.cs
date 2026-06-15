@@ -8,6 +8,6 @@ public record UpdateShopItemCommand(
     string Name,
     int Cost,
     int Quantity,
-    int KidId,
-    ShopItemStatus Status
+    IReadOnlyList<int> KidIds,
+    IReadOnlyList<ShopItemStatus> Statuses
 ) : IRequest;
