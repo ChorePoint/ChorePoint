@@ -33,7 +33,7 @@ Dummy data was used to provide these screenshots.
 <img width="388" height="867" alt="image" src="https://github.com/user-attachments/assets/5466595e-d513-4853-97ec-aa4c80f06657" />
 
 ### Parent Dashboard
-<img width="389" height="840" alt="image" src="https://github.com/user-attachments/assets/24975135-4265-4906-b871-9f0ddba81237" />
+<img width="388" height="842" alt="image" src="https://github.com/user-attachments/assets/11c61abb-155e-4daf-8bf4-39de81fa9d6c" />
 
 ### Chore Details
 <img width="387" height="867" alt="image" src="https://github.com/user-attachments/assets/38752786-fde0-4637-82aa-70d4b92b6874" />
@@ -49,7 +49,6 @@ Dummy data was used to provide these screenshots.
 
 ### Parent Settings
 <img width="389" height="842" alt="image" src="https://github.com/user-attachments/assets/584784a0-8c34-47ed-ace1-3c65b559dc68" />
-
 
 ## Architecture
 
