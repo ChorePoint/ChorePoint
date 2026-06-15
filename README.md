@@ -38,8 +38,18 @@ Dummy data was used to provide these screenshots.
 ### Chore Details
 <img width="387" height="867" alt="image" src="https://github.com/user-attachments/assets/38752786-fde0-4637-82aa-70d4b92b6874" />
 
+### Edit Chore Settings
+<img width="390" height="841" alt="image" src="https://github.com/user-attachments/assets/cfab7269-791d-4936-92b2-9f09bd27546f" />
+
 ### Kids Management Page
 <img width="387" height="844" alt="image" src="https://github.com/user-attachments/assets/bd3b7479-c302-4fcb-9091-fc537e212be8" />
+
+### Edit Kid Page
+<img width="388" height="844" alt="image" src="https://github.com/user-attachments/assets/2d9cc156-f8c4-4507-90ce-9574d6d0fbcb" />
+
+### Parent Settings
+<img width="389" height="842" alt="image" src="https://github.com/user-attachments/assets/584784a0-8c34-47ed-ace1-3c65b559dc68" />
+
 
 ## Architecture
 
