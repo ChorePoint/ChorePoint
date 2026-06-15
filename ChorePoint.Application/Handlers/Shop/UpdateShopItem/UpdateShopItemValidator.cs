@@ -15,10 +15,13 @@ public class UpdateShopItemValidator : AbstractValidator<UpdateShopItemCommand>
         RuleFor(x => x.Cost)
             .NotEmpty().WithMessage("Cost is required");
 
-        RuleFor(x => x.Status)
-            .NotEmpty().WithMessage("Status is required");
-
         RuleFor(x => x.Quantity)
             .NotEmpty().WithMessage("Quantity is required");
+
+        RuleFor(x => x.KidIds)
+            .NotEmpty().WithMessage("KidIds is required");
+
+        RuleFor(x => x.Statuses)
+            .NotEmpty().WithMessage("Statuses is required");
     }
 }

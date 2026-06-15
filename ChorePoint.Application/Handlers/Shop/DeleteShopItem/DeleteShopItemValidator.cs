@@ -1,9 +1,8 @@
-﻿using ChorePoint.Application.Handlers.Shop.BuyShopItem;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace ChorePoint.Application.Handlers.Shop.DeleteShopItem;
 
-public class DeleteShopItemValidator : AbstractValidator<BuyShopItemCommand>
+public class DeleteShopItemValidator : AbstractValidator<DeleteShopItemCommand>
 {
     public DeleteShopItemValidator()
     {
