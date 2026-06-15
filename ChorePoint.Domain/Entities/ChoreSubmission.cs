@@ -4,33 +4,20 @@ using ChorePoint.Domain.Enums;
 
 namespace ChorePoint.Domain.Entities;
 
-[Table("chore_submissions")]
 public class ChoreSubmission : EntityBase
 {
-    [Key] [Column("chore_submission_id")] public int ChoreSubmissionId { get; set; }
-
-    [Column("chore_id")] public int ChoreId { get; set; }
-
-    [Column("kid_id")] public int KidId { get; set; }
-
-    [MaxLength(300)] [Column("notes")] public string? Notes { get; set; }
-
-    [MaxLength(10)]
-    [Column("approval_status")]
+    public int ChoreSubmissionId { get; set; }
+    public int ChoreId { get; set; }
+    public int KidId { get; set; }
+    
+    public string? Notes { get; set; }
     public ChoreApprovalStatus ApprovalStatus { get; set; }
+    public int? ApprovedByParentId { get; set; }
+    public DateTime? ApprovedAt { get; set; }
+    public DateTime CompletedAt { get; set; }
 
-    [Column("completed_at")] public DateTime CompletedAt { get; set; }
-
-    [Column("approved_at")] public DateTime? ApprovedAt { get; set; }
-
-    [Column("approved_by_user_id")] public int? ApprovedByParentId { get; set; }
-
-
-    [ForeignKey(nameof(ChoreId))] public Chore Chore { get; set; }
-
-    [ForeignKey(nameof(KidId))] public Kid Kid { get; set; }
-
-    [ForeignKey(nameof(ApprovedByParentId))]
+    public Chore Chore { get; set; }
+    public Kid Kid { get; set; }
     public Parent? ApprovedByParent { get; set; }
 
 

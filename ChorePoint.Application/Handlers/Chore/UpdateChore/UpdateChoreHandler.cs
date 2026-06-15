@@ -18,9 +18,9 @@ public class UpdateChoreHandler(IAppDbContext context, IParentContextService par
 
         var parentId = parentContextService.GetParentId();
 
-        if (existingChore.Kid.ParentId != parentId)
+        if (existingChore.Kids.ParentId != parentId)
             throw new DomainException(
-                $"Chore with assigned parent ID [{existingChore.Kid.ParentId}] does not belong to the logged in parent with ID [{parentId}]");
+                $"Chore with assigned parent ID [{existingChore.Kids.ParentId}] does not belong to the logged in parent with ID [{parentId}]");
 
         existingChore.Update(request.KidId,
             request.Name,
@@ -38,7 +38,7 @@ public class UpdateChoreHandler(IAppDbContext context, IParentContextService par
     private async Task<ChoreE?> GetChoreByIdFromDb(int choreId, CancellationToken cancellationToken)
     {
         return await context.Chores
-            .Include(c => c.Kid)
+            .Include(c => c.Kids)
             .Where(c => c.ChoreId == choreId)
             .FirstOrDefaultAsync(cancellationToken);
     }

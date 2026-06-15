@@ -18,9 +18,9 @@ public class DeleteChoreByIdHandler(IAppDbContext context, IParentContextService
 
         var parentId = parentContextService.GetParentId();
 
-        if (chore.Kid.ParentId != parentId)
+        if (chore.Kids.ParentId != parentId)
             throw new DomainException(
-                $"Chore with assigned parent ID [{chore.Kid.ParentId}] does not belong to the logged in parent with ID [{parentId}]");
+                $"Chore with assigned parent ID [{chore.Kids.ParentId}] does not belong to the logged in parent with ID [{parentId}]");
 
         context.Chores.Remove(chore);
         await context.SaveChangesAsync(cancellationToken);
@@ -29,7 +29,7 @@ public class DeleteChoreByIdHandler(IAppDbContext context, IParentContextService
     private async Task<ChoreE?> GetChoreByIdFromDb(int choreId, CancellationToken cancellationToken)
     {
         return await context.Chores
-            .Include(c => c.Kid)
+            .Include(c => c.Kids)
             .FirstOrDefaultAsync(c => c.ChoreId == choreId, cancellationToken);
     }
 }

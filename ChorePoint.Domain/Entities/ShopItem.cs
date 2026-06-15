@@ -4,27 +4,19 @@ using ChorePoint.Domain.Enums;
 
 namespace ChorePoint.Domain.Entities;
 
-[Table("shop_items")]
 public class ShopItem : EntityBase
 {
-    [Key] [Column("shop_item_id")] public int ShopItemId { get; set; }
-
-    [Column("parent_id")] public int ParentId { get; set; }
-
-    [Column("kid_id")] public int KidId { get; set; }
-
-    [MaxLength(50)] [Column("name")] public string Name { get; set; }
-
-    [Column("cost")] public int Cost { get; set; }
-
-    [MaxLength(10)] [Column("status")] public ShopItemStatus Status { get; set; }
-
-    [Column("quantity")] public int Quantity { get; set; }
-
-
-    [ForeignKey(nameof(ParentId))] public Parent Parent { get; set; }
-
-    [ForeignKey(nameof(KidId))] public Kid Kid { get; set; }
+    public int ShopItemId { get; set; }
+    public int ParentId { get; set; }
+    public int KidShopItemId { get; set; }
+    
+    public string Name { get; set; }
+    public int Cost { get; set; }
+    public int Quantity { get; set; }
+    
+    public Parent Parent { get; set; }
+    public ICollection<Kid> Kids { get; set; }
+    public ICollection<KidShopItem> KidShopItems { get; set; }
 
 
     public static ShopItem Create(int parentId, int kidId, string name, int cost, int quantity, DateTime now)
