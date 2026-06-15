@@ -4,14 +4,14 @@ using MediatR;
 namespace ChorePoint.Application.Handlers.Chore.UpdateChore;
 
 public record UpdateChoreCommand(
-    int Id,
-    int KidId,
+    int ChoreId,
     string Name,
     string Icon,
+    string Description,
     int Points,
     ChoreDifficulty Difficulty,
     ChoreFrequency Frequency,
-    bool IsVisible,
-    string Description,
-    DayOfWeek DueDay
+    int KidId,
+    DayOfWeek DueDay,
+    bool IsVisible
 ) : IRequest;

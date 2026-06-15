@@ -7,6 +7,7 @@ public record UpdateShopItemCommand(
     int ShopItemId,
     string Name,
     int Cost,
-    ShopItemStatus Status,
-    int Quantity
+    int Quantity,
+    int KidId,
+    ShopItemStatus Status
 ) : IRequest;

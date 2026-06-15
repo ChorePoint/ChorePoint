@@ -3,8 +3,8 @@
 namespace ChorePoint.Application.Handlers.Shop.NewShopItem;
 
 public record NewShopItemCommand(
-    int KidId,
     string Name,
     int Cost,
-    int Quantity
+    int Quantity,
+    IReadOnlyList<int> KidIds
 ) : IRequest;

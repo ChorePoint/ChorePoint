@@ -1,7 +1,7 @@
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetKidsStats;
 
 public record GetKidsStatsResponse(
-    int Completed,
+    int CompletedTotal,
     int CompletedThisWeek,
     int ApprovalRate,
     int DueToday,

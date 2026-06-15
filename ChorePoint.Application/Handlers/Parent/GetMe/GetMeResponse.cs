@@ -4,16 +4,16 @@ using ParentE = ChorePoint.Domain.Entities.Parent;
 namespace ChorePoint.Application.Handlers.Parent.GetMe;
 
 public record GetMeResponse(
-    int Id,
+    int KidId,
+    int ParentId,
+    int KidChoreId,
+    int KidShopItemId,
     string Name,
     string Avatar,
     int? Age,
     int DayStreak,
-    int TotalPoints,
-    int PointsToday,
-    DateTime? CreatedAt,
-    DateTime? UpdatedAt,
-    int ParentId,
-    ICollection<ChoreE> Chores,
-    ParentE Parent
+    int LifetimePoints,
+    int SpendablePoints,
+    ParentE Parent,
+    ICollection<ChoreE> Chores
 );

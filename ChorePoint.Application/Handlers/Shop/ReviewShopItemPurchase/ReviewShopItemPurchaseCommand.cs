@@ -3,7 +3,7 @@
 namespace ChorePoint.Application.Handlers.Shop.ReviewShopItemPurchase;
 
 public record ReviewShopItemPurchaseCommand(
-    int ShopItemId,
     int KidId,
+    int ShopItemId,
     bool Approve = true
 ) : IRequest;

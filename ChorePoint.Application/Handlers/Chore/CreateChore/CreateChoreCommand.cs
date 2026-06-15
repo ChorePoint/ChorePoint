@@ -6,10 +6,11 @@ namespace ChorePoint.Application.Handlers.Chore.CreateChore;
 public record CreateChoreCommand(
     string Name,
     string Icon,
-    int KidId,
-    ChoreFrequency Frequency,
-    DayOfWeek? DueDay,
+    string Description,
     int Points,
     ChoreDifficulty Difficulty,
-    string Description
+    ChoreFrequency Frequency,
+    IReadOnlyList<int> KidIds,
+    DayOfWeek? DueDay,
+    bool IsVisible
 ) : IRequest;
