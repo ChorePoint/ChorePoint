@@ -17,5 +17,13 @@ public class NewShopItemValidator : AbstractValidator<NewShopItemCommand>
 
         RuleFor(x => x.AssignedKids)
             .NotEmpty().WithMessage("AssignedKids is required");
+        
+        RuleForEach(x => x.AssignedKids)
+            .NotEmpty().WithMessage("AssignedKids is required")
+            .ChildRules(assignedKid =>
+            {
+                assignedKid.RuleFor(x => x.KidId)
+                    .NotEmpty().WithMessage("KidId is required in AssignedKids");
+            });
     }
 }
