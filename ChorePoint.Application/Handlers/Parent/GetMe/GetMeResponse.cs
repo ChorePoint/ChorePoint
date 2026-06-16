@@ -6,8 +6,6 @@ namespace ChorePoint.Application.Handlers.Parent.GetMe;
 public record GetMeResponse(
     int KidId,
     int ParentId,
-    int KidChoreId,
-    int KidShopItemId,
     string Name,
     string Avatar,
     int? Age,

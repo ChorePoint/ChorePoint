@@ -5,7 +5,6 @@ namespace ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
 public record GetCurrentResponse(
     int ChoreId,
     int ParentId,
-    int KidChoreId,
     string Name,
     string Icon,
     string? Description,

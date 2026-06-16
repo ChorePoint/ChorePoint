@@ -5,7 +5,6 @@ namespace ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 public record GetChoresByParentResponse(
     int ChoreId,
     int ParentId,
-    int KidChoreId,
     string Name,
     string Icon,
     string? Description,
