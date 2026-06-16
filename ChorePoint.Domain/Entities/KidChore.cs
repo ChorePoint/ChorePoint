@@ -9,4 +9,20 @@ public class KidChore : EntityBase
     
     public DayOfWeek? DueDay { get; set; }
     public bool IsVisible { get; set; }
+    
+    
+    public static KidChore Create(DayOfWeek? dueDay, bool isVisible)
+    {
+        return new KidChore
+        {
+            DueDay = dueDay,
+            IsVisible = isVisible
+        };
+    }
+
+    public void Update(DayOfWeek dueDay, bool isVisible)
+    {
+        DueDay = dueDay;
+        IsVisible = isVisible;
+    }
 }

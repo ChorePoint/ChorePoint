@@ -15,14 +15,13 @@ public class Parent : EntityBase
     public ParentSettings ParentSettings { get; set; }
 
 
-    public static Parent CreateWithoutPassword(string firstName, string lastName, string email, DateTime now)
+    public static Parent CreateWithoutPassword(string firstName, string lastName, string email)
     {
         return new Parent
         {
             FirstName = firstName,
             LastName = lastName,
-            Email = email,
-            CreatedAt = now
+            Email = email
         };
     }
 

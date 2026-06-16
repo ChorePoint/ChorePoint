@@ -19,50 +19,21 @@ public class ShopItem : EntityBase
     public ICollection<KidShopItem> KidShopItems { get; set; }
 
 
-    public static ShopItem Create(int parentId, int kidId, string name, int cost, int quantity, DateTime now)
+    public static ShopItem Create(int parentId, string name, int cost, int quantity)
     {
         return new ShopItem
         {
             ParentId = parentId,
-            KidId = kidId,
             Name = name,
             Cost = cost,
-            Status = ShopItemStatus.Available,
-            Quantity = quantity,
-            CreatedAt = now
+            Quantity = quantity
         };
     }
 
-    public void Update(string name, int cost, ShopItemStatus status, int quantity)
+    public void Update(string name, int cost, int quantity)
     {
         Name = name;
         Cost = cost;
-        Status = status;
         Quantity = quantity;
-    }
-
-    public void Buy(bool purchaseRequiresApproval)
-    {
-        if (purchaseRequiresApproval)
-        {
-            Status = ShopItemStatus.Pending;
-        }
-        else
-        {
-            Quantity = -1;
-            if (Quantity == 0)
-                Status = ShopItemStatus.Hidden;
-        }
-    }
-
-    public void Reactivate(int quantity)
-    {
-        Status = ShopItemStatus.Available;
-        Quantity = quantity;
-    }
-
-    public void ResetStatus()
-    {
-        Status = ShopItemStatus.Available;
     }
 }

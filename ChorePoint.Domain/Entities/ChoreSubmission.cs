@@ -26,10 +26,10 @@ public class ChoreSubmission : EntityBase
         return ApprovalStatus == ChoreApprovalStatus.Approved && CompletedAt >= startOfWeek;
     }
 
-    public void Review(bool approve, DateTime approvedAt, int parentId)
+    public void Review(bool approve, DateTime now, int parentId)
     {
         ApprovalStatus = approve ? ChoreApprovalStatus.Approved : ChoreApprovalStatus.Rejected;
-        ApprovedAt = approvedAt;
+        ApprovedAt = now;
         ApprovedByParentId = parentId;
     }
 }

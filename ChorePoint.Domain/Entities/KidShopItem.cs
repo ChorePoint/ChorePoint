@@ -10,4 +10,43 @@ public class KidShopItem : EntityBase
     public int ShopItemId { get; set; }
     
     public ShopItemStatus Status { get; set; }
+    
+    
+    public static KidShopItem Create(ShopItemStatus status)
+    {
+        return new KidShopItem
+        {
+            Status = status
+        };
+    }
+
+    public void Update(ShopItemStatus status)
+    {
+        Status = status;
+    }
+    
+    public void Buy(ShopItem shopItem, bool purchaseRequiresApproval)
+    {
+        if (purchaseRequiresApproval)
+        {
+            Status = ShopItemStatus.Pending;
+        }
+        else
+        {
+            shopItem.Quantity -= 1;
+            if (shopItem.Quantity == 0)
+                Status = ShopItemStatus.Hidden;
+        }
+    }
+
+    public void Reactivate(ShopItem shopItem, int quantity)
+    {
+        Status = ShopItemStatus.Available;
+        shopItem.Quantity = quantity;
+    }
+
+    public void ResetStatus()
+    {
+        Status = ShopItemStatus.Available;
+    }
 }
