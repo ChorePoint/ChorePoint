@@ -18,10 +18,7 @@ public class UpdateShopItemValidator : AbstractValidator<UpdateShopItemCommand>
         RuleFor(x => x.Quantity)
             .NotEmpty().WithMessage("Quantity is required");
 
-        RuleFor(x => x.KidIds)
-            .NotEmpty().WithMessage("KidIds is required");
-
-        RuleFor(x => x.Statuses)
-            .NotEmpty().WithMessage("Statuses is required");
+        RuleFor(x => x.AssignedKids)
+            .NotEmpty().WithMessage("AssignedKids is required");
     }
 }

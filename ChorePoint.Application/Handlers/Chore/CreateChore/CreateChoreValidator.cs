@@ -24,10 +24,7 @@ public class CreateChoreValidator : AbstractValidator<CreateChoreCommand>
         RuleFor(x => x.Frequency)
             .NotEmpty().WithMessage("Frequency is required");
 
-        RuleFor(x => x.KidIds)
-            .NotEmpty().WithMessage("KidIds is required");
-
-        RuleFor(x => x.Visibilities)
-            .NotEmpty().WithMessage("Visibilities is required");
+        RuleFor(x => x.AssignedKids)
+            .NotEmpty().WithMessage("AssignedKids is required");
     }
 }

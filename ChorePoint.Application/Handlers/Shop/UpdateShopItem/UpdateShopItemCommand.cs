@@ -1,4 +1,5 @@
 ﻿using ChorePoint.Domain.Enums;
+using ChorePoint.Domain.Representations;
 using MediatR;
 
 namespace ChorePoint.Application.Handlers.Shop.UpdateShopItem;
@@ -8,6 +9,5 @@ public record UpdateShopItemCommand(
     string Name,
     int Cost,
     int Quantity,
-    IReadOnlyList<int> KidIds,
-    IReadOnlyList<ShopItemStatus> Statuses
+    IReadOnlyList<AssignedKidToShopItem> AssignedKids
 ) : IRequest;

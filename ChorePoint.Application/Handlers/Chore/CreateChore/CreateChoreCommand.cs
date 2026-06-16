@@ -1,4 +1,5 @@
 ﻿using ChorePoint.Domain.Enums;
+using ChorePoint.Domain.Representations;
 using MediatR;
 
 namespace ChorePoint.Application.Handlers.Chore.CreateChore;
@@ -10,7 +11,5 @@ public record CreateChoreCommand(
     int Points,
     ChoreDifficulty Difficulty,
     ChoreFrequency Frequency,
-    IReadOnlyList<int> KidIds,
-    IReadOnlyList<DayOfWeek>? DueDays,
-    IReadOnlyList<bool> Visibilities
+    IReadOnlyList<AssignedKidToChore> AssignedKids
 ) : IRequest;

@@ -27,10 +27,7 @@ public class UpdateChoreValidator : AbstractValidator<UpdateChoreCommand>
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage("Description is required");
 
-        RuleFor(x => x.KidIds)
-            .NotEmpty().WithMessage("KidIds is required");
-
-        RuleFor(x => x.Visibilities)
-            .NotEmpty().WithMessage("Visibilities is required");
+        RuleFor(x => x.AssignedKids)
+            .NotEmpty().WithMessage("AssignedKids is required");
     }
 }
