@@ -12,6 +12,7 @@ import { KidsSettings } from './features/parents/pages/kids-settings/kids-settin
 import { ParentSettings } from './features/parents/pages/parent-settings/parent-settings';
 import { CreateProfile } from './features/start/pages/create-profile/create-profile';
 import { Start } from './features/start/pages/start/start';
+import { EditKidForm } from './shared/pages/edit-kid-form/edit-kid-form';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -30,6 +31,7 @@ export const routes: Routes = [
         component: KidsSettings,
       },
       { path: 'kids/add', component: CreateProfile },
+      { path: 'kids/edit/:id', component: EditKidForm },
       { path: 'settings', component: ParentSettings },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],

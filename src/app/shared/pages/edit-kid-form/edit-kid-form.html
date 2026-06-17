@@ -1,0 +1,130 @@
+@if (kid$ | async) {
+  <div class="header">
+    <div class="header-top">
+      <button (click)="back()" class="back-button">‹</button>
+      <div class="page-title">Edit Kid</div>
+      <button (click)="submit()" class="header-save-btn">
+        Save
+        @if (saveLoading()) {
+          <app-loading-emoji />
+        }
+      </button>
+    </div>
+  </div>
+
+  <div class="avatar-hero">
+    <div class="avatar-display-wrap">
+      <div class="avatar-display" [style.background]="avatarBackground">
+        {{ form.controls.avatar.value }}
+      </div>
+      <div class="avatar-edit-dot" (click)="avatarPickerOpen = !avatarPickerOpen">✏️</div>
+    </div>
+
+    @if (avatarPickerOpen) {
+      <div class="avatar-picker">
+        @for (avatar of avatarOptions; track avatar) {
+          <div
+            class="avatar-option"
+            [class.selected]="form.value.avatar === avatar.emoji"
+            [style.background]="avatar.background"
+            (click)="selectAvatar(avatar)"
+          >
+            {{ avatar.emoji }}
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <form [formGroup]="form">
+    <div class="content">
+      <div class="form-section">
+        <div class="form-section-label">Profile</div>
+        <div class="field-card">
+          <div class="field-row">
+            <div class="field-icon icon-blue">✏️</div>
+            <div class="field-body">
+              <div class="field-label">Name</div>
+              <input
+                class="field-input"
+                type="text"
+                placeholder="Enter name"
+                maxlength="30"
+                formControlName="name"
+              />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-icon icon-purple">🎂</div>
+            <div class="field-body">
+              <div class="field-label">Age</div>
+            </div>
+            <div class="stepper">
+              <button type="button" class="step-btn" (click)="adjustAge()">−</button>
+              <div class="step-val">{{ form.controls.age.value }}</div>
+              <button type="button" class="step-btn" (click)="adjustAge(true)">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="form-section">
+        <div class="form-section-label">Stats</div>
+        <div class="stats-card">
+          <div class="stats-card-header">🏆 Kid Stats</div>
+          <div class="stats-grid">
+            <div class="stat-cell stat-streak">
+              <div class="stat-label">Day Streak</div>
+              <div class="stat-input-wrap">
+                <input
+                  class="stat-field"
+                  type="number"
+                  min="0"
+                  max="9999"
+                  formControlName="dayStreak"
+                />
+                <div class="stat-unit">🔥 days</div>
+              </div>
+            </div>
+            <div class="stat-cell stat-pts">
+              <div class="stat-label">Total Points</div>
+              <div class="stat-input-wrap">
+                <input
+                  class="stat-field"
+                  type="number"
+                  min="0"
+                  max="999999"
+                  formControlName="spendablePoints"
+                />
+                <div class="stat-unit">⭐ pts</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DANGER ZONE -->
+      <div class="form-section">
+        <div class="form-section-label">Danger Zone</div>
+        <button (click)="delete()" type="button" class="danger-btn">
+          <div class="danger-icon">
+            @if (deleteLoading()) {
+              <app-loading-emoji />
+            } @else {
+              🗑️
+            }
+          </div>
+          <div class="danger-text">
+            <div class="danger-title">{{ deleteButtonText() }}</div>
+            <div class="danger-sub">Deletes all chores and progress</div>
+          </div>
+          <span style="color: #e74c3c; font-size: 20px; font-weight: 700">›</span>
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="toast" [class.show]="toastVisible">✓ Changes saved</div>
+} @else {
+  <app-loading-screen />
+}

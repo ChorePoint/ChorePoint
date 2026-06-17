@@ -35,6 +35,8 @@
   <div class="kid-actions">
     <button class="kid-action-btn">📋 Chores</button>
     <button class="kid-action-btn">🎁 Rewards</button>
-    <button class="kid-action-btn primary">✏️ Edit</button>
+    <button class="kid-action-btn primary" [routerLink]="['/dashboard/kids/edit', kid.id]">
+      ✏️ Edit
+    </button>
   </div>
 </div>

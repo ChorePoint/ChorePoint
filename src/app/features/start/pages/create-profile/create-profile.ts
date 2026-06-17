@@ -10,7 +10,7 @@ import { AVATARS } from '../../../../consts/avatars';
 })
 export class CreateProfile {
   avatars = AVATARS;
-  selectedAvatar: string = this.avatars[0];
+  selectedAvatar: string = this.avatars[0].emoji;
 
   selectAvatar(avatar: string) {
     this.selectedAvatar = avatar;

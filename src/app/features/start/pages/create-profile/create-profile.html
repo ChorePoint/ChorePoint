@@ -11,8 +11,8 @@
 
     <div class="slide-description" style="margin-bottom: 10px">Choose your avatar:</div>
     <div class="avatar-selector">
-      @for (avatar of avatars; track avatar) {
-        <div (click)="selectAvatar(avatar)" class="avatar-option">{{ avatar }}</div>
+      @for (avatar of avatars; track avatar.emoji) {
+        <div (click)="selectAvatar(avatar.emoji)" class="avatar-option">{{ avatar.emoji }}</div>
       }
     </div>
   </div>
