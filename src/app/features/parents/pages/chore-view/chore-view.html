@@ -1,15 +1,15 @@
 @if (vm$ | async; as vm) {
-  <div class="header">
-    <div class="header-top">
-      <div class="page-title">Chores</div>
-      <div [routerLink]="['add']" class="add-button">+</div>
-    </div>
-    <app-kid-selector-header
+  <app-header
+    [config]="{
+      pageTitle: 'Chores',
+      routerLink: 'add',
+      buttonIcon: '+',
+    }"
+    ><app-kid-selector-header
       [kids]="vm.kids"
       [selectedKidId]="vm.selectedKid?.id ?? -1"
       (kidSelected)="vm.selectedKid = $event"
-    ></app-kid-selector-header>
-  </div>
+  /></app-header>
 
   <div class="filter-row">
     <div

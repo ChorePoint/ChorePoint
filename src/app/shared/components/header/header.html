@@ -1,0 +1,9 @@
+<div class="header">
+  <div class="header-top">
+    <div class="page-title">{{ config.pageTitle }}</div>
+    @if (config.routerLink) {
+      <div class="add-button" [routerLink]="config.routerLink">{{ config.buttonIcon }}</div>
+    }
+  </div>
+  <ng-content></ng-content>
+</div>

@@ -8,6 +8,7 @@ import { Chore } from '../../../../core/types/dtos/chore';
 import { Kid } from '../../../../core/types/dtos/kid';
 import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
 import { ChoreCardWrapper } from '../../../../shared/components/chore-card-wrapper/chore-card-wrapper';
+import { Header } from '../../../../shared/components/header/header';
 import { GetBonus, GetDaily, GetWeekly } from '../../../../shared/helpers/chore.helpers';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
 import { LoadingAction, LoadingType } from '../../../../shared/types/loading-action';
@@ -16,7 +17,7 @@ import { KidSelectorHeader } from '../../../chores/components/kid-selector-heade
 
 @Component({
   selector: 'app-chore-view',
-  imports: [KidSelectorHeader, LoadingScreen, AsyncPipe, RouterLink, ChoreCardWrapper],
+  imports: [KidSelectorHeader, LoadingScreen, AsyncPipe, RouterLink, ChoreCardWrapper, Header],
   templateUrl: './chore-view.html',
   styleUrl: './chore-view.scss',
 })

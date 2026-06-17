@@ -156,7 +156,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 1px 4px rgb(0 0 0 / 10%);
                 font-family: inherit;
                 flex-shrink: 0;
             }
@@ -214,7 +214,7 @@
                 height: 18px;
                 border-radius: 50%;
                 background: white;
-                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 1px 4px rgb(0 0 0 / 20%);
             }
         }
     }
@@ -229,7 +229,7 @@
         font-size: 17px;
         font-weight: 800;
         cursor: pointer;
-        box-shadow: 0 4px 16px rgba(39, 174, 96, 0.35);
+        box-shadow: 0 4px 16px rgb(39 174 96 / 35%);
         display: flex;
         align-items: center;
         justify-content: center;

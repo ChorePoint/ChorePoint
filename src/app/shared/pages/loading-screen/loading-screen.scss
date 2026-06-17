@@ -1,7 +1,6 @@
 .loading-overlay {
     position: fixed;
     inset: 0;
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,7 +19,7 @@
     transition: transform 0.2s;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 12px rgb(102 126 234 / 30%);
 }
 
 .btn:active {
@@ -62,7 +61,6 @@
 }
 
 @keyframes bounce {
-
     0%,
     80%,
     100% {

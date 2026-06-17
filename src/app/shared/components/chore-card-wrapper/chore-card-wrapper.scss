@@ -1,20 +1,9 @@
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
+@use "../../../shared/styles/section" as *;
 
-    .section-title {
-        font-size: 16px;
-        font-weight: 700;
-        color: #2c3e50;
-    }
-
-    .section-count {
-        font-size: 12px;
-        font-weight: 700;
-        color: #95a5a6;
-    }
+.section-count {
+    font-size: 12px;
+    font-weight: 700;
+    color: #95a5a6;
 }
 
 .chore-list {
@@ -27,7 +16,7 @@
         background: white;
         border-radius: 16px;
         padding: 14px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+        box-shadow: 0 2px 8px rgb(0 0 0 / 7%);
         display: flex;
         align-items: center;
         gap: 12px;

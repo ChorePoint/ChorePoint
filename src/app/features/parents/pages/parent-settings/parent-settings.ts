@@ -4,12 +4,13 @@ import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { KidsService } from '../../../../core/services/kids/kids.service';
 import { Kid } from '../../../../core/types/dtos/kid';
+import { Header } from '../../../../shared/components/header/header';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
 import { KidList } from '../../../chores/components/kid-list/kid-list';
 
 @Component({
   selector: 'app-parent-settings',
-  imports: [AsyncPipe, LoadingScreen, KidList],
+  imports: [AsyncPipe, LoadingScreen, KidList, Header],
   templateUrl: './parent-settings.html',
   styleUrl: './parent-settings.scss',
 })

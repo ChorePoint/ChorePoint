@@ -1,15 +1,15 @@
 @if (vm$ | async; as vm) {
-  <div class="header">
-    <div class="header-top">
-      <div class="page-title">Parent Dashboard</div>
-    </div>
-
+  <app-header
+    [config]="{
+      pageTitle: 'Parent Dashboard',
+    }"
+  >
     <app-kid-selector-header
       [kids]="vm.kids"
       [selectedKidId]="vm.selectedKid?.id"
       (kidSelected)="vm.selectedKid = $event"
     />
-  </div>
+  </app-header>
 
   <div class="content">
     <app-dashboard-stats
@@ -20,9 +20,8 @@
       }"
     />
 
-    <!-- Pending Approvals -->
     <div class="section-header">
-      <div class="section-title">Pending Approvals</div>
+      <div class="section-title section-title-md">Pending Approvals</div>
       <div class="badge">{{ vm.pendingApprovals?.length }}</div>
     </div>
 
@@ -44,7 +43,7 @@
 
     <!-- Quick Actions -->
     <div class="section-header">
-      <div class="section-title">Quick Actions</div>
+      <div class="section-title section-title-md">Quick Actions</div>
     </div>
 
     <div class="quick-actions">
@@ -66,9 +65,8 @@
       </div>
     </div>
 
-    <!-- Recent Activity -->
     <div class="section-header">
-      <div class="section-title">Recent Activity</div>
+      <div class="section-title section-title-md">Recent Activity</div>
     </div>
 
     <div class="activity-list">

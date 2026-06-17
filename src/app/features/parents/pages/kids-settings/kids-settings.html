@@ -1,11 +1,12 @@
 @if (vm$ | async; as vm) {
-  <div class="header">
-    <div class="header-top">
-      <div class="page-title">My Kids</div>
-      <div class="add-button" title="Add child">+</div>
-    </div>
-  </div>
-
+  <app-header
+    [config]="{
+      pageTitle: 'My Kids',
+      routerLink: '/dashboard/kids/add',
+      buttonIcon: '+',
+    }"
+  >
+  </app-header>
   <div class="content">
     <app-kid-summary
       [summary]="{
@@ -20,7 +21,7 @@
     }
 
     <div class="section-header">
-      <div class="section-title">Profiles</div>
+      <div class="section-title section-title-md">Profiles</div>
     </div>
 
     <div class="kids-list">

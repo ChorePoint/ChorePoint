@@ -21,7 +21,7 @@
             font-size: 11px;
             font-weight: 800;
             color: #2c3e50;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
             letter-spacing: 0.3px;
         }
 
@@ -104,7 +104,7 @@
             font-size: 17px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(135, 206, 235, 0.5);
+            box-shadow: 0 4px 16px rgb(135 206 235 / 50%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -124,7 +124,7 @@
 
         .btn-primary:active {
             transform: scale(0.97);
-            box-shadow: 0 2px 8px rgba(135, 206, 235, 0.4);
+            box-shadow: 0 2px 8px rgb(135 206 235 / 40%);
         }
 
         /* Forgot password */

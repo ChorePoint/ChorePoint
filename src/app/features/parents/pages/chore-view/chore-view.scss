@@ -1,36 +1,3 @@
-.header {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-    padding: 20px;
-    color: white;
-    flex-shrink: 0;
-
-    .header-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
-
-        .page-title {
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .add-button {
-            background: #27ae60;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-    }
-}
-
-/* Filter pills */
 .filter-row {
     display: flex;
     gap: 8px;

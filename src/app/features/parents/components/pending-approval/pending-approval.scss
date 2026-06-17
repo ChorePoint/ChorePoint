@@ -2,7 +2,7 @@
     background: white;
     border-radius: 15px;
     padding: 15px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
 
     .pending-header {
         display: flex;
@@ -59,7 +59,7 @@
 
         .reject-btn {
             background: #de2d2d;
-            color: #ffffff;
+            color: #fff;
         }
     }
 }

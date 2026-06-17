@@ -1,4 +1,4 @@
-@use '../../../../shared/styles/buttons.scss' as buttons;
+@use "../../../../shared/styles/buttons.scss" as buttons;
 
 .header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -11,7 +11,7 @@
         left: 20px;
         width: 40px;
         height: 40px;
-        background: rgba(255, 255, 255, 0.3);
+        background: rgb(255 255 255 / 30%);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -31,7 +31,7 @@
         justify-content: center;
         font-size: 50px;
         margin: 0 auto 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
     }
 
     .chore-title {
@@ -44,7 +44,7 @@
 
     .chore-subtitle {
         font-size: 14px;
-        color: rgba(255, 255, 255, 0.9);
+        color: rgb(255 255 255 / 90%);
         text-align: center;
     }
 }
@@ -121,9 +121,6 @@
 }
 
 .section-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #2c3e50;
     margin-bottom: 12px;
 }
 
@@ -273,13 +270,13 @@
 .btn-warning {
     background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+    box-shadow: 0 4px 12px rgb(230 126 34 / 30%);
 }
 
 .btn-danger {
     background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+    box-shadow: 0 4px 12px rgb(231 76 60 / 30%);
 }
 
 .error-container {
@@ -292,7 +289,7 @@
 
     .error-header {
         top: 10px;
-        left: 0px;
+        left: 0;
 
         .back-button {
             top: 16px;
@@ -305,7 +302,7 @@
             transition: transform 0.2s;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgb(102 126 234 / 30%);
         }
     }
 

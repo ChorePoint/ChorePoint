@@ -6,6 +6,7 @@ import { ChoreSubmissionService } from '../../../../core/services/chore-submissi
 import { KidsDataService } from '../../../../core/services/kids/kids-data.service';
 import { ChoreSubmission } from '../../../../core/types/dtos/chore-submission';
 import { Kid } from '../../../../core/types/dtos/kid';
+import { Header } from '../../../../shared/components/header/header';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
 import { KidSelectorHeader } from '../../../chores/components/kid-selector-header/kid-selector-header';
 import { DashboardStats } from '../../components/dashboard-stats/dashboard-stats';
@@ -13,7 +14,7 @@ import { PendingApproval } from '../../components/pending-approval/pending-appro
 
 @Component({
   selector: 'app-dashboard-home',
-  imports: [AsyncPipe, LoadingScreen, DashboardStats, PendingApproval, KidSelectorHeader],
+  imports: [AsyncPipe, LoadingScreen, DashboardStats, PendingApproval, KidSelectorHeader, Header],
   templateUrl: './dashboard-home.html',
   styleUrl: './dashboard-home.scss',
 })

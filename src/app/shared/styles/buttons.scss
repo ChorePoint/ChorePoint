@@ -8,7 +8,7 @@
     font-size: 17px;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 4px 16px rgba(39, 174, 96, 0.35);
+    box-shadow: 0 4px 16px rgb(39 174 96 / 35%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,5 +20,5 @@
 @mixin btn-success {
     background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+    box-shadow: 0 4px 12px rgb(39 174 96 / 30%);
 }

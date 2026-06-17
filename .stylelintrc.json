@@ -1,0 +1,9 @@
+{
+    "extends": [
+        "stylelint-config-standard-scss"
+    ],
+    "rules": {
+        "declaration-block-no-duplicate-properties": true,
+        "no-duplicate-selectors": true
+    }
+}
