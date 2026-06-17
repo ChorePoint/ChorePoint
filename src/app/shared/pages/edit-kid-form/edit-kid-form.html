@@ -3,7 +3,7 @@
     <div class="header-top">
       <button (click)="back()" class="back-button">‹</button>
       <div class="page-title">Edit Kid</div>
-      <button (click)="submit()" class="header-save-btn" id="saveBtn">
+      <button (click)="submit()" class="header-save-btn">
         Save
         @if (saveLoading()) {
           <app-loading-emoji />
@@ -36,9 +36,8 @@
     }
   </div>
 
-  <!-- CONTENT -->
-  <div class="content">
-    <form [formGroup]="form">
+  <form [formGroup]="form">
+    <div class="content">
       <div class="form-section">
         <div class="form-section-label">Profile</div>
         <div class="field-card">
@@ -62,7 +61,7 @@
             </div>
             <div class="stepper">
               <button type="button" class="step-btn" (click)="adjustAge()">−</button>
-              <div class="step-val" id="ageVal">{{ form.controls.age.value }}</div>
+              <div class="step-val">{{ form.controls.age.value }}</div>
               <button type="button" class="step-btn" (click)="adjustAge(true)">+</button>
             </div>
           </div>
@@ -81,7 +80,6 @@
                 <input
                   class="stat-field"
                   type="number"
-                  id="streakField"
                   min="0"
                   max="9999"
                   formControlName="dayStreak"
@@ -95,9 +93,8 @@
                 <input
                   class="stat-field"
                   type="number"
-                  id="pointsField"
                   min="0"
-                  max="99999"
+                  max="999999"
                   formControlName="spendablePoints"
                 />
                 <div class="stat-unit">⭐ pts</div>
@@ -106,29 +103,28 @@
           </div>
         </div>
       </div>
-    </form>
 
-    <!-- DANGER ZONE -->
-    <div class="form-section">
-      <div class="form-section-label">Danger Zone</div>
-      <button (click)="delete()" type="button" class="danger-btn">
-        <div class="danger-icon">
-          @if (deleteLoading()) {
-            <app-loading-emoji />
-          } @else {
-            🗑️
-          }
-        </div>
-        <div class="danger-text">
-          <div class="danger-title">{{ deleteButtonText() }}</div>
-          <div class="danger-sub">Deletes all chores and progress</div>
-        </div>
-        <span style="color: #e74c3c; font-size: 20px; font-weight: 700">›</span>
-      </button>
+      <!-- DANGER ZONE -->
+      <div class="form-section">
+        <div class="form-section-label">Danger Zone</div>
+        <button (click)="delete()" type="button" class="danger-btn">
+          <div class="danger-icon">
+            @if (deleteLoading()) {
+              <app-loading-emoji />
+            } @else {
+              🗑️
+            }
+          </div>
+          <div class="danger-text">
+            <div class="danger-title">{{ deleteButtonText() }}</div>
+            <div class="danger-sub">Deletes all chores and progress</div>
+          </div>
+          <span style="color: #e74c3c; font-size: 20px; font-weight: 700">›</span>
+        </button>
+      </div>
     </div>
-  </div>
-  <!-- /content -->
-  <div class="toast" [class.show]="toastVisible" id="toast">✓ Changes saved</div>
+  </form>
+  <div class="toast" [class.show]="toastVisible">✓ Changes saved</div>
 } @else {
   <app-loading-screen />
 }
