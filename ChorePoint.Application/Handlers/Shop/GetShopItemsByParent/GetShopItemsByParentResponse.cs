@@ -7,6 +7,7 @@ public record GetShopItemsByParentResponse(
     int ParentId,
     int KidId,
     string Name,
+    string? Description,
     int Cost,
     ShopItemStatus Status,
     int Quantity
