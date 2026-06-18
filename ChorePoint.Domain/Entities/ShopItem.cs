@@ -18,6 +18,8 @@ public class ShopItem
     [Column("name")]
     public string Name { get; set; }
 
+    [Column("description")] public string Description { get; set; }
+
     [Required] [Column("cost")] public int Cost { get; set; }
 
     [Required] [Column("status")] public ShopItemStatus Status { get; set; }
