@@ -1,5 +1,5 @@
 using ChorePoint.Application.Handlers.Chore.CreateChore;
-using ChorePoint.Application.Handlers.Chore.DeleteChoreById;
+using ChorePoint.Application.Handlers.Chore.DeleteChore;
 using ChorePoint.Application.Handlers.Chore.GetChoreById;
 using ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 using ChorePoint.Application.Handlers.Chore.GetChoresByParent;
@@ -96,7 +96,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
         return Ok(new
         {
             success = true,
-            message = $"Chore with ID [{command.Id}] successfully updated"
+            message = $"Chore with ID [{command.ChoreId}] successfully updated"
         });
     }
 
@@ -107,9 +107,9 @@ public class ChoreController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> DeleteChoreById(int choreId)
+    public async Task<IActionResult> DeleteChore(int choreId)
     {
-        await mediator.Send(new DeleteChoreByIdCommand(choreId));
+        await mediator.Send(new DeleteChoreCommand(choreId));
         return Ok(new
         {
             success = true,

@@ -1,18 +1,15 @@
 using ChorePoint.Domain.Enums;
+using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
 
 public record GetCurrentResponse(
-    int ChoreId,
-    int ParentId,
-    string Name,
-    string Icon,
-    string? Description,
-    int Points,
-    ChoreDifficulty Difficulty,
-    ChoreFrequency Frequency,
-    DateTime? LastCompletedAt,
-    int CompletionCount,
-    DayOfWeek? DueDay,
-    bool IsVisible
+    int ChoreSubmissionId,
+    int KidId,
+    string? Notes,
+    ChoreApprovalStatus ApprovalStatus,
+    int? ApprovedByParentId,
+    DateTime? ApprovedAt,
+    DateTime CompletedAt,
+    ChoreE Chore
 );

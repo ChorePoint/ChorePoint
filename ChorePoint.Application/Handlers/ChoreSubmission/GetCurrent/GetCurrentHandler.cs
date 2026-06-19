@@ -8,27 +8,17 @@ using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
 
-public class GetCurrentHandler(IAppDbContext context, IFusionCache cache)
-    : IRequestHandler<GetCurrentQuery, GetCurrentResponse>
+public class GetCurrentHandler(IAppDbContext context) : IRequestHandler<GetCurrentQuery, GetCurrentResponse>
 {
     public async Task<GetCurrentResponse> Handle(GetCurrentQuery request, CancellationToken cancellationToken)
     {
-        var currentSubmission = await cache.GetOrSetAsync<ChoreSubmissionE?>(
-            $"get_current:{request.KidId}",
-            async _ => await GetCurrentSubmissionFromDb(request.KidId, cancellationToken),
-            token: cancellationToken
-        );
+        var currentSubmission = await context.ChoreSubmissions
+            .Include(cs => cs.Chore)
+            .Where(cs => cs.KidId.Equals(request.KidId))
+            .OrderByDescending(cs => cs.CompletedAt)
+            .FirstOrDefaultAsync(cancellationToken);
 
         return currentSubmission.Adapt<GetCurrentResponse>()
                ?? throw new NotFoundException($"No submission exists for kid ID [{request.KidId}]");
-    }
-
-    private async Task<ChoreSubmissionE?> GetCurrentSubmissionFromDb(int kidId,
-        CancellationToken cancellationToken)
-    {
-        return await context.ChoreSubmissions
-            .Where(cs => cs.KidId == kidId)
-            .OrderByDescending(cs => cs.CompletedAt)
-            .FirstOrDefaultAsync(cancellationToken);
     }
 }

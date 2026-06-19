@@ -1,4 +1,5 @@
 using ChorePoint.Domain.Enums;
+using ChorePoint.Domain.Representations;
 
 namespace ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 
@@ -13,6 +14,5 @@ public record GetChoresByParentResponse(
     ChoreFrequency Frequency,
     DateTime? LastCompletedAt,
     int CompletionCount,
-    DayOfWeek? DueDay,
-    bool IsVisible
+    IReadOnlyList<AssignedKidToChore> AssignedKids
 );

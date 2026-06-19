@@ -5,7 +5,6 @@ namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
 
 public record GetSubmissionsResponse(
     int ChoreSubmissionId,
-    int ChoreId,
     int KidId,
     string? Notes,
     ChoreApprovalStatus ApprovalStatus,

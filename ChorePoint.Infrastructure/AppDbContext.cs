@@ -7,6 +7,7 @@ namespace ChorePoint.Infrastructure;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options), IAppDbContext
 {
+    public DbSet<Category> Categories { get; set; }
     public DbSet<Chore> Chores { get; set; }
     public DbSet<ChoreSubmission> ChoreSubmissions { get; set; }
     public DbSet<Kid> Kids { get; set; }
@@ -46,6 +47,15 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        
+        builder.Entity<Category>(entity =>
+        {
+            entity.Property(c => c.Name)
+                .HasMaxLength(150);
+            
+            entity.Property(c => c.Icon)
+                .HasMaxLength(10);
+        });
 
         builder.Entity<Chore>(entity =>
         {
@@ -130,6 +140,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         {
             entity.Property(si => si.Name)
                 .HasMaxLength(50);
+            
+            entity.Property(si => si.Icon)
+                .HasMaxLength(10);
+            
+            entity.Property(si => si.Description)
+                .HasMaxLength(300);
         });
     }
 }

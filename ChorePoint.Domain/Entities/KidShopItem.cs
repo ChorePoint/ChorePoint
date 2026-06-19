@@ -12,10 +12,11 @@ public class KidShopItem : EntityBase
     public ShopItemStatus Status { get; set; }
     
     
-    public static KidShopItem Create(ShopItemStatus status)
+    public static KidShopItem Create(int kidId, ShopItemStatus status)
     {
         return new KidShopItem
         {
+            KidId = kidId,
             Status = status
         };
     }
@@ -33,13 +34,16 @@ public class KidShopItem : EntityBase
         }
         else
         {
+            if (shopItem.Quantity is null)
+                return;
+            
             shopItem.Quantity -= 1;
             if (shopItem.Quantity == 0)
                 Status = ShopItemStatus.Hidden;
         }
     }
 
-    public void Reactivate(ShopItem shopItem, int quantity)
+    public void Reactivate(ShopItem shopItem, int? quantity)
     {
         Status = ShopItemStatus.Available;
         shopItem.Quantity = quantity;

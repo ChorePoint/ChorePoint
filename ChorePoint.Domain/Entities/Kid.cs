@@ -8,8 +8,6 @@ public class Kid : EntityBase
 {
     public int KidId { get; set; }
     public int ParentId { get; set; }
-    public int KidChoreId { get; set; }
-    public int KidShopItemId { get; set; }
     
     public string Name { get; set; }
     public string Avatar { get; set; }

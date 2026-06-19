@@ -11,16 +11,17 @@ public class KidChore : EntityBase
     public bool IsVisible { get; set; }
     
     
-    public static KidChore Create(DayOfWeek? dueDay, bool isVisible)
+    public static KidChore Create(int kidId, DayOfWeek? dueDay, bool isVisible)
     {
         return new KidChore
         {
+            KidId = kidId,
             DueDay = dueDay,
             IsVisible = isVisible
         };
     }
 
-    public void Update(DayOfWeek dueDay, bool isVisible)
+    public void Update(DayOfWeek? dueDay, bool isVisible)
     {
         DueDay = dueDay;
         IsVisible = isVisible;

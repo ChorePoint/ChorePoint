@@ -1,3 +1,4 @@
+using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
 using ChorePoint.Domain.Extensions;
@@ -9,28 +10,23 @@ using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 
-public class GetChoresByKidHandler(IAppDbContext context, IFusionCache cache)
-    : IRequestHandler<GetChoresByKidQuery, IReadOnlyList<GetChoresByKidResponse>>
+public class GetChoresByKidHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<GetChoresByKidQuery, IReadOnlyList<GetChoresByKidResponse>>
 {
     public async Task<IReadOnlyList<GetChoresByKidResponse>> Handle(GetChoresByKidQuery request,
         CancellationToken cancellationToken)
     {
-        var chores = await cache.GetOrSetAsync<IReadOnlyList<ChoreE>>(
-            $"get_chores_by_kid:{request.KidId}",
-            async _ => await GetChoresByKidIdFromDb(request.KidId, cancellationToken),
-            token: cancellationToken
-        );
-
-        return chores.Empty()
-            ? throw new NotFoundException($"No chores exist with kid ID [{request.KidId}]")
-            : chores.Adapt<IReadOnlyList<GetChoresByKidResponse>>();
-    }
-
-    private async Task<IReadOnlyList<ChoreE>> GetChoresByKidIdFromDb(int kidId,
-        CancellationToken cancellationToken)
-    {
-        return await context.Chores
-            .Where(c => c.KidId == kidId)
+        var chores = await context.Chores
+            .Include(c => c.KidChores)
+            .Where(c => c.KidChores.Any(kc => kc.KidId.Equals(request.KidId)))
             .ToListAsync(cancellationToken);
+
+        if (chores.Empty())
+            throw new NotFoundException($"No chores exist with kid ID [{request.KidId}]");
+        
+        var resourceParentIds = chores.Select(chore => chore.ParentId).ToList();
+        var parentId = parentContextService.GetParentId();
+        AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
+
+        return chores.Adapt<IReadOnlyList<GetChoresByKidResponse>>();
     }
 }

@@ -9,7 +9,6 @@ public class Chore : EntityBase
 {
     public int ChoreId { get; set; }
     public int ParentId { get; set; }
-    public int KidChoreId { get; set; }
     
     public string Name { get; set; }
     public string Icon { get; set; }

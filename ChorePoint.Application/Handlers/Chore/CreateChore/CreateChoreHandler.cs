@@ -1,4 +1,5 @@
-﻿using ChorePoint.Application.Interfaces;
+﻿using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
@@ -8,46 +9,35 @@ using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.Chore.CreateChore;
 
-public class CreateChoreHandler(IAppDbContext context, IParentContextService parentContextService, IFusionCache cache)
-    : IRequestHandler<CreateChoreCommand>
+public class CreateChoreHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<CreateChoreCommand>
 {
     public async Task Handle(CreateChoreCommand request, CancellationToken cancellationToken)
     {
-        var existingKid = await cache.GetOrSetAsync<Kid?>(
-            $"create_chore:{request.KidId}",
-            async _ => await GetKidForChoreFromDb(request.KidId, cancellationToken),
-            token: cancellationToken
-        );
-
-        if (existingKid is null)
-            throw new NotFoundException($"No kid exists with ID [{request.KidId}]");
-
+        var assignedKidIds = request.AssignedKids.Select(ak => ak.KidId).ToList();
+        var resourceParentIds = await context.Kids
+            .Where(k => assignedKidIds.Contains(k.KidId))
+            .Select(k => k.ParentId)
+            .ToListAsync(cancellationToken);
+        
+        AuthorisationHelper.EnsureAssignedKidIdsAreValid(resourceParentIds, assignedKidIds);
+        
         var parentId = parentContextService.GetParentId();
-
-        if (existingKid.ParentId != parentId)
-            throw new DomainException(
-                $"Kid with assigned parent ID [{existingKid.ParentId}] does not belong to the logged in parent with ID [{parentId}]");
-
+        AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
+        
         var chore = ChoreE.Create
         (
             request.Name,
             request.Icon,
+            request.Description,
             request.Points,
             request.Difficulty,
-            request.Frequency,
-            request.DueDay,
-            request.KidId,
-            request.Description,
-            DateTime.UtcNow
+            request.Frequency
         );
+        
+        foreach (var assignedKid in request.AssignedKids)
+            chore.KidChores.Add(KidChore.Create(assignedKid.KidId, assignedKid.DueDay, assignedKid.IsVisible));
 
-        context.Chores.Add(chore);
+        await context.Chores.AddAsync(chore, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
-    }
-
-    private async Task<Kid?> GetKidForChoreFromDb(int kidId, CancellationToken cancellationToken)
-    {
-        return await context.Kids
-            .FirstOrDefaultAsync(k => k.KidId == kidId, cancellationToken);
     }
 }
