@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CHORE_EMOJIS } from '../../../../consts/chore-emojis';
+import { CHORE_EMOJIS } from '../../../../core/consts/chore-emojis';
 
 @Component({
   selector: 'app-emoji-picker',
@@ -9,8 +9,7 @@ import { CHORE_EMOJIS } from '../../../../consts/chore-emojis';
 })
 export class EmojiPicker {
   @Input() selectedEmoji: string | undefined;
+  @Input() emojis = CHORE_EMOJIS;
 
   @Output() selectedEmojiChange = new EventEmitter<string>();
-
-  choreEmojis = CHORE_EMOJIS;
 }

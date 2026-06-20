@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators/catchError';
-import { DEFAULT_KID_STATS } from '../../../consts/default-kid-stats';
+import { DEFAULT_KID_STATS } from '../../consts/default-kid-stats';
 import { ChoreSubmission } from '../../types/dtos/chore-submission';
 import { ApiGetResponse, ApiPutResponse } from '../dtos/response';
 import { KidStats } from './chore-submission.dtos';

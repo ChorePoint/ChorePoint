@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AVATARS } from '../../../../consts/avatars';
+import { AVATARS } from '../../../../core/consts/avatars';
 
 @Component({
   selector: 'app-create-profile',

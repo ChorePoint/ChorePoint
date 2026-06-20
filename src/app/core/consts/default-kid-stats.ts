@@ -1,4 +1,4 @@
-import { KidStats } from '../core/services/chore-submission/chore-submission.dtos';
+import { KidStats } from '../services/chore-submission/chore-submission.dtos';
 
 export const DEFAULT_KID_STATS = Object.freeze<KidStats>({
   completed: 0,

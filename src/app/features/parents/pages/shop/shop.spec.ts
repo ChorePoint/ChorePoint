@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChoreSettings } from './chore-settings';
+import { Shop } from './shop';
 
-describe('ChoreSettings', () => {
-  let component: ChoreSettings;
-  let fixture: ComponentFixture<ChoreSettings>;
+describe('Shop', () => {
+  let component: Shop;
+  let fixture: ComponentFixture<Shop>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChoreSettings]
+      imports: [Shop]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ChoreSettings);
+    fixture = TestBed.createComponent(Shop);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

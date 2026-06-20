@@ -3,7 +3,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, shareReplay, tap } from 'rxjs';
-import { AvatarOption, AVATARS } from '../../../consts/avatars';
+import { AvatarOption, AVATARS } from '../../../core/consts/avatars';
 import { KidsService } from '../../../core/services/kids/kids.service';
 import { Kid } from '../../../core/types/dtos/kid';
 import { Header } from '../../components/header/header';

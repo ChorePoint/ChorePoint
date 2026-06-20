@@ -1,0 +1,109 @@
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="back-button" [routerLink]="'/dashboard/shop'"><span>×</span></div>
+    <div class="page-title">Add Product</div>
+  </div>
+</div>
+<form [formGroup]="form" (submit)="submit()">
+  <div class="content">
+    <!-- Product Image -->
+    <div class="form-section">
+      <div class="section-title">Product Icon <span class="required">*</span></div>
+      <app-emoji-picker
+        [emojis]="SHOP_EMOJIS"
+        [selectedEmoji]="form.controls.icon.value"
+        (selectedEmojiChange)="form.patchValue({ icon: $event })"
+      />
+    </div>
+
+    <!-- Basic Info -->
+    <div class="form-section">
+      <div class="section-title">Basic Information</div>
+
+      <div class="form-group">
+        <p class="label">Product Name <span class="required">*</span></p>
+        <input
+          formControlName="name"
+          type="text"
+          class="input"
+          placeholder="e.g., Pokémon Booster Pack"
+        />
+      </div>
+
+      <div class="form-group">
+        <p class="label">Description</p>
+        <textarea
+          formControlName="description"
+          class="input"
+          placeholder="Describe what makes this reward special..."
+        ></textarea>
+        <div class="input-hint">Help kids understand what they're getting</div>
+      </div>
+
+      <div class="form-group">
+        <p class="label">Category <span class="required">*</span></p>
+        <app-category-selector
+          [selectedCategory]="form.controls.category.value"
+          (selectedCategoryChanged)="form.patchValue({ category: $event.name })"
+        />
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="form-section">
+      <div class="section-title">Pricing</div>
+
+      <div class="form-group">
+        <p class="label">Points Cost <span class="required">*</span></p>
+        <input
+          formControlName="cost"
+          type="number"
+          class="input"
+          placeholder="e.g., 3500"
+          value="3500"
+        />
+      </div>
+
+      <!-- Inventory -->
+      <div class="form-section">
+        <div class="section-title">Inventory</div>
+
+        <div class="form-group">
+          <p class="label">Stock Quantity</p>
+          <div class="stock-counter">
+            <button type="button" class="stock-btn" (click)="changeQuantity(true)">−</button>
+            <div class="stock-display">{{ stockDisplay }}</div>
+            <button type="button" class="stock-btn" (click)="changeQuantity()">+</button>
+          </div>
+          <div class="input-hint">Set to unlimited by going less than 0 or specify a quantity</div>
+        </div>
+      </div>
+
+      <!-- Visibility -->
+      <div class="form-section">
+        <div class="section-title">Visibility</div>
+
+        <div class="toggle-section">
+          <div class="toggle-info">
+            <div class="toggle-title">Active & Visible</div>
+            <div class="toggle-description">Kids can see and purchase this</div>
+          </div>
+          <div class="toggle-switch active" onclick="this.classList.toggle('active')"></div>
+        </div>
+      </div>
+
+      <!-- Bottom Actions -->
+      <div class="bottom-actions">
+        <button class="btn btn-secondary" (click)="form.reset()">Cancel</button>
+        <button type="submit" class="btn btn-primary">
+          @if (loading) {
+            Saving <app-loading-emoji />
+          } @else {
+            Create Product
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

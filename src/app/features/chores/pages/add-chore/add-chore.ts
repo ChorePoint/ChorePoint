@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { map, Observable } from 'rxjs';
-import { CHORE_EMOJIS } from '../../../../consts/chore-emojis';
+import { CHORE_EMOJIS } from '../../../../core/consts/chore-emojis';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
 import { KidsDataService } from '../../../../core/services/kids/kids-data.service';
 import { Kid } from '../../../../core/types/dtos/kid';
