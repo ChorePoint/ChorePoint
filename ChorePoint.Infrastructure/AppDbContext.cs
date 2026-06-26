@@ -127,7 +127,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .HasMaxLength(100);
 
             entity.Property(p => p.Password)
-                .HasMaxLength(20);
+                .HasMaxLength(100);
         });
 
         builder.Entity<ParentSettings>(entity =>
