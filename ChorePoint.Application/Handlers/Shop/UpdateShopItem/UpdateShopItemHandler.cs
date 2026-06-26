@@ -25,7 +25,6 @@ public class UpdateShopItemHandler(IAppDbContext context, IParentContextService 
 
         foreach (var assignedKid in request.AssignedKids)
         {
-            // Can be SingleOrDefault() as each kid cannot be assigned to the same chore multiple times
             var kidShopItem = shopItem.KidShopItems.SingleOrDefault(kc => kc.KidId.Equals(assignedKid.KidId));
             
             if (kidShopItem is null)

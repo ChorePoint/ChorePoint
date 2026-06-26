@@ -21,8 +21,7 @@ public class BuyShopItemHandler(IAppDbContext context, IParentContextService par
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(shopItem.ParentId, parentId);
         
-        // Can be Single() as each kid cannot be assigned to the same shop item multiple times
-        // and no AndDefault because we already know one must exist because of the .Where() above
+        // No AndDefault because we already know one must exist because of the .Where() above
         var kidShopItem = shopItem.KidShopItems.Single(ksi => ksi.KidId.Equals(request.KidId));
 
         var kid = await context.Kids

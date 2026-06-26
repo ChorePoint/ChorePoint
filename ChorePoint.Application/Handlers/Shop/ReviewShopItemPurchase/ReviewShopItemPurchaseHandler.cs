@@ -21,7 +21,6 @@ public class ReviewShopItemPurchaseHandler(IAppDbContext context, IParentContext
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(shopItem.ParentId, parentId);
         
-        // Can be SingleOrDefault() as each kid cannot be assigned to the same chore multiple times
         var kidShopItem = shopItem.KidShopItems
             .SingleOrDefault(ksi => ksi.KidId.Equals(request.KidId));
 
