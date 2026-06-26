@@ -23,7 +23,7 @@ public class CreateChoreValidator : AbstractValidator<CreateChoreCommand>
 
         RuleFor(x => x.Frequency)
             .NotEmpty().WithMessage("Frequency is required");
-        
+
         RuleFor(x => x.AssignedKids)
             .NotEmpty().WithMessage("AssignedKids is required");
 
