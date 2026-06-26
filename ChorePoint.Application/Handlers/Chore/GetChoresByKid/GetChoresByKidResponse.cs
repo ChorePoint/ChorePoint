@@ -15,5 +15,6 @@ public record GetChoresByKidResponse(
     DateTime? LastCompletedAt,
     int CompletionCount,
     Category? Category,
-    IReadOnlyList<AssignedKidToChore> AssignedKids
+    DayOfWeek? DueDay,
+    bool IsVisible
 );
