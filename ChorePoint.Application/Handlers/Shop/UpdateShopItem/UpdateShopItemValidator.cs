@@ -18,8 +18,11 @@ public class UpdateShopItemValidator : AbstractValidator<UpdateShopItemCommand>
         RuleFor(x => x.Cost)
             .NotEmpty().WithMessage("Cost is required");
 
+        RuleFor(x => x.AssignedKids)
+            .NotEmpty().WithMessage("AssignedKids is required");
+
         RuleForEach(x => x.AssignedKids)
-            .NotEmpty().WithMessage("AssignedKids is required")
+            .NotEmpty().WithMessage("AssignedKids cannot contain a null element")
             .ChildRules(assignedKid =>
             {
                 assignedKid.RuleFor(x => x.KidId)
