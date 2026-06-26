@@ -8,9 +8,7 @@ namespace ChorePoint.API.Middleware;
 
 public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
-    public async ValueTask<bool> TryHandleAsync(
-        HttpContext httpContext,
-        Exception exception,
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception,
         CancellationToken cancellationToken)
     {
         logger.LogError(exception, "A global exception occurred at resource path: {ResourcePath}",
