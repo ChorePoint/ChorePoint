@@ -13,7 +13,7 @@ public class Kid : EntityBase
     public int DayStreak { get; set; }
     public int LifetimePoints { get; set; }
     public int SpendablePoints { get; set; }
-    public int LoginCode { get; set; }
+    public int? LoginCode { get; set; }
 
     public Parent Parent { get; set; }
     public ICollection<Chore> Chores { get; set; }
