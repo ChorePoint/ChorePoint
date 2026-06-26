@@ -4,6 +4,7 @@ using ChorePoint.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChorePoint.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260618193757_Added description column to shop_items table")]
+    partial class Addeddescriptioncolumntoshop_itemstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,24 +27,23 @@ namespace ChorePoint.Infrastructure.Migrations
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Chore", b =>
                 {
-                    b.Property<int>("ChoreId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("chore_id");
+                        .HasColumnName("id");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ChoreId"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CompletionCount")
                         .HasColumnType("int")
                         .HasColumnName("completion_count");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(300)
-                        .HasColumnType("varchar(300)")
+                        .HasColumnType("longtext")
                         .HasColumnName("description");
 
                     b.Property<string>("Difficulty")
@@ -72,7 +74,7 @@ namespace ChorePoint.Infrastructure.Migrations
 
                     b.Property<int>("KidId")
                         .HasColumnType("int")
-                        .HasColumnName("kid_id");
+                        .HasColumnName("user_id");
 
                     b.Property<DateTime?>("LastCompletedAt")
                         .HasColumnType("datetime(6)")
@@ -84,35 +86,29 @@ namespace ChorePoint.Infrastructure.Migrations
                         .HasColumnType("varchar(150)")
                         .HasColumnName("name");
 
-                    b.Property<int>("ParentId")
-                        .HasColumnType("int")
-                        .HasColumnName("parent_id");
-
                     b.Property<int>("Points")
                         .HasColumnType("int")
                         .HasColumnName("points");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.HasKey("ChoreId");
+                    b.HasKey("Id");
 
                     b.HasIndex("KidId");
-
-                    b.HasIndex("ParentId");
 
                     b.ToTable("chores");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ChoreSubmission", b =>
                 {
-                    b.Property<int>("ChoreSubmissionId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("chore_submission_id");
+                        .HasColumnName("id");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ChoreSubmissionId"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ApprovalStatus")
                         .IsRequired()
@@ -124,7 +120,7 @@ namespace ChorePoint.Infrastructure.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("approved_at");
 
-                    b.Property<int?>("ApprovedByParentId")
+                    b.Property<int?>("ApprovedByUserId")
                         .HasColumnType("int")
                         .HasColumnName("approved_by_user_id");
 
@@ -136,26 +132,21 @@ namespace ChorePoint.Infrastructure.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("completed_at");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
                     b.Property<int>("KidId")
                         .HasColumnType("int")
-                        .HasColumnName("kid_id");
+                        .HasColumnName("user_id");
 
                     b.Property<string>("Notes")
-                        .HasMaxLength(300)
-                        .HasColumnType("varchar(300)")
+                        .HasColumnType("longtext")
                         .HasColumnName("notes");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("updated_at");
+                    b.HasKey("Id");
 
-                    b.HasKey("ChoreSubmissionId");
-
-                    b.HasIndex("ApprovedByParentId");
+                    b.HasIndex("ApprovedByUserId");
 
                     b.HasIndex("ChoreId");
 
@@ -166,12 +157,12 @@ namespace ChorePoint.Infrastructure.Migrations
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
                 {
-                    b.Property<int>("KidId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("kid_id");
+                        .HasColumnName("id");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("KidId"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("Age")
                         .HasColumnType("int")
@@ -183,7 +174,7 @@ namespace ChorePoint.Infrastructure.Migrations
                         .HasColumnType("varchar(10)")
                         .HasColumnName("avatar");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
@@ -213,27 +204,27 @@ namespace ChorePoint.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("total_points");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.HasKey("KidId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("kids");
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Parent", b =>
                 {
-                    b.Property<int>("ParentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("parent_id");
+                        .HasColumnName("id");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ParentId"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
@@ -259,23 +250,19 @@ namespace ChorePoint.Infrastructure.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("password");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("ParentId");
+                    b.HasKey("Id");
 
                     b.ToTable("parents");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ParentSettings", b =>
                 {
-                    b.Property<int>("ParentSettingsId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("parent_settings_id");
+                        .HasColumnName("id");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ParentSettingsId"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("ApprovePurchases")
                         .HasColumnType("tinyint(1)")
@@ -285,7 +272,7 @@ namespace ChorePoint.Infrastructure.Migrations
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("auto_approve_chores");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
@@ -302,11 +289,11 @@ namespace ChorePoint.Infrastructure.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("shop_opening_days");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.HasKey("ParentSettingsId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ParentId");
 
@@ -315,18 +302,18 @@ namespace ChorePoint.Infrastructure.Migrations
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ShopItem", b =>
                 {
-                    b.Property<int>("ShopItemId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("shop_item_id");
+                        .HasColumnName("id");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ShopItemId"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Cost")
                         .HasColumnType("int")
                         .HasColumnName("cost");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("created_at");
 
@@ -359,11 +346,11 @@ namespace ChorePoint.Infrastructure.Migrations
                         .HasColumnType("varchar(10)")
                         .HasColumnName("status");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("updated_at");
 
-                    b.HasKey("ShopItemId");
+                    b.HasKey("Id");
 
                     b.HasIndex("KidId");
 
@@ -375,27 +362,19 @@ namespace ChorePoint.Infrastructure.Migrations
             modelBuilder.Entity("ChorePoint.Domain.Entities.Chore", b =>
                 {
                     b.HasOne("ChorePoint.Domain.Entities.Kid", "Kid")
-                        .WithMany()
+                        .WithMany("Chores")
                         .HasForeignKey("KidId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ChorePoint.Domain.Entities.Parent", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Kid");
-
-                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ChoreSubmission", b =>
                 {
-                    b.HasOne("ChorePoint.Domain.Entities.Parent", "ApprovedByParent")
+                    b.HasOne("ChorePoint.Domain.Entities.Kid", "ApprovedBy")
                         .WithMany()
-                        .HasForeignKey("ApprovedByParentId");
+                        .HasForeignKey("ApprovedByUserId");
 
                     b.HasOne("ChorePoint.Domain.Entities.Chore", "Chore")
                         .WithMany()
@@ -409,7 +388,7 @@ namespace ChorePoint.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ApprovedByParent");
+                    b.Navigation("ApprovedBy");
 
                     b.Navigation("Chore");
 
@@ -455,6 +434,11 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.Navigation("Kid");
 
                     b.Navigation("Parent");
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
+                {
+                    b.Navigation("Chores");
                 });
 #pragma warning restore 612, 618
         }

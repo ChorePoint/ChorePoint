@@ -22,6 +22,20 @@ public class Kid : EntityBase
     public ICollection<ShopItem> ShopItems { get; set; }
     public ICollection<KidShopItem> KidShopItems { get; set; }
 
+    public void Update(
+        string name,
+        int age,
+        string avatar,
+        int spendablePoints,
+        int dayStreak
+    )
+    {
+        Name = name;
+        Age = age;
+        Avatar = avatar;
+        SpendablePoints = spendablePoints;
+        DayStreak = dayStreak;
+    }
 
     public void SpendPoints(int pointsToSubtract)
     {
