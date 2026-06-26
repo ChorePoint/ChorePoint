@@ -23,16 +23,8 @@ public class CreateChoreHandler(IAppDbContext context, IParentContextService par
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
-        var chore = ChoreE.Create
-        (
-            request.CategoryId,
-            request.Name,
-            request.Icon,
-            request.Description,
-            request.Points,
-            request.Difficulty,
-            request.Frequency
-        );
+        var chore = ChoreE.Create(parentId, request.CategoryId, request.Name, request.Icon, request.Description,
+            request.Points, request.Difficulty, request.Frequency);
 
         foreach (var assignedKid in request.AssignedKids)
             chore.KidChores.Add(KidChore.Create(assignedKid.KidId, assignedKid.DueDay, assignedKid.IsVisible));

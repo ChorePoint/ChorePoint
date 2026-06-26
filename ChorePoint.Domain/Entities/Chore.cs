@@ -24,11 +24,12 @@ public class Chore : EntityBase
     public ICollection<KidChore> KidChores { get; set; } = new List<KidChore>();
 
 
-    public static Chore Create(int? categoryId, string name, string icon, string description, int points,
+    public static Chore Create(int parentId, int? categoryId, string name, string icon, string description, int points,
         ChoreDifficulty difficulty, ChoreFrequency frequency)
     {
         return new Chore
         {
+            ParentId = parentId,
             CategoryId = categoryId,
             Name = name,
             Icon = icon,
