@@ -16,10 +16,10 @@ public class Kid : EntityBase
     public int? LoginCode { get; set; }
 
     public Parent Parent { get; set; }
-    public ICollection<Chore> Chores { get; set; }
-    public ICollection<KidChore> KidChores { get; set; }
-    public ICollection<ShopItem> ShopItems { get; set; }
-    public ICollection<KidShopItem> KidShopItems { get; set; }
+    public ICollection<Chore> Chores { get; set; } = new List<Chore>();
+    public ICollection<KidChore> KidChores { get; set; } = new List<KidChore>();
+    public ICollection<ShopItem> ShopItems { get; set; } = new List<ShopItem>();
+    public ICollection<KidShopItem> KidShopItems { get; set; } = new List<KidShopItem>();
 
     public void Update(string name, string avatar, int? age, int dayStreak, int lifetimePoints, int spendablePoints)
     {

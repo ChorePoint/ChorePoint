@@ -14,8 +14,8 @@ public class ShopItem : EntityBase
 
     public Parent Parent { get; set; }
     public Category? Category { get; set; }
-    public ICollection<Kid> Kids { get; set; }
-    public ICollection<KidShopItem> KidShopItems { get; set; }
+    public ICollection<Kid> Kids { get; set; } = new List<Kid>();
+    public ICollection<KidShopItem> KidShopItems { get; set; } = new List<KidShopItem>();
 
 
     public static ShopItem Create(int parentId, int? categoryId, string name, string icon, string? description,

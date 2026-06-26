@@ -20,8 +20,8 @@ public class Chore : EntityBase
 
     public Parent Parent { get; set; }
     public Category? Category { get; set; }
-    public ICollection<Kid> Kids { get; set; }
-    public ICollection<KidChore> KidChores { get; set; }
+    public ICollection<Kid> Kids { get; set; } = new List<Kid>();
+    public ICollection<KidChore> KidChores { get; set; } = new List<KidChore>();
 
 
     public static Chore Create(int? categoryId, string name, string icon, string description, int points,
