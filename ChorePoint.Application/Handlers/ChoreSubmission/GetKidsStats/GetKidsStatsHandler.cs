@@ -38,7 +38,6 @@ public class GetKidsStatsHandler(IAppDbContext context, IParentContextService pa
         var approvalRate = (int)(choreSubmissions.Count(cs => cs.ApprovalStatus is ChoreApprovalStatus.Approved) *
             100.0 / choreSubmissions.Count);
         
-        // Can be SingleOrDefault() as each kid cannot be assigned to the same chore multiple times
         var dueToday = chores
             .Select(c => c.KidChores
                 .Where(cs => cs.KidId.Equals(request.KidId))

@@ -15,6 +15,39 @@ namespace ChorePoint.API.Controllers;
 public class ChoreController(IMediator mediator) : ControllerBase
 {
     [Authorize]
+    [HttpPost("create")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> CreateChore([FromBody] CreateChoreCommand command)
+    {
+        await mediator.Send(command);
+        return Ok(new
+        {
+            success = true,
+            message = $"Chore with name [{command.Name}] successfully created"
+        });
+    }
+    
+    [Authorize]
+    [HttpDelete("delete/{choreId:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> DeleteChore(int choreId)
+    {
+        await mediator.Send(new DeleteChoreCommand(choreId));
+        return Ok(new
+        {
+            success = true,
+            message = $"Chore with ID [{choreId}] successfully deleted"
+        });
+    }
+    
+    [Authorize]
     [HttpGet("{choreId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -45,7 +78,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
         return Ok(new
         {
             success = true,
-            message = $"Chores with kid ID [{kidId}] successfully retrieved",
+            message = $"Chores assigned to kid with ID [{kidId}] successfully retrieved",
             data = result
         });
     }
@@ -69,22 +102,6 @@ public class ChoreController(IMediator mediator) : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("create")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> CreateChore([FromBody] CreateChoreCommand command)
-    {
-        await mediator.Send(command);
-        return Ok(new
-        {
-            success = true,
-            message = $"Chore with name [{command.Name}] successfully created"
-        });
-    }
-
-    [Authorize]
     [HttpPut("update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -97,23 +114,6 @@ public class ChoreController(IMediator mediator) : ControllerBase
         {
             success = true,
             message = $"Chore with ID [{command.ChoreId}] successfully updated"
-        });
-    }
-
-    [Authorize]
-    [HttpDelete("delete/{choreId:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> DeleteChore(int choreId)
-    {
-        await mediator.Send(new DeleteChoreCommand(choreId));
-        return Ok(new
-        {
-            success = true,
-            message = $"Chore with ID [{choreId}] successfully deleted"
         });
     }
 }

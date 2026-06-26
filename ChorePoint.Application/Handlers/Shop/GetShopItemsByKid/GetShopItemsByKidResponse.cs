@@ -11,7 +11,7 @@ public record GetShopItemsByKidResponse(
     string Icon,
     string? Description,
     int Cost,
-    int Quantity,
+    int? Quantity,
     Category? Category,
     IReadOnlyList<AssignedKidToShopItem> AssignedKids
 );

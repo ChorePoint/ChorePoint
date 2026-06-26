@@ -1,3 +1,4 @@
+using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
@@ -11,8 +12,7 @@ namespace ChorePoint.Application.Handlers.Parent.GetKids;
 
 public class GetKidsHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<GetKidsQuery, IReadOnlyList<GetKidsResponse>>
 {
-    public async Task<IReadOnlyList<GetKidsResponse>> Handle(GetKidsQuery request,
-        CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<GetKidsResponse>> Handle(GetKidsQuery request, CancellationToken cancellationToken)
     {
         var parentId = parentContextService.GetParentId();
 
@@ -22,8 +22,12 @@ public class GetKidsHandler(IAppDbContext context, IParentContextService parentC
             .Where(k => k.ParentId.Equals(parentId))
             .ToListAsync(cancellationToken);
 
-        return kids.Empty()
-            ? throw new NotFoundException($"No kids exist with parent ID [{parentId}]")
-            : kids.Adapt<IReadOnlyList<GetKidsResponse>>();
+        if (kids.Empty())
+            throw new NotFoundException($"No kids exist with parent ID [{parentId}]");
+        
+        var resourceParentIds = kids.Select(k => k.ParentId).ToList();
+        AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
+            
+        return kids.Adapt<IReadOnlyList<GetKidsResponse>>();
     }
 }

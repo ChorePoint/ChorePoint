@@ -17,24 +17,24 @@ namespace ChorePoint.API.Controllers;
 public class ShopController(IMediator mediator) : ControllerBase
 {
     [Authorize]
-    [HttpPost("{shopItemId:int}/buy")]
+    [HttpPost("buy/{shopItemId:int}/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> BuyShopItem(int shopItemId)
+    public async Task<IActionResult> BuyShopItem(int shopItemId, int kidId)
     {
-        await mediator.Send(new BuyShopItemCommand(shopItemId));
+        await mediator.Send(new BuyShopItemCommand(shopItemId, kidId));
         return Ok(new
         {
             success = true,
-            message = $"Shop item with ID [{shopItemId}] bought successfully"
+            message = $"Shop item with ID [{shopItemId}] bought successfully by kid with ID [{kidId}]"
         });
     }
 
     [Authorize]
-    [HttpDelete("{shopItemId:int}/delete")]
+    [HttpDelete("delete/{shopItemId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -81,7 +81,7 @@ public class ShopController(IMediator mediator) : ControllerBase
         return Ok(new
         {
             success = true,
-            message = "Shop items for logged-in parent retrieved successfully",
+            message = "Shop items retrieved successfully",
             data = result
         });
     }
@@ -99,7 +99,7 @@ public class ShopController(IMediator mediator) : ControllerBase
         return Ok(new
         {
             success = true,
-            message = "New shop item created successfully"
+            message = $"Shop item with name [{command.Name}] created successfully"
         });
     }
 

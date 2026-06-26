@@ -3,13 +3,12 @@ using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
-namespace ChorePoint.Application.Handlers.Parent.UpdateKid;
+namespace ChorePoint.Application.Handlers.Parent.DeleteKid;
 
-public class UpdateKidHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<UpdateKidCommand>
+public class DeleteKidHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<DeleteKidCommand>
 {
-    public async Task Handle(UpdateKidCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteKidCommand request, CancellationToken cancellationToken)
     {
         var kid = await context.Kids
             .FindAsync([request.KidId], cancellationToken);
@@ -20,8 +19,7 @@ public class UpdateKidHandler(IAppDbContext context, IParentContextService paren
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(kid.ParentId, parentId);
 
-        kid.Update(request.Name, request.Avatar, request.Age, request.DayStreak, request.LifetimePoints, request.SpendablePoints);
-
+        context.Kids.Remove(kid);
         await context.SaveChangesAsync(cancellationToken);
     }
 }

@@ -4,10 +4,11 @@ using MediatR;
 namespace ChorePoint.Application.Handlers.Parent.UpdateKid;
 
 public record UpdateKidCommand(
-    int Id,
+    int KidId,
     string Name,
-    int Age,
     string Avatar,
-    int SpendablePoints,
-    int DayStreak
+    int? Age,
+    int DayStreak,
+    int LifetimePoints,
+    int SpendablePoints
 ) : IRequest;

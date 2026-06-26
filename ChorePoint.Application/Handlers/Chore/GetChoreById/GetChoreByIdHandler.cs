@@ -16,7 +16,7 @@ public class GetChoreByIdHandler(IAppDbContext context, IParentContextService pa
         var chore = await context.Chores
             .Include(c => c.Category)
             .Include(c  => c.KidChores)
-            .FirstOrDefaultAsync(c => c.ChoreId.Equals(request.ChoreId), cancellationToken);
+            .SingleOrDefaultAsync(c => c.ChoreId.Equals(request.ChoreId), cancellationToken);
         
         if (chore is null)
             throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");

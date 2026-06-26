@@ -8,8 +8,5 @@ public class ReactivateShopItemValidator : AbstractValidator<ReactivateShopItemC
     {
         RuleFor(x => x.ShopItemId)
             .NotEmpty().WithMessage("ShopItemId is required");
-
-        RuleFor(x => x.Quantity)
-            .NotEmpty().WithMessage("Quantity is required");
     }
 }

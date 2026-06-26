@@ -13,7 +13,7 @@ public class UpdateShopItemHandler(IAppDbContext context, IParentContextService 
     {
         var shopItem = await context.ShopItems
             .Include(si  => si.KidShopItems)
-            .FirstOrDefaultAsync(c => c.ShopItemId.Equals(request.ShopItemId), cancellationToken);
+            .SingleOrDefaultAsync(c => c.ShopItemId.Equals(request.ShopItemId), cancellationToken);
 
         if (shopItem is null)
             throw new NotFoundException($"No shop item exists with ID [{request.ShopItemId}]");

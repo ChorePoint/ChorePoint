@@ -14,7 +14,7 @@ public class ReviewSubmissionHandler(IAppDbContext context, IParentContextServic
         var choreSubmission = await context.ChoreSubmissions
             .Where(cs => cs.ChoreSubmissionId.Equals(request.ChoreSubmissionId) &&
                          cs.ApprovalStatus.Equals(ChoreApprovalStatus.Pending))
-            .FirstOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(cancellationToken);
 
         if (choreSubmission is null)
             throw new NotFoundException($"No pending chore submission exists with ID [{request.ChoreSubmissionId}]");

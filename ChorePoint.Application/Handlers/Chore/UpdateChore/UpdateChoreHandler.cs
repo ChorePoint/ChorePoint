@@ -13,7 +13,7 @@ public class UpdateChoreHandler(IAppDbContext context, IParentContextService par
     {
         var chore = await context.Chores
             .Include(c  => c.KidChores)
-            .FirstOrDefaultAsync(c => c.ChoreId.Equals(request.ChoreId), cancellationToken);
+            .SingleOrDefaultAsync(c => c.ChoreId.Equals(request.ChoreId), cancellationToken);
 
         if (chore is null)
             throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");
@@ -25,7 +25,6 @@ public class UpdateChoreHandler(IAppDbContext context, IParentContextService par
 
         foreach (var assignedKid in request.AssignedKids)
         {
-            // Can be SingleOrDefault() as each kid cannot be assigned to the same chore multiple times
             var kidChore = chore.KidChores.SingleOrDefault(kc => kc.KidId.Equals(assignedKid.KidId));
             
             if (kidChore is null)

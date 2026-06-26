@@ -1,8 +1,7 @@
 ﻿using ChorePoint.Application.Handlers.Chore.UpdateChore;
-using ChorePoint.Application.Handlers.Parent.DeleteKidById;
+using ChorePoint.Application.Handlers.Parent.DeleteKid;
 using ChorePoint.Application.Handlers.Parent.GetKidById;
 using ChorePoint.Application.Handlers.Parent.GetKids;
-using ChorePoint.Application.Handlers.Parent.GetMe;
 using ChorePoint.Application.Handlers.Parent.UpdateKid;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -15,41 +14,21 @@ namespace ChorePoint.API.Controllers;
 public class ParentController(IMediator mediator) : ControllerBase
 {
     [Authorize]
-    [HttpGet("me")]
+    [HttpDelete("kid/delete/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> GetMe()
+    public async Task<IActionResult> DeleteKid(int kidId)
     {
-        var result = await mediator.Send(new GetMeQuery());
+        await mediator.Send(new DeleteKidCommand(kidId));
         return Ok(new
         {
             success = true,
-            message = "Parent details retrieved successfully",
-            data = result
+            message = $"Kid with ID [{kidId}] successfully deleted"
         });
     }
-
-    [Authorize]
-    [HttpGet("kids")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> GetKids()
-    {
-        var result = await mediator.Send(new GetKidsQuery());
-        return Ok(new
-        {
-            success = true,
-            message = "Kids details retrieved successfully",
-            data = result
-        });
-    }
-
+    
     [Authorize]
     [HttpGet("kid/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -67,6 +46,24 @@ public class ParentController(IMediator mediator) : ControllerBase
             data = result
         });
     }
+    
+    [Authorize]
+    [HttpGet("kids")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetKids()
+    {
+        var result = await mediator.Send(new GetKidsQuery());
+        return Ok(new
+        {
+            success = true,
+            message = "All kid's details retrieved successfully",
+            data = result
+        });
+    }
 
     [Authorize]
     [HttpPut("kid/update")]
@@ -80,23 +77,7 @@ public class ParentController(IMediator mediator) : ControllerBase
         return Ok(new
         {
             success = true,
-            message = $"Kid with ID [{command.Id}] successfully updated"
-        });
-    }
-
-    [Authorize]
-    [HttpDelete("kid/delete/{kidId:int}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> DeleteKidById(int kidId)
-    {
-        await mediator.Send(new DeleteKidByIdCommand(kidId));
-        return Ok(new
-        {
-            success = true,
-            message = $"Kid with ID [{kidId}] successfully deleted"
+            message = $"Kid with ID [{command.KidId}] successfully updated"
         });
     }
 }
