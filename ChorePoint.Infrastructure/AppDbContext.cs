@@ -55,6 +55,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             
             entity.Property(c => c.Icon)
                 .HasMaxLength(10);
+            
+            entity.Property(c => c.Role)
+                .HasMaxLength(10)
+                .HasConversion<string>();
         });
 
         builder.Entity<Chore>(entity =>
@@ -79,7 +83,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
         builder.Entity<ChoreSubmission>(entity =>
         {
-            entity.Property(cs => cs.Notes)
+            entity.Property(cs => cs.ReviewNotes)
                 .HasMaxLength(300);
             
             entity.Property(cs => cs.ApprovalStatus)
@@ -109,7 +113,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         builder.Entity<KidShopItem>(entity =>
         {
             entity.Property(ksi => ksi.Status)
-                .HasMaxLength(10);
+                .HasMaxLength(10)
+                .HasConversion<string>();
         });
         
         builder.Entity<Parent>(entity =>

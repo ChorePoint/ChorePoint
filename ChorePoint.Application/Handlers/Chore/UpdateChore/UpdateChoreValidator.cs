@@ -24,9 +24,6 @@ public class UpdateChoreValidator : AbstractValidator<UpdateChoreCommand>
         RuleFor(x => x.Frequency)
             .NotEmpty().WithMessage("Frequency is required");
 
-        RuleFor(x => x.Description)
-            .NotEmpty().WithMessage("Description is required");
-
         RuleForEach(x => x.AssignedKids)
             .NotEmpty().WithMessage("AssignedKids is required")
             .ChildRules(assignedKid =>

@@ -9,30 +9,21 @@ using ZiggyCreatures.Caching.Fusion;
 
 namespace ChorePoint.Application.Handlers.Parent.GetKids;
 
-public class GetKidsHandler(IAppDbContext context, IParentContextService parentContextService, IFusionCache cache)
-    : IRequestHandler<GetKidsQuery, IReadOnlyList<GetKidsResponse>>
+public class GetKidsHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<GetKidsQuery, IReadOnlyList<GetKidsResponse>>
 {
     public async Task<IReadOnlyList<GetKidsResponse>> Handle(GetKidsQuery request,
         CancellationToken cancellationToken)
     {
         var parentId = parentContextService.GetParentId();
 
-        var kids = await cache.GetOrSetAsync<IReadOnlyList<Kid>>(
-            $"get_kids:{parentId}",
-            async _ => await GetKidsAssignedToParentFromDb(parentId, cancellationToken),
-            token: cancellationToken
-        );
+        var kids = await context.Kids
+            .Include(k => k.Parent)
+            .Include(k => k.Chores)
+            .Where(k => k.ParentId.Equals(parentId))
+            .ToListAsync(cancellationToken);
 
         return kids.Empty()
             ? throw new NotFoundException($"No kids exist with parent ID [{parentId}]")
             : kids.Adapt<IReadOnlyList<GetKidsResponse>>();
-    }
-
-    private async Task<IReadOnlyList<Kid>> GetKidsAssignedToParentFromDb(int parentId,
-        CancellationToken cancellationToken)
-    {
-        return await context.Kids
-            .Where(k => k.ParentId == parentId)
-            .ToListAsync(cancellationToken);
     }
 }

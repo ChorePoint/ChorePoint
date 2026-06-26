@@ -8,17 +8,17 @@ public class ChoreSubmission : EntityBase
 {
     public int ChoreSubmissionId { get; set; }
     public int ChoreId { get; set; }
+    public int ParentId { get; set; }
     public int KidId { get; set; }
     
-    public string? Notes { get; set; }
+    public string? ReviewNotes { get; set; }
     public ChoreApprovalStatus ApprovalStatus { get; set; }
-    public int? ApprovedByParentId { get; set; }
-    public DateTime? ApprovedAt { get; set; }
+    public DateTime? ReviewedAt { get; set; }
     public DateTime CompletedAt { get; set; }
 
     public Chore Chore { get; set; }
+    public Parent Parent  { get; set; }
     public Kid Kid { get; set; }
-    public Parent? ApprovedByParent { get; set; }
 
 
     public bool CompletedThisWeek(DateTime startOfWeek)
@@ -26,10 +26,10 @@ public class ChoreSubmission : EntityBase
         return ApprovalStatus == ChoreApprovalStatus.Approved && CompletedAt >= startOfWeek;
     }
 
-    public void Review(bool approve, DateTime now, int parentId)
+    public void Review(string? reviewNotes, bool approve, DateTime now)
     {
+        ReviewNotes = reviewNotes;
         ApprovalStatus = approve ? ChoreApprovalStatus.Approved : ChoreApprovalStatus.Rejected;
-        ApprovedAt = now;
-        ApprovedByParentId = parentId;
+        ReviewedAt = now;
     }
 }

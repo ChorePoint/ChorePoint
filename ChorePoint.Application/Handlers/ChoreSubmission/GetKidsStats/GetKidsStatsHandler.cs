@@ -17,34 +17,35 @@ public class GetKidsStatsHandler(IAppDbContext context, IParentContextService pa
     public async Task<GetKidsStatsResponse> Handle(GetKidsStatsQuery request, CancellationToken cancellationToken)
     {
         var choreSubmissions = await context.ChoreSubmissions
+            .Include(cs => cs.Chore)
+            .ThenInclude(c => c.KidChores)
             .Where(cs => cs.KidId.Equals(request.KidId))
             .ToListAsync(cancellationToken);
         
         if (choreSubmissions.Empty())
             throw new NotFoundException($"No submissions found with kid ID [{request.KidId}]");
-
-        var chores = await context.Chores
-            .Include(c => c.KidChores)
-            .Where(c => c.KidChores.Any(kc => kc.KidId.Equals(request.KidId)))
-            .ToListAsync(cancellationToken);
         
-        if (chores.Empty())
-            throw new NotFoundException($"No chores exist with kid ID [{request.KidId}]");
-        
-        var resourceParentIds = chores.Select(chore => chore.ParentId).ToList();
+        var resourceParentIds = choreSubmissions.Select(cs => cs.ParentId).ToList();
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
         var startOfWeek = DateTime.UtcNow.Date.AddDays(-(int)DateTime.UtcNow.DayOfWeek);
+        var chores = choreSubmissions.Select(cs => cs.Chore).ToList();
 
         var completedThisWeek = choreSubmissions.Count(cs =>
-            cs.CompletedThisWeek(startOfWeek) && cs.Chore.Frequency != ChoreFrequency.Bonus);
+            cs.CompletedThisWeek(startOfWeek) && cs.Chore.Frequency is not ChoreFrequency.Bonus);
         var dueThisWeek = chores.Count(c => c.Frequency is ChoreFrequency.Weekly or ChoreFrequency.Daily);
-        var approvalRate = (int)(choreSubmissions.Count(cs => cs.ApprovalStatus == ChoreApprovalStatus.Approved) *
+        var approvalRate = (int)(choreSubmissions.Count(cs => cs.ApprovalStatus is ChoreApprovalStatus.Approved) *
             100.0 / choreSubmissions.Count);
-
-        var dueDays = chores.Select(c => c.KidChores.Select(kc => kc.DueDay).FirstOrDefault()).ToList();
-        var dueToday = dueDays.Count(dow => dow.Equals(DateTime.Today.DayOfWeek));
+        
+        // Can be SingleOrDefault() as each kid cannot be assigned to the same chore multiple times
+        var dueToday = chores
+            .Select(c => c.KidChores
+                .Where(cs => cs.KidId.Equals(request.KidId))
+                .Select(kc => kc.DueDay)
+                .SingleOrDefault()
+            )
+            .Count(dow => dow.Equals(DateTime.Today.DayOfWeek));
 
         return new GetKidsStatsResponse
         (

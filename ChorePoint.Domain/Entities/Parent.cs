@@ -13,6 +13,7 @@ public class Parent : EntityBase
     public string Password { get; set; }
     
     public ParentSettings ParentSettings { get; set; }
+    public ICollection<Category> Categories { get; set; }
 
 
     public static Parent CreateWithoutPassword(string firstName, string lastName, string email)

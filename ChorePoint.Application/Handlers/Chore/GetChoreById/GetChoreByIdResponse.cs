@@ -6,7 +6,6 @@ namespace ChorePoint.Application.Handlers.Chore.GetChoreById;
 
 public record GetChoreByIdResponse(
     int ChoreId,
-    int ParentId,
     string Name,
     string Icon,
     string? Description,
@@ -15,5 +14,6 @@ public record GetChoreByIdResponse(
     ChoreFrequency Frequency,
     DateTime? LastCompletedAt,
     int CompletionCount,
+    Category? Category,
     IReadOnlyList<AssignedKidToChore> AssignedKids
 );

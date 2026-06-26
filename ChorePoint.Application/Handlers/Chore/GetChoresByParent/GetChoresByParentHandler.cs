@@ -18,6 +18,7 @@ public class GetChoresByParentHandler(IAppDbContext context, IParentContextServi
         var parentId = parentContextService.GetParentId();
 
         var chores = await context.Chores
+            .Include(c => c.Category)
             .Include(c => c.KidChores)
             .Where(c => c.ParentId.Equals(parentId))
             .Where(c => request.IsVisible == null || c.KidChores.Any(kc => kc.IsVisible.Equals(request.IsVisible)))
@@ -26,7 +27,7 @@ public class GetChoresByParentHandler(IAppDbContext context, IParentContextServi
         if (chores.Empty())
             throw new NotFoundException($"No chores exist for parent ID [{parentId}]");
         
-        var resourceParentIds = chores.Select(chore => chore.ParentId).ToList();
+        var resourceParentIds = chores.Select(c => c.ParentId).ToList();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
         return chores.Adapt<IReadOnlyList<GetChoresByParentResponse>>();

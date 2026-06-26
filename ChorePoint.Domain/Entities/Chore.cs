@@ -9,6 +9,7 @@ public class Chore : EntityBase
 {
     public int ChoreId { get; set; }
     public int ParentId { get; set; }
+    public int? CategoryId { get; set; }
     
     public string Name { get; set; }
     public string Icon { get; set; }
@@ -20,14 +21,16 @@ public class Chore : EntityBase
     public int CompletionCount { get; set; }
 
     public Parent Parent { get; set; }
+    public Category? Category { get; set; }
     public ICollection<Kid> Kids { get; set; }
     public ICollection<KidChore> KidChores { get; set; }
     
 
-    public static Chore Create(string name, string icon, string description, int points, ChoreDifficulty difficulty, ChoreFrequency frequency)
+    public static Chore Create(int? categoryId, string name, string icon, string description, int points, ChoreDifficulty difficulty, ChoreFrequency frequency)
     {
         return new Chore
         {
+            CategoryId = categoryId,
             Name = name,
             Icon = icon,
             Description = description,
@@ -43,15 +46,16 @@ public class Chore : EntityBase
         return new ChoreSubmission
         {
             ChoreId = ChoreId,
+            ParentId = ParentId,
             KidId = kidId,
+            ApprovalStatus = ChoreApprovalStatus.Pending,
             CompletedAt = now,
-            ApprovalStatus = ChoreApprovalStatus.Approved,
-            ApprovedAt = now
         };
     }
 
-    public void Update(string name, string icon, string? description, int points, ChoreDifficulty difficulty, ChoreFrequency frequency)
+    public void Update(int? categoryId, string name, string icon, string? description, int points, ChoreDifficulty difficulty, ChoreFrequency frequency)
     {
+        CategoryId = categoryId;
         Name = name;
         Icon = icon;
         Description = description;
@@ -60,16 +64,16 @@ public class Chore : EntityBase
         Frequency = frequency;
     }
 
-    public void EnsureCanBeCompleted(ChoreSubmission? currentSubmission, DateTime now)
+    public void EnsureCanBeCompleted(ChoreSubmission currentSubmission, DateTime now)
     {
         switch (Frequency)
         {
             case ChoreFrequency.Daily:
-                if (currentSubmission?.CompletedAt.Date == now.Date)
+                if (currentSubmission.CompletedAt.Date == now.Date)
                     throw new ChoreAlreadyCompletedException("Chore already completed today");
                 break;
             case ChoreFrequency.Weekly:
-                if (currentSubmission?.CompletedAt.AddDays(7) > now)
+                if (currentSubmission.CompletedAt.AddDays(7) > now)
                     throw new ChoreAlreadyCompletedException("Chore already completed within the last week");
                 break;
             case ChoreFrequency.Bonus:

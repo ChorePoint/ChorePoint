@@ -1,3 +1,4 @@
+using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Representations;
 
@@ -5,7 +6,6 @@ namespace ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 
 public record GetChoresByKidResponse(
     int ChoreId,
-    int ParentId,
     string Name,
     string Icon,
     string? Description,
@@ -14,5 +14,6 @@ public record GetChoresByKidResponse(
     ChoreFrequency Frequency,
     DateTime? LastCompletedAt,
     int CompletionCount,
+    Category? Category,
     IReadOnlyList<AssignedKidToChore> AssignedKids
 );

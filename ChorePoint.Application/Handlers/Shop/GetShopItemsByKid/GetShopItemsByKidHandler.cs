@@ -1,3 +1,5 @@
+using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
@@ -8,25 +10,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByKid;
 
-public class GetShopItemsByKidHandler(
-    IAppDbContext context,
-    IParentContextService parentContextService)
-    : IRequestHandler<GetShopItemsByKidQuery, IReadOnlyList<GetShopItemsByKidResponse>>
+public class GetShopItemsByKidHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<GetShopItemsByKidQuery, IReadOnlyList<GetShopItemsByKidResponse>>
 {
-    public async Task<IReadOnlyList<GetShopItemsByKidResponse>> Handle(GetShopItemsByKidQuery request,
-        CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<GetShopItemsByKidResponse>> Handle(GetShopItemsByKidQuery request, CancellationToken cancellationToken)
     {
-        var shopItems = await GetShopItemsByKidFromDb(request.KidId, cancellationToken);
-
-        return shopItems.Empty()
-            ? throw new NotFoundException($"No shop items are assigned to kid ID [{request.KidId}]")
-            : shopItems.Adapt<IReadOnlyList<GetShopItemsByKidResponse>>();
-    }
-
-    private async Task<IReadOnlyList<ShopItem>> GetShopItemsByKidFromDb(int kidId, CancellationToken cancellationToken)
-    {
-        return await context.ShopItems
-            .Where(si => si.KidId == kidId)
+        var shopItems = await context.ShopItems
+            .Include(si => si.Category)
+            .Include(si => si.KidShopItems)
+            .Where(si => si.KidShopItems.Any(ksi => ksi.KidId.Equals(request.KidId)))
             .ToListAsync(cancellationToken);
+
+        if (shopItems.Empty())
+            throw new NotFoundException($"No shop items are assigned to kid ID [{request.KidId}]");
+        
+        var resourceParentIds = shopItems.Select(si => si.ParentId).ToList();
+        var parentId = parentContextService.GetParentId();
+        AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
+
+        return shopItems.Adapt<IReadOnlyList<GetShopItemsByKidResponse>>();
     }
 }

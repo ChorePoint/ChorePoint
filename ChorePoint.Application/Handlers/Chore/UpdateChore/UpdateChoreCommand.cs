@@ -1,4 +1,5 @@
-﻿using ChorePoint.Domain.Enums;
+﻿using ChorePoint.Domain.Entities;
+using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Representations;
 using MediatR;
 
@@ -6,9 +7,10 @@ namespace ChorePoint.Application.Handlers.Chore.UpdateChore;
 
 public record UpdateChoreCommand(
     int ChoreId,
+    int? CategoryId,
     string Name,
     string Icon,
-    string Description,
+    string? Description,
     int Points,
     ChoreDifficulty Difficulty,
     ChoreFrequency Frequency,

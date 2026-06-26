@@ -1,3 +1,4 @@
+using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
 using Mapster;
@@ -8,7 +9,7 @@ using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
 
-public class GetCurrentHandler(IAppDbContext context) : IRequestHandler<GetCurrentQuery, GetCurrentResponse>
+public class GetCurrentHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<GetCurrentQuery, GetCurrentResponse>
 {
     public async Task<GetCurrentResponse> Handle(GetCurrentQuery request, CancellationToken cancellationToken)
     {
@@ -18,7 +19,12 @@ public class GetCurrentHandler(IAppDbContext context) : IRequestHandler<GetCurre
             .OrderByDescending(cs => cs.CompletedAt)
             .FirstOrDefaultAsync(cancellationToken);
 
-        return currentSubmission.Adapt<GetCurrentResponse>()
-               ?? throw new NotFoundException($"No submission exists for kid ID [{request.KidId}]");
+        if (currentSubmission is null)
+            throw new NotFoundException($"No submission exists for kid ID [{request.KidId}]");
+
+        var parentId = parentContextService.GetParentId();
+        AuthorisationHelper.EnsureParentOwnsResource(currentSubmission.ParentId, parentId);
+
+        return currentSubmission.Adapt<GetCurrentResponse>();
     }
 }

@@ -16,6 +16,7 @@ public class GetChoresByKidHandler(IAppDbContext context, IParentContextService 
         CancellationToken cancellationToken)
     {
         var chores = await context.Chores
+            .Include(c => c.Category)
             .Include(c => c.KidChores)
             .Where(c => c.KidChores.Any(kc => kc.KidId.Equals(request.KidId)))
             .ToListAsync(cancellationToken);
@@ -23,7 +24,7 @@ public class GetChoresByKidHandler(IAppDbContext context, IParentContextService 
         if (chores.Empty())
             throw new NotFoundException($"No chores exist with kid ID [{request.KidId}]");
         
-        var resourceParentIds = chores.Select(chore => chore.ParentId).ToList();
+        var resourceParentIds = chores.Select(c => c.ParentId).ToList();
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 

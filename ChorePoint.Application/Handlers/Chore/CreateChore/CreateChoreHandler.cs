@@ -26,6 +26,7 @@ public class CreateChoreHandler(IAppDbContext context, IParentContextService par
         
         var chore = ChoreE.Create
         (
+            request.CategoryId,
             request.Name,
             request.Icon,
             request.Description,

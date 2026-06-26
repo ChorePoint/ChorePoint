@@ -5,11 +5,9 @@ namespace ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
 
 public record GetCurrentResponse(
     int ChoreSubmissionId,
-    int KidId,
-    string? Notes,
+    string? ReviewNotes,
     ChoreApprovalStatus ApprovalStatus,
-    int? ApprovedByParentId,
-    DateTime? ApprovedAt,
+    DateTime? ReviewedAt,
     DateTime CompletedAt,
     ChoreE Chore
 );

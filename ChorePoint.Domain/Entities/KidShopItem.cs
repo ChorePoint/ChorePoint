@@ -12,7 +12,7 @@ public class KidShopItem : EntityBase
     public ShopItemStatus Status { get; set; }
     
     
-    public static KidShopItem Create(int kidId, ShopItemStatus status)
+    public static KidShopItem Create(int kidId, ShopItemStatus status = ShopItemStatus.Available)
     {
         return new KidShopItem
         {

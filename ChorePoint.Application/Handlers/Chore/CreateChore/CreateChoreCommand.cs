@@ -5,6 +5,7 @@ using MediatR;
 namespace ChorePoint.Application.Handlers.Chore.CreateChore;
 
 public record CreateChoreCommand(
+    int? CategoryId,
     string Name,
     string Icon,
     string Description,

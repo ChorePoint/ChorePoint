@@ -11,26 +11,27 @@ public class UpdateChoreHandler(IAppDbContext context, IParentContextService par
 {
     public async Task Handle(UpdateChoreCommand request, CancellationToken cancellationToken)
     {
-        var existingChore = await context.Chores
+        var chore = await context.Chores
             .Include(c  => c.KidChores)
             .FirstOrDefaultAsync(c => c.ChoreId.Equals(request.ChoreId), cancellationToken);
 
-        if (existingChore is null)
+        if (chore is null)
             throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");
 
         var parentId = parentContextService.GetParentId();
-        AuthorisationHelper.EnsureParentOwnsResource(existingChore.ParentId, parentId);
+        AuthorisationHelper.EnsureParentOwnsResource(chore.ParentId, parentId);
 
-        existingChore.Update(request.Name, request.Icon, request.Description, request.Points, request.Difficulty, request.Frequency);
+        chore.Update(request.CategoryId, request.Name, request.Icon, request.Description, request.Points, request.Difficulty, request.Frequency);
 
         foreach (var assignedKid in request.AssignedKids)
         {
-            var existingKidChore = existingChore.KidChores.FirstOrDefault(kc => kc.KidId.Equals(assignedKid.KidId));
+            // Can be SingleOrDefault() as each kid cannot be assigned to the same chore multiple times
+            var kidChore = chore.KidChores.SingleOrDefault(kc => kc.KidId.Equals(assignedKid.KidId));
             
-            if (existingKidChore is null)
-                throw new NotFoundException($"No assigned kid with ID [{assignedKid.KidId}] exists on chore with ID [{request.ChoreId}]");
+            if (kidChore is null)
+                throw new DomainException($"Kid with ID [{assignedKid.KidId}] is not assigned to chore with ID [{request.ChoreId}]");
             
-            existingKidChore.Update(assignedKid.DueDay, assignedKid.IsVisible);
+            kidChore.Update(assignedKid.DueDay, assignedKid.IsVisible);
         }
 
         await context.SaveChangesAsync(cancellationToken);

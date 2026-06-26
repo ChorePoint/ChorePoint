@@ -8,6 +8,9 @@ public class NewShopItemValidator : AbstractValidator<NewShopItemCommand>
     {
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Name is required");
+        
+        RuleFor(x => x.Icon)
+            .NotEmpty().WithMessage("Icon is required");
 
         RuleFor(x => x.Cost)
             .NotEmpty().WithMessage("Cost is required");

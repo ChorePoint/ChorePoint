@@ -1,4 +1,5 @@
-﻿using ChorePoint.Application.Interfaces;
+﻿using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
@@ -6,21 +7,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.ReviewSubmission;
 
-public class ReviewSubmissionHandler(
-    IAppDbContext context,
-    IParentContextService parentContextService) : IRequestHandler<ReviewSubmissionCommand>
+public class ReviewSubmissionHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<ReviewSubmissionCommand>
 {
     public async Task Handle(ReviewSubmissionCommand request, CancellationToken cancellationToken)
     {
-        var submission = await context.ChoreSubmissions
-            .Where(cs => cs.ChoreSubmissionId == request.ChoreSubmissionId &&
-                         cs.ApprovalStatus == ChoreApprovalStatus.Pending)
+        var choreSubmission = await context.ChoreSubmissions
+            .Where(cs => cs.ChoreSubmissionId.Equals(request.ChoreSubmissionId) &&
+                         cs.ApprovalStatus.Equals(ChoreApprovalStatus.Pending))
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (submission is null)
+        if (choreSubmission is null)
             throw new NotFoundException($"No pending chore submission exists with ID [{request.ChoreSubmissionId}]");
+        
+        var parentId = parentContextService.GetParentId();
+        AuthorisationHelper.EnsureParentOwnsResource(choreSubmission.ParentId, parentId);
 
-        submission.Review(request.Approve, DateTime.Now, parentContextService.GetParentId());
+        choreSubmission.Review(request.ReviewNotes, request.Approve, DateTime.Now);
 
         await context.SaveChangesAsync(cancellationToken);
     }
