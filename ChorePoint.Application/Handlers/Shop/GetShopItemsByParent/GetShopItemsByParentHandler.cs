@@ -1,7 +1,5 @@
 using ChorePoint.Application.Authorisation;
-using ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 using ChorePoint.Domain.Extensions;
 using Mapster;
@@ -10,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByParent;
 
-public class GetShopItemsByParentHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<GetShopItemsByParentQuery, IReadOnlyList<GetShopItemsByParentResponse>>
+public class GetShopItemsByParentHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<GetShopItemsByParentQuery, IReadOnlyList<GetShopItemsByParentResponse>>
 {
-    public async Task<IReadOnlyList<GetShopItemsByParentResponse>> Handle(GetShopItemsByParentQuery request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<GetShopItemsByParentResponse>> Handle(GetShopItemsByParentQuery request,
+        CancellationToken cancellationToken)
     {
         var parentId = parentContextService.GetParentId();
 
@@ -24,7 +24,7 @@ public class GetShopItemsByParentHandler(IAppDbContext context, IParentContextSe
 
         if (shopItems.Empty())
             throw new NotFoundException($"No shop items exist for parent ID [{parentId}]");
-        
+
         var resourceParentIds = shopItems.Select(c => c.ParentId).ToList();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 

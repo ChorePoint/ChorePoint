@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace ChorePoint.Domain.Entities;
 
 public class EntityBase

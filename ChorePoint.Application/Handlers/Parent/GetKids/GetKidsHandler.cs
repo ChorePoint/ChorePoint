@@ -1,16 +1,15 @@
 using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 using ChorePoint.Domain.Extensions;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ZiggyCreatures.Caching.Fusion;
 
 namespace ChorePoint.Application.Handlers.Parent.GetKids;
 
-public class GetKidsHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<GetKidsQuery, IReadOnlyList<GetKidsResponse>>
+public class GetKidsHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<GetKidsQuery, IReadOnlyList<GetKidsResponse>>
 {
     public async Task<IReadOnlyList<GetKidsResponse>> Handle(GetKidsQuery request, CancellationToken cancellationToken)
     {
@@ -24,10 +23,10 @@ public class GetKidsHandler(IAppDbContext context, IParentContextService parentC
 
         if (kids.Empty())
             throw new NotFoundException($"No kids exist with parent ID [{parentId}]");
-        
+
         var resourceParentIds = kids.Select(k => k.ParentId).ToList();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
-            
+
         return kids.Adapt<IReadOnlyList<GetKidsResponse>>();
     }
 }

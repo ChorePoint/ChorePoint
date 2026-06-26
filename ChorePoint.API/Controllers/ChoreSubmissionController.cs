@@ -29,7 +29,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
             message = $"Chore with ID [{choreId}] completed successfully by kid with ID [{kidId}]"
         });
     }
-    
+
     [Authorize]
     [HttpGet("current/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -47,7 +47,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
             data = result
         });
     }
-    
+
     [Authorize]
     [HttpGet("stats/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -65,7 +65,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
             data = result
         });
     }
-    
+
     [Authorize]
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]

@@ -8,7 +8,7 @@ public class CompleteChoreValidator : AbstractValidator<CompleteChoreCommand>
     {
         RuleFor(x => x.ChoreId)
             .NotEmpty().WithMessage("ChoreId is required");
-        
+
         RuleFor(x => x.KidId)
             .NotEmpty().WithMessage("KidId is required");
     }

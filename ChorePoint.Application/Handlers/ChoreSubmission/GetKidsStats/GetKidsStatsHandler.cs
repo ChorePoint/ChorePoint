@@ -1,18 +1,15 @@
 using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
 using ChorePoint.Domain.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ZiggyCreatures.Caching.Fusion;
-using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
-using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetKidsStats;
 
-public class GetKidsStatsHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<GetKidsStatsQuery, GetKidsStatsResponse>
+public class GetKidsStatsHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<GetKidsStatsQuery, GetKidsStatsResponse>
 {
     public async Task<GetKidsStatsResponse> Handle(GetKidsStatsQuery request, CancellationToken cancellationToken)
     {
@@ -21,10 +18,10 @@ public class GetKidsStatsHandler(IAppDbContext context, IParentContextService pa
             .ThenInclude(c => c.KidChores)
             .Where(cs => cs.KidId.Equals(request.KidId))
             .ToListAsync(cancellationToken);
-        
+
         if (choreSubmissions.Empty())
             throw new NotFoundException($"No submissions found with kid ID [{request.KidId}]");
-        
+
         var resourceParentIds = choreSubmissions.Select(cs => cs.ParentId).ToList();
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
@@ -37,7 +34,7 @@ public class GetKidsStatsHandler(IAppDbContext context, IParentContextService pa
         var dueThisWeek = chores.Count(c => c.Frequency is ChoreFrequency.Weekly or ChoreFrequency.Daily);
         var approvalRate = (int)(choreSubmissions.Count(cs => cs.ApprovalStatus is ChoreApprovalStatus.Approved) *
             100.0 / choreSubmissions.Count);
-        
+
         var dueToday = chores
             .Select(c => c.KidChores
                 .Where(cs => cs.KidId.Equals(request.KidId))

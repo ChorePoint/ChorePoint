@@ -7,7 +7,10 @@ using ParentE = ChorePoint.Domain.Entities.Parent;
 
 namespace ChorePoint.Application.Handlers.Auth.Login;
 
-public class LoginHandler(IAppDbContext context, IPasswordHasher<ParentE> passwordHasher, IJwtTokenGenerator jwtTokenGenerator) : IRequestHandler<LoginCommand, LoginResponse>
+public class LoginHandler(
+    IAppDbContext context,
+    IPasswordHasher<ParentE> passwordHasher,
+    IJwtTokenGenerator jwtTokenGenerator) : IRequestHandler<LoginCommand, LoginResponse>
 {
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {

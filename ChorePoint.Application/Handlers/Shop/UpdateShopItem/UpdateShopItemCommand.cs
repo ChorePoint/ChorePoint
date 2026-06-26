@@ -1,5 +1,4 @@
-﻿using ChorePoint.Domain.Enums;
-using ChorePoint.Domain.Representations;
+﻿using ChorePoint.Domain.Representations;
 using MediatR;
 
 namespace ChorePoint.Application.Handlers.Shop.UpdateShopItem;

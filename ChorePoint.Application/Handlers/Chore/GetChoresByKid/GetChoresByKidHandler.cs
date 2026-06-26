@@ -5,12 +5,11 @@ using ChorePoint.Domain.Extensions;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ZiggyCreatures.Caching.Fusion;
-using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 
-public class GetChoresByKidHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<GetChoresByKidQuery, IReadOnlyList<GetChoresByKidResponse>>
+public class GetChoresByKidHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<GetChoresByKidQuery, IReadOnlyList<GetChoresByKidResponse>>
 {
     public async Task<IReadOnlyList<GetChoresByKidResponse>> Handle(GetChoresByKidQuery request,
         CancellationToken cancellationToken)
@@ -23,7 +22,7 @@ public class GetChoresByKidHandler(IAppDbContext context, IParentContextService 
 
         if (chores.Empty())
             throw new NotFoundException($"No chores exist with kid ID [{request.KidId}]");
-        
+
         var resourceParentIds = chores.Select(c => c.ParentId).ToList();
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);

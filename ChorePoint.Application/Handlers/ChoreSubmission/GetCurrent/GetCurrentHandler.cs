@@ -4,12 +4,11 @@ using ChorePoint.Domain.Exceptions;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ZiggyCreatures.Caching.Fusion;
-using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetCurrent;
 
-public class GetCurrentHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<GetCurrentQuery, GetCurrentResponse>
+public class GetCurrentHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<GetCurrentQuery, GetCurrentResponse>
 {
     public async Task<GetCurrentResponse> Handle(GetCurrentQuery request, CancellationToken cancellationToken)
     {

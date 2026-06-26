@@ -30,7 +30,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
             message = $"Chore with name [{command.Name}] successfully created"
         });
     }
-    
+
     [Authorize]
     [HttpDelete("delete/{choreId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -47,7 +47,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
             message = $"Chore with ID [{choreId}] successfully deleted"
         });
     }
-    
+
     [Authorize]
     [HttpGet("{choreId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

@@ -25,7 +25,7 @@ public class AuthController(IMediator mediator) : ControllerBase
             data = result
         });
     }
-    
+
     [AllowAnonymous]
     [HttpPost("register")]
     [ProducesResponseType(StatusCodes.Status200OK)]

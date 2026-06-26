@@ -1,5 +1,4 @@
-﻿using ChorePoint.Domain.Enums;
-using MediatR;
+﻿using MediatR;
 
 namespace ChorePoint.Application.Handlers.Parent.UpdateKid;
 

@@ -8,7 +8,7 @@ public class BuyShopItemValidator : AbstractValidator<BuyShopItemCommand>
     {
         RuleFor(x => x.ShopItemId)
             .NotEmpty().WithMessage("ShopItemId is required");
-        
+
         RuleFor(x => x.KidId)
             .NotEmpty().WithMessage("KidId is required");
     }

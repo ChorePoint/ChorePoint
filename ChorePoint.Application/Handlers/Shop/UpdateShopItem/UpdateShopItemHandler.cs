@@ -12,7 +12,7 @@ public class UpdateShopItemHandler(IAppDbContext context, IParentContextService 
     public async Task Handle(UpdateShopItemCommand request, CancellationToken cancellationToken)
     {
         var shopItem = await context.ShopItems
-            .Include(si  => si.KidShopItems)
+            .Include(si => si.KidShopItems)
             .SingleOrDefaultAsync(c => c.ShopItemId.Equals(request.ShopItemId), cancellationToken);
 
         if (shopItem is null)
@@ -21,15 +21,17 @@ public class UpdateShopItemHandler(IAppDbContext context, IParentContextService 
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(shopItem.ParentId, parentId);
 
-        shopItem.Update(request.CategoryId, request.Name, request.Icon, request.Description, request.Cost, request.Quantity);
+        shopItem.Update(request.CategoryId, request.Name, request.Icon, request.Description, request.Cost,
+            request.Quantity);
 
         foreach (var assignedKid in request.AssignedKids)
         {
             var kidShopItem = shopItem.KidShopItems.SingleOrDefault(kc => kc.KidId.Equals(assignedKid.KidId));
-            
+
             if (kidShopItem is null)
-                throw new DomainException($"Kid with ID [{assignedKid.KidId}] is not assigned to shop item with ID [{request.ShopItemId}]");
-            
+                throw new DomainException(
+                    $"Kid with ID [{assignedKid.KidId}] is not assigned to shop item with ID [{request.ShopItemId}]");
+
             kidShopItem.Update(assignedKid.Status);
         }
 

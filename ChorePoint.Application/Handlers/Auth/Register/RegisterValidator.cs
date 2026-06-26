@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using FluentValidation;
 
 namespace ChorePoint.Application.Handlers.Auth.Register;

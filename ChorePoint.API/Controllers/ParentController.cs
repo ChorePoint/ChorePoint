@@ -1,5 +1,4 @@
-﻿using ChorePoint.Application.Handlers.Chore.UpdateChore;
-using ChorePoint.Application.Handlers.Parent.DeleteKid;
+﻿using ChorePoint.Application.Handlers.Parent.DeleteKid;
 using ChorePoint.Application.Handlers.Parent.GetKidById;
 using ChorePoint.Application.Handlers.Parent.GetKids;
 using ChorePoint.Application.Handlers.Parent.UpdateKid;
@@ -29,7 +28,7 @@ public class ParentController(IMediator mediator) : ControllerBase
             message = $"Kid with ID [{kidId}] successfully deleted"
         });
     }
-    
+
     [Authorize]
     [HttpGet("kid/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -47,7 +46,7 @@ public class ParentController(IMediator mediator) : ControllerBase
             data = result
         });
     }
-    
+
     [Authorize]
     [HttpGet("kids")]
     [ProducesResponseType(StatusCodes.Status200OK)]

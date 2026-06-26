@@ -4,20 +4,19 @@ using ChorePoint.Domain.Exceptions;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ZiggyCreatures.Caching.Fusion;
-using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.Chore.GetChoreById;
 
-public class GetChoreByIdHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<GetChoreByIdQuery, GetChoreByIdResponse>
+public class GetChoreByIdHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<GetChoreByIdQuery, GetChoreByIdResponse>
 {
     public async Task<GetChoreByIdResponse> Handle(GetChoreByIdQuery request, CancellationToken cancellationToken)
     {
         var chore = await context.Chores
             .Include(c => c.Category)
-            .Include(c  => c.KidChores)
+            .Include(c => c.KidChores)
             .SingleOrDefaultAsync(c => c.ChoreId.Equals(request.ChoreId), cancellationToken);
-        
+
         if (chore is null)
             throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");
 

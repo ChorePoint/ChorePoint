@@ -1,17 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace ChorePoint.Domain.Entities;
+﻿namespace ChorePoint.Domain.Entities;
 
 public class Parent : EntityBase
 {
     public int ParentId { get; set; }
-    
+
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
-    
+
     public ParentSettings ParentSettings { get; set; }
     public ICollection<Category> Categories { get; set; }
 

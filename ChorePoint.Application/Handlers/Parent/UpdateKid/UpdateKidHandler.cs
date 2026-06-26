@@ -1,13 +1,12 @@
 ﻿using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Parent.UpdateKid;
 
-public class UpdateKidHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<UpdateKidCommand>
+public class UpdateKidHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<UpdateKidCommand>
 {
     public async Task Handle(UpdateKidCommand request, CancellationToken cancellationToken)
     {
@@ -20,7 +19,8 @@ public class UpdateKidHandler(IAppDbContext context, IParentContextService paren
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(kid.ParentId, parentId);
 
-        kid.Update(request.Name, request.Avatar, request.Age, request.DayStreak, request.LifetimePoints, request.SpendablePoints);
+        kid.Update(request.Name, request.Avatar, request.Age, request.DayStreak, request.LifetimePoints,
+            request.SpendablePoints);
 
         await context.SaveChangesAsync(cancellationToken);
     }

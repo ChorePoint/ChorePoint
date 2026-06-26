@@ -1,13 +1,13 @@
 ﻿using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
-using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.NewShopItem;
 
-public class NewShopItemHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<NewShopItemCommand>
+public class NewShopItemHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<NewShopItemCommand>
 {
     public async Task Handle(NewShopItemCommand request, CancellationToken cancellationToken)
     {
@@ -16,12 +16,12 @@ public class NewShopItemHandler(IAppDbContext context, IParentContextService par
             .Where(k => assignedKidIds.Contains(k.KidId))
             .Select(k => k.ParentId)
             .ToListAsync(cancellationToken);
-        
+
         AuthorisationHelper.EnsureAssignedKidIdsAreValid(resourceParentIds, assignedKidIds);
-        
+
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
-        
+
         var shopItem = ShopItem.Create
         (
             parentId,
@@ -32,7 +32,7 @@ public class NewShopItemHandler(IAppDbContext context, IParentContextService par
             request.Cost,
             request.Quantity
         );
-        
+
         foreach (var assignedKid in request.AssignedKids)
             shopItem.KidShopItems.Add(KidShopItem.Create(assignedKid.KidId));
 

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using ChorePoint.Domain.Enums;
+﻿using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
 
 namespace ChorePoint.Domain.Entities;
@@ -10,7 +8,7 @@ public class Chore : EntityBase
     public int ChoreId { get; set; }
     public int ParentId { get; set; }
     public int? CategoryId { get; set; }
-    
+
     public string Name { get; set; }
     public string Icon { get; set; }
     public string? Description { get; set; }
@@ -24,9 +22,10 @@ public class Chore : EntityBase
     public Category? Category { get; set; }
     public ICollection<Kid> Kids { get; set; }
     public ICollection<KidChore> KidChores { get; set; }
-    
 
-    public static Chore Create(int? categoryId, string name, string icon, string description, int points, ChoreDifficulty difficulty, ChoreFrequency frequency)
+
+    public static Chore Create(int? categoryId, string name, string icon, string description, int points,
+        ChoreDifficulty difficulty, ChoreFrequency frequency)
     {
         return new Chore
         {
@@ -49,11 +48,12 @@ public class Chore : EntityBase
             ParentId = ParentId,
             KidId = kidId,
             ApprovalStatus = ChoreApprovalStatus.Pending,
-            CompletedAt = now,
+            CompletedAt = now
         };
     }
 
-    public void Update(int? categoryId, string name, string icon, string? description, int points, ChoreDifficulty difficulty, ChoreFrequency frequency)
+    public void Update(int? categoryId, string name, string icon, string? description, int points,
+        ChoreDifficulty difficulty, ChoreFrequency frequency)
     {
         CategoryId = categoryId;
         Name = name;

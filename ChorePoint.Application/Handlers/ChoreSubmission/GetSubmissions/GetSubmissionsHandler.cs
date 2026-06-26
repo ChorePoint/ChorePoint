@@ -6,14 +6,14 @@ using ChorePoint.Domain.Extensions;
 using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ZiggyCreatures.Caching.Fusion;
-using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
 
-public class GetSubmissionsHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<GetSubmissionsQuery, IReadOnlyList<GetSubmissionsResponse>>
+public class GetSubmissionsHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<GetSubmissionsQuery, IReadOnlyList<GetSubmissionsResponse>>
 {
-    public async Task<IReadOnlyList<GetSubmissionsResponse>> Handle(GetSubmissionsQuery request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<GetSubmissionsResponse>> Handle(GetSubmissionsQuery request,
+        CancellationToken cancellationToken)
     {
         var parentId = parentContextService.GetParentId();
 
@@ -22,7 +22,7 @@ public class GetSubmissionsHandler(IAppDbContext context, IParentContextService 
             .Where(cs => cs.ParentId.Equals(parentId));
 
         if (request.Pending) query = query.Where(cs => cs.ApprovalStatus.Equals(ChoreApprovalStatus.Pending));
-        
+
         var choreSubmissions = await query.ToListAsync(cancellationToken);
 
         if (choreSubmissions.Empty())
@@ -30,7 +30,7 @@ public class GetSubmissionsHandler(IAppDbContext context, IParentContextService 
             var pendingText = request.Pending ? "pending" : string.Empty;
             throw new NotFoundException($"No {pendingText} submissions found with parent ID [{parentId}]");
         }
-        
+
         var resourceParentIds = choreSubmissions.Select(cs => cs.ParentId).ToList();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 

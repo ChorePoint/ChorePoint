@@ -1,12 +1,12 @@
 ﻿using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
 
 namespace ChorePoint.Application.Handlers.Parent.DeleteKid;
 
-public class DeleteKidHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<DeleteKidCommand>
+public class DeleteKidHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<DeleteKidCommand>
 {
     public async Task Handle(DeleteKidCommand request, CancellationToken cancellationToken)
     {

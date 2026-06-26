@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using ChorePoint.Domain.Enums;
+﻿using ChorePoint.Domain.Enums;
 
 namespace ChorePoint.Domain.Entities;
 
@@ -10,14 +8,14 @@ public class ChoreSubmission : EntityBase
     public int ChoreId { get; set; }
     public int ParentId { get; set; }
     public int KidId { get; set; }
-    
+
     public string? ReviewNotes { get; set; }
     public ChoreApprovalStatus ApprovalStatus { get; set; }
     public DateTime? ReviewedAt { get; set; }
     public DateTime CompletedAt { get; set; }
 
     public Chore Chore { get; set; }
-    public Parent Parent  { get; set; }
+    public Parent Parent { get; set; }
     public Kid Kid { get; set; }
 
 

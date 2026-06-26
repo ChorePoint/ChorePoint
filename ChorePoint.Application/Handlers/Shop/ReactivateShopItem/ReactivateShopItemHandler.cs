@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.ReactivateShopItem;
 
-public class ReactivateShopItemHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<ReactivateShopItemCommand>
+public class ReactivateShopItemHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<ReactivateShopItemCommand>
 {
     public async Task Handle(ReactivateShopItemCommand request, CancellationToken cancellationToken)
     {
@@ -19,7 +20,7 @@ public class ReactivateShopItemHandler(IAppDbContext context, IParentContextServ
 
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(shopItem.ParentId, parentId);
-        
+
         foreach (var kidShopItem in shopItem.KidShopItems)
             kidShopItem.Reactivate(shopItem, request.Quantity);
 

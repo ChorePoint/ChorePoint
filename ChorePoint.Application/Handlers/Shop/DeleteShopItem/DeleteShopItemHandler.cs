@@ -5,7 +5,8 @@ using MediatR;
 
 namespace ChorePoint.Application.Handlers.Shop.DeleteShopItem;
 
-public class DeleteShopItemHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<DeleteShopItemCommand>
+public class DeleteShopItemHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<DeleteShopItemCommand>
 {
     public async Task Handle(DeleteShopItemCommand request, CancellationToken cancellationToken)
     {
