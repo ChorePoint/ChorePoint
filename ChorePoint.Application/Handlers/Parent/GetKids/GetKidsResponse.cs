@@ -10,7 +10,5 @@ public record GetKidsResponse(
     int? Age,
     int DayStreak,
     int LifetimePoints,
-    int SpendablePoints,
-    ParentE Parent,
-    ICollection<ChoreE> Chores
+    int SpendablePoints
 );

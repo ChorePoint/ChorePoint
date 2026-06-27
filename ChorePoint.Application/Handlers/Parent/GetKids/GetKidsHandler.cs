@@ -16,8 +16,6 @@ public class GetKidsHandler(IAppDbContext context, IParentContextService parentC
         var parentId = parentContextService.GetParentId();
 
         var kids = await context.Kids
-            .Include(k => k.Parent)
-            .Include(k => k.Chores)
             .Where(k => k.ParentId.Equals(parentId))
             .ToListAsync(cancellationToken);
 

@@ -13,9 +13,7 @@ public class GetKidByIdHandler(IAppDbContext context, IParentContextService pare
     public async Task<GetKidByIdResponse> Handle(GetKidByIdQuery request, CancellationToken cancellationToken)
     {
         var kid = await context.Kids
-            .Include(k => k.Parent)
-            .Include(c => c.Chores)
-            .SingleOrDefaultAsync(k => k.KidId.Equals(request.KidId), cancellationToken);
+            .FindAsync([request.KidId], cancellationToken);
 
         if (kid is null)
             throw new NotFoundException($"No kid exists with ID [{request.KidId}]");
