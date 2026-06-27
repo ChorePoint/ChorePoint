@@ -8,12 +8,12 @@ public class RegisterValidator : AbstractValidator<RegisterCommand>
     {
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("First name is required")
-            .MaximumLength(100).WithMessage("First name does not exceed 50 characters")
+            .MaximumLength(100).WithMessage("First name does not exceed 100 characters")
             .Matches(@"^[a-zA-Z\s]+$").WithMessage("First name can only contain letters and spaces");
 
         RuleFor(x => x.LastName)
             .NotEmpty().WithMessage("Last name is required")
-            .MaximumLength(100).WithMessage("Last name does not exceed 50 characters")
+            .MaximumLength(100).WithMessage("Last name does not exceed 100 characters")
             .Matches("^[a-zA-Z]+$").WithMessage("Last name can only contain letters and spaces");
 
         RuleFor(x => x.Email)
