@@ -2,7 +2,6 @@ using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
 using ChorePoint.Domain.Extensions;
-using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +27,7 @@ public class GetShopItemsByParentHandler(IAppDbContext context, IParentContextSe
         var resourceParentIds = shopItems.Select(c => c.ParentId).ToList();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
-        return shopItems.Adapt<IReadOnlyList<GetShopItemsByParentResponse>>();
+        var mapper = new GetShopItemsByParentMapper();
+        return mapper.ShopItemsToGetShopItemsByParentResponseList(shopItems);
     }
 }

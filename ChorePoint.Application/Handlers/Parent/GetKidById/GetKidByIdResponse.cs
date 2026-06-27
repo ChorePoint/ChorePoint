@@ -1,7 +1,4 @@
-﻿using ChoreE = ChorePoint.Domain.Entities.Chore;
-using ParentE = ChorePoint.Domain.Entities.Parent;
-
-namespace ChorePoint.Application.Handlers.Parent.GetKidById;
+﻿namespace ChorePoint.Application.Handlers.Parent.GetKidById;
 
 public record GetKidByIdResponse(
     int KidId,

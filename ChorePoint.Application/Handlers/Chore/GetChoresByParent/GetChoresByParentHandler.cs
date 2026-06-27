@@ -2,7 +2,6 @@ using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
 using ChorePoint.Domain.Extensions;
-using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +28,7 @@ public class GetChoresByParentHandler(IAppDbContext context, IParentContextServi
         var resourceParentIds = chores.Select(c => c.ParentId).ToList();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
-        return chores.Adapt<IReadOnlyList<GetChoresByParentResponse>>();
+        var mapper = new GetChoresByParentMapper();
+        return mapper.ChoresToGetChoresByParentResponseList(chores);
     }
 }

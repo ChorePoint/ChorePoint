@@ -1,7 +1,6 @@
 using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
-using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +23,7 @@ public class GetCurrentHandler(IAppDbContext context, IParentContextService pare
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(currentSubmission.ParentId, parentId);
 
-        return currentSubmission.Adapt<GetCurrentResponse>();
+        var mapper = new GetCurrentMapper();
+        return mapper.ChoreSubmissionToGetCurrentResponse(currentSubmission);
     }
 }

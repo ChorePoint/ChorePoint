@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByKid;
 
-public class GetChoreByIdValidator : AbstractValidator<GetShopItemsByKidQuery>
+public class GetShopItemsByKidValidator : AbstractValidator<GetShopItemsByKidQuery>
 {
-    public GetChoreByIdValidator()
+    public GetShopItemsByKidValidator()
     {
         RuleFor(x => x.KidId)
             .NotEmpty().WithMessage("KidId is required");

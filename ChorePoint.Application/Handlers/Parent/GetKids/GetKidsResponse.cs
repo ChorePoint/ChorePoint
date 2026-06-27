@@ -1,6 +1,3 @@
-using ChoreE = ChorePoint.Domain.Entities.Chore;
-using ParentE = ChorePoint.Domain.Entities.Parent;
-
 namespace ChorePoint.Application.Handlers.Parent.GetKids;
 
 public record GetKidsResponse(

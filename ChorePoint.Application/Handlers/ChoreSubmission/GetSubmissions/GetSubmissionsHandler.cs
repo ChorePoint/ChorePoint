@@ -3,7 +3,6 @@ using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
 using ChorePoint.Domain.Extensions;
-using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +33,7 @@ public class GetSubmissionsHandler(IAppDbContext context, IParentContextService 
         var resourceParentIds = choreSubmissions.Select(cs => cs.ParentId).ToList();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
-        return choreSubmissions.Adapt<IReadOnlyList<GetSubmissionsResponse>>();
+        var mapper = new GetSubmissionsMapper();
+        return mapper.ChoreSubmissionsToGetSubmissionsResponseList(choreSubmissions);
     }
 }
