@@ -23,6 +23,6 @@ public class RegisterValidator : AbstractValidator<RegisterCommand>
 
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required")
-            .MaximumLength(20).WithMessage("Password cannot exceed 100 characters");
+            .MaximumLength(20).WithMessage("Password cannot exceed 20 characters");
     }
 }
