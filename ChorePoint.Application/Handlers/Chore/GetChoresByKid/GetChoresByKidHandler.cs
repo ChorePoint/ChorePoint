@@ -15,7 +15,7 @@ public class GetChoresByKidHandler(IAppDbContext context, IParentContextService 
     {
         var chores = await context.Chores
             .Include(c => c.Category)
-            .Include(c => c.KidChores)
+            .Include(c => c.KidChores.Where(kc => kc.KidId.Equals(request.KidId)))
             .Where(c => c.KidChores.Any(kc => kc.KidId.Equals(request.KidId)))
             .ToListAsync(cancellationToken);
 

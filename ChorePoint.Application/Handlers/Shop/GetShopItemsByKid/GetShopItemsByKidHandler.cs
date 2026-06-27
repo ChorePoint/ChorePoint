@@ -15,7 +15,7 @@ public class GetShopItemsByKidHandler(IAppDbContext context, IParentContextServi
     {
         var shopItems = await context.ShopItems
             .Include(si => si.Category)
-            .Include(si => si.KidShopItems)
+            .Include(si => si.KidShopItems.Where(ksi => ksi.KidId.Equals(request.KidId)))
             .Where(si => si.KidShopItems.Any(ksi => ksi.KidId.Equals(request.KidId)))
             .ToListAsync(cancellationToken);
 
