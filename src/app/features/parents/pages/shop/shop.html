@@ -1,1 +1,42 @@
-<p>shop works!</p>
+<div id="overlay"></div>
+@if (vm$ | async; as vm) {
+  <app-header
+    [config]="{
+      pageTitle: '🛍️ Shop',
+      routerLink: '/dashboard/shop/add',
+      buttonIcon: '+',
+    }"
+  >
+    <app-kid-selector-header
+      [kids]="vm.kids"
+      [selectedKidId]="vm.selectedKid?.id"
+      (kidSelected)="vm.selectedKid = $event"
+    />
+  </app-header>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <!-- ITEMS LIST -->
+    <div>
+      <div class="section-header">
+        <div class="form-section-label">Shop Items</div>
+        <div class="item-count">
+          {{ `${vm.shopItems.length} ${vm.shopItems.length > 1 ? 'items' : 'item'}` }}
+        </div>
+      </div>
+      <div class="items-list">
+        @for (shopItem of vm.shopItems; track shopItem.id) {
+          <app-shop-card
+            [shopItem]="shopItem"
+            [deleteLoading]="deleteLoadingId === shopItem.id"
+            (deleteEmitter)="delete($event)"
+          />
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+} @else {
+  <app-loading-screen />
+}

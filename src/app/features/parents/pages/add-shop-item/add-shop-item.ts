@@ -3,7 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { SHOP_EMOJIS } from '../../../../core/consts/shop-emojis';
 import { ShopService } from '../../../../core/services/shop/shop.service';
-import { ShopItemStatus } from '../../../../core/types/enums/shop-item-status';
+import { ShopItemStatusStatus } from '../../../../core/types/enums/shop-item-status';
 import { CategorySelector } from '../../../../shared/components/category-selector/category-selector';
 import { LoadingEmoji } from '../../../../shared/components/loading-emoji/loading-emoji';
 import { EmojiPicker } from '../../../chores/components/emoji-picker/emoji-picker';
@@ -32,7 +32,7 @@ export class AddShopItem {
     category: ['Other', { validators: [Validators.required] }],
     cost: [0, { validators: [Validators.required] }],
     quantity: [null as number | null, { validators: [Validators.required] }], // Endpoint not currently accepting nullable but will in
-    status: [ShopItemStatus.Available, { validators: [Validators.required] }],
+    status: [ShopItemStatusStatus.Available, { validators: [Validators.required] }],
   });
 
   submit() {

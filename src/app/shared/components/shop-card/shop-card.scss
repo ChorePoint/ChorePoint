@@ -1,0 +1,186 @@
+.shop-item-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 7%);
+
+    &.hidden-item {
+        opacity: 0.55;
+    }
+
+    .item-top {
+        display: flex;
+        align-items: center;
+        padding: 14px 16px 10px;
+        gap: 12px;
+
+        .item-emoji-wrap {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .item-name-block {
+            flex: 1;
+            min-width: 0;
+
+            .item-name {
+                font-size: 16px;
+                font-weight: 800;
+                color: #2c3e50;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .item-assigned {
+                font-size: 11px;
+                color: #95a5a6;
+                font-weight: 600;
+                margin-top: 2px;
+            }
+        }
+
+        .item-menu-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #7f8c8d;
+            flex-shrink: 0;
+            position: relative;
+            transition: background 0.15s;
+
+            &:hover {
+                background: #ecf0f1;
+            }
+
+            .ctx-menu {
+                position: absolute;
+                top: 44px;
+                right: 12px;
+                background: white;
+                border-radius: 14px;
+                box-shadow: 0 8px 30px rgb(0 0 0 / 15%);
+                overflow: hidden;
+                z-index: 100;
+                min-width: 170px;
+                display: none;
+
+                &.open {
+                    display: block;
+                }
+
+                .ctx-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 12px 14px;
+                    font-size: 14px;
+                    font-weight: 700;
+                    color: #2c3e50;
+                    cursor: pointer;
+                    border-bottom: 1px solid #f5f5f5;
+                    transition: background 0.1s;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+
+                    &:hover {
+                        background: #f8f9fa;
+                    }
+
+                    &.danger {
+                        color: #e74c3c;
+                    }
+
+                    .ctx-icon {
+                        font-size: 16px;
+                        width: 22px;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+
+    .item-meta {
+        display: flex;
+        border-top: 1px solid #f0f0f0;
+
+        .meta-cell {
+            flex: 1;
+            padding: 10px 12px;
+            border-right: 1px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+
+            &:last-child {
+                border-right: none;
+            }
+
+            .meta-label {
+                font-size: 9px;
+                font-weight: 700;
+                color: #bdc3c7;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .meta-value {
+                font-size: 15px;
+                font-weight: 800;
+                color: #2c3e50;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+
+                .status-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 4px;
+                    font-size: 11px;
+                    font-weight: 800;
+                    padding: 3px 8px;
+                    border-radius: 10px;
+                    letter-spacing: 0.2px;
+                }
+
+                .available {
+                    background: #eafaf1;
+                    color: #27ae60;
+                }
+
+                .pending {
+                    background: #fef9e7;
+                    color: #f39c12;
+                }
+
+                .hidden {
+                    background: #f0f0f0;
+                    color: #95a5a6;
+                }
+            }
+
+            .cost-value {
+                color: #f39c12;
+            }
+
+            .qty-value {
+                color: #3498db;
+            }
+        }
+    }
+}
