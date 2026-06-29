@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
+import { environment } from '../../../../environments/environment';
 import { Kid } from '../../types/dtos/kid';
 import { ApiGetResponse } from '../dtos/response';
 import { UpdateKidRequest } from './kid.dtos';
@@ -12,7 +13,7 @@ import { UpdateKidRequest } from './kid.dtos';
 export class KidsService {
   private http = inject(HttpClient);
 
-  private baseUrl = 'https://localhost:7087/api/parent';
+  private baseUrl = `${environment.apiUrl}/api/parent`;
 
   getKids$(): Observable<Kid[]> {
     return this.http.get<ApiGetResponse<Kid[]>>(`${this.baseUrl}/kids`).pipe(

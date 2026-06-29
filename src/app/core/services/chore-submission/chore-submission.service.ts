@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/internal/operators/catchError';
+import { environment } from '../../../../environments/environment';
 import { DEFAULT_KID_STATS } from '../../consts/default-kid-stats';
 import { ChoreSubmission } from '../../types/dtos/chore-submission';
 import { ApiGetResponse, ApiPutResponse } from '../dtos/response';
@@ -11,7 +12,7 @@ import { KidStats } from './chore-submission.dtos';
 export class ChoreSubmissionService {
   private http = inject(HttpClient);
 
-  private baseUrl = 'https://localhost:7087/api/chore/submissions';
+  private baseUrl = `${environment.apiUrl}/api/chore/submissions`;
 
   getSubmissions$(pending: boolean) {
     return this.http
