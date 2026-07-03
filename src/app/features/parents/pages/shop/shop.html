@@ -3,7 +3,7 @@
   <app-header
     [config]="{
       pageTitle: '🛍️ Shop',
-      routerLink: '/dashboard/shop/add',
+      routerLink: vm.kids.length > 0 ? '/dashboard/shop/add' : '',
       buttonIcon: '+',
     }"
   >
