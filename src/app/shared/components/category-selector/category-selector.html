@@ -1,0 +1,12 @@
+<div class="category-grid">
+  @for (category of categories; track category.icon) {
+    <div
+      [class.selected]="selectedCategory === category.name"
+      class="category-option"
+      (click)="selectedCategoryChanged.emit(category)"
+    >
+      <div class="category-icon">{{ category.icon }}</div>
+      <div class="category-name">{{ category.name }}</div>
+    </div>
+  }
+</div>

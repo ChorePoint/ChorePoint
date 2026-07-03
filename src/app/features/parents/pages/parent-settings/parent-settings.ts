@@ -1,5 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { KidsService } from '../../../../core/services/kids/kids.service';
@@ -10,7 +11,7 @@ import { KidList } from '../../../chores/components/kid-list/kid-list';
 
 @Component({
   selector: 'app-parent-settings',
-  imports: [AsyncPipe, LoadingScreen, KidList, Header],
+  imports: [AsyncPipe, LoadingScreen, KidList, Header, RouterLink],
   templateUrl: './parent-settings.html',
   styleUrl: './parent-settings.scss',
 })

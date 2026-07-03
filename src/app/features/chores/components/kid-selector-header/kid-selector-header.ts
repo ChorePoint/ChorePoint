@@ -10,6 +10,7 @@ import { Kid } from '../../../../core/types/dtos/kid';
 export class KidSelectorHeader {
   @Input() kids!: Kid[];
   @Input() selectedKidId?: number;
+  @Input() kidHeaderText!: string;
 
   @Output() kidSelected = new EventEmitter<Kid | null>();
 

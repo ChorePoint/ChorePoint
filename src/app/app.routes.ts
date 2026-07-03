@@ -6,10 +6,12 @@ import { AddChore } from './features/chores/pages/add-chore/add-chore';
 import { ChoreDetails } from './features/chores/pages/chore-details/chore-details';
 import { EditChore } from './features/chores/pages/edit-chore/edit-chore';
 import { DashboardLayout } from './features/parents/dashboard-layout/dashboard-layout';
+import { AddShopItem } from './features/parents/pages/add-shop-item/add-shop-item';
 import { ChoreView } from './features/parents/pages/chore-view/chore-view';
 import { DashboardHome } from './features/parents/pages/dashboard-home/dashboard-home';
 import { KidsSettings } from './features/parents/pages/kids-settings/kids-settings';
 import { ParentSettings } from './features/parents/pages/parent-settings/parent-settings';
+import { Shop } from './features/parents/pages/shop/shop';
 import { CreateProfile } from './features/start/pages/create-profile/create-profile';
 import { Start } from './features/start/pages/start/start';
 import { EditKidForm } from './shared/pages/edit-kid-form/edit-kid-form';
@@ -26,6 +28,8 @@ export const routes: Routes = [
       { path: 'chores', component: ChoreView },
       { path: 'chores/add', component: AddChore },
       { path: 'chores/edit/:id', component: EditChore },
+      { path: 'shop', component: Shop },
+      { path: 'shop/add', component: AddShopItem },
       {
         path: 'kids',
         component: KidsSettings,

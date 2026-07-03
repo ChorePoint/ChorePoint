@@ -17,7 +17,6 @@ import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-s
   selector: 'app-edit-chore',
   imports: [AsyncPipe, ChoreForm, LoadingScreen],
   templateUrl: './edit-chore.html',
-  styleUrl: './edit-chore.scss',
 })
 export class EditChore implements OnInit {
   private choreService = inject(ChoreService);

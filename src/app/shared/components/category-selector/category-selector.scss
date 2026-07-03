@@ -1,0 +1,31 @@
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+
+    .category-option {
+        padding: 15px;
+        background: #f8f9fa;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &.selected {
+            border-color: #667eea;
+            background: #e3f2fd;
+        }
+
+        .category-icon {
+            font-size: 32px;
+            margin-bottom: 6px;
+        }
+
+        .category-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+    }
+}

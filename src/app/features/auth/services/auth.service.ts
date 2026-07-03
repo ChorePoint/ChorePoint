@@ -1,16 +1,17 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 import { AUTH_ERROR_MAP } from '../models/auth.error';
 import { AuthError, AuthErrorType } from '../models/auth.types';
-import { CreateAccountRequest } from '../models/create-account-request';
+import { RegisterRequest } from '../models/create-account-request';
 import { LoginRequest, LoginResponse } from '../models/login-request';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
 
-  private baseUrl = 'https://localhost:7087/api/auth';
+  private baseUrl = `${environment.apiUrl}/api/auth`;
 
   private ONBOARDING_KEY = 'hasSeenOnboarding';
 
@@ -62,7 +63,7 @@ export class AuthService {
     localStorage.removeItem('authToken');
   }
 
-  createAccount(request: CreateAccountRequest) {
-    return this.http.post<void>(`${this.baseUrl}/create-account`, request);
+  createAccount(request: RegisterRequest) {
+    return this.http.post<void>(`${this.baseUrl}/register`, request);
   }
 }

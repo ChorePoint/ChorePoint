@@ -1,0 +1,236 @@
+.header {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    padding: 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+
+        .back-button {
+            width: 35px;
+            height: 35px;
+            background: rgb(255 255 255 / 30%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+
+            span {
+                transform: translateY(-1px);
+            }
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+    }
+}
+
+.content {
+    padding: 25px 20px;
+
+    .form-section {
+        margin-bottom: 30px;
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .emoji-picker {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+
+            .emoji-option {
+                aspect-ratio: 1;
+                background: #f8f9fa;
+                border: 2px solid #e0e0e0;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 32px;
+                cursor: pointer;
+
+                &.selected {
+                    border-color: #27ae60;
+                    background: #e8f5e9;
+                }
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+
+            .label {
+                font-size: 14px;
+                font-weight: 700;
+                color: #2c3e50;
+                margin-bottom: 8px;
+                display: block;
+
+                .required {
+                    color: #e74c3c;
+                }
+            }
+
+            .input {
+                width: 100%;
+                padding: 12px;
+                border: 2px solid #e0e0e0;
+                border-radius: 12px;
+                font-size: 15px;
+                font-family: inherit;
+                outline: none;
+                box-sizing: border-box;
+
+                &:focus {
+                    border-color: #667eea;
+                }
+            }
+
+            textarea.input {
+                min-height: 100px;
+                resize: vertical;
+            }
+
+            .input-hint {
+                font-size: 12px;
+                color: #7f8c8d;
+                margin-top: 6px;
+            }
+        }
+
+        .stock-counter {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+
+            .stock-btn {
+                width: 40px;
+                height: 40px;
+                background: #f8f9fa;
+                border: 2px solid #e0e0e0;
+                border-radius: 50%;
+                font-size: 20px;
+                font-weight: 700;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .stock-display {
+                flex: 1;
+                text-align: center;
+                font-size: 24px;
+                font-weight: 700;
+                color: #2c3e50;
+            }
+        }
+
+        .toggle-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+
+            .toggle-info {
+                flex: 1;
+
+                .toggle-title {
+                    font-size: 15px;
+                    font-weight: 700;
+                    color: #2c3e50;
+                    margin-bottom: 4px;
+                }
+
+                .toggle-description {
+                    font-size: 12px;
+                    color: #7f8c8d;
+                }
+            }
+
+            .toggle-switch {
+                position: relative;
+                width: 50px;
+                height: 28px;
+                background: #bdc3c7;
+                border-radius: 14px;
+                cursor: pointer;
+                transition: background 0.3s;
+
+                &.active {
+                    background: #27ae60;
+
+                    &::after {
+                        transform: translateX(22px);
+                    }
+                }
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    width: 24px;
+                    height: 24px;
+                    background: white;
+                    border-radius: 50%;
+                    top: 2px;
+                    left: 2px;
+                    transition: transform 0.3s;
+                    box-shadow: 0 2px 4px rgb(0 0 0 / 20%);
+                }
+            }
+        }
+
+        .bottom-actions {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 15px 20px;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 10px;
+
+            .btn {
+                flex: 1;
+                padding: 16px;
+                border-radius: 15px;
+                border: none;
+                font-size: 16px;
+                font-weight: 700;
+                cursor: pointer;
+            }
+
+            .btn-secondary {
+                background: #f8f9fa;
+                color: #2c3e50;
+                border: 2px solid #e0e0e0;
+            }
+
+            .btn-primary {
+                background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+                color: white;
+                box-shadow: 0 4px 12px rgb(39 174 96 / 30%);
+            }
+        }
+    }
+}

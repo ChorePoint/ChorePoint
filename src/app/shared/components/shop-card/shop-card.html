@@ -1,0 +1,46 @@
+<div class="shop-item-card">
+  <div class="item-top">
+    <div class="item-emoji-wrap" style="background: #fff8e1">⚡</div>
+    <div class="item-name-block">
+      <div class="item-name">{{ shopItem.name }}</div>
+      <div class="item-assigned">👤 All Kids</div>
+      <!-- TODO: changed following junction table implementation -->
+    </div>
+    <button class="item-menu-btn" (click)="openContextMenuId = shopItem.id" #toggle>
+      ⋯
+      <div class="ctx-menu" [class.open]="openContextMenuId === shopItem.id" #menu>
+        <div class="ctx-item"><span class="ctx-icon">✏️</span> Edit</div>
+        <div class="ctx-item"><span class="ctx-icon">🙈</span> Hide</div>
+        <div class="ctx-item danger" (click)="delete()">
+          <span class="ctx-icon">
+            @if (deleteLoading) {
+              <app-loading-emoji />
+            } @else {
+              🗑️
+            }
+          </span>
+          {{ deleteState.text }}
+        </div>
+      </div>
+    </button>
+  </div>
+  <div class="item-meta">
+    <div class="meta-cell">
+      <div class="meta-label">Cost</div>
+      <div class="meta-value cost-value">⭐ {{ shopItem.cost }}</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-label">Qty</div>
+      <div class="meta-value qty-value">📦 {{ shopItem.quantity }}</div>
+    </div>
+    <div class="meta-cell">
+      <div class="meta-label">Status</div>
+      <div class="meta-value">
+        <span class="status-badge" [class]="SHOP_ITEM_STATUS_MAP[shopItem.status].name"
+          >{{ SHOP_ITEM_STATUS_MAP[shopItem.status].icon }}
+          {{ SHOP_ITEM_STATUS_MAP[shopItem.status].name | titlecase }}</span
+        >
+      </div>
+    </div>
+  </div>
+</div>
