@@ -1,30 +1,28 @@
+using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
-using Mapster;
 using MediatR;
-using ZiggyCreatures.Caching.Fusion;
-using ChoreE = ChorePoint.Domain.Entities.Chore;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Chore.GetChoreById;
 
-public class GetChoreByIdHandler(IAppDbContext context, IFusionCache cache)
+public class GetChoreByIdHandler(IAppDbContext context, IParentContextService parentContextService)
     : IRequestHandler<GetChoreByIdQuery, GetChoreByIdResponse>
 {
     public async Task<GetChoreByIdResponse> Handle(GetChoreByIdQuery request, CancellationToken cancellationToken)
     {
-        var chore = await cache.GetOrSetAsync<ChoreE?>(
-            $"chore:{request.ChoreId}",
-            async _ => await GetChoreByIdFromDb(request.ChoreId, cancellationToken),
-            token: cancellationToken
-        );
+        var chore = await context.Chores
+            .Include(c => c.Category)
+            .Include(c => c.KidChores)
+            .SingleOrDefaultAsync(c => c.ChoreId.Equals(request.ChoreId), cancellationToken);
 
-        return chore.Adapt<GetChoreByIdResponse>()
-               ?? throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");
-    }
+        if (chore is null)
+            throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");
 
-    private async Task<ChoreE?> GetChoreByIdFromDb(int choreId, CancellationToken cancellationToken)
-    {
-        return await context.Chores
-            .FindAsync([choreId], cancellationToken);
+        var parentId = parentContextService.GetParentId();
+        AuthorisationHelper.EnsureParentOwnsResource(chore.ParentId, parentId);
+
+        var mapper = new GetChoreByIdMapper();
+        return mapper.ChoreToGetChoreByIdResponse(chore);
     }
 }

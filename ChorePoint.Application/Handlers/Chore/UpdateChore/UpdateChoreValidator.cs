@@ -6,11 +6,8 @@ public class UpdateChoreValidator : AbstractValidator<UpdateChoreCommand>
 {
     public UpdateChoreValidator()
     {
-        RuleFor(x => x.Id)
-            .NotEmpty().WithMessage("ID is required");
-
-        RuleFor(x => x.KidId)
-            .NotEmpty().WithMessage("KidId is required");
+        RuleFor(x => x.ChoreId)
+            .NotEmpty().WithMessage("ChoreId is required");
 
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Name is required");
@@ -27,13 +24,18 @@ public class UpdateChoreValidator : AbstractValidator<UpdateChoreCommand>
         RuleFor(x => x.Frequency)
             .NotEmpty().WithMessage("Frequency is required");
 
-        RuleFor(x => x.IsVisible)
-            .NotEmpty().WithMessage("IsVisible is required");
+        RuleFor(x => x.AssignedKids)
+            .NotEmpty().WithMessage("AssignedKids is required");
 
-        RuleFor(x => x.Description)
-            .NotEmpty().WithMessage("Description is required");
+        RuleForEach(x => x.AssignedKids)
+            .NotEmpty().WithMessage("AssignedKids cannot contain a null element")
+            .ChildRules(assignedKid =>
+            {
+                assignedKid.RuleFor(x => x.KidId)
+                    .NotEmpty().WithMessage("KidId is required in AssignedKids");
 
-        RuleFor(x => x.DueDay)
-            .NotEmpty().WithMessage("DueDay is required");
+                assignedKid.RuleFor(x => x.IsVisible)
+                    .NotEmpty().WithMessage("IsVisible is required in AssignedKids");
+            });
     }
 }

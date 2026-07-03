@@ -4,14 +4,10 @@ using ChoreE = ChorePoint.Domain.Entities.Chore;
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
 
 public record GetSubmissionsResponse(
-    int Id,
-    int ChoreId,
-    int KidId,
-    DateTime CompletedAt,
+    int ChoreSubmissionId,
+    string? ReviewNotes,
     ChoreApprovalStatus ApprovalStatus,
-    DateTime? ApprovedAt,
-    int? ApprovedByUserId,
-    string? Notes,
-    DateTime? CreatedAt,
+    DateTime? ReviewedAt,
+    DateTime CompletedAt,
     ChoreE Chore
 );

@@ -3,5 +3,6 @@
 namespace ChorePoint.Application.Handlers.Shop.BuyShopItem;
 
 public record BuyShopItemCommand(
-    int ShopItemId
+    int ShopItemId,
+    int KidId
 ) : IRequest;

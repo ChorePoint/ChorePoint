@@ -1,19 +1,14 @@
-﻿using ChorePoint.Application.Interfaces;
+﻿using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
 using ChorePoint.Domain.Extensions;
-using Mapster;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ZiggyCreatures.Caching.Fusion;
-using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
 
-public class GetSubmissionsHandler(
-    IAppDbContext context,
-    IParentContextService parentContextService,
-    IFusionCache cache)
+public class GetSubmissionsHandler(IAppDbContext context, IParentContextService parentContextService)
     : IRequestHandler<GetSubmissionsQuery, IReadOnlyList<GetSubmissionsResponse>>
 {
     public async Task<IReadOnlyList<GetSubmissionsResponse>> Handle(GetSubmissionsQuery request,
@@ -21,11 +16,13 @@ public class GetSubmissionsHandler(
     {
         var parentId = parentContextService.GetParentId();
 
-        var choreSubmissions = await cache.GetOrSetAsync<IReadOnlyList<ChoreSubmissionE>>(
-            $"get_submissions:{parentId}:{request.Pending}",
-            async _ => await GetSubmissionsFromParentFromDb(parentId, request.Pending, cancellationToken),
-            token: cancellationToken
-        );
+        var query = context.ChoreSubmissions
+            .Include(cs => cs.Chore)
+            .Where(cs => cs.ParentId.Equals(parentId));
+
+        if (request.Pending) query = query.Where(cs => cs.ApprovalStatus.Equals(ChoreApprovalStatus.Pending));
+
+        var choreSubmissions = await query.ToListAsync(cancellationToken);
 
         if (choreSubmissions.Empty())
         {
@@ -33,20 +30,10 @@ public class GetSubmissionsHandler(
             throw new NotFoundException($"No {pendingText} submissions found with parent ID [{parentId}]");
         }
 
-        return choreSubmissions.Adapt<IReadOnlyList<GetSubmissionsResponse>>();
-    }
+        var resourceParentIds = choreSubmissions.Select(cs => cs.ParentId).ToList();
+        AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
-    private async Task<IReadOnlyList<ChoreSubmissionE>> GetSubmissionsFromParentFromDb(
-        int parentId,
-        bool pending,
-        CancellationToken cancellationToken)
-    {
-        var query = context.ChoreSubmissions
-            .Include(cs => cs.Chore)
-            .Where(cs => cs.Kid.ParentId == parentId);
-
-        if (pending) query = query.Where(cs => cs.ApprovalStatus == ChoreApprovalStatus.Pending);
-
-        return await query.ToListAsync(cancellationToken);
+        var mapper = new GetSubmissionsMapper();
+        return mapper.ChoreSubmissionsToGetSubmissionsResponseList(choreSubmissions);
     }
 }

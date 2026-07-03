@@ -1,38 +1,25 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace ChorePoint.Domain.Entities;
 
-namespace ChorePoint.Domain.Entities;
-
-[Table("parents")]
-public class Parent
+public class Parent : EntityBase
 {
-    [Key] [Column("id")] public int Id { get; set; }
+    public int ParentId { get; set; }
 
-    [Required]
-    [MaxLength(100)]
-    [Column("first_name")]
-    public string FirstName { get; set; } = null!;
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
 
-    [Required]
-    [MaxLength(100)]
-    [Column("last_name")]
-    public string LastName { get; set; } = null!;
-
-    [Required] [Column("email")] public string Email { get; set; } = null!;
-
-    [Required] [Column("password")] public string Password { get; set; } = null!;
-
-    [Column("created_at")] public DateTime? CreatedAt { get; set; }
+    public ParentSettings ParentSettings { get; set; }
+    public ICollection<Category> Categories { get; set; } = new List<Category>();
 
 
-    public static Parent CreateWithoutPassword(string firstName, string lastName, string email, DateTime now)
+    public static Parent CreateWithoutPassword(string firstName, string lastName, string email)
     {
         return new Parent
         {
             FirstName = firstName,
             LastName = lastName,
-            Email = email,
-            CreatedAt = now
+            Email = email
         };
     }
 

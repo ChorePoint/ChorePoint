@@ -12,13 +12,21 @@ public class UpdateShopItemValidator : AbstractValidator<UpdateShopItemCommand>
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Name is required");
 
+        RuleFor(x => x.Icon)
+            .NotEmpty().WithMessage("Icon is required");
+
         RuleFor(x => x.Cost)
             .NotEmpty().WithMessage("Cost is required");
 
-        RuleFor(x => x.Status)
-            .NotEmpty().WithMessage("Status is required");
+        RuleFor(x => x.AssignedKids)
+            .NotEmpty().WithMessage("AssignedKids is required");
 
-        RuleFor(x => x.Quantity)
-            .NotEmpty().WithMessage("Quantity is required");
+        RuleForEach(x => x.AssignedKids)
+            .NotEmpty().WithMessage("AssignedKids cannot contain a null element")
+            .ChildRules(assignedKid =>
+            {
+                assignedKid.RuleFor(x => x.KidId)
+                    .NotEmpty().WithMessage("KidId is required in AssignedKids");
+            });
     }
 }

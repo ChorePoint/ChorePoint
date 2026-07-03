@@ -1,114 +1,80 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using ChorePoint.Domain.Enums;
+﻿using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
 
 namespace ChorePoint.Domain.Entities;
 
-[Table("chores")]
-public sealed class Chore
+public class Chore : EntityBase
 {
-    [Key] [Column("id")] public int Id { get; set; }
+    public int ChoreId { get; set; }
+    public int ParentId { get; set; }
+    public int? CategoryId { get; set; }
 
-    [Required] [Column("user_id")] public int KidId { get; set; }
+    public string Name { get; set; }
+    public string Icon { get; set; }
+    public string? Description { get; set; }
+    public int Points { get; set; }
+    public ChoreDifficulty Difficulty { get; set; }
+    public ChoreFrequency Frequency { get; set; }
+    public DateTime? LastCompletedAt { get; set; }
+    public int CompletionCount { get; set; }
 
-    [Required]
-    [MaxLength(150)]
-    [Column("name")]
-    public string Name { get; set; } = null!;
-
-    [Required]
-    [MaxLength(10)]
-    [Column("icon")]
-    public string Icon { get; set; } = "🎯";
-
-    [Required] [Column("points")] public int Points { get; set; }
-
-    [Required] [Column("difficulty")] public ChoreDifficulty Difficulty { get; set; }
-
-    [Required] [Column("frequency")] public ChoreFrequency Frequency { get; set; } = ChoreFrequency.Daily;
-
-    [Column("due_day")] // Only set when frequency is weekly. Determines which day of the week the chore cycles on.
-    public DayOfWeek? DueDay { get; set; } = DayOfWeek.Monday;
-
-    [Required] [Column("is_visible")] public bool IsVisible { get; set; } = true;
-
-    [Column("last_completed_at")] public DateTime? LastCompletedAt { get; set; }
-
-    [Column("created_at")] public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
-
-    [Column("updated_at")] public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
-
-    [Column("completion_count")] public int CompletionCount { get; set; }
-
-    [Column("description")] public string? Description { get; set; }
-
-    // Navigation property
-    public Kid Kid { get; set; } = null!;
+    public Parent Parent { get; set; }
+    public Category? Category { get; set; }
+    public ICollection<Kid> Kids { get; set; } = new List<Kid>();
+    public ICollection<KidChore> KidChores { get; set; } = new List<KidChore>();
 
 
-    public static Chore Create(string name, string icon, int points, ChoreDifficulty difficulty,
-        ChoreFrequency frequency, DayOfWeek? dueDay, int kidId, string description, DateTime now)
+    public static Chore Create(int parentId, int? categoryId, string name, string icon, string description, int points,
+        ChoreDifficulty difficulty, ChoreFrequency frequency)
     {
         return new Chore
         {
+            ParentId = parentId,
+            CategoryId = categoryId,
             Name = name,
             Icon = icon,
+            Description = description,
             Points = points,
             Difficulty = difficulty,
             Frequency = frequency,
-            DueDay = dueDay,
-            KidId = kidId,
-            Description = description,
-            CreatedAt = now
+            CompletionCount = 0
         };
     }
 
-    public ChoreSubmission CreateSubmission(DateTime now)
+    public ChoreSubmission CreateSubmission(int kidId, DateTime now)
     {
         return new ChoreSubmission
         {
-            ChoreId = Id,
-            KidId = KidId,
-            CompletedAt = now,
-            ApprovalStatus = ChoreApprovalStatus.Approved,
-            ApprovedAt = now
+            ChoreId = ChoreId,
+            ParentId = ParentId,
+            KidId = kidId,
+            ApprovalStatus = ChoreApprovalStatus.Pending,
+            CompletedAt = now
         };
     }
 
-    public void Update(
-        int kidId,
-        string name,
-        string icon,
-        int points,
-        ChoreDifficulty difficulty,
-        ChoreFrequency frequency,
-        bool isVisible,
-        string? description,
-        DayOfWeek? dueDay
-    )
+    public void Update(int? categoryId, string name, string icon, string? description, int points,
+        ChoreDifficulty difficulty, ChoreFrequency frequency)
     {
-        KidId = kidId;
+        CategoryId = categoryId;
         Name = name;
         Icon = icon;
+        Description = description;
         Points = points;
         Difficulty = difficulty;
         Frequency = frequency;
-        IsVisible = isVisible;
-        Description = description;
-        DueDay = dueDay;
     }
 
-    public void EnsureCanBeCompleted(ChoreSubmission? currentSubmission, DateTime now)
+    public void EnsureCanBeCompleted(ChoreSubmission currentSubmission, DateTime now)
     {
         switch (Frequency)
         {
             case ChoreFrequency.Daily:
-                if (currentSubmission?.CompletedAt.Date == now.Date)
+                if (currentSubmission.CompletedAt.Date == now.Date)
                     throw new ChoreAlreadyCompletedException("Chore already completed today");
                 break;
             case ChoreFrequency.Weekly:
-                if (currentSubmission?.CompletedAt.AddDays(7) > now)
+                if (currentSubmission.CompletedAt.AddDays(7) > now)
                     throw new ChoreAlreadyCompletedException("Chore already completed within the last week");
                 break;
             case ChoreFrequency.Bonus:

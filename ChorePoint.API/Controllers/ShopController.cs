@@ -17,29 +17,29 @@ namespace ChorePoint.API.Controllers;
 public class ShopController(IMediator mediator) : ControllerBase
 {
     [Authorize]
-    [HttpPost("{shopItemId:int}/buy")]
+    [HttpPost("buy/{shopItemId:int}/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> BuyShopItem(int shopItemId)
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> BuyShopItem(int shopItemId, int kidId)
     {
-        await mediator.Send(new BuyShopItemCommand(shopItemId));
+        await mediator.Send(new BuyShopItemCommand(shopItemId, kidId));
         return Ok(new
         {
             success = true,
-            message = $"Shop item with ID [{shopItemId}] bought successfully"
+            message = $"Shop item with ID [{shopItemId}] bought successfully by kid with ID [{kidId}]"
         });
     }
 
     [Authorize]
-    [HttpDelete("{shopItemId:int}/delete")]
+    [HttpDelete("delete/{shopItemId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteShopItem(int shopItemId)
     {
         await mediator.Send(new DeleteShopItemCommand(shopItemId));
@@ -53,10 +53,10 @@ public class ShopController(IMediator mediator) : ControllerBase
     [Authorize]
     [HttpGet("kid/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetShopItemsByKid(int kidId)
     {
         var result = await mediator.Send(new GetShopItemsByKidQuery(kidId));
@@ -71,17 +71,17 @@ public class ShopController(IMediator mediator) : ControllerBase
     [Authorize]
     [HttpGet("parent")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetShopItemsByParent()
     {
         var result = await mediator.Send(new GetShopItemsByParentQuery());
         return Ok(new
         {
             success = true,
-            message = "Shop items for logged-in parent retrieved successfully",
+            message = "Shop items retrieved successfully",
             data = result
         });
     }
@@ -89,27 +89,27 @@ public class ShopController(IMediator mediator) : ControllerBase
     [Authorize]
     [HttpPost("new")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> NewShopItem([FromBody] NewShopItemCommand command)
     {
         await mediator.Send(command);
         return Ok(new
         {
             success = true,
-            message = "New shop item created successfully"
+            message = $"Shop item with name [{command.Name}] created successfully"
         });
     }
 
     [Authorize]
     [HttpPost("reactivate")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> ReactivateShopItem([FromBody] ReactivateShopItemCommand command)
     {
         await mediator.Send(command);
@@ -123,10 +123,10 @@ public class ShopController(IMediator mediator) : ControllerBase
     [Authorize]
     [HttpPost("review")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> ReviewShopItemPurchase([FromBody] ReviewShopItemPurchaseCommand command)
     {
         await mediator.Send(command);
@@ -140,10 +140,10 @@ public class ShopController(IMediator mediator) : ControllerBase
     [Authorize]
     [HttpPut("update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateShopItem([FromBody] UpdateShopItemCommand command)
     {
         await mediator.Send(command);

@@ -1,6 +1,8 @@
-﻿using ChorePoint.Application.Interfaces;
+﻿using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.BuyShopItem;
 
@@ -9,28 +11,32 @@ public class BuyShopItemHandler(IAppDbContext context, IParentContextService par
 {
     public async Task Handle(BuyShopItemCommand request, CancellationToken cancellationToken)
     {
-        var shopItem = await context.ShopItems.FindAsync([request.ShopItemId], cancellationToken);
+        var shopItem = await context.ShopItems
+            .Include(si => si.KidShopItems)
+            .Where(si => si.KidShopItems.Any(ksi => ksi.KidId.Equals(request.KidId)))
+            .SingleOrDefaultAsync(si => si.ShopItemId.Equals(request.ShopItemId), cancellationToken);
 
         if (shopItem is null)
             throw new NotFoundException($"No shop item exists with ID [{request.ShopItemId}]");
 
         var parentId = parentContextService.GetParentId();
+        AuthorisationHelper.EnsureParentOwnsResource(shopItem.ParentId, parentId);
 
-        if (shopItem.ParentId != parentId)
-            throw new DomainException(
-                $"Shop item with assigned parent ID [{shopItem.ParentId}] does not belong to the logged in parent with ID [{parentId}]");
+        // No AndDefault because we already know one must exist because of the .Where() above
+        var kidShopItem = shopItem.KidShopItems.Single(ksi => ksi.KidId.Equals(request.KidId));
 
-        var parentSettings = await context.ParentSettings.FindAsync([shopItem.ParentId], cancellationToken);
-
-        if (parentSettings is null)
-            throw new NotFoundException($"No settings exist for parent ID [{shopItem.ParentId}]");
-
-        var kid = await context.Kids.FindAsync([shopItem.KidId], cancellationToken);
+        var kid = await context.Kids
+            .FindAsync([kidShopItem.KidId], cancellationToken);
 
         if (kid is null)
-            throw new NotFoundException($"No kid exists with ID [{shopItem.KidId}]");
+            throw new NotFoundException($"No kid exists with ID [{kidShopItem.KidId}]");
 
-        shopItem.Buy(parentSettings.ApprovePurchases);
+        var approvePurchases = await context.ParentSettings
+            .Where(ps => ps.ParentId.Equals(parentId))
+            .Select(ps => ps.ApprovePurchases)
+            .SingleOrDefaultAsync(cancellationToken);
+
+        kidShopItem.Buy(shopItem, approvePurchases);
         kid.SpendPoints(shopItem.Cost);
 
         await context.SaveChangesAsync(cancellationToken);

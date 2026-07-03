@@ -10,19 +10,18 @@ namespace ChorePoint.Application.Handlers.Auth.Login;
 public class LoginHandler(
     IAppDbContext context,
     IPasswordHasher<ParentE> passwordHasher,
-    IJwtTokenGenerator jwtTokenGenerator)
-    : IRequestHandler<LoginCommand, LoginResponse>
+    IJwtTokenGenerator jwtTokenGenerator) : IRequestHandler<LoginCommand, LoginResponse>
 {
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var parent = await context.Parents
-            .FirstOrDefaultAsync(p => p.Email.Equals(request.Email), cancellationToken);
+            .SingleOrDefaultAsync(p => p.Email.Equals(request.Email), cancellationToken);
 
         if (parent is null || passwordHasher.VerifyHashedPassword(parent, parent.Password, request.Password) ==
             PasswordVerificationResult.Failed)
             throw new DomainException("Invalid email or password");
 
-        var token = jwtTokenGenerator.GenerateJwtToken(parent.Id, parent.Email);
+        var token = jwtTokenGenerator.GenerateJwtToken(parent.ParentId, parent.Email);
 
         return new LoginResponse(token);
     }

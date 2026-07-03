@@ -4,19 +4,16 @@ using ChorePoint.Domain.Enums;
 namespace ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 
 public record GetChoresByKidResponse(
-    int Id,
-    int KidId,
+    int ChoreId,
     string Name,
     string Icon,
+    string? Description,
     int Points,
     ChoreDifficulty Difficulty,
     ChoreFrequency Frequency,
-    string TimeOfDay,
-    bool IsVisible,
     DateTime? LastCompletedAt,
-    DateTime? CreatedAt,
-    DateTime? UpdatedAt,
     int CompletionCount,
-    string? Description,
-    Kid Kid
+    Category? Category,
+    DayOfWeek? DueDay,
+    bool IsVisible
 );

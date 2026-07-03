@@ -22,357 +22,414 @@ namespace ChorePoint.Infrastructure.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("ChorePoint.Domain.Entities.Chore", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CategoryId"));
 
-                    b.Property<int>("CompletionCount")
-                        .HasColumnType("int")
-                        .HasColumnName("completion_count");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext")
-                        .HasColumnName("description");
-
-                    b.Property<string>("Difficulty")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("difficulty");
-
-                    b.Property<int?>("DueDay")
-                        .HasColumnType("int")
-                        .HasColumnName("due_day");
-
-                    b.Property<string>("Frequency")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("frequency");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Icon")
                         .IsRequired()
                         .HasMaxLength(10)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("icon");
-
-                    b.Property<bool>("IsVisible")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("is_visible");
-
-                    b.Property<int>("KidId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
-
-                    b.Property<DateTime?>("LastCompletedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("last_completed_at");
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("varchar(150)")
-                        .HasColumnName("name");
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("CategoryId");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Chore", b =>
+                {
+                    b.Property<int>("ChoreId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ChoreId"));
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CompletionCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
+
+                    b.Property<string>("Difficulty")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("Frequency")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<DateTime?>("LastCompletedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Points")
-                        .HasColumnType("int")
-                        .HasColumnName("points");
+                        .HasColumnType("int");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("updated_at");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ChoreId");
 
-                    b.HasIndex("KidId");
+                    b.HasIndex("CategoryId");
 
-                    b.ToTable("chores");
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("Chores");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ChoreSubmission", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ChoreSubmissionId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ChoreSubmissionId"));
 
                     b.Property<string>("ApprovalStatus")
                         .IsRequired()
                         .HasMaxLength(10)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("approval_status");
-
-                    b.Property<DateTime?>("ApprovedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("approved_at");
-
-                    b.Property<int?>("ApprovedByUserId")
-                        .HasColumnType("int")
-                        .HasColumnName("approved_by_user_id");
+                        .HasColumnType("varchar(10)");
 
                     b.Property<int>("ChoreId")
-                        .HasColumnType("int")
-                        .HasColumnName("chore_id");
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CompletedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("completed_at");
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("created_at");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("KidId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
+                        .HasColumnType("int");
 
-                    b.Property<string>("Notes")
-                        .HasColumnType("longtext")
-                        .HasColumnName("notes");
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ReviewNotes")
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
 
-                    b.HasIndex("ApprovedByUserId");
+                    b.Property<DateTime?>("ReviewedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("ChoreSubmissionId");
 
                     b.HasIndex("ChoreId");
 
                     b.HasIndex("KidId");
 
-                    b.ToTable("chore_submissions");
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("ChoreSubmissions");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("KidId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("KidId"));
 
                     b.Property<int?>("Age")
-                        .HasColumnType("int")
-                        .HasColumnName("age");
+                        .HasColumnType("int");
 
                     b.Property<string>("Avatar")
                         .IsRequired()
                         .HasMaxLength(10)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("avatar");
+                        .HasColumnType("varchar(10)");
 
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("created_at");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("DayStreak")
-                        .HasColumnType("int")
-                        .HasColumnName("day_streak");
+                        .HasColumnType("int");
+
+                    b.Property<int>("LifetimePoints")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("LoginCode")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("name");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<int>("ParentId")
-                        .HasColumnType("int")
-                        .HasColumnName("parent_id");
-
-                    b.Property<int>("PointsToday")
-                        .HasColumnType("int")
-                        .HasColumnName("points_today");
+                        .HasColumnType("int");
 
                     b.Property<int>("SpendablePoints")
-                        .HasColumnType("int")
-                        .HasColumnName("spendable_points");
+                        .HasColumnType("int");
 
-                    b.Property<int>("TotalPoints")
-                        .HasColumnType("int")
-                        .HasColumnName("total_points");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("Id");
+                    b.HasKey("KidId");
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("users");
+                    b.ToTable("Kids");
                 });
 
-            modelBuilder.Entity("ChorePoint.Domain.Entities.Parent", b =>
+            modelBuilder.Entity("ChorePoint.Domain.Entities.KidChore", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("email");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("first_name");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("last_name");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("password");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("parents");
-                });
-
-            modelBuilder.Entity("ChorePoint.Domain.Entities.ParentSettings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("ApprovePurchases")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("approve_purchases");
-
-                    b.Property<bool>("AutoApproveChores")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("auto_approve_chores");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("created_at");
-
-                    b.Property<int>("ParentId")
-                        .HasColumnType("int")
-                        .HasColumnName("parent_id");
-
-                    b.Property<bool>("RequirePhotoEvidence")
-                        .HasColumnType("tinyint(1)")
-                        .HasColumnName("require_photo_evidence");
-
-                    b.Property<string>("ShopOpeningDays")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("shop_opening_days");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("parent_settings");
-                });
-
-            modelBuilder.Entity("ChorePoint.Domain.Entities.ShopItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Cost")
-                        .HasColumnType("int")
-                        .HasColumnName("cost");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("description");
+                    b.Property<int>("ChoreId")
+                        .HasColumnType("int");
 
                     b.Property<int>("KidId")
-                        .HasColumnType("int")
-                        .HasColumnName("kid_id");
+                        .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("name");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
 
-                    b.Property<int>("ParentId")
-                        .HasColumnType("int")
-                        .HasColumnName("parent_id");
+                    b.Property<int?>("DueDay")
+                        .HasColumnType("int");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int")
-                        .HasColumnName("quantity");
+                    b.Property<bool>("IsVisible")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("ChoreId", "KidId");
+
+                    b.HasIndex("KidId");
+
+                    b.ToTable("KidChore");
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.KidShopItem", b =>
+                {
+                    b.Property<int>("KidId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShopItemId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(10)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("status");
+                        .HasColumnType("varchar(10)");
 
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("updated_at");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
 
-                    b.HasKey("Id");
+                    b.HasKey("KidId", "ShopItemId");
 
-                    b.HasIndex("KidId");
+                    b.HasIndex("ShopItemId");
+
+                    b.ToTable("KidShopItem");
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Parent", b =>
+                {
+                    b.Property<int>("ParentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ParentId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("ParentId");
+
+                    b.ToTable("Parents");
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.ParentSettings", b =>
+                {
+                    b.Property<int>("ParentSettingsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ParentSettingsId"));
+
+                    b.Property<bool>("ApprovePurchases")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("AutoApproveChores")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("RequirePhotoEvidence")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("ShopOpeningDays")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("ParentSettingsId");
+
+                    b.HasIndex("ParentId")
+                        .IsUnique();
+
+                    b.ToTable("ParentSettings");
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.ShopItem", b =>
+                {
+                    b.Property<int>("ShopItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ShopItemId"));
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Cost")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int>("ParentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("ShopItemId");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("shop_items");
+                    b.ToTable("ShopItems");
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Category", b =>
+                {
+                    b.HasOne("ChorePoint.Domain.Entities.Parent", "Parent")
+                        .WithMany("Categories")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Chore", b =>
                 {
-                    b.HasOne("ChorePoint.Domain.Entities.Kid", "Kid")
-                        .WithMany("Chores")
-                        .HasForeignKey("KidId")
+                    b.HasOne("ChorePoint.Domain.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("ChorePoint.Domain.Entities.Parent", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Kid");
+                    b.Navigation("Category");
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ChoreSubmission", b =>
                 {
-                    b.HasOne("ChorePoint.Domain.Entities.Kid", "ApprovedBy")
-                        .WithMany()
-                        .HasForeignKey("ApprovedByUserId");
-
                     b.HasOne("ChorePoint.Domain.Entities.Chore", "Chore")
                         .WithMany()
                         .HasForeignKey("ChoreId")
@@ -385,11 +442,17 @@ namespace ChorePoint.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ApprovedBy");
+                    b.HasOne("ChorePoint.Domain.Entities.Parent", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Chore");
 
                     b.Navigation("Kid");
+
+                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
@@ -403,11 +466,41 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.Navigation("Parent");
                 });
 
+            modelBuilder.Entity("ChorePoint.Domain.Entities.KidChore", b =>
+                {
+                    b.HasOne("ChorePoint.Domain.Entities.Chore", null)
+                        .WithMany("KidChores")
+                        .HasForeignKey("ChoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ChorePoint.Domain.Entities.Kid", null)
+                        .WithMany("KidChores")
+                        .HasForeignKey("KidId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.KidShopItem", b =>
+                {
+                    b.HasOne("ChorePoint.Domain.Entities.Kid", null)
+                        .WithMany("KidShopItems")
+                        .HasForeignKey("KidId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ChorePoint.Domain.Entities.ShopItem", null)
+                        .WithMany("KidShopItems")
+                        .HasForeignKey("ShopItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ChorePoint.Domain.Entities.ParentSettings", b =>
                 {
                     b.HasOne("ChorePoint.Domain.Entities.Parent", "Parent")
-                        .WithMany()
-                        .HasForeignKey("ParentId")
+                        .WithOne("ParentSettings")
+                        .HasForeignKey("ChorePoint.Domain.Entities.ParentSettings", "ParentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -416,11 +509,9 @@ namespace ChorePoint.Infrastructure.Migrations
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ShopItem", b =>
                 {
-                    b.HasOne("ChorePoint.Domain.Entities.Kid", "Kid")
+                    b.HasOne("ChorePoint.Domain.Entities.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("KidId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("ChorePoint.Domain.Entities.Parent", "Parent")
                         .WithMany()
@@ -428,14 +519,34 @@ namespace ChorePoint.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Kid");
+                    b.Navigation("Category");
 
                     b.Navigation("Parent");
                 });
 
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Chore", b =>
+                {
+                    b.Navigation("KidChores");
+                });
+
             modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
                 {
-                    b.Navigation("Chores");
+                    b.Navigation("KidChores");
+
+                    b.Navigation("KidShopItems");
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.Parent", b =>
+                {
+                    b.Navigation("Categories");
+
+                    b.Navigation("ParentSettings")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.ShopItem", b =>
+                {
+                    b.Navigation("KidShopItems");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,13 +1,14 @@
-﻿using ChorePoint.Domain.Enums;
+﻿using ChorePoint.Domain.Representations;
 using MediatR;
 
 namespace ChorePoint.Application.Handlers.Shop.NewShopItem;
 
 public record NewShopItemCommand(
-    int KidId,
+    int? CategoryId,
     string Name,
+    string Icon,
     string? Description,
     int Cost,
-    ShopItemStatus Status,
-    int Quantity
+    int? Quantity,
+    IReadOnlyList<AssignedKidToShopItem> AssignedKids
 ) : IRequest;

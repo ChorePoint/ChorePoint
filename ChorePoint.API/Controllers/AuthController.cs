@@ -11,21 +11,6 @@ namespace ChorePoint.API.Controllers;
 public class AuthController(IMediator mediator) : ControllerBase
 {
     [AllowAnonymous]
-    [HttpPost("register")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Register([FromBody] RegisterCommand command)
-    {
-        await mediator.Send(command);
-        return Ok(new
-        {
-            success = true,
-            message = "Parent registered successfully"
-        });
-    }
-
-    [AllowAnonymous]
     [HttpPost("login")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -38,6 +23,21 @@ public class AuthController(IMediator mediator) : ControllerBase
             success = true,
             message = "Login successful",
             data = result
+        });
+    }
+
+    [AllowAnonymous]
+    [HttpPost("register")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> Register([FromBody] RegisterCommand command)
+    {
+        await mediator.Send(command);
+        return Ok(new
+        {
+            success = true,
+            message = "Parent registered successfully"
         });
     }
 }

@@ -12,7 +12,7 @@ internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvi
         CancellationToken cancellationToken)
     {
         var authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
-        if (authenticationSchemes.All(a => a.Name != JwtBearerDefaults.AuthenticationScheme))
+        if (authenticationSchemes.All(a => a.Name is not JwtBearerDefaults.AuthenticationScheme))
             return;
 
         var bearerScheme = new OpenApiSecurityScheme

@@ -1,14 +1,16 @@
-using ChorePoint.Domain.Enums;
+using ChorePoint.Domain.Entities;
+using ChorePoint.Domain.Representations;
 
 namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByParent;
 
 public record GetShopItemsByParentResponse(
-    int Id,
+    int ShopItemId,
     int ParentId,
-    int KidId,
     string Name,
+    string Icon,
     string? Description,
     int Cost,
-    ShopItemStatus Status,
-    int Quantity
+    int? Quantity,
+    Category? Category,
+    IReadOnlyList<AssignedKidToShopItem> AssignedKids
 );

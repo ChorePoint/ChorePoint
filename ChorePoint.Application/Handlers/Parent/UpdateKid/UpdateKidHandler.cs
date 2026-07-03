@@ -1,5 +1,5 @@
-﻿using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Entities;
+﻿using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
 
@@ -10,30 +10,18 @@ public class UpdateKidHandler(IAppDbContext context, IParentContextService paren
 {
     public async Task Handle(UpdateKidCommand request, CancellationToken cancellationToken)
     {
-        var kid = await GetKidByIdFromDb(request.Id, cancellationToken);
+        var kid = await context.Kids
+            .FindAsync([request.KidId], cancellationToken);
 
         if (kid is null)
-            throw new NotFoundException($"No kid exists with ID [{request.Id}]");
+            throw new NotFoundException($"No kid exists with ID [{request.KidId}]");
 
         var parentId = parentContextService.GetParentId();
+        AuthorisationHelper.EnsureParentOwnsResource(kid.ParentId, parentId);
 
-        if (kid.ParentId != parentId)
-            throw new DomainException(
-                $"Kid with assigned parent ID [{kid.ParentId}] does not belong to the logged in parent with ID [{parentId}]");
-
-        kid.Update(
-            request.Name,
-            request.Age,
-            request.Avatar,
-            request.SpendablePoints,
-            request.DayStreak);
+        kid.Update(request.Name, request.Avatar, request.Age, request.DayStreak, request.LifetimePoints,
+            request.SpendablePoints);
 
         await context.SaveChangesAsync(cancellationToken);
-    }
-
-    private async Task<Kid?> GetKidByIdFromDb(int kidId, CancellationToken cancellationToken)
-    {
-        return await context.Kids
-            .FindAsync([kidId], cancellationToken);
     }
 }

@@ -1,22 +1,19 @@
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Enums;
+using ChorePoint.Domain.Representations;
 
 namespace ChorePoint.Application.Handlers.Chore.GetChoreById;
 
 public record GetChoreByIdResponse(
-    int Id,
-    int KidId,
+    int ChoreId,
     string Name,
     string Icon,
+    string? Description,
     int Points,
     ChoreDifficulty Difficulty,
     ChoreFrequency Frequency,
-    string TimeOfDay,
-    bool IsVisible,
     DateTime? LastCompletedAt,
-    DateTime? CreatedAt,
-    DateTime? UpdatedAt,
     int CompletionCount,
-    string? Description,
-    Kid Kid
+    Category? Category,
+    IReadOnlyList<AssignedKidToChore> AssignedKids
 );

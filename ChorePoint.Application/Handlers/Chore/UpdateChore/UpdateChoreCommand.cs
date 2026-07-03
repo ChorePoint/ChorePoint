@@ -1,17 +1,17 @@
 ﻿using ChorePoint.Domain.Enums;
+using ChorePoint.Domain.Representations;
 using MediatR;
 
 namespace ChorePoint.Application.Handlers.Chore.UpdateChore;
 
 public record UpdateChoreCommand(
-    int Id,
-    int KidId,
+    int ChoreId,
+    int? CategoryId,
     string Name,
     string Icon,
+    string? Description,
     int Points,
     ChoreDifficulty Difficulty,
     ChoreFrequency Frequency,
-    bool IsVisible,
-    string Description,
-    DayOfWeek DueDay
+    IReadOnlyList<AssignedKidToChore> AssignedKids
 ) : IRequest;

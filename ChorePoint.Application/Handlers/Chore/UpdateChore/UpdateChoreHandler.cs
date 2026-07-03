@@ -1,8 +1,8 @@
-﻿using ChorePoint.Application.Interfaces;
+﻿using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.Chore.UpdateChore;
 
@@ -11,35 +11,30 @@ public class UpdateChoreHandler(IAppDbContext context, IParentContextService par
 {
     public async Task Handle(UpdateChoreCommand request, CancellationToken cancellationToken)
     {
-        var existingChore = await GetChoreByIdFromDb(request.Id, cancellationToken);
+        var chore = await context.Chores
+            .Include(c => c.KidChores)
+            .SingleOrDefaultAsync(c => c.ChoreId.Equals(request.ChoreId), cancellationToken);
 
-        if (existingChore is null)
-            throw new NotFoundException($"No chore exists with ID [{request.Id}]");
+        if (chore is null)
+            throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");
 
         var parentId = parentContextService.GetParentId();
+        AuthorisationHelper.EnsureParentOwnsResource(chore.ParentId, parentId);
 
-        if (existingChore.Kid.ParentId != parentId)
-            throw new DomainException(
-                $"Chore with assigned parent ID [{existingChore.Kid.ParentId}] does not belong to the logged in parent with ID [{parentId}]");
+        chore.Update(request.CategoryId, request.Name, request.Icon, request.Description, request.Points,
+            request.Difficulty, request.Frequency);
 
-        existingChore.Update(request.KidId,
-            request.Name,
-            request.Icon,
-            request.Points,
-            request.Difficulty,
-            request.Frequency,
-            request.IsVisible,
-            request.Description,
-            request.DueDay);
+        foreach (var assignedKid in request.AssignedKids)
+        {
+            var kidChore = chore.KidChores.SingleOrDefault(kc => kc.KidId.Equals(assignedKid.KidId));
+
+            if (kidChore is null)
+                throw new DomainException(
+                    $"Kid with ID [{assignedKid.KidId}] is not assigned to chore with ID [{request.ChoreId}]");
+
+            kidChore.Update(assignedKid.DueDay, assignedKid.IsVisible);
+        }
 
         await context.SaveChangesAsync(cancellationToken);
-    }
-
-    private async Task<ChoreE?> GetChoreByIdFromDb(int choreId, CancellationToken cancellationToken)
-    {
-        return await context.Chores
-            .Include(c => c.Kid)
-            .Where(c => c.Id == choreId)
-            .FirstOrDefaultAsync(cancellationToken);
     }
 }
