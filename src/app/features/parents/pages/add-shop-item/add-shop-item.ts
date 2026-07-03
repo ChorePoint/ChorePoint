@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -17,6 +18,8 @@ import { EmojiPicker } from '../../../chores/components/emoji-picker/emoji-picke
 export class AddShopItem {
   private fb = inject(FormBuilder);
   private shopService = inject(ShopService);
+
+  location = inject(Location);
 
   loading = false;
 
