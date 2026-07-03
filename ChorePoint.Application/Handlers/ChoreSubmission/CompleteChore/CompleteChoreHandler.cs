@@ -20,15 +20,15 @@ public class CompleteChoreHandler(IAppDbContext context, IParentContextService p
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(chore.ParentId, parentId);
 
-        var currentSubmission = await context.ChoreSubmissions
+        var latestSubmission = await context.ChoreSubmissions
             .Where(cs => cs.ChoreId.Equals(request.ChoreId))
             .Where(cs => cs.KidId.Equals(request.KidId))
             .OrderByDescending(cs => cs.CompletedAt)
             .FirstOrDefaultAsync(cancellationToken);
 
         var now = DateTime.UtcNow;
-        if (currentSubmission is not null)
-            chore.EnsureCanBeCompleted(currentSubmission, now);
+        if (latestSubmission is not null)
+            chore.EnsureCanBeCompleted(latestSubmission, now);
 
         var newSubmission = chore.CreateSubmission(request.KidId, now);
 

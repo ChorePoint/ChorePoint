@@ -6,12 +6,12 @@ using ChorePoint.Domain.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ChorePoint.Application.Handlers.ChoreSubmission.GetKidsStats;
+namespace ChorePoint.Application.Handlers.ChoreSubmission.GetStatsByKid;
 
-public class GetKidsStatsHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<GetKidsStatsQuery, GetKidsStatsResponse>
+public class GetStatsByKidHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<GetStatsByKidQuery, GetStatsByKidResponse>
 {
-    public async Task<GetKidsStatsResponse> Handle(GetKidsStatsQuery request, CancellationToken cancellationToken)
+    public async Task<GetStatsByKidResponse> Handle(GetStatsByKidQuery request, CancellationToken cancellationToken)
     {
         var choreSubmissions = await context.ChoreSubmissions
             .Include(cs => cs.Chore)
@@ -43,7 +43,7 @@ public class GetKidsStatsHandler(IAppDbContext context, IParentContextService pa
             )
             .Count(dow => dow.Equals(DateTime.Today.DayOfWeek));
 
-        return new GetKidsStatsResponse
+        return new GetStatsByKidResponse
         (
             choreSubmissions.Count,
             completedThisWeek,

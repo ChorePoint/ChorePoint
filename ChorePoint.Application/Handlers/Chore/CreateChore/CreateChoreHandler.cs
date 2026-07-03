@@ -27,7 +27,10 @@ public class CreateChoreHandler(IAppDbContext context, IParentContextService par
             request.Points, request.Difficulty, request.Frequency);
 
         foreach (var assignedKid in request.AssignedKids)
-            chore.KidChores.Add(KidChore.Create(assignedKid.KidId, assignedKid.DueDay, assignedKid.IsVisible));
+        {
+            var kidChore = KidChore.Create(assignedKid.KidId, assignedKid.DueDay, assignedKid.IsVisible);
+            chore.KidChores.Add(kidChore);
+        }
 
         await context.Chores.AddAsync(chore, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
