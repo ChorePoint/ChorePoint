@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { HasKidsGuard } from './core/guards/has-kids-guard';
 import { authGuard } from './features/auth/guards/auth-guard';
 import { CreateAccount } from './features/auth/pages/create-account/create-account';
 import { Login } from './features/auth/pages/login/login';
@@ -12,6 +13,7 @@ import { DashboardHome } from './features/parents/pages/dashboard-home/dashboard
 import { KidsSettings } from './features/parents/pages/kids-settings/kids-settings';
 import { ParentSettings } from './features/parents/pages/parent-settings/parent-settings';
 import { Shop } from './features/parents/pages/shop/shop';
+import { Welcome } from './features/parents/pages/welcome/welcome';
 import { CreateProfile } from './features/start/pages/create-profile/create-profile';
 import { Start } from './features/start/pages/start/start';
 import { EditKidForm } from './shared/pages/edit-kid-form/edit-kid-form';
@@ -19,10 +21,11 @@ import { EditKidForm } from './shared/pages/edit-kid-form/edit-kid-form';
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: Start, canActivate: [authGuard] },
+  { path: 'welcome', component: Welcome, canActivate: [authGuard] },
   {
     path: 'dashboard',
     component: DashboardLayout,
-    canActivate: [authGuard],
+    canActivate: [authGuard, HasKidsGuard],
     children: [
       { path: 'home', component: DashboardHome, pathMatch: 'full' },
       { path: 'chores', component: ChoreView },
@@ -30,17 +33,18 @@ export const routes: Routes = [
       { path: 'chores/edit/:id', component: EditChore },
       { path: 'shop', component: Shop },
       { path: 'shop/add', component: AddShopItem },
-      {
-        path: 'kids',
-        component: KidsSettings,
-      },
-      { path: 'kids/add', component: CreateProfile },
-      { path: 'kids/edit/:id', component: EditKidForm },
       { path: 'settings', component: ParentSettings },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },
-  { path: 'chore/:id', component: ChoreDetails, canActivate: [authGuard] },
+  {
+    path: 'kids',
+    component: KidsSettings,
+    canActivate: [authGuard, HasKidsGuard],
+    children: [{ path: 'edit/:id', component: EditKidForm }],
+  },
+  { path: 'kids/add', component: CreateProfile, canActivate: [authGuard] },
+  { path: 'chore/:id', component: ChoreDetails, canActivate: [authGuard, HasKidsGuard] },
   { path: 'login', component: Login },
   { path: 'create-account', component: CreateAccount },
 ];
