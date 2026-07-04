@@ -11,19 +11,19 @@ public class GetLatestSubmissionByKidHandler(IAppDbContext context, IParentConte
 {
     public async Task<GetLatestSubmissionByKidResponse> Handle(GetLatestSubmissionByKidQuery request, CancellationToken cancellationToken)
     {
-        var currentSubmission = await context.ChoreSubmissions
+        var latestSubmission = await context.ChoreSubmissions
             .Include(cs => cs.Chore)
             .Where(cs => cs.KidId.Equals(request.KidId))
             .OrderByDescending(cs => cs.CompletedAt)
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (currentSubmission is null)
+        if (latestSubmission is null)
             throw new NotFoundException($"No submission exists for kid ID [{request.KidId}]");
 
         var parentId = parentContextService.GetParentId();
-        AuthorisationHelper.EnsureParentOwnsResource(currentSubmission.ParentId, parentId);
+        AuthorisationHelper.EnsureParentOwnsResource(latestSubmission.ParentId, parentId);
 
         var mapper = new GetLatestSubmissionByKidMapper();
-        return mapper.ChoreSubmissionToGetCurrentResponse(currentSubmission);
+        return mapper.ChoreSubmissionToGetCurrentResponse(latestSubmission);
     }
 }
