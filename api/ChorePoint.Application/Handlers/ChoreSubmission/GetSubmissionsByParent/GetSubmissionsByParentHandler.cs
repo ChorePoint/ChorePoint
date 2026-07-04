@@ -6,12 +6,12 @@ using ChorePoint.Domain.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
+namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissionsByParent;
 
-public class GetSubmissionsHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<GetSubmissionsQuery, IReadOnlyList<GetSubmissionsResponse>>
+public class GetSubmissionsByParentHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<GetSubmissionsByParentQuery, IReadOnlyList<GetSubmissionsByParentResponse>>
 {
-    public async Task<IReadOnlyList<GetSubmissionsResponse>> Handle(GetSubmissionsQuery request,
+    public async Task<IReadOnlyList<GetSubmissionsByParentResponse>> Handle(GetSubmissionsByParentQuery request,
         CancellationToken cancellationToken)
     {
         var parentId = parentContextService.GetParentId();
@@ -33,7 +33,7 @@ public class GetSubmissionsHandler(IAppDbContext context, IParentContextService 
         var resourceParentIds = choreSubmissions.Select(cs => cs.ParentId).ToList();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
-        var mapper = new GetSubmissionsMapper();
-        return mapper.ChoreSubmissionsToGetSubmissionsResponseList(choreSubmissions);
+        var mapper = new GetSubmissionsByParentMapper();
+        return mapper.ChoreSubmissionsToGetSubmissionsByParentResponseList(choreSubmissions);
     }
 }

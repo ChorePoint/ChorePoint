@@ -1,7 +1,7 @@
 ﻿using ChorePoint.Application.Handlers.ChoreSubmission.CompleteChore;
 using ChorePoint.Application.Handlers.ChoreSubmission.GetLatestSubmissionByKid;
 using ChorePoint.Application.Handlers.ChoreSubmission.GetStatsByKid;
-using ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
+using ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissionsByParent;
 using ChorePoint.Application.Handlers.ChoreSubmission.ReviewSubmission;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -73,9 +73,9 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetSubmissions([FromQuery] bool pending = false)
+    public async Task<IActionResult> GetSubmissionsByParent([FromQuery] bool pending = false)
     {
-        var result = await mediator.Send(new GetSubmissionsQuery(pending));
+        var result = await mediator.Send(new GetSubmissionsByParentQuery(pending));
         return Ok(new
         {
             success = true,

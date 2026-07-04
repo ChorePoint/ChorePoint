@@ -1,9 +1,9 @@
 ﻿using ChorePoint.Domain.Enums;
 using ChoreE = ChorePoint.Domain.Entities.Chore;
 
-namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissions;
+namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissionsByParent;
 
-public record GetSubmissionsResponse(
+public record GetSubmissionsByParentResponse(
     int ChoreSubmissionId,
     string? ReviewNotes,
     ChoreApprovalStatus ApprovalStatus,
