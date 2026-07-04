@@ -11,7 +11,8 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception,
         CancellationToken cancellationToken)
     {
-        logger.LogError(exception, "A global exception occurred at resource path: {ResourcePath}", httpContext.Request.Path.Value);
+        logger.LogError(exception, "A global exception occurred at resource path: {ResourcePath}",
+            httpContext.Request.Path.Value);
 
         var problemDetails = new ProblemDetails
         {
