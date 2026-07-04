@@ -26,7 +26,7 @@
 
     <div class="kids-list">
       @if (vm.kids.length > 0) {
-        @for (kid of vm.kids; track kid.id) {
+        @for (kid of vm.kids; track kid.kidId) {
           <app-kid-profile [kid]="kid" />
         }
       }

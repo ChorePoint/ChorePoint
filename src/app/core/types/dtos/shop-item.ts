@@ -1,7 +1,7 @@
 import { ShopItemStatusStatus } from '../enums/shop-item-status';
 
 export interface ShopItem {
-  id: number;
+  shopItemId: number;
   parentId: number;
   kidId: number;
   name: string;

@@ -1,5 +1,5 @@
 export interface Kid {
-  id: number;
+  kidId: number;
   name: string;
   age: number;
   avatar: string;

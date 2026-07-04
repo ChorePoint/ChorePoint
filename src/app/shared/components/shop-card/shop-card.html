@@ -6,9 +6,9 @@
       <div class="item-assigned">👤 All Kids</div>
       <!-- TODO: changed following junction table implementation -->
     </div>
-    <button class="item-menu-btn" (click)="openContextMenuId = shopItem.id" #toggle>
+    <button class="item-menu-btn" (click)="openContextMenuId = shopItem.shopItemId" #toggle>
       ⋯
-      <div class="ctx-menu" [class.open]="openContextMenuId === shopItem.id" #menu>
+      <div class="ctx-menu" [class.open]="openContextMenuId === shopItem.shopItemId" #menu>
         <div class="ctx-item"><span class="ctx-icon">✏️</span> Edit</div>
         <div class="ctx-item"><span class="ctx-icon">🙈</span> Hide</div>
         <div class="ctx-item danger" (click)="delete()">

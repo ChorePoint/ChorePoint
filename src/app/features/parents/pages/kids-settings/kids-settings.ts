@@ -51,10 +51,10 @@ export class KidsSettings implements OnInit {
   }
 
   private buildKidVm(kid: Kid, chores: Chore[]): Observable<KidDetails> {
-    return this.choreCompletionService.getChoreSubmissionStats$(kid.id).pipe(
+    return this.choreCompletionService.getChoreSubmissionStats$(kid.kidId).pipe(
       map((stats) => ({
         ...kid,
-        chores: chores.filter((c) => c.kidId === kid.id),
+        chores: chores.filter((c) => c.kidId === kid.kidId),
         kidStats: {
           ...stats!,
           weeklyCompletionPercentage: this.calcWeeklyCompletion(stats!),

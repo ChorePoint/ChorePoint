@@ -61,7 +61,7 @@ export class EditChore implements OnInit {
     }).pipe(
       tap(({ kids, chore }) => {
         if (kids.length && !this.form.value.kidId) {
-          this.form.patchValue({ kidId: kids[0].id });
+          this.form.patchValue({ kidId: kids[0].kidId });
         }
 
         if (chore != null) {

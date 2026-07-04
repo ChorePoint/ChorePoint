@@ -51,7 +51,7 @@ export class ChoreView implements OnInit {
             kids: kids,
             kidsDictionary: kids.reduce(
               (acc, kid) => {
-                acc[kid.id] = kid;
+                acc[kid.kidId] = kid;
                 return acc;
               },
               {} as Record<number, Kid>,
@@ -68,7 +68,7 @@ export class ChoreView implements OnInit {
   }
 
   getFilteredChores(chores: Chore[], selectedKid: Kid | null) {
-    return chores.filter((c) => selectedKid == null || c.kidId === selectedKid.id);
+    return chores.filter((c) => selectedKid == null || c.kidId === selectedKid.kidId);
   }
 
   filterByFrequency(frequency: ChoreFrequency | null) {
@@ -76,19 +76,19 @@ export class ChoreView implements OnInit {
   }
 
   deleteChore(chore: Chore) {
-    this.loadingAction = { choreId: chore.id, type: LoadingType.Delete };
+    this.loadingAction = { choreId: chore.choreId, type: LoadingType.Delete };
 
-    this.choreService.deleteChore$(chore.id).subscribe(() => {
+    this.choreService.deleteChore$(chore.choreId).subscribe(() => {
       this.refresh$.next();
     });
   }
 
   toggleActive(chore: Chore) {
-    this.loadingAction = { choreId: chore.id, type: LoadingType.Activate };
+    this.loadingAction = { choreId: chore.choreId, type: LoadingType.Activate };
 
     this.choreService
       .updateChore$({
-        id: chore.id,
+        id: chore.choreId,
         name: chore.name,
         icon: chore.icon,
         kidId: chore.kidId,

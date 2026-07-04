@@ -66,7 +66,7 @@ export class Shop implements OnInit {
       .subscribe(() => {
         const currentItems = this.shopItemsSubject.value;
 
-        this.shopItemsSubject.next(currentItems.filter((item) => item.id !== id));
+        this.shopItemsSubject.next(currentItems.filter((item) => item.shopItemId !== id));
       });
   }
 }

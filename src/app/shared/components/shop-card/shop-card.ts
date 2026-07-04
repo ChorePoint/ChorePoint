@@ -52,7 +52,7 @@ export class ShopCard {
       };
     } else {
       this.deleteState = DEFAULT_DELETE_STATE;
-      this.deleteEmitter.emit(this.shopItem.id);
+      this.deleteEmitter.emit(this.shopItem.shopItemId);
     }
   }
 }

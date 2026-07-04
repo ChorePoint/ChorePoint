@@ -60,7 +60,7 @@ export class AddChore implements OnInit {
     this.vm$ = this.kidsDataService.getKids$().pipe(
       map((kids) => {
         if (kids.length && !this.form.value.kidId) {
-          this.form.patchValue({ kidId: kids[0].id });
+          this.form.patchValue({ kidId: kids[0].kidId });
         }
 
         return { kids };
