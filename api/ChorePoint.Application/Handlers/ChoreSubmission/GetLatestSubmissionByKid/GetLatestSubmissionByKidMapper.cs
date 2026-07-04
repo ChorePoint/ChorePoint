@@ -6,6 +6,6 @@ namespace ChorePoint.Application.Handlers.ChoreSubmission.GetLatestSubmissionByK
 [Mapper]
 public partial class GetLatestSubmissionByKidMapper
 {
-    public partial GetLatestSubmissionByKidResponse ChoreSubmissionToGetCurrentResponse(
+    public partial GetLatestSubmissionByKidResponse ChoreSubmissionToGetLatestSubmissionByKidResponse(
         ChoreSubmissionE choreSubmission);
 }

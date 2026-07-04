@@ -25,6 +25,6 @@ public class GetLatestSubmissionByKidHandler(IAppDbContext context, IParentConte
         AuthorisationHelper.EnsureParentOwnsResource(latestSubmission.ParentId, parentId);
 
         var mapper = new GetLatestSubmissionByKidMapper();
-        return mapper.ChoreSubmissionToGetCurrentResponse(latestSubmission);
+        return mapper.ChoreSubmissionToGetLatestSubmissionByKidResponse(latestSubmission);
     }
 }
