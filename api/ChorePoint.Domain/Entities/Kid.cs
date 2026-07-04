@@ -21,6 +21,18 @@ public class Kid : EntityBase
     public ICollection<ShopItem> ShopItems { get; set; } = new List<ShopItem>();
     public ICollection<KidShopItem> KidShopItems { get; set; } = new List<KidShopItem>();
 
+
+    public static Kid Create(int parentId, string name, string avatar, int? age)
+    {
+        return new Kid
+        {
+            ParentId = parentId,
+            Name = name,
+            Avatar = avatar,
+            Age = age
+        };
+    }
+
     public void Update(string name, string avatar, int? age, int dayStreak, int lifetimePoints, int spendablePoints)
     {
         Name = name;

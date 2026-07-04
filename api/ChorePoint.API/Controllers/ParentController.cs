@@ -1,4 +1,5 @@
-﻿using ChorePoint.Application.Handlers.Parent.DeleteKid;
+﻿using ChorePoint.Application.Handlers.Parent.CreateKid;
+using ChorePoint.Application.Handlers.Parent.DeleteKid;
 using ChorePoint.Application.Handlers.Parent.GetKidById;
 using ChorePoint.Application.Handlers.Parent.GetKidsByParent;
 using ChorePoint.Application.Handlers.Parent.UpdateKid;
@@ -12,6 +13,22 @@ namespace ChorePoint.API.Controllers;
 [Route("api/parent")]
 public class ParentController(IMediator mediator) : ControllerBase
 {
+    [Authorize]
+    [HttpPost("kid/create")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> CreateKid([FromBody] CreateKidCommand command)
+    {
+        await mediator.Send(command);
+        return Ok(new
+        {
+            success = true,
+            message = $"Kid with name [{command.Name}] successfully created"
+        });
+    }
+
     [Authorize]
     [HttpDelete("kid/delete/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
