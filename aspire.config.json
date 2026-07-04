@@ -1,0 +1,6 @@
+{
+  "appHost": {
+    "path": "aspire/ChorePoint.AppHost/ChorePoint.AppHost.csproj"
+  },
+  "channel": "stable"
+}
