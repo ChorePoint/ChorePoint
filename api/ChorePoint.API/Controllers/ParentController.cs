@@ -1,6 +1,6 @@
 ﻿using ChorePoint.Application.Handlers.Parent.DeleteKid;
 using ChorePoint.Application.Handlers.Parent.GetKidById;
-using ChorePoint.Application.Handlers.Parent.GetKids;
+using ChorePoint.Application.Handlers.Parent.GetKidsByParent;
 using ChorePoint.Application.Handlers.Parent.UpdateKid;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -54,9 +54,9 @@ public class ParentController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetKids()
+    public async Task<IActionResult> GetKidsByParent()
     {
-        var result = await mediator.Send(new GetKidsQuery());
+        var result = await mediator.Send(new GetKidsByParentQuery());
         return Ok(new
         {
             success = true,

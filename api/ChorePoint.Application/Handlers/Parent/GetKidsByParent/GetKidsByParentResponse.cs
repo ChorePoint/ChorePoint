@@ -1,6 +1,6 @@
-namespace ChorePoint.Application.Handlers.Parent.GetKids;
+namespace ChorePoint.Application.Handlers.Parent.GetKidsByParent;
 
-public record GetKidsResponse(
+public record GetKidsByParentResponse(
     int KidId,
     string Name,
     string Avatar,

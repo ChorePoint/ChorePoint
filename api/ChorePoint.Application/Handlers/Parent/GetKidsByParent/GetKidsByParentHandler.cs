@@ -5,12 +5,12 @@ using ChorePoint.Domain.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ChorePoint.Application.Handlers.Parent.GetKids;
+namespace ChorePoint.Application.Handlers.Parent.GetKidsByParent;
 
-public class GetKidsHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<GetKidsQuery, IReadOnlyList<GetKidsResponse>>
+public class GetKidsByParentHandler(IAppDbContext context, IParentContextService parentContextService)
+    : IRequestHandler<GetKidsByParentQuery, IReadOnlyList<GetKidsByParentResponse>>
 {
-    public async Task<IReadOnlyList<GetKidsResponse>> Handle(GetKidsQuery request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<GetKidsByParentResponse>> Handle(GetKidsByParentQuery request, CancellationToken cancellationToken)
     {
         var parentId = parentContextService.GetParentId();
 
@@ -24,7 +24,7 @@ public class GetKidsHandler(IAppDbContext context, IParentContextService parentC
         var resourceParentIds = kids.Select(k => k.ParentId).ToList();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
-        var mapper = new GetKidsMapper();
-        return mapper.KidsToGetKidsResponseList(kids);
+        var mapper = new GetKidsByParentMapper();
+        return mapper.KidsToGetKidsByParentResponseList(kids);
     }
 }
