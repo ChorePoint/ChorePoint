@@ -39,8 +39,8 @@
       <div class="view-all">View All →</div>
     </div>
     <div class="chore-list">
-      @for (chore of getDailyChores(); track chore.id) {
-        <div [routerLink]="['/chore', chore.id]" class="chore-item">
+      @for (chore of getDailyChores(); track chore.choreId) {
+        <div [routerLink]="['/chore', chore.choreId]" class="chore-item">
           <div class="chore-icon daily">{{ chore.icon }}</div>
           <div class="chore-info">
             <div class="chore-name">{{ chore.name }}</div>
@@ -59,7 +59,7 @@
     </div>
 
     <div class="chore-list">
-      @for (chore of getWeeklyChores(); track chore.id) {
+      @for (chore of getWeeklyChores(); track chore.choreId) {
         <div class="chore-item">
           <div class="chore-icon weekly">{{ chore.icon }}</div>
           <div class="chore-info">
@@ -78,7 +78,7 @@
     </div>
 
     <div class="chore-list">
-      @for (chore of getBonusChores(); track chore.id) {
+      @for (chore of getBonusChores(); track chore.choreId) {
         <div class="chore-item">
           <div class="chore-icon bonus">{{ chore.icon }}</div>
           <div class="chore-info">

@@ -6,7 +6,7 @@
     <span style="font-size: 18px">🏆</span>
     <div class="leaderboard-title">Top Performers</div>
   </div>
-  @for (kid of kids; track kid.id; let i = $index) {
+  @for (kid of kids; track kid.kidId; let i = $index) {
     <div class="leaderboard-row">
       <div class="lb-rank" [class]="rankClasses[i]">{{ rankEmojis[i] }}</div>
       <div class="lb-avatar avatar-blue">{{ kid.avatar }}</div>

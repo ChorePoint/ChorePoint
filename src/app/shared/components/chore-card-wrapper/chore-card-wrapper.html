@@ -9,7 +9,7 @@
       <div class="empty-text">No {{ timeframe }} chores yet. Add some to keep the kids busy!</div>
     </div>
   } @else {
-    @for (chore of chores; track chore.id) {
+    @for (chore of chores; track chore.choreId) {
       <app-chore-card
         [chore]="chore"
         [kidsDictionary]="kidsDictionary"

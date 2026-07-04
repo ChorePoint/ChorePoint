@@ -1,8 +1,8 @@
-@for (kid of kids; track kid.id) {
+@for (kid of kids; track kid.kidId) {
   <div
     class="assign-chip"
-    [class.selected]="selectedKid === kid.id"
-    (click)="selectedKidChange.emit(kid.id)"
+    [class.selected]="selectedKid === kid.kidId"
+    (click)="selectedKidChange.emit(kid.kidId)"
   >
     <div
       class="assign-avatar avatar-blue"

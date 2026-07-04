@@ -6,7 +6,7 @@
   >
     <app-kid-selector-header
       [kids]="vm.kids"
-      [selectedKidId]="vm.selectedKid?.id"
+      [selectedKidId]="vm.selectedKid?.kidId"
       [kidHeaderText]="'Add a child from the kids tab to get started!'"
       (kidSelected)="vm.selectedKid = $event"
     />
@@ -27,10 +27,10 @@
     </div>
 
     <div class="pending-list">
-      @for (approval of vm.pendingApprovals; track approval.id) {
+      @for (approval of vm.pendingApprovals; track approval.choreId) {
         <app-pending-approval
           [pendingApproval]="{
-            id: approval.id,
+            id: approval.choreId,
             choreName: approval.chore.name,
             completedAt: approval.completedAt,
             points: approval.chore.points,

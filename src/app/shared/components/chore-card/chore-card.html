@@ -20,16 +20,16 @@
   <div class="chore-menu-wrap">
     <div
       class="chore-menu"
-      [class.open]="chore.id === menuOpen"
-      (click)="toggleMenu(chore.id)"
+      [class.open]="chore.choreId === menuOpen"
+      (click)="toggleMenu(chore.choreId)"
       #toggle
     >
       ⋮
     </div>
-    <div class="context-menu" [class.show]="chore.id === menuOpen" #menu>
+    <div class="context-menu" [class.show]="chore.choreId === menuOpen" #menu>
       <div class="menu-item mi-resume" (click)="toggleActive(chore)">
         <div class="mi-icon">
-          @if (loadingAction?.type === 'activate' && loadingAction?.choreId === chore.id) {
+          @if (loadingAction?.type === 'activate' && loadingAction?.choreId === chore.choreId) {
             <app-loading-emoji />
           } @else {
             ▶️
@@ -37,14 +37,16 @@
         </div>
         {{ chore.isVisible ? 'Deactivate' : 'Activate' }} chore
       </div>
-      <div class="menu-item mi-edit" [routerLink]="['edit', chore.id]">
+      <div class="menu-item mi-edit" [routerLink]="['edit', chore.choreId]">
         <div class="mi-icon">✏️</div>
         Edit chore
       </div>
       <div class="menu-divider"></div>
       <div class="menu-item mi-delete" (click)="delete(chore)">
         <div class="mi-icon">
-          @if (loadingAction?.type === LoadingType.Delete && loadingAction?.choreId === chore.id) {
+          @if (
+            loadingAction?.type === LoadingType.Delete && loadingAction?.choreId === chore.choreId
+          ) {
             <app-loading-emoji />
           } @else {
             🗑️
