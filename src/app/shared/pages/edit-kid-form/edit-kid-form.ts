@@ -6,13 +6,12 @@ import { Observable, shareReplay, tap } from 'rxjs';
 import { AvatarOption, AVATARS } from '../../../core/consts/avatars';
 import { KidsService } from '../../../core/services/kids/kids.service';
 import { Kid } from '../../../core/types/dtos/kid';
-import { Header } from '../../components/header/header';
 import { LoadingEmoji } from '../../components/loading-emoji/loading-emoji';
 import { LoadingScreen } from '../loading-screen/loading-screen';
 
 @Component({
   selector: 'app-edit-kid-form',
-  imports: [AsyncPipe, LoadingScreen, ReactiveFormsModule, LoadingEmoji, Header],
+  imports: [AsyncPipe, LoadingScreen, ReactiveFormsModule, LoadingEmoji],
   templateUrl: './edit-kid-form.html',
   styleUrl: './edit-kid-form.scss',
 })

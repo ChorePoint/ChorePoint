@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { AVATARS } from '../../../../core/consts/avatars';
 
 @Component({
   selector: 'app-create-profile',
-  imports: [RouterLink],
   templateUrl: './create-profile.html',
   styleUrl: './create-profile.scss',
 })
@@ -14,5 +12,13 @@ export class CreateProfile {
 
   selectAvatar(avatar: string) {
     this.selectedAvatar = avatar;
+  }
+
+  back() {
+    window.history.back();
+  }
+
+  submit() {
+    console.log('Form submitted');
   }
 }

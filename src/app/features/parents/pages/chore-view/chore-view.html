@@ -8,6 +8,7 @@
     ><app-kid-selector-header
       [kids]="vm.kids"
       [selectedKidId]="vm.selectedKid?.id ?? -1"
+      [kidHeaderText]="'Add a child from the kids tab to get started!'"
       (kidSelected)="vm.selectedKid = $event"
   /></app-header>
 

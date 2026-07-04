@@ -1,26 +1,28 @@
 <div class="slide">
-  <div class="slide-content">
-    <div class="illustration">{{ selectedAvatar }}</div>
-    <div class="slide-title">Create Your Profile</div>
-    <div class="slide-description">Let's set up your account!</div>
+  <form (submit)="submit()">
+    <div class="slide-content">
+      <div class="illustration">{{ selectedAvatar }}</div>
+      <div class="slide-title">Create Your Profile</div>
+      <div class="slide-description">Let's set up your account!</div>
 
-    <div class="input-container">
-      <input type="text" class="input-field" placeholder="What's your name?" value="Zach" />
-      <input type="number" class="input-field" placeholder="How old are you?" value="10" />
+      <div class="input-container">
+        <input type="text" class="input-field" placeholder="What's your name?" value="Zach" />
+        <input type="number" class="input-field" placeholder="How old are you?" value="10" />
+      </div>
+
+      <div class="slide-description" style="margin-bottom: 10px">Choose your avatar:</div>
+      <div class="avatar-selector">
+        @for (avatar of avatars; track avatar.emoji) {
+          <div (click)="selectAvatar(avatar.emoji)" class="avatar-option">{{ avatar.emoji }}</div>
+        }
+      </div>
     </div>
 
-    <div class="slide-description" style="margin-bottom: 10px">Choose your avatar:</div>
-    <div class="avatar-selector">
-      @for (avatar of avatars; track avatar.emoji) {
-        <div (click)="selectAvatar(avatar.emoji)" class="avatar-option">{{ avatar.emoji }}</div>
-      }
+    <div>
+      <div class="buttons-container">
+        <button type="button" class="btn btn-secondary" (click)="back()">Back</button>
+        <button type="submit" class="btn btn-primary">Create</button>
+      </div>
     </div>
-  </div>
-
-  <div>
-    <div class="buttons-container">
-      <button class="btn btn-secondary" routerLink="/dashboard/kids">Back</button>
-      <button class="btn btn-primary">Next</button>
-    </div>
-  </div>
+  </form>
 </div>

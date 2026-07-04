@@ -1,4 +1,4 @@
-export interface CreateAccountRequest {
+export interface RegisterRequest {
   firstName: string;
   lastName: string;
   email: string;

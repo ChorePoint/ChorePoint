@@ -1,6 +1,5 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { combineLatest, finalize, map, Observable, startWith, Subject, switchMap } from 'rxjs';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
 import { KidsService } from '../../../../core/services/kids/kids.service';
@@ -17,7 +16,7 @@ import { KidSelectorHeader } from '../../../chores/components/kid-selector-heade
 
 @Component({
   selector: 'app-chore-view',
-  imports: [KidSelectorHeader, LoadingScreen, AsyncPipe, RouterLink, ChoreCardWrapper, Header],
+  imports: [KidSelectorHeader, LoadingScreen, AsyncPipe, ChoreCardWrapper, Header],
   templateUrl: './chore-view.html',
   styleUrl: './chore-view.scss',
 })
