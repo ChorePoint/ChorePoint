@@ -65,16 +65,16 @@ public class Chore : EntityBase
         Frequency = frequency;
     }
 
-    public void EnsureCanBeCompleted(ChoreSubmission currentSubmission, DateTime now)
+    public void EnsureCanBeCompleted(ChoreSubmission latestSubmission, DateTime now)
     {
         switch (Frequency)
         {
             case ChoreFrequency.Daily:
-                if (currentSubmission.CompletedAt.Date == now.Date)
+                if (latestSubmission.CompletedAt.Date == now.Date)
                     throw new ChoreAlreadyCompletedException("Chore already completed today");
                 break;
             case ChoreFrequency.Weekly:
-                if (currentSubmission.CompletedAt.AddDays(7) > now)
+                if (latestSubmission.CompletedAt.AddDays(7) > now)
                     throw new ChoreAlreadyCompletedException("Chore already completed within the last week");
                 break;
             case ChoreFrequency.Bonus:
