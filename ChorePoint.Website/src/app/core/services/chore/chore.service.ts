@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
-import { environment } from '../../../../environments/environment';
 import { Chore } from '../../types/dtos/chore';
 import { ApiGetResponse } from '../dtos/response';
 import { CreateChoreRequest, UpdateChoreRequest } from './chore.dtos';
@@ -13,7 +12,7 @@ import { CreateChoreRequest, UpdateChoreRequest } from './chore.dtos';
 export class ChoreService {
   private http = inject(HttpClient);
 
-  private baseUrl = `${environment.apiUrl}/api/chore`;
+  private baseUrl = '/api/chore';
 
   getById$(id: number) {
     return this.http.get<ApiGetResponse<Chore>>(`${this.baseUrl}/${id}`).pipe(

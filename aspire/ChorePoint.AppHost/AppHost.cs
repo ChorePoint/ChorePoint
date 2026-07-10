@@ -18,4 +18,9 @@ var api = builder.AddProject<ChorePoint_API>("api")
     .WithReference(migrations)
     .WaitForCompletion(migrations);
 
+var website = builder.AddJavaScriptApp("website", "../../ChorePoint.Website")
+    .WithHttpEndpoint(env: "PORT")
+    .WithReference(api)
+    .WaitFor(api);
+
 builder.Build().Run();

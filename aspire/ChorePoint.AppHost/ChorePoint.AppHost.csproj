@@ -9,17 +9,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.4.6"/>
-        <PackageReference Include="Serilog" Version="4.3.1"/>
-        <PackageReference Include="Serilog.AspNetCore" Version="10.0.0"/>
-        <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0"/>
-        <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1"/>
-        <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0"/>
+        <PackageReference Include="Aspire.Hosting.JavaScript" Version="13.4.6" />
+        <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.4.6" />
+        <PackageReference Include="Serilog" Version="4.3.1" />
+        <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+        <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\api\ChorePoint.API\ChorePoint.API.csproj"/>
-        <ProjectReference Include="..\..\services\ChorePoint.MigrationService\ChorePoint.MigrationService.csproj"/>
+        <ProjectReference Include="..\..\api\ChorePoint.API\ChorePoint.API.csproj" />
+        <ProjectReference Include="..\..\services\ChorePoint.MigrationService\ChorePoint.MigrationService.csproj" />
     </ItemGroup>
 
 </Project>
