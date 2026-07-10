@@ -10,7 +10,8 @@ public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TReq
     public async Task<TResponse> Handle(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken
+    )
     {
         var context = new ValidationContext<TRequest>(request);
 

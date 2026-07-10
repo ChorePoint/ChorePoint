@@ -22,11 +22,9 @@ public class ParentController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> CreateKid([FromBody] CreateKidCommand command)
     {
         await mediator.Send(command);
-        return Ok(new
-        {
-            success = true,
-            message = $"Kid with name [{command.Name}] successfully created"
-        });
+        return Ok(
+            new { success = true, message = $"Kid with name [{command.Name}] successfully created" }
+        );
     }
 
     [Authorize]
@@ -39,11 +37,7 @@ public class ParentController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> DeleteKid(int kidId)
     {
         await mediator.Send(new DeleteKidCommand(kidId));
-        return Ok(new
-        {
-            success = true,
-            message = $"Kid with ID [{kidId}] successfully deleted"
-        });
+        return Ok(new { success = true, message = $"Kid with ID [{kidId}] successfully deleted" });
     }
 
     [Authorize]
@@ -56,12 +50,14 @@ public class ParentController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetKidById(int kidId)
     {
         var result = await mediator.Send(new GetKidByIdQuery(kidId));
-        return Ok(new
-        {
-            success = true,
-            message = $"Kid details with ID [{kidId}] retrieved successfully",
-            data = result
-        });
+        return Ok(
+            new
+            {
+                success = true,
+                message = $"Kid details with ID [{kidId}] retrieved successfully",
+                data = result,
+            }
+        );
     }
 
     [Authorize]
@@ -74,12 +70,14 @@ public class ParentController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetKidsByParent()
     {
         var result = await mediator.Send(new GetKidsByParentQuery());
-        return Ok(new
-        {
-            success = true,
-            message = "All kid's details retrieved successfully",
-            data = result
-        });
+        return Ok(
+            new
+            {
+                success = true,
+                message = "All kid's details retrieved successfully",
+                data = result,
+            }
+        );
     }
 
     [Authorize]
@@ -92,10 +90,8 @@ public class ParentController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> UpdateKid([FromBody] UpdateKidCommand command)
     {
         await mediator.Send(command);
-        return Ok(new
-        {
-            success = true,
-            message = $"Kid with ID [{command.KidId}] successfully updated"
-        });
+        return Ok(
+            new { success = true, message = $"Kid with ID [{command.KidId}] successfully updated" }
+        );
     }
 }

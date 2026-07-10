@@ -7,7 +7,10 @@ namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissionsByParent
 public partial class GetSubmissionsByParentMapper
 {
     public partial IReadOnlyList<GetSubmissionsByParentResponse> ChoreSubmissionsToGetSubmissionsByParentResponseList(
-        IReadOnlyList<ChoreSubmissionE> choreSubmissions);
+        IReadOnlyList<ChoreSubmissionE> choreSubmissions
+    );
 
-    private partial GetSubmissionsByParentResponse ChoreSubmissionToGetSubmissionsByParentResponse(ChoreSubmissionE choreSubmission);
+    private partial GetSubmissionsByParentResponse ChoreSubmissionToGetSubmissionsByParentResponse(
+        ChoreSubmissionE choreSubmission
+    );
 }

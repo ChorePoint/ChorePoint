@@ -5,11 +5,15 @@ using Microsoft.OpenApi;
 
 namespace ChorePoint.API.Documentation;
 
-internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvider authenticationSchemeProvider)
-    : IOpenApiDocumentTransformer
+internal sealed class BearerSecuritySchemeTransformer(
+    IAuthenticationSchemeProvider authenticationSchemeProvider
+) : IOpenApiDocumentTransformer
 {
-    public async Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context,
-        CancellationToken cancellationToken)
+    public async Task TransformAsync(
+        OpenApiDocument document,
+        OpenApiDocumentTransformerContext context,
+        CancellationToken cancellationToken
+    )
     {
         var authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
         if (authenticationSchemes.All(a => a.Name is not JwtBearerDefaults.AuthenticationScheme))
@@ -21,7 +25,7 @@ internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvi
             Scheme = JwtBearerDefaults.AuthenticationScheme,
             BearerFormat = "JWT",
             In = ParameterLocation.Header,
-            Description = "JWT Authorization header using the Bearer scheme."
+            Description = "JWT Authorization header using the Bearer scheme.",
         };
 
         document.Components ??= new OpenApiComponents();
@@ -30,7 +34,9 @@ internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvi
 
         var securityRequirement = new OpenApiSecurityRequirement
         {
-            [new OpenApiSecuritySchemeReference(JwtBearerDefaults.AuthenticationScheme, document)] = []
+            [
+                new OpenApiSecuritySchemeReference(JwtBearerDefaults.AuthenticationScheme, document)
+            ] = [],
         };
 
         foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations!.Values))

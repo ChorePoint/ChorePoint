@@ -10,8 +10,7 @@ public class DeleteChoreHandler(IAppDbContext context, IParentContextService par
 {
     public async Task Handle(DeleteChoreCommand request, CancellationToken cancellationToken)
     {
-        var chore = await context.Chores
-            .FindAsync([request.ChoreId], cancellationToken);
+        var chore = await context.Chores.FindAsync([request.ChoreId], cancellationToken);
 
         if (chore is null)
             throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");

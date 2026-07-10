@@ -26,29 +26,38 @@ try
     builder.AddNpgsqlDbContext<AppDbContext>("chorepoint-db");
 
     builder.Services.AddControllers();
-    builder.Services.AddOpenApi(options => { options.AddDocumentTransformer<BearerSecuritySchemeTransformer>(); });
+    builder.Services.AddOpenApi(options =>
+    {
+        options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+    });
 
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();
 
     builder.Services.AddMemoryCache();
-    var cacheBuilder = builder.Services.AddFusionCache()
-        .WithDefaultEntryOptions(new FusionCacheEntryOptions
-        {
-            Duration = TimeSpan.FromMinutes(5),
+    var cacheBuilder = builder
+        .Services.AddFusionCache()
+        .WithDefaultEntryOptions(
+            new FusionCacheEntryOptions
+            {
+                Duration = TimeSpan.FromMinutes(5),
 
-            IsFailSafeEnabled = true,
-            FailSafeMaxDuration = TimeSpan.FromHours(1),
-            FailSafeThrottleDuration = TimeSpan.FromSeconds(30),
+                IsFailSafeEnabled = true,
+                FailSafeMaxDuration = TimeSpan.FromHours(1),
+                FailSafeThrottleDuration = TimeSpan.FromSeconds(30),
 
-            EagerRefreshThreshold = 0.9f,
+                EagerRefreshThreshold = 0.9f,
 
-            FactorySoftTimeout = TimeSpan.FromSeconds(100)
-        });
-    if (builder.Environment.IsDevelopment()) cacheBuilder.WithNullImplementation();
+                FactorySoftTimeout = TimeSpan.FromSeconds(100),
+            }
+        );
+    if (builder.Environment.IsDevelopment())
+        cacheBuilder.WithNullImplementation();
 
-    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly));
+    builder.Services.AddMediatR(cfg =>
+        cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly)
+    );
     builder.Services.AddValidatorsFromAssembly(typeof(LoginValidator).Assembly);
 
     builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
@@ -57,12 +66,13 @@ try
 
     builder.Services.AddCors(options =>
     {
-        options.AddPolicy("AllowAngular", policy =>
-        {
-            policy.WithOrigins("http://localhost:4200")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
-        });
+        options.AddPolicy(
+            "AllowAngular",
+            policy =>
+            {
+                policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+            }
+        );
     });
 
     var app = builder.Build();
@@ -72,7 +82,8 @@ try
         app.MapOpenApi();
         app.MapScalarApiReference(options =>
         {
-            options.WithTitle("ChorePoint API")
+            options
+                .WithTitle("ChorePoint API")
                 .WithClassicLayout()
                 .ForceDarkMode()
                 .ExpandAllTags()
@@ -101,7 +112,8 @@ try
     await app.RunAsync();
 }
 // See https://github.com/dotnet/efcore/issues/29923
-catch (Exception ex) when (ex is not HostAbortedException && ex.Source is not "Microsoft.EntityFrameworkCore.Design")
+catch (Exception ex)
+    when (ex is not HostAbortedException && ex.Source is not "Microsoft.EntityFrameworkCore.Design")
 {
     Log.Fatal(ex, "Host terminated unexpectedly");
 }

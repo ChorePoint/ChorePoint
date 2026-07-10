@@ -6,14 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetLatestSubmissionByKid;
 
-public class GetLatestSubmissionByKidHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<GetLatestSubmissionByKidQuery, GetLatestSubmissionByKidResponse>
+public class GetLatestSubmissionByKidHandler(
+    IAppDbContext context,
+    IParentContextService parentContextService
+) : IRequestHandler<GetLatestSubmissionByKidQuery, GetLatestSubmissionByKidResponse>
 {
-    public async Task<GetLatestSubmissionByKidResponse> Handle(GetLatestSubmissionByKidQuery request,
-        CancellationToken cancellationToken)
+    public async Task<GetLatestSubmissionByKidResponse> Handle(
+        GetLatestSubmissionByKidQuery request,
+        CancellationToken cancellationToken
+    )
     {
-        var latestSubmission = await context.ChoreSubmissions
-            .Include(cs => cs.Chore)
+        var latestSubmission = await context
+            .ChoreSubmissions.Include(cs => cs.Chore)
             .Where(cs => cs.KidId.Equals(request.KidId))
             .OrderByDescending(cs => cs.CompletedAt)
             .FirstOrDefaultAsync(cancellationToken);

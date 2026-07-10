@@ -6,14 +6,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.ReactivateShopItem;
 
-public class ReactivateShopItemHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<ReactivateShopItemCommand>
+public class ReactivateShopItemHandler(
+    IAppDbContext context,
+    IParentContextService parentContextService
+) : IRequestHandler<ReactivateShopItemCommand>
 {
     public async Task Handle(ReactivateShopItemCommand request, CancellationToken cancellationToken)
     {
-        var shopItem = await context.ShopItems
-            .Include(si => si.KidShopItems)
-            .SingleOrDefaultAsync(si => si.ShopItemId.Equals(request.ShopItemId), cancellationToken);
+        var shopItem = await context
+            .ShopItems.Include(si => si.KidShopItems)
+            .SingleOrDefaultAsync(
+                si => si.ShopItemId.Equals(request.ShopItemId),
+                cancellationToken
+            );
 
         if (shopItem is null)
             throw new NotFoundException($"No shop item exists with ID [{request.ShopItemId}]");

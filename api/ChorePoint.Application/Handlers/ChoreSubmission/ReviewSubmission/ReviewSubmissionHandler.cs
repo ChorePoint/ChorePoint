@@ -7,18 +7,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.ReviewSubmission;
 
-public class ReviewSubmissionHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<ReviewSubmissionCommand>
+public class ReviewSubmissionHandler(
+    IAppDbContext context,
+    IParentContextService parentContextService
+) : IRequestHandler<ReviewSubmissionCommand>
 {
     public async Task Handle(ReviewSubmissionCommand request, CancellationToken cancellationToken)
     {
-        var choreSubmission = await context.ChoreSubmissions
-            .Where(cs => cs.ChoreSubmissionId.Equals(request.ChoreSubmissionId) &&
-                         cs.ApprovalStatus.Equals(ChoreApprovalStatus.Pending))
+        var choreSubmission = await context
+            .ChoreSubmissions.Where(cs =>
+                cs.ChoreSubmissionId.Equals(request.ChoreSubmissionId)
+                && cs.ApprovalStatus.Equals(ChoreApprovalStatus.Pending)
+            )
             .SingleOrDefaultAsync(cancellationToken);
 
         if (choreSubmission is null)
-            throw new NotFoundException($"No pending chore submission exists with ID [{request.ChoreSubmissionId}]");
+            throw new NotFoundException(
+                $"No pending chore submission exists with ID [{request.ChoreSubmissionId}]"
+            );
 
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(choreSubmission.ParentId, parentId);

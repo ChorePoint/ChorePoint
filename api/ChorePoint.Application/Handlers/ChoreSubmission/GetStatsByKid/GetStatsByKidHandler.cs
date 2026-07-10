@@ -11,11 +11,14 @@ namespace ChorePoint.Application.Handlers.ChoreSubmission.GetStatsByKid;
 public class GetStatsByKidHandler(IAppDbContext context, IParentContextService parentContextService)
     : IRequestHandler<GetStatsByKidQuery, GetStatsByKidResponse>
 {
-    public async Task<GetStatsByKidResponse> Handle(GetStatsByKidQuery request, CancellationToken cancellationToken)
+    public async Task<GetStatsByKidResponse> Handle(
+        GetStatsByKidQuery request,
+        CancellationToken cancellationToken
+    )
     {
-        var choreSubmissions = await context.ChoreSubmissions
-            .Include(cs => cs.Chore)
-            .ThenInclude(c => c.KidChores)
+        var choreSubmissions = await context
+            .ChoreSubmissions.Include(cs => cs.Chore)
+                .ThenInclude(c => c.KidChores)
             .Where(cs => cs.KidId.Equals(request.KidId))
             .ToListAsync(cancellationToken);
 
@@ -30,21 +33,26 @@ public class GetStatsByKidHandler(IAppDbContext context, IParentContextService p
         var chores = choreSubmissions.Select(cs => cs.Chore).ToList();
 
         var completedThisWeek = choreSubmissions.Count(cs =>
-            cs.CompletedThisWeek(startOfWeek) && cs.Chore.Frequency is not ChoreFrequency.Bonus);
-        var dueThisWeek = chores.Count(c => c.Frequency is ChoreFrequency.Weekly or ChoreFrequency.Daily);
-        var approvalRate = (int)(choreSubmissions.Count(cs => cs.ApprovalStatus is ChoreApprovalStatus.Approved) *
-            100.0 / choreSubmissions.Count);
+            cs.CompletedThisWeek(startOfWeek) && cs.Chore.Frequency is not ChoreFrequency.Bonus
+        );
+        var dueThisWeek = chores.Count(c =>
+            c.Frequency is ChoreFrequency.Weekly or ChoreFrequency.Daily
+        );
+        var approvalRate = (int)(
+            choreSubmissions.Count(cs => cs.ApprovalStatus is ChoreApprovalStatus.Approved)
+            * 100.0
+            / choreSubmissions.Count
+        );
 
         var dueToday = chores
-            .Select(c => c.KidChores
-                .Where(cs => cs.KidId.Equals(request.KidId))
-                .Select(kc => kc.DueDay)
-                .SingleOrDefault()
+            .Select(c =>
+                c.KidChores.Where(cs => cs.KidId.Equals(request.KidId))
+                    .Select(kc => kc.DueDay)
+                    .SingleOrDefault()
             )
             .Count(dow => dow.Equals(DateTime.Today.DayOfWeek));
 
-        return new GetStatsByKidResponse
-        (
+        return new GetStatsByKidResponse(
             choreSubmissions.Count,
             completedThisWeek,
             approvalRate,

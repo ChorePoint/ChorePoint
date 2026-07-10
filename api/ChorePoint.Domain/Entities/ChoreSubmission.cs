@@ -18,7 +18,6 @@ public class ChoreSubmission : EntityBase
     public Parent Parent { get; set; }
     public Kid Kid { get; set; }
 
-
     public bool CompletedThisWeek(DateTime startOfWeek)
     {
         return ApprovalStatus == ChoreApprovalStatus.Approved && CompletedAt >= startOfWeek;

@@ -6,7 +6,6 @@ public class GetLatestSubmissionByKidValidator : AbstractValidator<GetLatestSubm
 {
     public GetLatestSubmissionByKidValidator()
     {
-        RuleFor(x => x.KidId)
-            .NotEmpty().WithMessage("KidId is required");
+        RuleFor(x => x.KidId).NotEmpty().WithMessage("KidId is required");
     }
 }

@@ -23,9 +23,16 @@ public class Chore : EntityBase
     public ICollection<Kid> Kids { get; set; } = new List<Kid>();
     public ICollection<KidChore> KidChores { get; set; } = new List<KidChore>();
 
-
-    public static Chore Create(int parentId, int? categoryId, string name, string icon, string description, int points,
-        ChoreDifficulty difficulty, ChoreFrequency frequency)
+    public static Chore Create(
+        int parentId,
+        int? categoryId,
+        string name,
+        string icon,
+        string description,
+        int points,
+        ChoreDifficulty difficulty,
+        ChoreFrequency frequency
+    )
     {
         return new Chore
         {
@@ -37,7 +44,7 @@ public class Chore : EntityBase
             Points = points,
             Difficulty = difficulty,
             Frequency = frequency,
-            CompletionCount = 0
+            CompletionCount = 0,
         };
     }
 
@@ -49,12 +56,19 @@ public class Chore : EntityBase
             ParentId = ParentId,
             KidId = kidId,
             ApprovalStatus = ChoreApprovalStatus.Pending,
-            CompletedAt = now
+            CompletedAt = now,
         };
     }
 
-    public void Update(int? categoryId, string name, string icon, string? description, int points,
-        ChoreDifficulty difficulty, ChoreFrequency frequency)
+    public void Update(
+        int? categoryId,
+        string name,
+        string icon,
+        string? description,
+        int points,
+        ChoreDifficulty difficulty,
+        ChoreFrequency frequency
+    )
     {
         CategoryId = categoryId;
         Name = name;
@@ -75,7 +89,9 @@ public class Chore : EntityBase
                 break;
             case ChoreFrequency.Weekly:
                 if (latestSubmission.CompletedAt.AddDays(7) > now)
-                    throw new ChoreAlreadyCompletedException("Chore already completed within the last week");
+                    throw new ChoreAlreadyCompletedException(
+                        "Chore already completed within the last week"
+                    );
                 break;
             case ChoreFrequency.Bonus:
             default:

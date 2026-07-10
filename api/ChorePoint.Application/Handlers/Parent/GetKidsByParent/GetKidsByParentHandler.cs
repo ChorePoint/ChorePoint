@@ -7,16 +7,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Parent.GetKidsByParent;
 
-public class GetKidsByParentHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<GetKidsByParentQuery, IReadOnlyList<GetKidsByParentResponse>>
+public class GetKidsByParentHandler(
+    IAppDbContext context,
+    IParentContextService parentContextService
+) : IRequestHandler<GetKidsByParentQuery, IReadOnlyList<GetKidsByParentResponse>>
 {
-    public async Task<IReadOnlyList<GetKidsByParentResponse>> Handle(GetKidsByParentQuery request,
-        CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<GetKidsByParentResponse>> Handle(
+        GetKidsByParentQuery request,
+        CancellationToken cancellationToken
+    )
     {
         var parentId = parentContextService.GetParentId();
 
-        var kids = await context.Kids
-            .Where(k => k.ParentId.Equals(parentId))
+        var kids = await context
+            .Kids.Where(k => k.ParentId.Equals(parentId))
             .ToListAsync(cancellationToken);
 
         if (kids.Empty())

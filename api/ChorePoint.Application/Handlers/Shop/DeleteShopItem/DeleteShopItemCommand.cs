@@ -2,6 +2,4 @@
 
 namespace ChorePoint.Application.Handlers.Shop.DeleteShopItem;
 
-public record DeleteShopItemCommand(
-    int ShopItemId
-) : IRequest;
+public record DeleteShopItemCommand(int ShopItemId) : IRequest;

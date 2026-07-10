@@ -6,10 +6,8 @@ public class ReviewSubmissionValidator : AbstractValidator<ReviewSubmissionComma
 {
     public ReviewSubmissionValidator()
     {
-        RuleFor(x => x.ChoreSubmissionId)
-            .NotEmpty().WithMessage("ChoreSubmissionId is required");
+        RuleFor(x => x.ChoreSubmissionId).NotEmpty().WithMessage("ChoreSubmissionId is required");
 
-        RuleFor(x => x.Approve)
-            .NotNull().WithMessage("Approve is required");
+        RuleFor(x => x.Approve).NotNull().WithMessage("Approve is required");
     }
 }

@@ -11,8 +11,7 @@ public class CompleteChoreHandler(IAppDbContext context, IParentContextService p
 {
     public async Task Handle(CompleteChoreCommand request, CancellationToken cancellationToken)
     {
-        var chore = await context.Chores
-            .FindAsync([request.ChoreId], cancellationToken);
+        var chore = await context.Chores.FindAsync([request.ChoreId], cancellationToken);
 
         if (chore is null)
             throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");
@@ -20,8 +19,8 @@ public class CompleteChoreHandler(IAppDbContext context, IParentContextService p
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(chore.ParentId, parentId);
 
-        var latestSubmission = await context.ChoreSubmissions
-            .Where(cs => cs.ChoreId.Equals(request.ChoreId))
+        var latestSubmission = await context
+            .ChoreSubmissions.Where(cs => cs.ChoreId.Equals(request.ChoreId))
             .Where(cs => cs.KidId.Equals(request.KidId))
             .OrderByDescending(cs => cs.CompletedAt)
             .FirstOrDefaultAsync(cancellationToken);

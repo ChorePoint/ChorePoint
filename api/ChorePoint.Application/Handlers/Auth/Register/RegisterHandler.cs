@@ -12,14 +12,15 @@ public class RegisterHandler(IAppDbContext context, IPasswordHasher<ParentE> pas
 {
     public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var existingParent = await context.Parents
-            .SingleOrDefaultAsync(p => p.Email.Equals(request.Email), cancellationToken);
+        var existingParent = await context.Parents.SingleOrDefaultAsync(
+            p => p.Email.Equals(request.Email),
+            cancellationToken
+        );
 
         if (existingParent is not null)
             throw new ParentAlreadyExistsException(request.Email);
 
-        var parent = ParentE.CreateWithoutPassword
-        (
+        var parent = ParentE.CreateWithoutPassword(
             request.FirstName,
             request.LastName,
             request.Email

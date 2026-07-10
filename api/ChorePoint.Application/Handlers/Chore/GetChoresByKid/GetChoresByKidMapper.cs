@@ -8,7 +8,8 @@ namespace ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 public partial class GetChoresByKidMapper
 {
     public partial IReadOnlyList<GetChoresByKidResponse> ChoresToGetChoresByKidResponseList(
-        IReadOnlyList<ChoreE> chores);
+        IReadOnlyList<ChoreE> chores
+    );
 
     [MapProperty(nameof(ChoreE.KidChores), nameof(GetChoresByKidResponse.DueDay))]
     [MapProperty(nameof(ChoreE.KidChores), nameof(GetChoresByKidResponse.IsVisible))]

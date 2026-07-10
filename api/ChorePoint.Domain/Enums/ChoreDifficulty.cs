@@ -4,5 +4,5 @@ public enum ChoreDifficulty
 {
     Easy,
     Medium,
-    Hard
+    Hard,
 }

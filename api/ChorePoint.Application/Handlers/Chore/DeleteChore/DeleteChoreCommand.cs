@@ -2,6 +2,4 @@
 
 namespace ChorePoint.Application.Handlers.Chore.DeleteChore;
 
-public record DeleteChoreCommand(
-    int ChoreId
-) : IRequest;
+public record DeleteChoreCommand(int ChoreId) : IRequest;

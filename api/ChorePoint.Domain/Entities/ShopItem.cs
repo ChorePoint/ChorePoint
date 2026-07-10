@@ -17,9 +17,15 @@ public class ShopItem : EntityBase
     public ICollection<Kid> Kids { get; set; } = new List<Kid>();
     public ICollection<KidShopItem> KidShopItems { get; set; } = new List<KidShopItem>();
 
-
-    public static ShopItem Create(int parentId, int? categoryId, string name, string icon, string? description,
-        int cost, int? quantity)
+    public static ShopItem Create(
+        int parentId,
+        int? categoryId,
+        string name,
+        string icon,
+        string? description,
+        int cost,
+        int? quantity
+    )
     {
         return new ShopItem
         {
@@ -29,11 +35,18 @@ public class ShopItem : EntityBase
             Icon = icon,
             Description = description,
             Cost = cost,
-            Quantity = quantity
+            Quantity = quantity,
         };
     }
 
-    public void Update(int? categoryId, string name, string icon, string? description, int cost, int? quantity)
+    public void Update(
+        int? categoryId,
+        string name,
+        string icon,
+        string? description,
+        int cost,
+        int? quantity
+    )
     {
         CategoryId = categoryId;
         Name = name;

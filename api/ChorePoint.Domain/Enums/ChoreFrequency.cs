@@ -4,5 +4,5 @@ public enum ChoreFrequency
 {
     Daily,
     Weekly,
-    Bonus
+    Bonus,
 }

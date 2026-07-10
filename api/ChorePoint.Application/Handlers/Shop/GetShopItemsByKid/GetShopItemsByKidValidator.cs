@@ -6,7 +6,6 @@ public class GetShopItemsByKidValidator : AbstractValidator<GetShopItemsByKidQue
 {
     public GetShopItemsByKidValidator()
     {
-        RuleFor(x => x.KidId)
-            .NotEmpty().WithMessage("KidId is required");
+        RuleFor(x => x.KidId).NotEmpty().WithMessage("KidId is required");
     }
 }

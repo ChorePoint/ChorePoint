@@ -1,26 +1,28 @@
 <Project Sdk="Aspire.AppHost.Sdk/13.4.6">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>8d92a7e2-143a-4f38-bea1-c2808b2377e6</UserSecretsId>
+  </PropertyGroup>
 
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net10.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <UserSecretsId>8d92a7e2-143a-4f38-bea1-c2808b2377e6</UserSecretsId>
-    </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.JavaScript" Version="13.4.6" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.4.6" />
+    <PackageReference Include="CSharpier.MsBuild" Version="1.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Serilog" Version="4.3.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+    <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Aspire.Hosting.JavaScript" Version="13.4.6" />
-        <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.4.6" />
-        <PackageReference Include="Serilog" Version="4.3.1" />
-        <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
-        <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
-        <PackageReference Include="Serilog.Sinks.OpenTelemetry" Version="4.2.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\api\ChorePoint.API\ChorePoint.API.csproj" />
-        <ProjectReference Include="..\..\services\ChorePoint.MigrationService\ChorePoint.MigrationService.csproj" />
-    </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\..\api\ChorePoint.API\ChorePoint.API.csproj" />
+    <ProjectReference Include="..\..\services\ChorePoint.MigrationService\ChorePoint.MigrationService.csproj" />
+  </ItemGroup>
 </Project>

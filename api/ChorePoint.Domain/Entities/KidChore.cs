@@ -8,14 +8,13 @@ public class KidChore : EntityBase
     public DayOfWeek? DueDay { get; set; }
     public bool IsVisible { get; set; }
 
-
     public static KidChore Create(int kidId, DayOfWeek? dueDay, bool isVisible)
     {
         return new KidChore
         {
             KidId = kidId,
             DueDay = dueDay,
-            IsVisible = isVisible
+            IsVisible = isVisible,
         };
     }
 

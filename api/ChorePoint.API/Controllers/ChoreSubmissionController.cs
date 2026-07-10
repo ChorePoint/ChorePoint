@@ -23,11 +23,13 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> CompleteChore(int choreId, int kidId)
     {
         await mediator.Send(new CompleteChoreCommand(choreId, kidId));
-        return Ok(new
-        {
-            success = true,
-            message = $"Chore with ID [{choreId}] completed successfully by kid with ID [{kidId}]"
-        });
+        return Ok(
+            new
+            {
+                success = true,
+                message = $"Chore with ID [{choreId}] completed successfully by kid with ID [{kidId}]",
+            }
+        );
     }
 
     [Authorize]
@@ -40,12 +42,14 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetLatestSubmissionByKid(int kidId)
     {
         var result = await mediator.Send(new GetLatestSubmissionByKidQuery(kidId));
-        return Ok(new
-        {
-            success = true,
-            message = $"Latest chore submission with kid ID [{kidId}] successfully retrieved",
-            data = result
-        });
+        return Ok(
+            new
+            {
+                success = true,
+                message = $"Latest chore submission with kid ID [{kidId}] successfully retrieved",
+                data = result,
+            }
+        );
     }
 
     [Authorize]
@@ -58,12 +62,14 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetStatsByKid(int kidId)
     {
         var result = await mediator.Send(new GetStatsByKidQuery(kidId));
-        return Ok(new
-        {
-            success = true,
-            message = $"Kid with ID [{kidId}] stats retrieved successfully",
-            data = result
-        });
+        return Ok(
+            new
+            {
+                success = true,
+                message = $"Kid with ID [{kidId}] stats retrieved successfully",
+                data = result,
+            }
+        );
     }
 
     [Authorize]
@@ -76,12 +82,14 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetSubmissionsByParent([FromQuery] bool pending = false)
     {
         var result = await mediator.Send(new GetSubmissionsByParentQuery(pending));
-        return Ok(new
-        {
-            success = true,
-            message = "Chore submissions retrieved successfully",
-            data = result
-        });
+        return Ok(
+            new
+            {
+                success = true,
+                message = "Chore submissions retrieved successfully",
+                data = result,
+            }
+        );
     }
 
     [Authorize]
@@ -94,10 +102,12 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> ReviewSubmission([FromBody] ReviewSubmissionCommand command)
     {
         await mediator.Send(command);
-        return Ok(new
-        {
-            success = true,
-            message = $"Chore submission with ID [{command.ChoreSubmissionId}] reviewed successfully"
-        });
+        return Ok(
+            new
+            {
+                success = true,
+                message = $"Chore submission with ID [{command.ChoreSubmissionId}] reviewed successfully",
+            }
+        );
     }
 }

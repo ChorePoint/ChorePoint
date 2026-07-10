@@ -9,10 +9,13 @@ namespace ChorePoint.Application.Handlers.Chore.GetChoreById;
 public class GetChoreByIdHandler(IAppDbContext context, IParentContextService parentContextService)
     : IRequestHandler<GetChoreByIdQuery, GetChoreByIdResponse>
 {
-    public async Task<GetChoreByIdResponse> Handle(GetChoreByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GetChoreByIdResponse> Handle(
+        GetChoreByIdQuery request,
+        CancellationToken cancellationToken
+    )
     {
-        var chore = await context.Chores
-            .Include(c => c.Category)
+        var chore = await context
+            .Chores.Include(c => c.Category)
             .Include(c => c.KidChores)
             .SingleOrDefaultAsync(c => c.ChoreId.Equals(request.ChoreId), cancellationToken);
 

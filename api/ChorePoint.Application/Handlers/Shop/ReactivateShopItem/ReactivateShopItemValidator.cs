@@ -6,7 +6,6 @@ public class ReactivateShopItemValidator : AbstractValidator<ReactivateShopItemC
 {
     public ReactivateShopItemValidator()
     {
-        RuleFor(x => x.ShopItemId)
-            .NotEmpty().WithMessage("ShopItemId is required");
+        RuleFor(x => x.ShopItemId).NotEmpty().WithMessage("ShopItemId is required");
     }
 }

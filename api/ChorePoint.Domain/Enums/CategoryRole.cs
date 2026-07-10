@@ -4,5 +4,5 @@ public enum CategoryRole
 {
     Chore,
     ShopItem,
-    Invariant
+    Invariant,
 }

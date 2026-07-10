@@ -18,12 +18,14 @@ public class AuthController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginCommand command)
     {
         var result = await mediator.Send(command);
-        return Ok(new
-        {
-            success = true,
-            message = "Login successful",
-            data = result
-        });
+        return Ok(
+            new
+            {
+                success = true,
+                message = "Login successful",
+                data = result,
+            }
+        );
     }
 
     [AllowAnonymous]
@@ -34,10 +36,6 @@ public class AuthController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterCommand command)
     {
         await mediator.Send(command);
-        return Ok(new
-        {
-            success = true,
-            message = "Parent registered successfully"
-        });
+        return Ok(new { success = true, message = "Parent registered successfully" });
     }
 }

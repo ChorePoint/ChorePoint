@@ -2,6 +2,5 @@
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissionsByParent;
 
-public record GetSubmissionsByParentQuery(
-    bool Pending
-) : IRequest<IReadOnlyList<GetSubmissionsByParentResponse>>;
+public record GetSubmissionsByParentQuery(bool Pending)
+    : IRequest<IReadOnlyList<GetSubmissionsByParentResponse>>;

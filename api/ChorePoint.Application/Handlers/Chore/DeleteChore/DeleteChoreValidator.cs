@@ -6,7 +6,6 @@ public class DeleteChoreValidator : AbstractValidator<DeleteChoreCommand>
 {
     public DeleteChoreValidator()
     {
-        RuleFor(x => x.ChoreId)
-            .NotEmpty().WithMessage("ChoreId is required");
+        RuleFor(x => x.ChoreId).NotEmpty().WithMessage("ChoreId is required");
     }
 }

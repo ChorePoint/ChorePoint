@@ -10,8 +10,7 @@ public class DeleteKidHandler(IAppDbContext context, IParentContextService paren
 {
     public async Task Handle(DeleteKidCommand request, CancellationToken cancellationToken)
     {
-        var kid = await context.Kids
-            .FindAsync([request.KidId], cancellationToken);
+        var kid = await context.Kids.FindAsync([request.KidId], cancellationToken);
 
         if (kid is null)
             throw new NotFoundException($"No kid exists with ID [{request.KidId}]");

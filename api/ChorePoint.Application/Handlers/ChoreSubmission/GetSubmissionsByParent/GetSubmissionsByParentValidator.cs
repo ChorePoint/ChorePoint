@@ -6,7 +6,6 @@ public class GetSubmissionsByParentValidator : AbstractValidator<GetSubmissionsB
 {
     public GetSubmissionsByParentValidator()
     {
-        RuleFor(x => x.Pending)
-            .NotNull().WithMessage("Pending is required");
+        RuleFor(x => x.Pending).NotNull().WithMessage("Pending is required");
     }
 }

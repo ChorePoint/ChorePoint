@@ -5,5 +5,5 @@ public enum ChoreApprovalStatus
     Incomplete,
     Pending,
     Approved,
-    Rejected
+    Rejected,
 }

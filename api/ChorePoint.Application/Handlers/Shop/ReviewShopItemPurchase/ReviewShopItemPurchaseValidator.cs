@@ -6,10 +6,8 @@ public class ReviewShopItemPurchaseValidator : AbstractValidator<ReviewShopItemP
 {
     public ReviewShopItemPurchaseValidator()
     {
-        RuleFor(x => x.ShopItemId)
-            .NotEmpty().WithMessage("ShopItemId is required");
+        RuleFor(x => x.ShopItemId).NotEmpty().WithMessage("ShopItemId is required");
 
-        RuleFor(x => x.KidId)
-            .NotEmpty().WithMessage("KidId is required");
+        RuleFor(x => x.KidId).NotEmpty().WithMessage("KidId is required");
     }
 }

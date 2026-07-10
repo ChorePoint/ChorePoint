@@ -21,24 +21,28 @@ public static class Extensions
         {
             app.MapHealthChecks(HealthEndpointPath);
 
-            app.MapHealthChecks(AlivenessEndpointPath, new HealthCheckOptions
-            {
-                Predicate = r => r.Tags.Contains("live")
-            });
+            app.MapHealthChecks(
+                AlivenessEndpointPath,
+                new HealthCheckOptions { Predicate = r => r.Tags.Contains("live") }
+            );
         }
 
         return app;
     }
 
-    extension<TBuilder>(TBuilder builder) where TBuilder : IHostApplicationBuilder
+    extension<TBuilder>(TBuilder builder)
+        where TBuilder : IHostApplicationBuilder
     {
         public TBuilder AddServiceDefaults()
         {
-            builder.Services.AddSerilog((services, lc) => lc
-                .ReadFrom.Configuration(builder.Configuration)
-                .ReadFrom.Services(services)
-                .Enrich.FromLogContext()
-                .WriteTo.OpenTelemetry());
+            builder.Services.AddSerilog(
+                (services, lc) =>
+                    lc
+                        .ReadFrom.Configuration(builder.Configuration)
+                        .ReadFrom.Services(services)
+                        .Enrich.FromLogContext()
+                        .WriteTo.OpenTelemetry()
+            );
 
             builder.ConfigureOpenTelemetry();
 
@@ -57,16 +61,19 @@ public static class Extensions
 
         private TBuilder ConfigureOpenTelemetry()
         {
-            builder.Services.AddOpenTelemetry()
+            builder
+                .Services.AddOpenTelemetry()
                 .WithMetrics(metrics =>
                 {
-                    metrics.AddAspNetCoreInstrumentation()
+                    metrics
+                        .AddAspNetCoreInstrumentation()
                         .AddHttpClientInstrumentation()
                         .AddRuntimeInstrumentation();
                 })
                 .WithTracing(tracing =>
                 {
-                    tracing.AddSource(builder.Environment.ApplicationName)
+                    tracing
+                        .AddSource(builder.Environment.ApplicationName)
                         .AddAspNetCoreInstrumentation(options =>
                             // Exclude health check requests from tracing
                             options.Filter = context =>
@@ -83,16 +90,20 @@ public static class Extensions
 
         private TBuilder AddOpenTelemetryExporters()
         {
-            var useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
+            var useOtlpExporter = !string.IsNullOrWhiteSpace(
+                builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]
+            );
 
-            if (useOtlpExporter) builder.Services.AddOpenTelemetry().UseOtlpExporter();
+            if (useOtlpExporter)
+                builder.Services.AddOpenTelemetry().UseOtlpExporter();
 
             return builder;
         }
 
         private TBuilder AddDefaultHealthChecks()
         {
-            builder.Services.AddHealthChecks()
+            builder
+                .Services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
 
             return builder;

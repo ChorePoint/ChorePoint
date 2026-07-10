@@ -7,16 +7,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByParent;
 
-public class GetShopItemsByParentHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<GetShopItemsByParentQuery, IReadOnlyList<GetShopItemsByParentResponse>>
+public class GetShopItemsByParentHandler(
+    IAppDbContext context,
+    IParentContextService parentContextService
+) : IRequestHandler<GetShopItemsByParentQuery, IReadOnlyList<GetShopItemsByParentResponse>>
 {
-    public async Task<IReadOnlyList<GetShopItemsByParentResponse>> Handle(GetShopItemsByParentQuery request,
-        CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<GetShopItemsByParentResponse>> Handle(
+        GetShopItemsByParentQuery request,
+        CancellationToken cancellationToken
+    )
     {
         var parentId = parentContextService.GetParentId();
 
-        var shopItems = await context.ShopItems
-            .Include(si => si.Category)
+        var shopItems = await context
+            .ShopItems.Include(si => si.Category)
             .Include(si => si.KidShopItems)
             .Where(si => si.ParentId.Equals(parentId))
             .ToListAsync(cancellationToken);

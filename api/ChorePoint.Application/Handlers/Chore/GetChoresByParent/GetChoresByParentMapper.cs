@@ -7,7 +7,8 @@ namespace ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 public partial class GetChoresByParentMapper
 {
     public partial IReadOnlyList<GetChoresByParentResponse> ChoresToGetChoresByParentResponseList(
-        IReadOnlyList<ChoreE> chores);
+        IReadOnlyList<ChoreE> chores
+    );
 
     [MapProperty(nameof(ChoreE.KidChores), nameof(GetChoresByParentResponse.AssignedKids))]
     private partial GetChoresByParentResponse ChoreToGetChoresByParentResponse(ChoreE chore);

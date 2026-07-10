@@ -21,7 +21,6 @@ public class Kid : EntityBase
     public ICollection<ShopItem> ShopItems { get; set; } = new List<ShopItem>();
     public ICollection<KidShopItem> KidShopItems { get; set; } = new List<KidShopItem>();
 
-
     public static Kid Create(int parentId, string name, string avatar, int? age)
     {
         return new Kid
@@ -29,11 +28,18 @@ public class Kid : EntityBase
             ParentId = parentId,
             Name = name,
             Avatar = avatar,
-            Age = age
+            Age = age,
         };
     }
 
-    public void Update(string name, string avatar, int? age, int dayStreak, int lifetimePoints, int spendablePoints)
+    public void Update(
+        string name,
+        string avatar,
+        int? age,
+        int dayStreak,
+        int lifetimePoints,
+        int spendablePoints
+    )
     {
         Name = name;
         Avatar = avatar;
@@ -46,7 +52,9 @@ public class Kid : EntityBase
     public void SpendPoints(int pointsToSubtract)
     {
         if (pointsToSubtract > SpendablePoints)
-            throw new DomainException($"Kid with ID [{KidId}] does not have enough spendable points!");
+            throw new DomainException(
+                $"Kid with ID [{KidId}] does not have enough spendable points!"
+            );
 
         SpendablePoints -= pointsToSubtract;
     }

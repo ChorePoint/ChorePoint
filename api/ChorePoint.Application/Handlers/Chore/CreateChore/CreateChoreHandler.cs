@@ -13,8 +13,8 @@ public class CreateChoreHandler(IAppDbContext context, IParentContextService par
     public async Task Handle(CreateChoreCommand request, CancellationToken cancellationToken)
     {
         var assignedKidIds = request.AssignedKids.Select(ak => ak.KidId).ToList();
-        var resourceParentIds = await context.Kids
-            .Where(k => assignedKidIds.Contains(k.KidId))
+        var resourceParentIds = await context
+            .Kids.Where(k => assignedKidIds.Contains(k.KidId))
             .Select(k => k.ParentId)
             .ToListAsync(cancellationToken);
 
@@ -23,12 +23,24 @@ public class CreateChoreHandler(IAppDbContext context, IParentContextService par
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
-        var chore = ChoreE.Create(parentId, request.CategoryId, request.Name, request.Icon, request.Description,
-            request.Points, request.Difficulty, request.Frequency);
+        var chore = ChoreE.Create(
+            parentId,
+            request.CategoryId,
+            request.Name,
+            request.Icon,
+            request.Description,
+            request.Points,
+            request.Difficulty,
+            request.Frequency
+        );
 
         foreach (var assignedKid in request.AssignedKids)
         {
-            var kidChore = KidChore.Create(assignedKid.KidId, assignedKid.DueDay, assignedKid.IsVisible);
+            var kidChore = KidChore.Create(
+                assignedKid.KidId,
+                assignedKid.DueDay,
+                assignedKid.IsVisible
+            );
             chore.KidChores.Add(kidChore);
         }
 

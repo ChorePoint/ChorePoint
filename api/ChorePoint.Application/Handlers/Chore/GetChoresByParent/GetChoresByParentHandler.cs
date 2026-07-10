@@ -7,19 +7,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 
-public class GetChoresByParentHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<GetChoresByParentQuery, IReadOnlyList<GetChoresByParentResponse>>
+public class GetChoresByParentHandler(
+    IAppDbContext context,
+    IParentContextService parentContextService
+) : IRequestHandler<GetChoresByParentQuery, IReadOnlyList<GetChoresByParentResponse>>
 {
-    public async Task<IReadOnlyList<GetChoresByParentResponse>> Handle(GetChoresByParentQuery request,
-        CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<GetChoresByParentResponse>> Handle(
+        GetChoresByParentQuery request,
+        CancellationToken cancellationToken
+    )
     {
         var parentId = parentContextService.GetParentId();
 
-        var chores = await context.Chores
-            .Include(c => c.Category)
+        var chores = await context
+            .Chores.Include(c => c.Category)
             .Include(c => c.KidChores)
             .Where(c => c.ParentId.Equals(parentId))
-            .Where(c => request.IsVisible == null || c.KidChores.Any(kc => kc.IsVisible.Equals(request.IsVisible)))
+            .Where(c =>
+                request.IsVisible == null
+                || c.KidChores.Any(kc => kc.IsVisible.Equals(request.IsVisible))
+            )
             .ToListAsync(cancellationToken);
 
         if (chores.Empty())

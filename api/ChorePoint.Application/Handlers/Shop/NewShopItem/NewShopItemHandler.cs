@@ -12,8 +12,8 @@ public class NewShopItemHandler(IAppDbContext context, IParentContextService par
     public async Task Handle(NewShopItemCommand request, CancellationToken cancellationToken)
     {
         var assignedKidIds = request.AssignedKids.Select(ak => ak.KidId).ToList();
-        var resourceParentIds = await context.Kids
-            .Where(k => assignedKidIds.Contains(k.KidId))
+        var resourceParentIds = await context
+            .Kids.Where(k => assignedKidIds.Contains(k.KidId))
             .Select(k => k.ParentId)
             .ToListAsync(cancellationToken);
 
@@ -22,8 +22,7 @@ public class NewShopItemHandler(IAppDbContext context, IParentContextService par
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
-        var shopItem = ShopItem.Create
-        (
+        var shopItem = ShopItem.Create(
             parentId,
             request.CategoryId,
             request.Name,
