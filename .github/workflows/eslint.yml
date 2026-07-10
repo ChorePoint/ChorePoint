@@ -21,11 +21,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
+        working-directory: ./ChorePoint.Website
         run: |
           npm install
           npm install @microsoft/eslint-formatter-sarif@3.1.0
 
       - name: Run ESLint
+        working-directory: ./ChorePoint.Website
         run: |
           npx eslint . \
             --format @microsoft/eslint-formatter-sarif \
