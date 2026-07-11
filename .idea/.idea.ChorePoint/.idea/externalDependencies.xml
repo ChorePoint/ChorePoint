@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalDependencies">
+    <plugin id="AngularJS" />
+    <plugin id="JavaScript" />
+    <plugin id="NodeJS" />
+    <plugin id="com.intellij.css" />
+    <plugin id="com.intellij.resharper.azure" />
+    <plugin id="me.rafaelldi.aspire" />
+    <plugin id="org.jetbrains.plugins.sass" />
+  </component>
+</project>
