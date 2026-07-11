@@ -37,4 +37,5 @@ jobs:
       - name: Upload SARIF
         uses: github/codeql-action/upload-sarif@v4
         with:
+          working-directory: ./ChorePoint.Website
           sarif_file: eslint-results.sarif
