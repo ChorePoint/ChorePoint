@@ -1,9 +1,9 @@
 <Solution>
-    <Project Path="api/ChorePoint.API/ChorePoint.API.csproj"/>
-    <Project Path="api/ChorePoint.Application/ChorePoint.Application.csproj"/>
-    <Project Path="api/ChorePoint.Domain/ChorePoint.Domain.csproj"/>
-    <Project Path="api/ChorePoint.Infrastructure/ChorePoint.Infrastructure.csproj"/>
-    <Project Path="aspire/ChorePoint.AppHost/ChorePoint.AppHost.csproj"/>
-    <Project Path="aspire/ChorePoint.ServiceDefaults/ChorePoint.ServiceDefaults.csproj"/>
-    <Project Path="services\ChorePoint.MigrationService\ChorePoint.MigrationService.csproj"/>
+  <Project Path="ChorePoint.API/ChorePoint.API.csproj"/>
+  <Project Path="ChorePoint.Application/ChorePoint.Application.csproj"/>
+  <Project Path="ChorePoint.Domain/ChorePoint.Domain.csproj"/>
+  <Project Path="ChorePoint.Infrastructure/ChorePoint.Infrastructure.csproj"/>
+  <Project Path="aspire/ChorePoint.AppHost/ChorePoint.AppHost.csproj"/>
+  <Project Path="aspire/ChorePoint.ServiceDefaults/ChorePoint.ServiceDefaults.csproj"/>
+  <Project Path="services/ChorePoint.MigrationService/ChorePoint.MigrationService.csproj"/>
 </Solution>
