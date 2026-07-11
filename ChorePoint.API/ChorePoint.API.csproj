@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\aspire\ChorePoint.ServiceDefaults\ChorePoint.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\aspire\ChorePoint.ServiceDefaults\ChorePoint.ServiceDefaults.csproj" />
     <ProjectReference Include="..\ChorePoint.Application\ChorePoint.Application.csproj" />
     <ProjectReference Include="..\ChorePoint.Domain\ChorePoint.Domain.csproj" />
     <ProjectReference Include="..\ChorePoint.Infrastructure\ChorePoint.Infrastructure.csproj" />

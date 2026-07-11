@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\api\ChorePoint.API\ChorePoint.API.csproj" />
+    <ProjectReference Include="..\..\ChorePoint.API\ChorePoint.API.csproj" />
     <ProjectReference Include="..\..\services\ChorePoint.MigrationService\ChorePoint.MigrationService.csproj" />
   </ItemGroup>
 </Project>
