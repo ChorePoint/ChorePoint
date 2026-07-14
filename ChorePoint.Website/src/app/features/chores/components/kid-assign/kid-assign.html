@@ -1,9 +1,5 @@
-@for (kid of kids; track kid.id) {
-  <div
-    class="assign-chip"
-    [class.selected]="selectedKid === kid.id"
-    (click)="selectedKidChange.emit(kid.id)"
-  >
+@for (kid of kids; track kid.kidId) {
+  <div class="assign-chip" [class.selected]="isSelected(kid.kidId)" (click)="select(kid.kidId)">
     <div
       class="assign-avatar avatar-blue"
       style="background: linear-gradient(135deg, #87ceeb, #5aafd4)"
@@ -13,7 +9,11 @@
     <div class="assign-name">{{ kid.name }}</div>
   </div>
 }
-<div class="assign-chip" [class.selected]="selectedKid === -1" (click)="selectedKidChange.emit(-1)">
+<div
+  class="assign-chip"
+  [class.selected]="(selectedKids?.length ?? 1) > 1"
+  (click)="selectedKidChange.emit(-1)"
+>
   <div
     class="assign-avatar avatar-blue"
     style="background: linear-gradient(135deg, #87ceeb, #5aafd4)"

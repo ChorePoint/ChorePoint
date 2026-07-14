@@ -10,7 +10,7 @@
     @if (vm.kids.length > 0) {
       <app-kid-selector-header
         [kids]="vm.kids"
-        [selectedKidId]="vm.selectedKid?.id"
+        [selectedKidId]="vm.selectedKid?.kidId"
         [kidHeaderText]="'Add a shop item to get started!'"
         (kidSelected)="vm.selectedKid = $event"
       />
@@ -37,10 +37,10 @@
         </div>
       } @else {
         <div class="items-list">
-          @for (shopItem of vm.shopItems; track shopItem.id) {
+          @for (shopItem of vm.shopItems; track shopItem.shopItemId) {
             <app-shop-card
               [shopItem]="shopItem"
-              [deleteLoading]="deleteLoadingId === shopItem.id"
+              [deleteLoading]="deleteLoadingId === shopItem.shopItemId"
               (deleteEmitter)="delete($event)"
             />
           }

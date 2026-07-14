@@ -7,11 +7,11 @@
     >
       All
     </div>
-    @for (kid of kids; track kid.id) {
+    @for (kid of kids; track kid.kidId) {
       <div
         (click)="onKidSelected(kid)"
         class="child-chip"
-        [class]="selectedKidId === kid.id ? 'active' : ''"
+        [class]="selectedKidId === kid.kidId ? 'active' : ''"
       >
         {{ kid.name }}
       </div>

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { catchError, map, of, throwError } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 import { ShopItem } from '../../types/dtos/shop-item';
 import { ApiGetResponse } from '../dtos/response';
 import { NewShopItemRequest } from './shop.dtos';
@@ -9,7 +10,7 @@ import { NewShopItemRequest } from './shop.dtos';
 export class ShopService {
   private http = inject(HttpClient);
 
-  private baseUrl = '/api/shop';
+  private baseUrl = `${environment.apiUrl}/api/shop`;
 
   newShopItem$(request: NewShopItemRequest) {
     return this.http.post<void>(`${this.baseUrl}/new`, request);

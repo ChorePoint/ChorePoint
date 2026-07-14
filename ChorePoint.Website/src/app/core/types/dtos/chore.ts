@@ -3,7 +3,7 @@ import { ChoreFrequency } from '../enums/chore-frequency';
 import { DayOfWeek } from '../enums/day-of-week';
 
 export interface Chore {
-  id: number;
+  choreId: number;
   kidId: number;
   name: string;
   icon: string;

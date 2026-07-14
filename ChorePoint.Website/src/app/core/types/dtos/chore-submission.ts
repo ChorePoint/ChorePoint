@@ -2,7 +2,7 @@ import { ApprovalStatus } from '../enums/approval-status';
 import { Chore } from './chore';
 
 export interface ChoreSubmission {
-  id: number;
+  choreSubmissionId: number;
   choreId: number;
   userId: number;
   completedAt: Date;
