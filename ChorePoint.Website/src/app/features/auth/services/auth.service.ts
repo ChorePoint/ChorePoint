@@ -1,7 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { AUTH_ERROR_MAP } from '../models/auth.error';
 import { AuthError, AuthErrorType } from '../models/auth.types';
 import { RegisterRequest } from '../models/create-account-request';
@@ -11,7 +10,7 @@ import { LoginRequest, LoginResponse } from '../models/login-request';
 export class AuthService {
   private http = inject(HttpClient);
 
-  private baseUrl = `${environment.apiUrl}/api/auth`;
+  private baseUrl = '/api/auth';
 
   private ONBOARDING_KEY = 'hasSeenOnboarding';
 
