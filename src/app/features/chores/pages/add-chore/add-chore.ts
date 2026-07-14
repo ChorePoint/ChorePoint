@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { map, Observable } from 'rxjs';
 import { CHORE_EMOJIS } from '../../../../core/consts/chore-emojis';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
@@ -10,6 +10,7 @@ import { ChoreDifficulty } from '../../../../core/types/enums/chore-difficulty';
 import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
 import { ChoreForm } from '../../../../shared/components/chore-form/chore-form';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
+import { ChoreFormGroup as ChoreFormType } from '../../../../shared/types/chore-form-group';
 import { DAYS_OF_WEEK } from '../../config/days-of-week';
 import { DIFFICULTY_OPTIONS } from '../../config/difficulty-options';
 import { FREQUENCY_OPTIONS } from '../../config/frequency-options';
@@ -38,16 +39,25 @@ export class AddChore implements OnInit {
     kids: Kid[];
   }>;
 
-  form = this.fb.nonNullable.group({
-    name: ['', { validators: [Validators.required] }],
-    icon: ['', { validators: [Validators.required] }],
-    kidId: [0, { validators: [Validators.required] }],
-    frequency: [ChoreFrequency.Daily, { validators: [Validators.required] }],
-    difficulty: [ChoreDifficulty.Easy, { validators: [Validators.required] }],
-    dueDay: [null],
-    points: [0, { validators: [Validators.required, Validators.min(0)] }],
-    description: [''],
-    isVisible: [true],
+  form = this.fb.group<ChoreFormType>({
+    name: new FormControl('', { validators: [Validators.required], nonNullable: true }),
+    icon: new FormControl('', { validators: [Validators.required], nonNullable: true }),
+    assignedKids: new FormControl([], { validators: [Validators.required], nonNullable: true }),
+    frequency: new FormControl(ChoreFrequency.Daily, {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
+    difficulty: new FormControl(ChoreDifficulty.Easy, {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
+    dueDay: new FormControl<Date | null>(null),
+    points: new FormControl(0, {
+      validators: [Validators.required, Validators.min(0)],
+      nonNullable: true,
+    }),
+    description: new FormControl(''),
+    isVisible: new FormControl(true, { nonNullable: true }),
   });
 
   kids$ = this.kidsDataService.kids$;
@@ -59,8 +69,16 @@ export class AddChore implements OnInit {
   loadKids() {
     this.vm$ = this.kidsDataService.getKids$().pipe(
       map((kids) => {
-        if (kids.length && !this.form.value.kidId) {
-          this.form.patchValue({ kidId: kids[0].kidId });
+        if (kids.length && !this.form.value.assignedKids) {
+          this.form.patchValue({
+            assignedKids: [
+              {
+                kidId: kids[0].kidId,
+                dayOfWeek: null,
+                isVisible: true,
+              },
+            ],
+          });
         }
 
         return { kids };
@@ -87,17 +105,17 @@ export class AddChore implements OnInit {
     this.loading.set(true);
     this.error.set(null);
 
-    this.choreService.createChore$(this.form.getRawValue()).subscribe({
-      next: () => {
-        console.log('Chore created successfully');
-        this.loading.set(false);
-        this.form.reset();
-      },
-      error: (err) => {
-        console.error('Error creating chore:', err);
-        this.error.set('Failed to create chore. Please try again.');
-        this.loading.set(false);
-      },
-    });
+    // this.choreService.createChore$(this.form.getRawValue()).subscribe({
+    //   next: () => {
+    //     console.log('Chore created successfully');
+    //     this.loading.set(false);
+    //     this.form.reset();
+    //   },
+    //   error: (err) => {
+    //     console.error('Error creating chore:', err);
+    //     this.error.set('Failed to create chore. Please try again.');
+    //     this.loading.set(false);
+    //   },
+    // });
   }
 }
