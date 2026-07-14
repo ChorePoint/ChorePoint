@@ -53,10 +53,10 @@ public class ReviewShopItemPurchaseHandler(
             if (kid is null)
                 throw new NotFoundException($"No kid exists with ID [{kidShopItem.KidId}]");
 
-            var otherKidShopItems = shopItem
+            var otherAssignedKidShopItems = shopItem
                 .KidShopItems.Where(ksi => !ksi.KidId.Equals(request.KidId))
                 .ToList();
-            kidShopItem.Buy(shopItem, false, otherKidShopItems);
+            kidShopItem.Buy(shopItem, false, otherAssignedKidShopItems);
 
             kid.SpendPoints(shopItem.Cost);
         }

@@ -22,7 +22,7 @@ public class KidShopItem : EntityBase
     public void Buy(
         ShopItem shopItem,
         bool purchaseRequiresApproval,
-        IReadOnlyList<KidShopItem> otherKidShopItems
+        IReadOnlyList<KidShopItem> otherAssignedKidShopItems
     )
     {
         if (purchaseRequiresApproval)
@@ -40,7 +40,7 @@ public class KidShopItem : EntityBase
                 return;
 
             Status = ShopItemStatus.Hidden;
-            foreach (var kidShopItem in otherKidShopItems)
+            foreach (var kidShopItem in otherAssignedKidShopItems)
                 kidShopItem.Status = ShopItemStatus.Hidden;
         }
     }
