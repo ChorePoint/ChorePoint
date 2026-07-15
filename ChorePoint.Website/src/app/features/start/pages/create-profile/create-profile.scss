@@ -1,4 +1,4 @@
-@import '../start/start';
+@import "../start/start";
 
 .input-container {
     margin: 30px 0;
@@ -35,7 +35,7 @@
         border: 3px solid transparent;
         transition: all 0.2s;
 
-        &:active {
+        &.selected {
             border-color: #667eea;
             background: #e3f2fd;
         }

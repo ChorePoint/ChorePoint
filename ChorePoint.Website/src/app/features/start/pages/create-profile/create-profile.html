@@ -1,19 +1,37 @@
 <div class="slide">
-  <form (submit)="submit()">
+  <form [formGroup]="form" (submit)="submit()">
     <div class="slide-content">
-      <div class="illustration">{{ selectedAvatar }}</div>
+      <div class="illustration">{{ form.get('avatar')!.value }}</div>
       <div class="slide-title">Create Your Profile</div>
       <div class="slide-description">Let's set up your account!</div>
 
       <div class="input-container">
-        <input type="text" class="input-field" placeholder="What's your name?" value="Zach" />
-        <input type="number" class="input-field" placeholder="How old are you?" value="10" />
+        <input
+          [formControl]="form.controls['name']"
+          type="text"
+          class="input-field"
+          placeholder="What's your name?"
+          value="Zach"
+        />
+        <input
+          [formControl]="form.controls['age']"
+          type="number"
+          class="input-field"
+          placeholder="How old are you?"
+          value="10"
+        />
       </div>
 
       <div class="slide-description" style="margin-bottom: 10px">Choose your avatar:</div>
       <div class="avatar-selector">
         @for (avatar of avatars; track avatar.emoji) {
-          <div (click)="selectAvatar(avatar.emoji)" class="avatar-option">{{ avatar.emoji }}</div>
+          <div
+            (click)="selectAvatar(avatar.emoji)"
+            class="avatar-option"
+            [class.selected]="form.get('avatar')!.value === avatar.emoji"
+          >
+            {{ avatar.emoji }}
+          </div>
         }
       </div>
     </div>
@@ -21,7 +39,13 @@
     <div>
       <div class="buttons-container">
         <button type="button" class="btn btn-secondary" (click)="back()">Back</button>
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="submit" class="btn btn-primary">
+          @if (loading()) {
+            Creating Profile <app-loading-emoji />
+          } @else {
+            Create Profile 🎉
+          }
+        </button>
       </div>
     </div>
   </form>

@@ -6,3 +6,9 @@ export interface UpdateKidRequest {
   spendablePoints: number;
   dayStreak: number;
 }
+
+export interface CreateKidRequest {
+  name: string;
+  age: string;
+  avatar: string;
+}

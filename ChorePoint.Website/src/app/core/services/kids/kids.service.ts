@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
 import { Kid } from '../../types/dtos/kid';
 import { ApiGetResponse } from '../dtos/response';
-import { UpdateKidRequest } from './kid.dtos';
+import { CreateKidRequest, UpdateKidRequest } from './kid.dtos';
 
 @Injectable({ providedIn: 'root' })
 export class KidsService {
@@ -25,6 +25,13 @@ export class KidsService {
     return this.http.get<ApiGetResponse<Kid>>(`${this.baseUrl}/kid/${kidId}`).pipe(
       map((res) => res.data),
       catchError((err) => throwError(() => err)),
+    );
+  }
+
+  createKid$(createKidRequest: CreateKidRequest) {
+    return this.http.post<void>(`${this.baseUrl}/kid/create`, createKidRequest).pipe(
+      map((res) => res),
+      catchError((err) => (err.status === 404 ? of(null) : throwError(() => err))),
     );
   }
 
