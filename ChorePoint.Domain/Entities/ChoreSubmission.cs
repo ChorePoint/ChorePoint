@@ -28,5 +28,20 @@ public class ChoreSubmission : EntityBase
         ReviewNotes = reviewNotes;
         ApprovalStatus = approve ? ChoreApprovalStatus.Approved : ChoreApprovalStatus.Rejected;
         ReviewedAt = now;
+
+        if (!approve)
+            return;
+
+        if (Kid is null)
+            throw new ArgumentException(
+                "Kid needs to be included in ChoreSubmission entity retrieval when a chore is approved to add points"
+            );
+
+        if (Chore is null)
+            throw new ArgumentException(
+                "Chore needs to be included in ChoreSubmission entity retrieval when a chore is approved to add points"
+            );
+
+        Kid.AddPoints(Chore.Points);
     }
 }
