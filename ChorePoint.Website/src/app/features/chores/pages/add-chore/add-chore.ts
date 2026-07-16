@@ -1,6 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { CHORE_EMOJIS } from '../../../../core/consts/chore-emojis';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
@@ -25,6 +26,7 @@ export class AddChore implements OnInit {
   private choreService = inject(ChoreService);
   private kidsDataService = inject(KidsDataService);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
 
   loading = signal(false);
   error = signal<string | null>(null);
@@ -42,7 +44,10 @@ export class AddChore implements OnInit {
   form = this.fb.group<ChoreFormType>({
     name: new FormControl('', { validators: [Validators.required], nonNullable: true }),
     icon: new FormControl('', { validators: [Validators.required], nonNullable: true }),
-    assignedKids: new FormControl([], { validators: [Validators.required], nonNullable: true }),
+    assignedKids: new FormControl([], {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
     frequency: new FormControl(ChoreFrequency.Daily, {
       validators: [Validators.required],
       nonNullable: true,
@@ -51,13 +56,11 @@ export class AddChore implements OnInit {
       validators: [Validators.required],
       nonNullable: true,
     }),
-    dueDay: new FormControl<Date | null>(null),
     points: new FormControl(0, {
       validators: [Validators.required, Validators.min(0)],
       nonNullable: true,
     }),
     description: new FormControl(''),
-    isVisible: new FormControl(true, { nonNullable: true }),
   });
 
   kids$ = this.kidsDataService.kids$;
@@ -105,17 +108,19 @@ export class AddChore implements OnInit {
     this.loading.set(true);
     this.error.set(null);
 
-    // this.choreService.createChore$(this.form.getRawValue()).subscribe({
-    //   next: () => {
-    //     console.log('Chore created successfully');
-    //     this.loading.set(false);
-    //     this.form.reset();
-    //   },
-    //   error: (err) => {
-    //     console.error('Error creating chore:', err);
-    //     this.error.set('Failed to create chore. Please try again.');
-    //     this.loading.set(false);
-    //   },
-    // });
+    this.choreService.createChore$(this.form.getRawValue()).subscribe({
+      next: () => {
+        console.log('Chore created successfully');
+        this.loading.set(false);
+        this.form.reset();
+      },
+      error: (err) => {
+        console.error('Error creating chore:', err);
+        this.error.set('Failed to create chore. Please try again.');
+        this.loading.set(false);
+      },
+    });
+
+    this.router.navigate(['/dashboard/chores']);
   }
 }

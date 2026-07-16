@@ -3,7 +3,6 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ChoreService } from '../../../../core/services/chore/chore.service';
 import { KidsDataService } from '../../../../core/services/kids/kids-data.service';
 import { Chore } from '../../../../core/types/dtos/chore';
 import { Kid } from '../../../../core/types/dtos/kid';
@@ -19,7 +18,6 @@ import { ChoreFormGroup as ChoreFormType } from '../../../../shared/types/chore-
   templateUrl: './edit-chore.html',
 })
 export class EditChore implements OnInit {
-  private choreService = inject(ChoreService);
   private fb = inject(FormBuilder);
   private kidsDataService = inject(KidsDataService);
   private route = inject(ActivatedRoute);
@@ -37,7 +35,10 @@ export class EditChore implements OnInit {
   form = this.fb.group<ChoreFormType>({
     name: new FormControl('', { validators: [Validators.required], nonNullable: true }),
     icon: new FormControl('', { validators: [Validators.required], nonNullable: true }),
-    assignedKids: new FormControl([], { validators: [Validators.required], nonNullable: true }),
+    assignedKids: new FormControl([], {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
     frequency: new FormControl(ChoreFrequency.Daily, {
       validators: [Validators.required],
       nonNullable: true,
@@ -46,13 +47,11 @@ export class EditChore implements OnInit {
       validators: [Validators.required],
       nonNullable: true,
     }),
-    dueDay: new FormControl<Date | null>(null),
     points: new FormControl(0, {
       validators: [Validators.required, Validators.min(0)],
       nonNullable: true,
     }),
     description: new FormControl(''),
-    isVisible: new FormControl(true, { nonNullable: true }),
   });
 
   kids$ = this.kidsDataService.kids$;

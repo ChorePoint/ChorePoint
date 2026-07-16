@@ -42,37 +42,42 @@
     @for (kid of selectedKids; track kid.kidId) {
       <div class="form-group">
         <label class="form-label">{{ kid.name }}'s Settings</label>
-
-        <!-- Visibility toggle -->
-        <div class="toggle-row" style="margin-bottom: 10px">
-          <div>
-            <div class="toggle-row-title">Visible to {{ kid.name }}</div>
-            <div class="toggle-row-sub">Show this chore on their dashboard</div>
-          </div>
-          <div
-            class="toggle"
-            [style.background]="getKidSetting(kid.kidId, 'isVisible') ? '#27ae60' : '#e0e0e0'"
-          >
+        <div class="individual-settings">
+          <!-- Visibility toggle -->
+          <div class="toggle-row" style="margin-bottom: 10px">
+            <div>
+              <div class="setting-title">Visible to {{ kid.name }}</div>
+              <div class="setting-subtitle">Show this chore on their dashboard</div>
+            </div>
             <div
-              class="toggle-knob"
-              [style.left]="getKidSetting(kid.kidId, 'isVisible') ? '23px' : '3px'"
-              style="transition: left 0.2s"
-            ></div>
+              class="toggle"
+              (click)="
+                setKidSetting(kid.kidId, 'isVisible', !getKidSetting(kid.kidId, 'isVisible'))
+              "
+              [style.background]="getKidSetting(kid.kidId, 'isVisible') ? '#27ae60' : '#e0e0e0'"
+            >
+              <div
+                class="toggle-knob"
+                [style.left]="getKidSetting(kid.kidId, 'isVisible') ? '23px' : '3px'"
+                style="transition: left 0.2s"
+              ></div>
+            </div>
           </div>
-        </div>
 
-        <!-- Per-kid due day (weekly only) -->
-        @if (form.get('frequency')?.value === choreFrequency.Weekly) {
-          <select
-            class="form-input filled"
-            [value]="getKidSetting(kid.kidId, 'dayOfWeek')"
-            style="appearance: none; cursor: pointer"
-          >
-            @for (day of DaysOfWeek; track day.value) {
-              <option [value]="day.value">{{ day.label }}</option>
-            }
-          </select>
-        }
+          <!-- Per-kid due day (weekly only) -->
+          @if (form.get('frequency')?.value === choreFrequency.Weekly) {
+            <div class="due-title">Due Day</div>
+            <select
+              class="form-input filled"
+              [value]="getKidSetting(kid.kidId, 'dayOfWeek')"
+              style="appearance: none; cursor: pointer"
+            >
+              @for (day of DaysOfWeek; track day.value) {
+                <option [value]="day.value">{{ day.label }}</option>
+              }
+            </select>
+          }
+        </div>
       </div>
     }
 

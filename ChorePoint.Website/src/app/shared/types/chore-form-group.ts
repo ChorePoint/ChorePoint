@@ -9,8 +9,6 @@ export interface ChoreFormGroup {
   assignedKids: FormControl<AssignedKidToChore[]>;
   frequency: FormControl<ChoreFrequency>;
   difficulty: FormControl<ChoreDifficulty>;
-  dueDay: FormControl<Date | null>;
   points: FormControl<number>;
   description: FormControl<string | null>;
-  isVisible: FormControl<boolean>;
 }

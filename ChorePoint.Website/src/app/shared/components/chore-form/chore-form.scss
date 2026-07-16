@@ -176,6 +176,29 @@
             }
         }
 
+        .individual-settings {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            background: #f4f7f9;
+            border-radius: 14px;
+            padding: 14px 16px;
+
+            .toggle-row {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 14px 6px;
+            }
+        }
+
+        .due-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 5px;
+        }
+
         .toggle-row {
             display: flex;
             align-items: center;
@@ -184,13 +207,13 @@
             border-radius: 14px;
             padding: 14px 16px;
 
-            .toggle-row-title {
+            .setting-title {
                 font-size: 15px;
                 font-weight: 700;
                 color: #2c3e50;
             }
 
-            .toggle-row-sub {
+            .setting-subtitle {
                 font-size: 12px;
                 color: #95a5a6;
                 margin-top: 2px;

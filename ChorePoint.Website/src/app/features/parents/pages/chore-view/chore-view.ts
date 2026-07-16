@@ -86,21 +86,21 @@ export class ChoreView implements OnInit {
   toggleActive(chore: Chore) {
     this.loadingAction = { choreId: chore.choreId, type: LoadingType.Activate };
 
-    this.choreService
-      .updateChore$({
-        id: chore.choreId,
-        name: chore.name,
-        icon: chore.icon,
-        kidId: chore.kidId,
-        frequency: chore.frequency,
-        dueDay: chore.dueDay,
-        points: chore.points,
-        description: chore.description,
-        isVisible: !chore.isVisible,
-      })
-      .subscribe(() => {
-        this.refresh$.next();
-      });
+    // this.choreService
+    //   .updateChore$({
+    //     id: chore.choreId,
+    //     name: chore.name,
+    //     icon: chore.icon,
+    //     kidId: chore.kidId,
+    //     frequency: chore.frequency,
+    //     dueDay: chore.dueDay,
+    //     points: chore.points,
+    //     description: chore.description,
+    //     isVisible: !chore.isVisible,
+    //   })
+    //   .subscribe(() => {
+    //     this.refresh$.next();
+    //   });
   }
 
   isSelectedFrequency(frequency: ChoreFrequency) {
