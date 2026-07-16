@@ -18,19 +18,12 @@ jobs:
       run:
         working-directory: ChorePoint.Website
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js 26.x
       uses: actions/setup-node@v4
       with:
-        node-version: ${{ matrix.node-version }}
-        cache-dependency-path: ChorePoint.Website/package-lock.json
-        cache: 'npm'
+        node-version: 26.x
         
     - run: npm ci
     - run: npm run build --if-present
