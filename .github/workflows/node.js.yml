@@ -29,6 +29,7 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+        cache-dependency-path: ChorePoint.Website/package-lock.json
         cache: 'npm'
         
     - run: npm ci
