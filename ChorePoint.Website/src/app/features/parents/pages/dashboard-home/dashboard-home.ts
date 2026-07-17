@@ -33,6 +33,10 @@ export class DashboardHome implements OnInit {
     pendingApprovals?: ChoreSubmission[];
   }>;
 
+  ngOnViewInit() {
+    this.refresh$.next();
+  }
+
   ngOnInit() {
     // This ties the refresh signal to data fetching so that whenever refresh is
     //  triggered, the latest data is fetched and emitted to the vm$ observable.
