@@ -19,8 +19,11 @@ jobs:
         working-directory: ChorePoint.Website
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Use Node.js 26.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 26.x
 
       - name: Install dependencies
         run: |
