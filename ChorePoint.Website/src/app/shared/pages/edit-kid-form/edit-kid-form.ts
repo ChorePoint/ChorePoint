@@ -105,7 +105,7 @@ export class EditKidForm implements OnInit {
       next: () => {
         console.log('Kid updated successfully');
         this.deleteLoading.set(false);
-        this.router.navigate(['/kids']);
+        this.router.navigate(['/kids/home']);
       },
       error: () => {
         console.log('Kid updated failed');

@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { map, Observable } from 'rxjs';
-import { KidsService } from '../../../core/services/kids/kids.service';
-import { Kid } from '../../../core/types/dtos/kid';
-import { DashboardFooterMenu } from '../../../shared/components/dashboard-footer-menu/dashboard-footer-menu';
+import { KidsService } from '../../../../core/services/kids/kids.service';
+import { Kid } from '../../../../core/types/dtos/kid';
+import { DashboardFooterMenu } from '../../../../shared/components/dashboard-footer-menu/dashboard-footer-menu';
 
 @Component({
   selector: 'app-parent-dashboard',

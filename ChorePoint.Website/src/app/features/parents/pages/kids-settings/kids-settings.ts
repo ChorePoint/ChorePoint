@@ -9,6 +9,7 @@ import { ChoreService } from '../../../../core/services/chore/chore.service';
 import { KidsService } from '../../../../core/services/kids/kids.service';
 import { Chore } from '../../../../core/types/dtos/chore';
 import { Kid } from '../../../../core/types/dtos/kid';
+import { DashboardFooterMenu } from '../../../../shared/components/dashboard-footer-menu/dashboard-footer-menu';
 import { Header } from '../../../../shared/components/header/header';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
 import { KidProfile } from '../../components/kid-profile/kid-profile';
@@ -18,7 +19,16 @@ import { KidDetails } from './types';
 
 @Component({
   selector: 'app-kids-settings',
-  imports: [AsyncPipe, LoadingScreen, RouterLink, Leaderboard, KidProfile, KidSummary, Header],
+  imports: [
+    AsyncPipe,
+    LoadingScreen,
+    RouterLink,
+    Leaderboard,
+    KidProfile,
+    KidSummary,
+    Header,
+    DashboardFooterMenu,
+  ],
   templateUrl: './kids-settings.html',
   styleUrl: './kids-settings.scss',
 })
@@ -39,7 +49,6 @@ export class KidsSettings implements OnInit {
     this.vm$ = combineLatest([this.kidService.getKids$(), this.choreService.getChores$()]).pipe(
       switchMap(([kids, chores]) => {
         const kidDetails$ = kids.map((kid) => this.buildKidVm(kid, chores));
-
         return combineLatest(kidDetails$).pipe(
           map((kidsWithStats) => ({
             kids: kidsWithStats,

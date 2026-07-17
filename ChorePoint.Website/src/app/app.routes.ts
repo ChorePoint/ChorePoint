@@ -6,7 +6,8 @@ import { Login } from './features/auth/pages/login/login';
 import { AddChore } from './features/chores/pages/add-chore/add-chore';
 import { ChoreDetails } from './features/chores/pages/chore-details/chore-details';
 import { EditChore } from './features/chores/pages/edit-chore/edit-chore';
-import { DashboardLayout } from './features/parents/dashboard-layout/dashboard-layout';
+import { DashboardLayout } from './features/parents/layout/dashboard-layout/dashboard-layout';
+import { KidsLayout } from './features/parents/layout/kids-layout/kids-layout';
 import { AddShopItem } from './features/parents/pages/add-shop-item/add-shop-item';
 import { ChoreView } from './features/parents/pages/chore-view/chore-view';
 import { DashboardHome } from './features/parents/pages/dashboard-home/dashboard-home';
@@ -39,9 +40,12 @@ export const routes: Routes = [
   },
   {
     path: 'kids',
-    component: KidsSettings,
+    component: KidsLayout,
     canActivate: [authGuard, HasKidsGuard],
-    children: [{ path: 'edit/:id', component: EditKidForm }],
+    children: [
+      { path: 'home', component: KidsSettings, pathMatch: 'full' },
+      { path: 'edit/:id', component: EditKidForm },
+    ],
   },
   { path: 'kids/add', component: CreateProfile, canActivate: [authGuard] },
   { path: 'chore/:id', component: ChoreDetails, canActivate: [authGuard, HasKidsGuard] },
