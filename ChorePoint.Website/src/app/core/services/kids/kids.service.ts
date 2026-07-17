@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Injectable, inject, signal } from '@angular/core';
+import { Observable, of, tap } from 'rxjs';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
@@ -13,6 +13,20 @@ export class KidsService {
   private http = inject(HttpClient);
 
   private baseUrl = '/api/parent';
+
+  private _kids = signal<Kid[]>([]);
+  readonly kids$ = this._kids.asReadonly();
+
+  constructor() {
+    this.refresh();
+  }
+
+  refresh() {
+    this.getKids$().subscribe({
+      next: (kids) => this._kids.set(kids),
+      error: (err) => console.error('Failed to load kids', err),
+    });
+  }
 
   getKids$(): Observable<Kid[]> {
     return this.http.get<ApiGetResponse<Kid[]>>(`${this.baseUrl}/kids`).pipe(
@@ -31,6 +45,7 @@ export class KidsService {
   createKid$(createKidRequest: CreateKidRequest) {
     return this.http.post<void>(`${this.baseUrl}/kid/create`, createKidRequest).pipe(
       map((res) => res),
+      tap(() => this.refresh()),
       catchError((err) => (err.status === 404 ? of(null) : throwError(() => err))),
     );
   }
@@ -38,6 +53,7 @@ export class KidsService {
   updateKid$(updateKidRequest: UpdateKidRequest) {
     return this.http.put<void>(`${this.baseUrl}/kid/update`, updateKidRequest).pipe(
       map((res) => res),
+      tap(() => this.refresh()),
       catchError((err) => (err.status === 404 ? of(null) : throwError(() => err))),
     );
   }
@@ -45,6 +61,7 @@ export class KidsService {
   deleteKidById$(kidId: number) {
     return this.http.delete<void>(`${this.baseUrl}/kid/delete/${kidId}`).pipe(
       map((res) => res),
+      tap(() => this.refresh()),
       catchError((err) => (err.status === 404 ? of(null) : throwError(() => err))),
     );
   }

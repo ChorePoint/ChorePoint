@@ -2,11 +2,9 @@ import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
 import { CHORE_EMOJIS } from '../../../../core/consts/chore-emojis';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
-import { KidsDataService } from '../../../../core/services/kids/kids-data.service';
-import { Kid } from '../../../../core/types/dtos/kid';
+import { KidsService } from '../../../../core/services/kids/kids.service';
 import { ChoreDifficulty } from '../../../../core/types/enums/chore-difficulty';
 import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
 import { ChoreForm } from '../../../../shared/components/chore-form/chore-form';
@@ -24,8 +22,8 @@ import { FREQUENCY_OPTIONS } from '../../config/frequency-options';
 })
 export class AddChore implements OnInit {
   private choreService = inject(ChoreService);
-  private kidsDataService = inject(KidsDataService);
   private fb = inject(FormBuilder);
+  private kidsService = inject(KidsService);
   private router = inject(Router);
 
   loading = signal(false);
@@ -37,9 +35,7 @@ export class AddChore implements OnInit {
   choreFrequencyOptions = FREQUENCY_OPTIONS;
   choreFrequency = ChoreFrequency;
 
-  vm$!: Observable<{
-    kids: Kid[];
-  }>;
+  kids = this.kidsService.kids$;
 
   form = this.fb.group<ChoreFormType>({
     name: new FormControl('', { validators: [Validators.required], nonNullable: true }),
@@ -63,30 +59,22 @@ export class AddChore implements OnInit {
     description: new FormControl(''),
   });
 
-  kids$ = this.kidsDataService.kids$;
-
   ngOnInit() {
     this.loadKids();
   }
 
   loadKids() {
-    this.vm$ = this.kidsDataService.getKids$().pipe(
-      map((kids) => {
-        if (kids.length && !this.form.value.assignedKids) {
-          this.form.patchValue({
-            assignedKids: [
-              {
-                kidId: kids[0].kidId,
-                dayOfWeek: null,
-                isVisible: true,
-              },
-            ],
-          });
-        }
-
-        return { kids };
-      }),
-    );
+    if (this.kids().length !== 0 && !this.form.value.assignedKids) {
+      this.form.patchValue({
+        assignedKids: [
+          {
+            kidId: this.kids()[0].kidId,
+            dayOfWeek: null,
+            isVisible: true,
+          },
+        ],
+      });
+    }
   }
 
   selectFrequency(frequency: number) {

@@ -1,4 +1,4 @@
-@if (vm$ | async; as vm) {
+@if (kids()) {
   <app-header
     [config]="{
       pageTitle: 'Parent Settings',
@@ -21,7 +21,7 @@
     <!-- Children Management -->
     <div class="section">
       <div class="section-title">Children</div>
-      <app-kid-list [kids]="vm.kids" />
+      <app-kid-list [kids]="kids()" />
     </div>
     <!-- Chore Management -->
     <div class="section">

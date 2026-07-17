@@ -1,5 +1,5 @@
-@if (vm$ | async; as vm) {
-  <app-chore-form [form]="form" [kids]="vm.kids" [loading]="loading()" (submitted)="submit()" />
+@if (kids()) {
+  <app-chore-form [form]="form" [kids]="kids()" [loading]="loading()" (submitted)="submit()" />
 } @else {
   <app-loading-screen />
 }
