@@ -1,33 +1,33 @@
-@if (vm$ | async; as vm) {
+@if (vm$) {
   <app-header
     [config]="{
       pageTitle: 'Parent Dashboard',
     }"
   >
     <app-kid-selector-header
-      [kids]="vm.kids"
-      [selectedKidId]="vm.selectedKid?.kidId"
+      [kids]="vm$.kids()"
+      [selectedKidId]="vm$.selectedKid?.kidId"
       [kidHeaderText]="'Add a child from the kids tab to get started!'"
-      (kidSelected)="vm.selectedKid = $event"
+      (kidSelected)="vm$.selectedKid = $event"
     />
   </app-header>
 
   <div class="content">
     <app-dashboard-stats
       [stats]="{
-        completedThisWeek: vm.stats?.completedThisWeek ?? 0,
-        dayStreak: vm.selectedKid?.dayStreak ?? 0,
-        approvalRate: vm.stats?.approvalRate ?? 0,
+        completedThisWeek: vm$.stats?.completedThisWeek ?? 0,
+        dayStreak: vm$.selectedKid?.dayStreak ?? 0,
+        approvalRate: vm$.stats?.approvalRate ?? 0,
       }"
     />
 
     <div class="section-header">
       <div class="section-title section-title-md">Pending Approvals</div>
-      <div class="badge">{{ vm.pendingApprovals?.length }}</div>
+      <div class="badge">{{ vm$.pendingApprovals().length }}</div>
     </div>
 
     <div class="pending-list">
-      @for (approval of vm.pendingApprovals; track approval.choreId) {
+      @for (approval of vm$.pendingApprovals(); track approval.choreId) {
         <app-pending-approval
           [pendingApproval]="{
             id: approval.choreId,

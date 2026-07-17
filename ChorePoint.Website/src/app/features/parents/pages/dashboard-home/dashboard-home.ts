@@ -1,10 +1,8 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { combineLatest, map, Observable, startWith, Subject, switchMap, tap } from 'rxjs';
+import { Subject } from 'rxjs';
 import { KidStats } from '../../../../core/services/chore-submission/chore-submission.dtos';
 import { ChoreSubmissionService } from '../../../../core/services/chore-submission/chore-submission.service';
-import { KidsDataService } from '../../../../core/services/kids/kids-data.service';
-import { ChoreSubmission } from '../../../../core/types/dtos/chore-submission';
+import { KidsService } from '../../../../core/services/kids/kids.service';
 import { Kid } from '../../../../core/types/dtos/kid';
 import { Header } from '../../../../shared/components/header/header';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
@@ -14,47 +12,29 @@ import { PendingApproval } from '../../components/pending-approval/pending-appro
 
 @Component({
   selector: 'app-dashboard-home',
-  imports: [AsyncPipe, LoadingScreen, DashboardStats, PendingApproval, KidSelectorHeader, Header],
+  imports: [LoadingScreen, DashboardStats, PendingApproval, KidSelectorHeader, Header],
   templateUrl: './dashboard-home.html',
   styleUrl: './dashboard-home.scss',
 })
 export class DashboardHome implements OnInit {
-  private choreCompletionService = inject(ChoreSubmissionService);
-  private kidsDataService = inject(KidsDataService);
+  private choreSubmissionService = inject(ChoreSubmissionService);
+  private kidsService = inject(KidsService);
 
   private refresh$ = new Subject<void>();
 
   loading = false;
 
-  vm$!: Observable<{
-    kids: Kid[];
-    selectedKid: Kid | null;
-    stats?: KidStats;
-    pendingApprovals?: ChoreSubmission[];
-  }>;
-
-  ngOnViewInit() {
-    this.refresh$.next();
-  }
+  vm$ = {
+    kids: this.kidsService.kids$,
+    selectedKid: null as Kid | null,
+    pendingApprovals: this.choreSubmissionService.submissions$,
+    stats: null as KidStats | null,
+  };
 
   ngOnInit() {
-    // This ties the refresh signal to data fetching so that whenever refresh is
-    //  triggered, the latest data is fetched and emitted to the vm$ observable.
-    this.vm$ = this.refresh$.pipe(
-      startWith(void 0),
-      switchMap(() =>
-        combineLatest([
-          this.kidsDataService.getKids$(),
-          this.choreCompletionService.getSubmissions$(true),
-        ]),
-      ),
-      map(([kidsState, submissionsState]) => ({
-        kids: kidsState ?? [],
-        selectedKid: kidsState[0] ?? null,
-        pendingApprovals: submissionsState ?? [],
-      })),
-      tap(() => (this.loading = false)),
-    );
+    if (this.vm$.kids.length === 0) {
+      this.vm$.selectedKid = this.vm$.kids()[0];
+    }
   }
 
   onReviewComplete() {
@@ -62,6 +42,6 @@ export class DashboardHome implements OnInit {
   }
 
   selectKid(kid: Kid) {
-    this.vm$ = this.vm$.pipe(map((vm) => ({ ...vm, selectedKid: kid })));
+    this.vm$.selectedKid = kid;
   }
 }
