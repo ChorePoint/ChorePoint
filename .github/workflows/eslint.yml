@@ -32,7 +32,7 @@ jobs:
 
       - name: Run ESLint
         run: |
-          npx --ignore-scripts eslint . \
+          npx eslint . \
             --format @microsoft/eslint-formatter-sarif \
             --output-file eslint-results.sarif
         continue-on-error: true
