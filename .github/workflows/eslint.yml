@@ -5,8 +5,6 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-  schedule:
-    - cron: '44 13 * * 1'
 
 jobs:
   eslint:
@@ -26,12 +24,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install
-          npm install @microsoft/eslint-formatter-sarif@3.1.0
+          npm ci --ignore-scripts
+          npm install --ignore-scripts -g @microsoft/eslint-formatter-sarif@3.1.0
 
       - name: Run ESLint
         run: |
-          npx eslint . \
+          npx --ignore-scripts eslint . \
             --format @microsoft/eslint-formatter-sarif \
             --output-file eslint-results.sarif
         continue-on-error: true
