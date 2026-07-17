@@ -1,1 +1,5 @@
 ChorePoint.Infrastructure/Migrations/
+ChorePoint.Website/
+docs/
+.idea/
+.sonarlint/
