@@ -1,6 +1,8 @@
+using ChorePoint.Domain.Entities;
 using ChorePoint.Infrastructure;
 using ChorePoint.MigrationService;
 using ChorePoint.ServiceDefaults;
+using Microsoft.AspNetCore.Identity;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 
@@ -16,16 +18,22 @@ try
 
     builder.AddServiceDefaults();
 
+    if (
+        bool.TryParse(Environment.GetEnvironmentVariable("SEED_TEST_DATA"), out var seedData)
+        && seedData
+    )
+        builder.Services.AddScoped<PasswordHasher<Parent>>();
+
     builder.Services.AddHostedService<Worker>();
 
     builder
         .Services.AddOpenTelemetry()
         .WithTracing(tracing => tracing.AddSource(Worker.ActivitySourceName));
 
-    builder.AddNpgsqlDbContext<AppDbContext>("chorepoint-db");
+    builder.AddNpgsqlDbContext<AppDbContext>("chorepoint-db-cs");
 
     var host = builder.Build();
-    host.Run();
+    await host.RunAsync();
 }
 catch (Exception ex)
 {
