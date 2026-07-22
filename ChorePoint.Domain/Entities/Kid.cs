@@ -49,6 +49,12 @@ public class Kid : EntityBase
         SpendablePoints = spendablePoints;
     }
 
+    public void AddPoints(int pointsToAdd)
+    {
+        SpendablePoints += pointsToAdd;
+        LifetimePoints += pointsToAdd;
+    }
+
     public void SpendPoints(int pointsToSubtract)
     {
         if (pointsToSubtract > SpendablePoints)
