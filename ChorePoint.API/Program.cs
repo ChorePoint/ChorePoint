@@ -23,7 +23,7 @@ try
 
     builder.AddServiceDefaults();
 
-    builder.AddNpgsqlDbContext<AppDbContext>("chorepoint-db");
+    builder.AddNpgsqlDbContext<AppDbContext>("chorepoint-db-cs");
 
     builder.Services.AddControllers();
     builder.Services.AddOpenApi(options =>

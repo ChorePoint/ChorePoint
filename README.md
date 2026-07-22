@@ -9,16 +9,23 @@ Core authentication and chore management features are complete. Currently develo
 ## Tech Stack
 
 - Frontend: Angular
-- Backend: ASP.NET Core Web API
-- Auth: JWT Authentication
-- Database: MySQL
 - Styling: SaSS
+- Backend: ASP.NET
+- Orchestration: Aspire
+- Auth: JWT Authentication
+- Database: PostgreSQL
+
+## Architecture
+
+- Angular frontend-consuming REST API built with ASP.NET
+- Clear separation of concerns using a modular monolith design, utilising Aspire for orchestration
+- Stateless backend design with token-based authentication
 
 ## Planned Features
 
 - Parents can set custom rewards for their children to buy with points
 - Chore streaks are tracked to keep children motivated
-- Parents can add special, one time tasks for bonus points
+- Parents can add special, one-time tasks for bonus points
 - Chores are only completed once the parent approves them
 - A parent account can manage chores for all children in one place
 
@@ -49,9 +56,3 @@ Dummy data was used to provide these screenshots.
 
 ### Parent Settings
 <img width="389" height="842" alt="image" src="https://github.com/user-attachments/assets/584784a0-8c34-47ed-ace1-3c65b559dc68" />
-
-## Architecture
-
-- Angular frontend consuming REST API built with ASP.NET Core
-- Clear separation of concerns using Controller → Service → Repository pattern
-- Stateless backend design with token-based authentication

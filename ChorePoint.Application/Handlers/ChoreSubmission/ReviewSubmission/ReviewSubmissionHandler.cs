@@ -15,7 +15,9 @@ public class ReviewSubmissionHandler(
     public async Task Handle(ReviewSubmissionCommand request, CancellationToken cancellationToken)
     {
         var choreSubmission = await context
-            .ChoreSubmissions.Where(cs =>
+            .ChoreSubmissions.Include(cs => cs.Kid)
+            .Include(cs => cs.Chore)
+            .Where(cs =>
                 cs.ChoreSubmissionId.Equals(request.ChoreSubmissionId)
                 && cs.ApprovalStatus.Equals(ChoreApprovalStatus.Pending)
             )
@@ -29,7 +31,7 @@ public class ReviewSubmissionHandler(
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(choreSubmission.ParentId, parentId);
 
-        choreSubmission.Review(request.ReviewNotes, request.Approve, DateTime.Now);
+        choreSubmission.Review(request.ReviewNotes, request.Approve, DateTime.UtcNow);
 
         await context.SaveChangesAsync(cancellationToken);
     }

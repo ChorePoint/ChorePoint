@@ -19,7 +19,11 @@ public class KidShopItem : EntityBase
         Status = status;
     }
 
-    public void Buy(ShopItem shopItem, bool purchaseRequiresApproval)
+    public void Buy(
+        ShopItem shopItem,
+        bool purchaseRequiresApproval,
+        IReadOnlyList<KidShopItem> otherAssignedKidShopItems
+    )
     {
         if (purchaseRequiresApproval)
         {
@@ -31,8 +35,13 @@ public class KidShopItem : EntityBase
                 return;
 
             shopItem.Quantity -= 1;
-            if (shopItem.Quantity == 0)
-                Status = ShopItemStatus.Hidden;
+
+            if (shopItem.Quantity != 0)
+                return;
+
+            Status = ShopItemStatus.Hidden;
+            foreach (var kidShopItem in otherAssignedKidShopItems)
+                kidShopItem.Status = ShopItemStatus.Hidden;
         }
     }
 
