@@ -2,6 +2,11 @@ using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+var jwtKey = builder.AddParameter("jwt-key", secret: true);
+var jwtIssuer = builder.AddParameter("jwt-issuer");
+var jwtAudience = builder.AddParameter("jwt-audience");
+var jwtDuration = builder.AddParameter("jwt-duration");
+
 var seedData = builder.AddParameter("seed-test-data");
 var sensitiveDatabaseLogging = builder.AddParameter("database-log-sensitive-values");
 
@@ -40,6 +45,10 @@ var migrations = builder
 var api = builder
     .AddProject<ChorePoint_API>("api")
     .WithHttpHealthCheck("/health")
+    .WithEnvironment("JWT_KEY", jwtKey)
+    .WithEnvironment("JWT_ISSUER", jwtIssuer)
+    .WithEnvironment("JWT_AUDIENCE", jwtAudience)
+    .WithEnvironment("JWT_DURATION", jwtDuration)
     .WithReference(dbConnection)
     .WithReference(migrations)
     .WaitForCompletion(migrations);

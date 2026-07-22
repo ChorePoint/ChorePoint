@@ -2,14 +2,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using ChorePoint.Application.Interfaces;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ChorePoint.Infrastructure.Authentication;
 
-public partial class JwtTokenGenerator(IConfiguration config, ILogger<JwtTokenGenerator> logger)
-    : IJwtTokenGenerator
+public partial class JwtTokenGenerator(ILogger<JwtTokenGenerator> logger) : IJwtTokenGenerator
 {
     public string GenerateJwtToken(int parentId, string email)
     {
@@ -20,14 +18,18 @@ public partial class JwtTokenGenerator(IConfiguration config, ILogger<JwtTokenGe
         };
         LogNewClaimsCreated(parentId);
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
+        var key = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")!)
+        );
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            config["Jwt:Issuer"],
-            config["Jwt:Audience"],
+            Environment.GetEnvironmentVariable("JWT_ISSUER"),
+            Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
             claims,
-            expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(config["Jwt:DurationInMinutes"])),
+            expires: DateTime.UtcNow.AddMinutes(
+                Convert.ToDouble(Environment.GetEnvironmentVariable("JWT_DURATION"))
+            ),
             signingCredentials: creds
         );
 

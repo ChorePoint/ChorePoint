@@ -62,7 +62,7 @@ try
 
     builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-    builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddInfrastructure();
 
     builder.Services.AddCors(options =>
     {
