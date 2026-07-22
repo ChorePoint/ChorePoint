@@ -38,7 +38,11 @@ public class BuyShopItemHandler(IAppDbContext context, IParentContextService par
             .Select(ps => ps.ApprovePurchases)
             .SingleOrDefaultAsync(cancellationToken);
 
-        kidShopItem.Buy(shopItem, approvePurchases);
+        var otherAssignedKidShopItems = shopItem
+            .KidShopItems.Where(ksi => !ksi.KidId.Equals(request.KidId))
+            .ToList();
+        kidShopItem.Buy(shopItem, approvePurchases, otherAssignedKidShopItems);
+
         kid.SpendPoints(shopItem.Cost);
 
         await context.SaveChangesAsync(cancellationToken);
