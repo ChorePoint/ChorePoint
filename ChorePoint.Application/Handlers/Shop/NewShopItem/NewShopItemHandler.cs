@@ -1,7 +1,9 @@
-﻿using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
+
 using MediatR;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.NewShopItem;
@@ -33,7 +35,9 @@ public class NewShopItemHandler(IAppDbContext context, IParentContextService par
         );
 
         foreach (var assignedKid in request.AssignedKids)
+        {
             shopItem.KidShopItems.Add(KidShopItem.Create(assignedKid.KidId));
+        }
 
         await context.ShopItems.AddAsync(shopItem, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);

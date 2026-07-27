@@ -1,4 +1,5 @@
 using Riok.Mapperly.Abstractions;
+
 using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetLatestSubmissionByKid;
@@ -6,7 +7,5 @@ namespace ChorePoint.Application.Handlers.ChoreSubmission.GetLatestSubmissionByK
 [Mapper]
 public partial class GetLatestSubmissionByKidMapper
 {
-    public partial GetLatestSubmissionByKidResponse ChoreSubmissionToGetLatestSubmissionByKidResponse(
-        ChoreSubmissionE choreSubmission
-    );
+    public partial GetLatestSubmissionByKidResponse ChoreSubmissionToGetLatestSubmissionByKidResponse(ChoreSubmissionE choreSubmission);
 }

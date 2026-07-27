@@ -2,13 +2,13 @@ using ChorePoint.Domain.Entities;
 using ChorePoint.Infrastructure;
 using ChorePoint.MigrationService;
 using ChorePoint.ServiceDefaults;
+
 using Microsoft.AspNetCore.Identity;
+
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console(theme: AnsiConsoleTheme.Code)
-    .CreateBootstrapLogger();
+Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).CreateBootstrapLogger();
 
 Log.Information("Everyone get ready, we are about to migrate!!");
 
@@ -18,17 +18,14 @@ try
 
     builder.AddServiceDefaults();
 
-    if (
-        bool.TryParse(Environment.GetEnvironmentVariable("SEED_TEST_DATA"), out var seedData)
-        && seedData
-    )
+    if (bool.TryParse(Environment.GetEnvironmentVariable("SEED_TEST_DATA"), out var seedData) && seedData)
+    {
         builder.Services.AddScoped<PasswordHasher<Parent>>();
+    }
 
     builder.Services.AddHostedService<Worker>();
 
-    builder
-        .Services.AddOpenTelemetry()
-        .WithTracing(tracing => tracing.AddSource(Worker.ActivitySourceName));
+    builder.Services.AddOpenTelemetry().WithTracing(tracing => tracing.AddSource(Worker.ActivitySourceName));
 
     builder.AddNpgsqlDbContext<AppDbContext>("chorepoint-db-cs");
 

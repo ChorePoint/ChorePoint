@@ -1,8 +1,8 @@
-﻿namespace ChorePoint.Domain.Enums;
+namespace ChorePoint.Domain.Enums;
 
 public enum ChoreFrequency
 {
     Daily,
     Weekly,
-    Bonus,
+    Bonus
 }

@@ -1,7 +1,9 @@
-﻿using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
+
 using MediatR;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Chore.UpdateChore;
@@ -16,7 +18,9 @@ public class UpdateChoreHandler(IAppDbContext context, IParentContextService par
             .SingleOrDefaultAsync(c => c.ChoreId.Equals(request.ChoreId), cancellationToken);
 
         if (chore is null)
+        {
             throw new NotFoundException($"No chore exists with ID [{request.ChoreId}]");
+        }
 
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(chore.ParentId, parentId);
@@ -33,14 +37,14 @@ public class UpdateChoreHandler(IAppDbContext context, IParentContextService par
 
         foreach (var assignedKid in request.AssignedKids)
         {
-            var kidChore = chore.KidChores.SingleOrDefault(kc =>
-                kc.KidId.Equals(assignedKid.KidId)
-            );
+            var kidChore = chore.KidChores.SingleOrDefault(kc => kc.KidId.Equals(assignedKid.KidId));
 
             if (kidChore is null)
+            {
                 throw new DomainException(
                     $"Kid with ID [{assignedKid.KidId}] is not assigned to chore with ID [{request.ChoreId}]"
                 );
+            }
 
             kidChore.Update(assignedKid.DueDay, assignedKid.IsVisible);
         }

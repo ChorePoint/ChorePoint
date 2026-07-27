@@ -1,4 +1,5 @@
 using ChorePoint.Domain.Entities;
+
 using Riok.Mapperly.Abstractions;
 
 namespace ChorePoint.Application.Handlers.Parent.GetKidById;

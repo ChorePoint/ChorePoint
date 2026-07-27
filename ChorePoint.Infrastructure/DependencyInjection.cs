@@ -1,7 +1,9 @@
 using System.Text;
+
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
 using ChorePoint.Infrastructure.Authentication;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,7 +38,7 @@ public static class DependencyInjection
                     ValidAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")!)
-                    ),
+                    )
                 };
             });
 

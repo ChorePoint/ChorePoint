@@ -1,21 +1,21 @@
-﻿using System.Text.Json;
+using System.Text.Json;
+
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Infrastructure;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options)
-    : DbContext(options),
-        IAppDbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options), IAppDbContext
 {
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Chore> Chores { get; set; }
-    public DbSet<ChoreSubmission> ChoreSubmissions { get; set; }
-    public DbSet<Kid> Kids { get; set; }
-    public DbSet<Parent> Parents { get; set; }
-    public DbSet<ParentSettings> ParentSettings { get; set; }
-    public DbSet<ShopItem> ShopItems { get; set; }
+    public DbSet<Category> Categories => Set<Category>();
+    public DbSet<Chore> Chores => Set<Chore>();
+    public DbSet<ChoreSubmission> ChoreSubmissions => Set<ChoreSubmission>();
+    public DbSet<Kid> Kids => Set<Kid>();
+    public DbSet<Parent> Parents => Set<Parent>();
+    public DbSet<ParentSettings> ParentSettings => Set<ParentSettings>();
+    public DbSet<ShopItem> ShopItems => Set<ShopItem>();
 
     public override int SaveChanges()
     {
@@ -33,15 +33,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     {
         var changedBaseEntities = ChangeTracker
             .Entries()
-            .Where(ee =>
-                ee is { Entity: EntityBase, State: EntityState.Added or EntityState.Modified }
-            );
+            .Where(ee => ee is { Entity: EntityBase, State: EntityState.Added or EntityState.Modified });
 
         var now = DateTime.UtcNow;
         foreach (var baseEntity in changedBaseEntities)
         {
             if (baseEntity.State is EntityState.Added)
+            {
                 ((EntityBase)baseEntity.Entity).CreatedAt = now;
+            }
+
             ((EntityBase)baseEntity.Entity).UpdatedAt = now;
         }
     }
@@ -115,11 +116,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
                 // Convert List<DayOfWeek> to a comma-separated string for storage
                 .HasConversion(
                     dow => JsonSerializer.Serialize(dow, (JsonSerializerOptions?)null),
-                    dow =>
-                        JsonSerializer.Deserialize<IReadOnlyList<DayOfWeek>>(
-                            dow,
-                            (JsonSerializerOptions?)null
-                        )!
+                    dow => JsonSerializer.Deserialize<IReadOnlyList<DayOfWeek>>(dow, (JsonSerializerOptions?)null)!
                 );
         });
 

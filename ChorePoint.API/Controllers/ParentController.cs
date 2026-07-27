@@ -1,9 +1,11 @@
-﻿using ChorePoint.Application.Handlers.Parent.CreateKid;
+using ChorePoint.Application.Handlers.Parent.CreateKid;
 using ChorePoint.Application.Handlers.Parent.DeleteKid;
 using ChorePoint.Application.Handlers.Parent.GetKidById;
 using ChorePoint.Application.Handlers.Parent.GetKidsByParent;
 using ChorePoint.Application.Handlers.Parent.UpdateKid;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,9 +24,7 @@ public class ParentController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> CreateKid([FromBody] CreateKidCommand command)
     {
         await mediator.Send(command);
-        return Ok(
-            new { success = true, message = $"Kid with name [{command.Name}] successfully created" }
-        );
+        return Ok(new { success = true, message = $"Kid with name [{command.Name}] successfully created" });
     }
 
     [Authorize]
@@ -55,7 +55,7 @@ public class ParentController(IMediator mediator) : ControllerBase
             {
                 success = true,
                 message = $"Kid details with ID [{kidId}] retrieved successfully",
-                data = result,
+                data = result
             }
         );
     }
@@ -75,7 +75,7 @@ public class ParentController(IMediator mediator) : ControllerBase
             {
                 success = true,
                 message = "All kid's details retrieved successfully",
-                data = result,
+                data = result
             }
         );
     }
@@ -90,8 +90,6 @@ public class ParentController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> UpdateKid([FromBody] UpdateKidCommand command)
     {
         await mediator.Send(command);
-        return Ok(
-            new { success = true, message = $"Kid with ID [{command.KidId}] successfully updated" }
-        );
+        return Ok(new { success = true, message = $"Kid with ID [{command.KidId}] successfully updated" });
     }
 }

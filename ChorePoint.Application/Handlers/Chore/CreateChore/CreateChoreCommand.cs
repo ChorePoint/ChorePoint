@@ -1,5 +1,6 @@
-﻿using ChorePoint.Domain.Enums;
+using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Representations;
+
 using MediatR;
 
 namespace ChorePoint.Application.Handlers.Chore.CreateChore;
@@ -8,7 +9,7 @@ public record CreateChoreCommand(
     int? CategoryId,
     string Name,
     string Icon,
-    string Description,
+    string? Description,
     int Points,
     ChoreDifficulty Difficulty,
     ChoreFrequency Frequency,

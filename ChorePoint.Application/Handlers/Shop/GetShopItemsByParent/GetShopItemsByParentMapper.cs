@@ -1,4 +1,5 @@
 using ChorePoint.Domain.Entities;
+
 using Riok.Mapperly.Abstractions;
 
 namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByParent;
@@ -11,7 +12,5 @@ public partial class GetShopItemsByParentMapper
     );
 
     [MapProperty(nameof(ShopItem.KidShopItems), nameof(GetShopItemsByParentResponse.AssignedKids))]
-    private partial GetShopItemsByParentResponse ShopItemToGetShopItemsByParentResponse(
-        ShopItem shopItem
-    );
+    private partial GetShopItemsByParentResponse ShopItemToGetShopItemsByParentResponse(ShopItem shopItem);
 }

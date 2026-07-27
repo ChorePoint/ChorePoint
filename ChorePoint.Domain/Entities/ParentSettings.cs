@@ -1,4 +1,4 @@
-﻿namespace ChorePoint.Domain.Entities;
+namespace ChorePoint.Domain.Entities;
 
 public class ParentSettings : EntityBase
 {
@@ -8,7 +8,7 @@ public class ParentSettings : EntityBase
     public bool AutoApproveChores { get; set; }
     public bool ApprovePurchases { get; set; }
     public bool RequirePhotoEvidence { get; set; }
-    public IReadOnlyList<DayOfWeek> ShopOpeningDays { get; set; }
+    public IReadOnlyList<DayOfWeek> ShopOpeningDays { get; set; } = new List<DayOfWeek>();
 
-    public Parent Parent { get; set; }
+    public Parent Parent { get; set; } = new();
 }

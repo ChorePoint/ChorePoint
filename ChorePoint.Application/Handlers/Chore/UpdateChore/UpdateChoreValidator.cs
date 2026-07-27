@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 
 namespace ChorePoint.Application.Handlers.Chore.UpdateChore;
 
@@ -25,15 +25,9 @@ public class UpdateChoreValidator : AbstractValidator<UpdateChoreCommand>
             .WithMessage("AssignedKids cannot contain a null element")
             .ChildRules(assignedKid =>
             {
-                assignedKid
-                    .RuleFor(x => x.KidId)
-                    .NotEmpty()
-                    .WithMessage("KidId is required in AssignedKids");
+                assignedKid.RuleFor(x => x.KidId).NotEmpty().WithMessage("KidId is required in AssignedKids");
 
-                assignedKid
-                    .RuleFor(x => x.IsVisible)
-                    .NotEmpty()
-                    .WithMessage("IsVisible is required in AssignedKids");
+                assignedKid.RuleFor(x => x.IsVisible).NotEmpty().WithMessage("IsVisible is required in AssignedKids");
             });
     }
 }

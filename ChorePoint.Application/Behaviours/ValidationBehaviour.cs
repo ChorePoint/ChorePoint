@@ -1,4 +1,6 @@
 using FluentValidation;
+using FluentValidation.Results;
+
 using MediatR;
 
 namespace ChorePoint.Application.Behaviours;
@@ -13,16 +15,18 @@ public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TReq
         CancellationToken cancellationToken
     )
     {
-        var context = new ValidationContext<TRequest>(request);
+        ValidationContext<TRequest> context = new(request);
 
-        var failures = validators
+        List<ValidationFailure> failures = validators
             .Select(v => v.Validate(context))
             .SelectMany(result => result.Errors)
             .Where(vf => vf is not null)
             .ToList();
 
         if (failures.Count != 0)
+        {
             throw new ValidationException(failures);
+        }
 
         return await next(cancellationToken);
     }

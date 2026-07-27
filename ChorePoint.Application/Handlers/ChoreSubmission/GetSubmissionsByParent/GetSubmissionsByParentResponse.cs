@@ -1,4 +1,5 @@
-﻿using ChorePoint.Domain.Enums;
+using ChorePoint.Domain.Enums;
+
 using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissionsByParent;

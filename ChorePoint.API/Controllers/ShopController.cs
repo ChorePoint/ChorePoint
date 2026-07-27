@@ -6,7 +6,9 @@ using ChorePoint.Application.Handlers.Shop.NewShopItem;
 using ChorePoint.Application.Handlers.Shop.ReactivateShopItem;
 using ChorePoint.Application.Handlers.Shop.ReviewShopItemPurchase;
 using ChorePoint.Application.Handlers.Shop.UpdateShopItem;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +32,7 @@ public class ShopController(IMediator mediator) : ControllerBase
             new
             {
                 success = true,
-                message = $"Shop item with ID [{shopItemId}] bought successfully by kid with ID [{kidId}]",
+                message = $"Shop item with ID [{shopItemId}] bought successfully by kid with ID [{kidId}]"
             }
         );
     }
@@ -45,13 +47,7 @@ public class ShopController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> DeleteShopItem(int shopItemId)
     {
         await mediator.Send(new DeleteShopItemCommand(shopItemId));
-        return Ok(
-            new
-            {
-                success = true,
-                message = $"Shop item with ID [{shopItemId}] deleted successfully",
-            }
-        );
+        return Ok(new { success = true, message = $"Shop item with ID [{shopItemId}] deleted successfully" });
     }
 
     [Authorize]
@@ -69,7 +65,7 @@ public class ShopController(IMediator mediator) : ControllerBase
             {
                 success = true,
                 message = $"Shop items for kid with ID [{kidId}] retrieved successfully",
-                data = result,
+                data = result
             }
         );
     }
@@ -89,7 +85,7 @@ public class ShopController(IMediator mediator) : ControllerBase
             {
                 success = true,
                 message = "Shop items retrieved successfully",
-                data = result,
+                data = result
             }
         );
     }
@@ -104,13 +100,7 @@ public class ShopController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> NewShopItem([FromBody] NewShopItemCommand command)
     {
         await mediator.Send(command);
-        return Ok(
-            new
-            {
-                success = true,
-                message = $"Shop item with name [{command.Name}] created successfully",
-            }
-        );
+        return Ok(new { success = true, message = $"Shop item with name [{command.Name}] created successfully" });
     }
 
     [Authorize]
@@ -120,17 +110,11 @@ public class ShopController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> ReactivateShopItem(
-        [FromBody] ReactivateShopItemCommand command
-    )
+    public async Task<IActionResult> ReactivateShopItem([FromBody] ReactivateShopItemCommand command)
     {
         await mediator.Send(command);
         return Ok(
-            new
-            {
-                success = true,
-                message = $"Shop item with ID [{command.ShopItemId}] reactivated successfully",
-            }
+            new { success = true, message = $"Shop item with ID [{command.ShopItemId}] reactivated successfully" }
         );
     }
 
@@ -141,16 +125,14 @@ public class ShopController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> ReviewShopItemPurchase(
-        [FromBody] ReviewShopItemPurchaseCommand command
-    )
+    public async Task<IActionResult> ReviewShopItemPurchase([FromBody] ReviewShopItemPurchaseCommand command)
     {
         await mediator.Send(command);
         return Ok(
             new
             {
                 success = true,
-                message = $"Purchase of shop item with ID [{command.ShopItemId}] reviewed successfully",
+                message = $"Purchase of shop item with ID [{command.ShopItemId}] reviewed successfully"
             }
         );
     }
@@ -165,12 +147,6 @@ public class ShopController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> UpdateShopItem([FromBody] UpdateShopItemCommand command)
     {
         await mediator.Send(command);
-        return Ok(
-            new
-            {
-                success = true,
-                message = $"Shop item with ID [{command.ShopItemId}] updated successfully",
-            }
-        );
+        return Ok(new { success = true, message = $"Shop item with ID [{command.ShopItemId}] updated successfully" });
     }
 }

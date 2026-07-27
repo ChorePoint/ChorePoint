@@ -1,7 +1,9 @@
-﻿using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
+
 using MediatR;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.BuyShopItem;
@@ -14,13 +16,12 @@ public class BuyShopItemHandler(IAppDbContext context, IParentContextService par
         var shopItem = await context
             .ShopItems.Include(si => si.KidShopItems)
             .Where(si => si.KidShopItems.Any(ksi => ksi.KidId.Equals(request.KidId)))
-            .SingleOrDefaultAsync(
-                si => si.ShopItemId.Equals(request.ShopItemId),
-                cancellationToken
-            );
+            .SingleOrDefaultAsync(si => si.ShopItemId.Equals(request.ShopItemId), cancellationToken);
 
         if (shopItem is null)
+        {
             throw new NotFoundException($"No shop item exists with ID [{request.ShopItemId}]");
+        }
 
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(shopItem.ParentId, parentId);
@@ -31,7 +32,9 @@ public class BuyShopItemHandler(IAppDbContext context, IParentContextService par
         var kid = await context.Kids.FindAsync([kidShopItem.KidId], cancellationToken);
 
         if (kid is null)
+        {
             throw new NotFoundException($"No kid exists with ID [{kidShopItem.KidId}]");
+        }
 
         var approvePurchases = await context
             .ParentSettings.Where(ps => ps.ParentId.Equals(parentId))

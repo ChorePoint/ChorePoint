@@ -4,16 +4,19 @@ using ChorePoint.Application.Behaviours;
 using ChorePoint.Application.Handlers.Auth.Login;
 using ChorePoint.Infrastructure;
 using ChorePoint.ServiceDefaults;
+
 using FluentValidation;
+
 using MediatR;
+
 using Scalar.AspNetCore;
+
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
+
 using ZiggyCreatures.Caching.Fusion;
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console(theme: AnsiConsoleTheme.Code)
-    .CreateBootstrapLogger();
+Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).CreateBootstrapLogger();
 
 Log.Information("Program.cs starting host ≧◡≦");
 
@@ -26,10 +29,7 @@ try
     builder.AddNpgsqlDbContext<AppDbContext>("chorepoint-db-cs");
 
     builder.Services.AddControllers();
-    builder.Services.AddOpenApi(options =>
-    {
-        options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
-    });
+    builder.Services.AddOpenApi(options => { options.AddDocumentTransformer<BearerSecuritySchemeTransformer>(); });
 
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -49,31 +49,24 @@ try
 
                 EagerRefreshThreshold = 0.9f,
 
-                FactorySoftTimeout = TimeSpan.FromSeconds(100),
+                FactorySoftTimeout = TimeSpan.FromSeconds(100)
             }
         );
     if (builder.Environment.IsDevelopment())
+    {
         cacheBuilder.WithNullImplementation();
+    }
 
-    builder.Services.AddMediatR(cfg =>
-        cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly)
-    );
+    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly));
     builder.Services.AddValidatorsFromAssembly(typeof(LoginValidator).Assembly);
 
     builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
     builder.Services.AddInfrastructure();
 
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy(
-            "AllowAngular",
-            policy =>
-            {
-                policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
-            }
-        );
-    });
+    builder.Services.AddCors(options => options.AddPolicy(
+        "AllowAngular",
+        policy => policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod()));
 
     var app = builder.Build();
 
@@ -112,8 +105,7 @@ try
     await app.RunAsync();
 }
 // See https://github.com/dotnet/efcore/issues/29923
-catch (Exception ex)
-    when (ex is not HostAbortedException && ex.Source is not "Microsoft.EntityFrameworkCore.Design")
+catch (Exception ex) when (ex is not HostAbortedException && ex.Source is not "Microsoft.EntityFrameworkCore.Design")
 {
     Log.Fatal(ex, "Host terminated unexpectedly");
 }

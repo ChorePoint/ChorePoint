@@ -1,11 +1,11 @@
-﻿using ChorePoint.Application.Interfaces;
+using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
+
 using MediatR;
 
 namespace ChorePoint.Application.Handlers.Parent.CreateKid;
 
-public class CreateKidHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<CreateKidCommand>
+public class CreateKidHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<CreateKidCommand>
 {
     public async Task Handle(CreateKidCommand request, CancellationToken cancellationToken)
     {

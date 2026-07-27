@@ -1,15 +1,14 @@
-﻿using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
+
 using MediatR;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.UpdateShopItem;
 
-public class UpdateShopItemHandler(
-    IAppDbContext context,
-    IParentContextService parentContextService
-) : IRequestHandler<UpdateShopItemCommand>
+public class UpdateShopItemHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<UpdateShopItemCommand>
 {
     public async Task Handle(UpdateShopItemCommand request, CancellationToken cancellationToken)
     {
@@ -18,7 +17,9 @@ public class UpdateShopItemHandler(
             .SingleOrDefaultAsync(c => c.ShopItemId.Equals(request.ShopItemId), cancellationToken);
 
         if (shopItem is null)
+        {
             throw new NotFoundException($"No shop item exists with ID [{request.ShopItemId}]");
+        }
 
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(shopItem.ParentId, parentId);
@@ -34,14 +35,14 @@ public class UpdateShopItemHandler(
 
         foreach (var assignedKid in request.AssignedKids)
         {
-            var kidShopItem = shopItem.KidShopItems.SingleOrDefault(kc =>
-                kc.KidId.Equals(assignedKid.KidId)
-            );
+            var kidShopItem = shopItem.KidShopItems.SingleOrDefault(kc => kc.KidId.Equals(assignedKid.KidId));
 
             if (kidShopItem is null)
+            {
                 throw new DomainException(
                     $"Kid with ID [{assignedKid.KidId}] is not assigned to shop item with ID [{request.ShopItemId}]"
                 );
+            }
 
             kidShopItem.Update(assignedKid.Status);
         }

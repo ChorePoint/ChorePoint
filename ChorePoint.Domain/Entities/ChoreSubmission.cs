@@ -1,4 +1,4 @@
-﻿using ChorePoint.Domain.Enums;
+using ChorePoint.Domain.Enums;
 
 namespace ChorePoint.Domain.Entities;
 
@@ -14,9 +14,9 @@ public class ChoreSubmission : EntityBase
     public DateTime? ReviewedAt { get; set; }
     public DateTime CompletedAt { get; set; }
 
-    public Chore Chore { get; set; }
-    public Parent Parent { get; set; }
-    public Kid Kid { get; set; }
+    public Chore Chore { get; set; } = new();
+    public Parent Parent { get; set; } = new();
+    public Kid Kid { get; set; } = new();
 
     public bool CompletedThisWeek(DateTime startOfWeek)
     {
@@ -30,17 +30,24 @@ public class ChoreSubmission : EntityBase
         ReviewedAt = now;
 
         if (!approve)
+        {
             return;
+        }
 
+        // TODO: Due to forced nullable properties in formatting these get set to default so need to be changed to not check null
         if (Kid is null)
+        {
             throw new ArgumentException(
                 "Kid needs to be included in ChoreSubmission entity retrieval when a chore is approved to add points"
             );
+        }
 
         if (Chore is null)
+        {
             throw new ArgumentException(
                 "Chore needs to be included in ChoreSubmission entity retrieval when a chore is approved to add points"
             );
+        }
 
         Kid.AddPoints(Chore.Points);
     }

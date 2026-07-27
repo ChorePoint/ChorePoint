@@ -1,26 +1,23 @@
 using System.Diagnostics;
+
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Enums;
 using ChorePoint.Infrastructure;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.MigrationService;
 
-public class Worker(
-    IServiceProvider serviceProvider,
-    IHostApplicationLifetime hostApplicationLifetime
-) : BackgroundService
+public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime hostApplicationLifetime)
+    : BackgroundService
 {
     public const string ActivitySourceName = "Migrations";
     private static readonly ActivitySource ActivitySource = new(ActivitySourceName);
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        using var activity = ActivitySource.StartActivity(
-            "Migrating database",
-            ActivityKind.Client
-        );
+        using var activity = ActivitySource.StartActivity("Migrating database", ActivityKind.Client);
 
         try
         {
@@ -29,12 +26,7 @@ public class Worker(
 
             await RunMigrationAsync(dbContext, cancellationToken);
 
-            if (
-                bool.TryParse(
-                    Environment.GetEnvironmentVariable("SEED_TEST_DATA"),
-                    out var seedData
-                ) && seedData
-            )
+            if (bool.TryParse(Environment.GetEnvironmentVariable("SEED_TEST_DATA"), out var seedData) && seedData)
             {
                 var passwordHasher = scope.ServiceProvider.GetRequiredService<
                     PasswordHasher<Parent>
@@ -51,16 +43,10 @@ public class Worker(
         hostApplicationLifetime.StopApplication();
     }
 
-    private static async Task RunMigrationAsync(
-        AppDbContext dbContext,
-        CancellationToken cancellationToken
-    )
+    private static async Task RunMigrationAsync(AppDbContext dbContext, CancellationToken cancellationToken)
     {
         var strategy = dbContext.Database.CreateExecutionStrategy();
-        await strategy.ExecuteAsync(async () =>
-        {
-            await dbContext.Database.MigrateAsync(cancellationToken);
-        });
+        await strategy.ExecuteAsync(async () => { await dbContext.Database.MigrateAsync(cancellationToken); });
     }
 
     private static async Task SeedDatabaseAsync(
@@ -73,7 +59,7 @@ public class Worker(
         {
             Email = "test.parent@dev.com",
             FirstName = "Jeff",
-            LastName = "Bayzoz",
+            LastName = "Bayzoz"
         };
         parent.SetPassword(passwordHasher.HashPassword(parent, "test"));
 
@@ -91,8 +77,8 @@ public class Worker(
                 DayOfWeek.Thursday,
                 DayOfWeek.Friday,
                 DayOfWeek.Saturday,
-                DayOfWeek.Sunday,
-            ],
+                DayOfWeek.Sunday
+            ]
         };
 
         Kid kidOne = new()
@@ -103,7 +89,7 @@ public class Worker(
             Age = 12,
             DayStreak = 2,
             LifetimePoints = 350,
-            SpendablePoints = 350,
+            SpendablePoints = 350
         };
         Kid kidTwo = new()
         {
@@ -113,7 +99,7 @@ public class Worker(
             Age = 6,
             DayStreak = 0,
             LifetimePoints = 1000,
-            SpendablePoints = 50,
+            SpendablePoints = 50
         };
         Kid kidThree = new()
         {
@@ -123,7 +109,7 @@ public class Worker(
             Age = 6,
             DayStreak = 0,
             LifetimePoints = 1000,
-            SpendablePoints = 0,
+            SpendablePoints = 0
         };
 
         Chore choreOne = new()
@@ -135,25 +121,25 @@ public class Worker(
             Points = 10,
             Difficulty = ChoreDifficulty.Easy,
             Frequency = ChoreFrequency.Daily,
-            CompletionCount = 0,
+            CompletionCount = 0
         };
         KidChore kidChoreOne = new()
         {
             KidId = 1,
             ChoreId = 1,
-            IsVisible = true,
+            IsVisible = true
         };
         KidChore kidChoreTwo = new()
         {
             KidId = 2,
             ChoreId = 1,
-            IsVisible = true,
+            IsVisible = true
         };
         KidChore kidChoreThree = new()
         {
             KidId = 3,
             ChoreId = 1,
-            IsVisible = false,
+            IsVisible = false
         };
         choreOne.KidChores.Add(kidChoreOne);
         choreOne.KidChores.Add(kidChoreTwo);
@@ -168,14 +154,14 @@ public class Worker(
             Points = 100,
             Difficulty = ChoreDifficulty.Medium,
             Frequency = ChoreFrequency.Weekly,
-            CompletionCount = 0,
+            CompletionCount = 0
         };
         KidChore kidChoreFour = new()
         {
             KidId = 3,
             ChoreId = 2,
             DueDay = DayOfWeek.Saturday,
-            IsVisible = true,
+            IsVisible = true
         };
         choreTwo.KidChores.Add(kidChoreFour);
 
@@ -186,25 +172,25 @@ public class Worker(
             Icon = "👕",
             Description = "Something to make you not smell",
             Cost = 50,
-            Quantity = 2,
+            Quantity = 2
         };
         KidShopItem kidShopItemOne = new()
         {
             KidId = 1,
             ShopItemId = 1,
-            Status = ShopItemStatus.Available,
+            Status = ShopItemStatus.Available
         };
         KidShopItem kidShopItemTwo = new()
         {
             KidId = 2,
             ShopItemId = 1,
-            Status = ShopItemStatus.Available,
+            Status = ShopItemStatus.Available
         };
         KidShopItem kidShopItemThree = new()
         {
             KidId = 3,
             ShopItemId = 1,
-            Status = ShopItemStatus.Available,
+            Status = ShopItemStatus.Available
         };
         shopItemOne.KidShopItems.Add(kidShopItemOne);
         shopItemOne.KidShopItems.Add(kidShopItemTwo);
@@ -217,13 +203,13 @@ public class Worker(
             Icon = "🎁",
             Description = "Wah.",
             Cost = 1,
-            Quantity = 50,
+            Quantity = 50
         };
         KidShopItem kidShopItemFour = new()
         {
             KidId = 3,
             ShopItemId = 2,
-            Status = ShopItemStatus.Available,
+            Status = ShopItemStatus.Available
         };
         shopItemTwo.KidShopItems.Add(kidShopItemFour);
 

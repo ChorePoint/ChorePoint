@@ -1,6 +1,7 @@
-﻿using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
+
 using MediatR;
 
 namespace ChorePoint.Application.Handlers.Parent.UpdateKid;
@@ -13,7 +14,9 @@ public class UpdateKidHandler(IAppDbContext context, IParentContextService paren
         var kid = await context.Kids.FindAsync([request.KidId], cancellationToken);
 
         if (kid is null)
+        {
             throw new NotFoundException($"No kid exists with ID [{request.KidId}]");
+        }
 
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(kid.ParentId, parentId);

@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.ReviewSubmission;
 

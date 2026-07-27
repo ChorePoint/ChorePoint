@@ -1,8 +1,11 @@
-﻿using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
+
 using MediatR;
+
 using Microsoft.EntityFrameworkCore;
+
 using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.Chore.CreateChore;
@@ -36,11 +39,7 @@ public class CreateChoreHandler(IAppDbContext context, IParentContextService par
 
         foreach (var assignedKid in request.AssignedKids)
         {
-            var kidChore = KidChore.Create(
-                assignedKid.KidId,
-                assignedKid.DueDay,
-                assignedKid.IsVisible
-            );
+            var kidChore = KidChore.Create(assignedKid.KidId, assignedKid.DueDay, assignedKid.IsVisible);
             chore.KidChores.Add(kidChore);
         }
 

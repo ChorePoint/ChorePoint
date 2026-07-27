@@ -2,7 +2,7 @@ using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var jwtKey = builder.AddParameter("jwt-key", secret: true);
+var jwtKey = builder.AddParameter("jwt-key", true);
 var jwtIssuer = builder.AddParameter("jwt-issuer");
 var jwtAudience = builder.AddParameter("jwt-audience");
 var jwtDuration = builder.AddParameter("jwt-duration");
@@ -12,12 +12,12 @@ var sensitiveDatabaseLogging = builder.AddParameter("database-log-sensitive-valu
 
 var postgres = builder.AddPostgres("postgres").WithDbGate();
 if (
-    bool.TryParse(
-        await seedData.Resource.GetValueAsync(CancellationToken.None),
-        out var seedDataValue
-    ) && !seedDataValue
+    bool.TryParse(await seedData.Resource.GetValueAsync(CancellationToken.None), out var seedDataValue)
+    && !seedDataValue
 )
+{
     postgres.WithDataVolume();
+}
 
 var connectionStringAdditions = string.Empty;
 if (
@@ -26,14 +26,13 @@ if (
         out var sensitiveDatabaseLoggingValue
     ) && sensitiveDatabaseLoggingValue
 )
+{
     connectionStringAdditions = "Include Error Detail=true;Log Parameters=true";
+}
 
 var db = postgres.AddDatabase("chorepoint-db");
 var dbConnection = builder
-    .AddConnectionString(
-        "chorepoint-db-cs",
-        ReferenceExpression.Create($"{db};{connectionStringAdditions}")
-    )
+    .AddConnectionString("chorepoint-db-cs", ReferenceExpression.Create($"{db};{connectionStringAdditions}"))
     .WaitFor(db);
 
 var migrations = builder

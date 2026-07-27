@@ -1,4 +1,4 @@
-﻿namespace ChorePoint.Application.Handlers.Parent.GetKidById;
+namespace ChorePoint.Application.Handlers.Parent.GetKidById;
 
 public record GetKidByIdResponse(
     int KidId,

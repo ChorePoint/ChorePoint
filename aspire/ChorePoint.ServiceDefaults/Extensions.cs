@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
+
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+
 using Serilog;
 
 namespace ChorePoint.ServiceDefaults;
@@ -35,13 +37,12 @@ public static class Extensions
     {
         public TBuilder AddServiceDefaults()
         {
-            builder.Services.AddSerilog(
-                (services, lc) =>
-                    lc
-                        .ReadFrom.Configuration(builder.Configuration)
-                        .ReadFrom.Services(services)
-                        .Enrich.FromLogContext()
-                        .WriteTo.OpenTelemetry()
+            builder.Services.AddSerilog((services, lc) =>
+                lc
+                    .ReadFrom.Configuration(builder.Configuration)
+                    .ReadFrom.Services(services)
+                    .Enrich.FromLogContext()
+                    .WriteTo.OpenTelemetry()
             );
 
             builder.ConfigureOpenTelemetry();
@@ -65,10 +66,7 @@ public static class Extensions
                 .Services.AddOpenTelemetry()
                 .WithMetrics(metrics =>
                 {
-                    metrics
-                        .AddAspNetCoreInstrumentation()
-                        .AddHttpClientInstrumentation()
-                        .AddRuntimeInstrumentation();
+                    metrics.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddRuntimeInstrumentation();
                 })
                 .WithTracing(tracing =>
                 {
@@ -90,21 +88,19 @@ public static class Extensions
 
         private TBuilder AddOpenTelemetryExporters()
         {
-            var useOtlpExporter = !string.IsNullOrWhiteSpace(
-                builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]
-            );
+            var useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
 
             if (useOtlpExporter)
+            {
                 builder.Services.AddOpenTelemetry().UseOtlpExporter();
+            }
 
             return builder;
         }
 
         private TBuilder AddDefaultHealthChecks()
         {
-            builder
-                .Services.AddHealthChecks()
-                .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
+            builder.Services.AddHealthChecks().AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
 
             return builder;
         }

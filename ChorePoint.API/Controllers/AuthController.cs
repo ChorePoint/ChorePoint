@@ -1,6 +1,8 @@
-﻿using ChorePoint.Application.Handlers.Auth.Login;
+using ChorePoint.Application.Handlers.Auth.Login;
 using ChorePoint.Application.Handlers.Auth.Register;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +25,7 @@ public class AuthController(IMediator mediator) : ControllerBase
             {
                 success = true,
                 message = "Login successful",
-                data = result,
+                data = result
             }
         );
     }

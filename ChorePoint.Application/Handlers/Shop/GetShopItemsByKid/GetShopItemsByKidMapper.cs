@@ -1,5 +1,6 @@
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Enums;
+
 using Riok.Mapperly.Abstractions;
 
 namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByKid;
@@ -12,9 +13,7 @@ public partial class GetShopItemsByKidMapper
     );
 
     [MapProperty(nameof(ShopItem.KidShopItems), nameof(GetShopItemsByKidResponse.Status))]
-    private partial GetShopItemsByKidResponse ShopItemToGetShopItemsByKidResponse(
-        ShopItem shopItem
-    );
+    private partial GetShopItemsByKidResponse ShopItemToGetShopItemsByKidResponse(ShopItem shopItem);
 
     [UserMapping]
     private static ShopItemStatus KidShopItemsToStatus(ICollection<KidShopItem> kidShopItems)

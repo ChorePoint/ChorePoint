@@ -14,7 +14,7 @@ public class KidChore : EntityBase
         {
             KidId = kidId,
             DueDay = dueDay,
-            IsVisible = isVisible,
+            IsVisible = isVisible
         };
     }
 

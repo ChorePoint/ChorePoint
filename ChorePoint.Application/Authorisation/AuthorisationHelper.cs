@@ -10,21 +10,24 @@ public static class AuthorisationHelper
     )
     {
         if (resourceParentIds.Count != assignedKidIds.Count)
+        {
             throw new NotFoundException("One or multiple of the assigned kid IDs does not exist");
+        }
     }
 
     public static void EnsureParentOwnsResource(int resourceParentId, int parentIdFromContext)
     {
         if (resourceParentId != parentIdFromContext)
+        {
             throw new ParentNotAuthorisedException(parentIdFromContext);
+        }
     }
 
-    public static void EnsureParentOwnsAllResources(
-        IReadOnlyList<int> resourceParentIds,
-        int parentIdFromContext
-    )
+    public static void EnsureParentOwnsAllResources(IReadOnlyList<int> resourceParentIds, int parentIdFromContext)
     {
         if (resourceParentIds.Any(resourceParentId => resourceParentId != parentIdFromContext))
+        {
             throw new ParentNotAuthorisedException(parentIdFromContext);
+        }
     }
 }

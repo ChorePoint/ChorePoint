@@ -1,9 +1,11 @@
-﻿using ChorePoint.Application.Handlers.ChoreSubmission.CompleteChore;
+using ChorePoint.Application.Handlers.ChoreSubmission.CompleteChore;
 using ChorePoint.Application.Handlers.ChoreSubmission.GetLatestSubmissionByKid;
 using ChorePoint.Application.Handlers.ChoreSubmission.GetStatsByKid;
 using ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissionsByParent;
 using ChorePoint.Application.Handlers.ChoreSubmission.ReviewSubmission;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +29,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
             new
             {
                 success = true,
-                message = $"Chore with ID [{choreId}] completed successfully by kid with ID [{kidId}]",
+                message = $"Chore with ID [{choreId}] completed successfully by kid with ID [{kidId}]"
             }
         );
     }
@@ -47,7 +49,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
             {
                 success = true,
                 message = $"Latest chore submission with kid ID [{kidId}] successfully retrieved",
-                data = result,
+                data = result
             }
         );
     }
@@ -67,7 +69,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
             {
                 success = true,
                 message = $"Kid with ID [{kidId}] stats retrieved successfully",
-                data = result,
+                data = result
             }
         );
     }
@@ -81,13 +83,15 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetSubmissionsByParent([FromQuery] bool pending = false)
     {
-        var result = await mediator.Send(new GetSubmissionsByParentQuery(pending));
+        var result = await mediator.Send(
+            new GetSubmissionsByParentQuery(pending)
+        );
         return Ok(
             new
             {
                 success = true,
                 message = "Chore submissions retrieved successfully",
-                data = result,
+                data = result
             }
         );
     }
@@ -106,7 +110,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
             new
             {
                 success = true,
-                message = $"Chore submission with ID [{command.ChoreSubmissionId}] reviewed successfully",
+                message = $"Chore submission with ID [{command.ChoreSubmissionId}] reviewed successfully"
             }
         );
     }

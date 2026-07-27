@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 
 namespace ChorePoint.Application.Handlers.Shop.NewShopItem;
 
@@ -21,10 +21,7 @@ public class NewShopItemValidator : AbstractValidator<NewShopItemCommand>
             .WithMessage("AssignedKids cannot contain a null element")
             .ChildRules(assignedKid =>
             {
-                assignedKid
-                    .RuleFor(x => x.KidId)
-                    .NotEmpty()
-                    .WithMessage("KidId is required in AssignedKids");
+                assignedKid.RuleFor(x => x.KidId).NotEmpty().WithMessage("KidId is required in AssignedKids");
             });
     }
 }

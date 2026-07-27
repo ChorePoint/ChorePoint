@@ -1,16 +1,17 @@
 using ChorePoint.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Interfaces;
 
 public interface IAppDbContext
 {
-    public DbSet<Kid> Kids { get; }
-    public DbSet<Parent> Parents { get; }
-    public DbSet<Chore> Chores { get; }
-    public DbSet<ChoreSubmission> ChoreSubmissions { get; }
-    public DbSet<ParentSettings> ParentSettings { get; }
-    public DbSet<ShopItem> ShopItems { get; }
+    DbSet<Kid> Kids { get; }
+    DbSet<Parent> Parents { get; }
+    DbSet<Chore> Chores { get; }
+    DbSet<ChoreSubmission> ChoreSubmissions { get; }
+    DbSet<ParentSettings> ParentSettings { get; }
+    DbSet<ShopItem> ShopItems { get; }
     int SaveChanges();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

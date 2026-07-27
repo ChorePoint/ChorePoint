@@ -1,4 +1,4 @@
-﻿using ChorePoint.Domain.Exceptions;
+using ChorePoint.Domain.Exceptions;
 
 namespace ChorePoint.Domain.Entities;
 
@@ -7,15 +7,15 @@ public class Kid : EntityBase
     public int KidId { get; set; }
     public int ParentId { get; set; }
 
-    public string Name { get; set; }
-    public string Avatar { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Avatar { get; set; } = string.Empty;
     public int? Age { get; set; }
     public int DayStreak { get; set; }
     public int LifetimePoints { get; set; }
     public int SpendablePoints { get; set; }
     public int? LoginCode { get; set; }
 
-    public Parent Parent { get; set; }
+    public Parent Parent { get; set; } = new();
     public ICollection<Chore> Chores { get; set; } = new List<Chore>();
     public ICollection<KidChore> KidChores { get; set; } = new List<KidChore>();
     public ICollection<ShopItem> ShopItems { get; set; } = new List<ShopItem>();
@@ -28,18 +28,11 @@ public class Kid : EntityBase
             ParentId = parentId,
             Name = name,
             Avatar = avatar,
-            Age = age,
+            Age = age
         };
     }
 
-    public void Update(
-        string name,
-        string avatar,
-        int? age,
-        int dayStreak,
-        int lifetimePoints,
-        int spendablePoints
-    )
+    public void Update(string name, string avatar, int? age, int dayStreak, int lifetimePoints, int spendablePoints)
     {
         Name = name;
         Avatar = avatar;
@@ -58,9 +51,9 @@ public class Kid : EntityBase
     public void SpendPoints(int pointsToSubtract)
     {
         if (pointsToSubtract > SpendablePoints)
-            throw new DomainException(
-                $"Kid with ID [{KidId}] does not have enough spendable points!"
-            );
+        {
+            throw new DomainException($"Kid with ID [{KidId}] does not have enough spendable points!");
+        }
 
         SpendablePoints -= pointsToSubtract;
     }

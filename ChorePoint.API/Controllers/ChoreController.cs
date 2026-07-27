@@ -4,7 +4,9 @@ using ChorePoint.Application.Handlers.Chore.GetChoreById;
 using ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 using ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 using ChorePoint.Application.Handlers.Chore.UpdateChore;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,13 +26,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> CreateChore([FromBody] CreateChoreCommand command)
     {
         await mediator.Send(command);
-        return Ok(
-            new
-            {
-                success = true,
-                message = $"Chore with name [{command.Name}] successfully created",
-            }
-        );
+        return Ok(new { success = true, message = $"Chore with name [{command.Name}] successfully created" });
     }
 
     [Authorize]
@@ -43,9 +39,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> DeleteChore(int choreId)
     {
         await mediator.Send(new DeleteChoreCommand(choreId));
-        return Ok(
-            new { success = true, message = $"Chore with ID [{choreId}] successfully deleted" }
-        );
+        return Ok(new { success = true, message = $"Chore with ID [{choreId}] successfully deleted" });
     }
 
     [Authorize]
@@ -63,7 +57,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
             {
                 success = true,
                 message = $"Chore with ID [{choreId}] successfully retrieved",
-                data = result,
+                data = result
             }
         );
     }
@@ -83,7 +77,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
             {
                 success = true,
                 message = $"Chores assigned to kid with ID [{kidId}] successfully retrieved",
-                data = result,
+                data = result
             }
         );
     }
@@ -103,7 +97,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
             {
                 success = true,
                 message = "Chores successfully retrieved",
-                data = result,
+                data = result
             }
         );
     }
@@ -118,12 +112,6 @@ public class ChoreController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> UpdateChore([FromBody] UpdateChoreCommand command)
     {
         await mediator.Send(command);
-        return Ok(
-            new
-            {
-                success = true,
-                message = $"Chore with ID [{command.ChoreId}] successfully updated",
-            }
-        );
+        return Ok(new { success = true, message = $"Chore with ID [{command.ChoreId}] successfully updated" });
     }
 }

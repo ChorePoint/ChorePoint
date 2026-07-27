@@ -1,4 +1,4 @@
-﻿using ChorePoint.Domain.Enums;
+using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
 
 namespace ChorePoint.Domain.Entities;
@@ -9,8 +9,8 @@ public class Chore : EntityBase
     public int ParentId { get; set; }
     public int? CategoryId { get; set; }
 
-    public string Name { get; set; }
-    public string Icon { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Icon { get; set; } = string.Empty;
     public string? Description { get; set; }
     public int Points { get; set; }
     public ChoreDifficulty Difficulty { get; set; }
@@ -18,7 +18,7 @@ public class Chore : EntityBase
     public DateTime? LastCompletedAt { get; set; }
     public int CompletionCount { get; set; }
 
-    public Parent Parent { get; set; }
+    public Parent Parent { get; set; } = new();
     public Category? Category { get; set; }
     public ICollection<Kid> Kids { get; set; } = new List<Kid>();
     public ICollection<KidChore> KidChores { get; set; } = new List<KidChore>();
@@ -28,7 +28,7 @@ public class Chore : EntityBase
         int? categoryId,
         string name,
         string icon,
-        string description,
+        string? description,
         int points,
         ChoreDifficulty difficulty,
         ChoreFrequency frequency
@@ -44,7 +44,7 @@ public class Chore : EntityBase
             Points = points,
             Difficulty = difficulty,
             Frequency = frequency,
-            CompletionCount = 0,
+            CompletionCount = 0
         };
     }
 
@@ -56,7 +56,7 @@ public class Chore : EntityBase
             ParentId = ParentId,
             KidId = kidId,
             ApprovalStatus = ChoreApprovalStatus.Pending,
-            CompletedAt = now,
+            CompletedAt = now
         };
     }
 
@@ -85,13 +85,17 @@ public class Chore : EntityBase
         {
             case ChoreFrequency.Daily:
                 if (latestSubmission.CompletedAt.Date == now.Date)
+                {
                     throw new ChoreAlreadyCompletedException("Chore already completed today");
+                }
+
                 break;
             case ChoreFrequency.Weekly:
                 if (latestSubmission.CompletedAt.AddDays(7) > now)
-                    throw new ChoreAlreadyCompletedException(
-                        "Chore already completed within the last week"
-                    );
+                {
+                    throw new ChoreAlreadyCompletedException("Chore already completed within the last week");
+                }
+
                 break;
             case ChoreFrequency.Bonus:
             default:
