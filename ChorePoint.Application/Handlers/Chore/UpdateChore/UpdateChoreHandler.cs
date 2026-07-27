@@ -8,13 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Chore.UpdateChore;
 
-public class UpdateChoreHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<UpdateChoreCommand>
+public class UpdateChoreHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<UpdateChoreCommand>
 {
     public async Task Handle(UpdateChoreCommand request, CancellationToken cancellationToken)
     {
-        var chore = await context
-            .Chores.Include(c => c.KidChores)
+        var chore = await context.Chores
+            .Include(c => c.KidChores)
             .SingleOrDefaultAsync(c => c.ChoreId.Equals(request.ChoreId), cancellationToken);
 
         if (chore is null)

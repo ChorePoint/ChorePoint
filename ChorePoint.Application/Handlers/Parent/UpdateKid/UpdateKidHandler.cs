@@ -6,8 +6,7 @@ using MediatR;
 
 namespace ChorePoint.Application.Handlers.Parent.UpdateKid;
 
-public class UpdateKidHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<UpdateKidCommand>
+public class UpdateKidHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<UpdateKidCommand>
 {
     public async Task Handle(UpdateKidCommand request, CancellationToken cancellationToken)
     {

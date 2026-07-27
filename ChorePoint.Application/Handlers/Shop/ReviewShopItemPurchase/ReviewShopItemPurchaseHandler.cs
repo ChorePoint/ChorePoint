@@ -13,8 +13,8 @@ public class ReviewShopItemPurchaseHandler(IAppDbContext context, IParentContext
 {
     public async Task Handle(ReviewShopItemPurchaseCommand request, CancellationToken cancellationToken)
     {
-        var shopItem = await context
-            .ShopItems.Include(si => si.KidShopItems)
+        var shopItem = await context.ShopItems
+            .Include(si => si.KidShopItems)
             .SingleOrDefaultAsync(si => si.ShopItemId.Equals(request.ShopItemId), cancellationToken);
 
         if (shopItem is null)
@@ -52,8 +52,8 @@ public class ReviewShopItemPurchaseHandler(IAppDbContext context, IParentContext
                 throw new NotFoundException($"No kid exists with ID [{kidShopItem.KidId}]");
             }
 
-            var otherAssignedKidShopItems = shopItem
-                .KidShopItems.Where(ksi => !ksi.KidId.Equals(request.KidId))
+            var otherAssignedKidShopItems = shopItem.KidShopItems
+                .Where(ksi => !ksi.KidId.Equals(request.KidId))
                 .ToList();
             kidShopItem.Buy(shopItem, false, otherAssignedKidShopItems);
 

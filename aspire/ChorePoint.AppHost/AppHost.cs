@@ -11,10 +11,7 @@ var seedData = builder.AddParameter("seed-test-data");
 var sensitiveDatabaseLogging = builder.AddParameter("database-log-sensitive-values");
 
 var postgres = builder.AddPostgres("postgres").WithDbGate();
-if (
-    bool.TryParse(await seedData.Resource.GetValueAsync(CancellationToken.None), out var seedDataValue)
-    && !seedDataValue
-)
+if (bool.TryParse(await seedData.Resource.GetValueAsync(CancellationToken.None), out var seedDataValue) && !seedDataValue)
 {
     postgres.WithDataVolume();
 }

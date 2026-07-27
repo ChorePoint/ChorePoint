@@ -9,8 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.MigrationService;
 
-public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime hostApplicationLifetime)
-    : BackgroundService
+public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime hostApplicationLifetime) : BackgroundService
 {
     public const string ActivitySourceName = "Migrations";
     private static readonly ActivitySource ActivitySource = new(ActivitySourceName);
@@ -28,9 +27,7 @@ public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime h
 
             if (bool.TryParse(Environment.GetEnvironmentVariable("SEED_TEST_DATA"), out var seedData) && seedData)
             {
-                var passwordHasher = scope.ServiceProvider.GetRequiredService<
-                    PasswordHasher<Parent>
-                >();
+                var passwordHasher = scope.ServiceProvider.GetRequiredService<PasswordHasher<Parent>>();
                 await SeedDatabaseAsync(dbContext, passwordHasher, cancellationToken);
             }
         }
@@ -49,11 +46,7 @@ public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime h
         await strategy.ExecuteAsync(async () => { await dbContext.Database.MigrateAsync(cancellationToken); });
     }
 
-    private static async Task SeedDatabaseAsync(
-        AppDbContext dbContext,
-        PasswordHasher<Parent> passwordHasher,
-        CancellationToken cancellationToken
-    )
+    private static async Task SeedDatabaseAsync(AppDbContext dbContext, PasswordHasher<Parent> passwordHasher, CancellationToken cancellationToken)
     {
         Parent parent = new()
         {
@@ -216,9 +209,7 @@ public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime h
         var strategy = dbContext.Database.CreateExecutionStrategy();
         await strategy.ExecuteAsync(async () =>
         {
-            await using var transaction = await dbContext.Database.BeginTransactionAsync(
-                cancellationToken
-            );
+            await using var transaction = await dbContext.Database.BeginTransactionAsync(cancellationToken);
 
             await dbContext.Parents.AddAsync(parent, cancellationToken);
             // Extra SaveChangesAsync() as otherwise Parent.ParentId [1] does not exist yet for foreign key constraints

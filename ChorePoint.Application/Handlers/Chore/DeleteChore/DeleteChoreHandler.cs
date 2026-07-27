@@ -6,8 +6,7 @@ using MediatR;
 
 namespace ChorePoint.Application.Handlers.Chore.DeleteChore;
 
-public class DeleteChoreHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<DeleteChoreCommand>
+public class DeleteChoreHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<DeleteChoreCommand>
 {
     public async Task Handle(DeleteChoreCommand request, CancellationToken cancellationToken)
     {

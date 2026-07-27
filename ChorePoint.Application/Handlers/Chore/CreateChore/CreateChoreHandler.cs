@@ -10,14 +10,13 @@ using ChoreE = ChorePoint.Domain.Entities.Chore;
 
 namespace ChorePoint.Application.Handlers.Chore.CreateChore;
 
-public class CreateChoreHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<CreateChoreCommand>
+public class CreateChoreHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<CreateChoreCommand>
 {
     public async Task Handle(CreateChoreCommand request, CancellationToken cancellationToken)
     {
         var assignedKidIds = request.AssignedKids.Select(ak => ak.KidId).ToList();
-        var resourceParentIds = await context
-            .Kids.Where(k => assignedKidIds.Contains(k.KidId))
+        var resourceParentIds = await context.Kids
+            .Where(k => assignedKidIds.Contains(k.KidId))
             .Select(k => k.ParentId)
             .ToListAsync(cancellationToken);
 

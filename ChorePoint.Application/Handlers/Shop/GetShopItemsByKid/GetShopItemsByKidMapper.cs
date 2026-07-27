@@ -8,9 +8,7 @@ namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByKid;
 [Mapper]
 public partial class GetShopItemsByKidMapper
 {
-    public partial IReadOnlyList<GetShopItemsByKidResponse> ShopItemsToGetShopItemsByKidResponseList(
-        IReadOnlyList<ShopItem> shopItems
-    );
+    public partial IReadOnlyList<GetShopItemsByKidResponse> ShopItemsToGetShopItemsByKidResponseList(IReadOnlyList<ShopItem> shopItems);
 
     [MapProperty(nameof(ShopItem.KidShopItems), nameof(GetShopItemsByKidResponse.Status))]
     private partial GetShopItemsByKidResponse ShopItemToGetShopItemsByKidResponse(ShopItem shopItem);

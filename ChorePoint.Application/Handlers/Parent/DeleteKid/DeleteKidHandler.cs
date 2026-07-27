@@ -6,8 +6,7 @@ using MediatR;
 
 namespace ChorePoint.Application.Handlers.Parent.DeleteKid;
 
-public class DeleteKidHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<DeleteKidCommand>
+public class DeleteKidHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<DeleteKidCommand>
 {
     public async Task Handle(DeleteKidCommand request, CancellationToken cancellationToken)
     {

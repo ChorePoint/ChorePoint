@@ -12,8 +12,8 @@ public class UpdateShopItemHandler(IAppDbContext context, IParentContextService 
 {
     public async Task Handle(UpdateShopItemCommand request, CancellationToken cancellationToken)
     {
-        var shopItem = await context
-            .ShopItems.Include(si => si.KidShopItems)
+        var shopItem = await context.ShopItems
+            .Include(si => si.KidShopItems)
             .SingleOrDefaultAsync(c => c.ShopItemId.Equals(request.ShopItemId), cancellationToken);
 
         if (shopItem is null)

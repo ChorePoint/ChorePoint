@@ -18,16 +18,16 @@ try
 
     builder.AddServiceDefaults();
 
+    builder.Services.AddOpenTelemetry().WithTracing(tracing => tracing.AddSource(Worker.ActivitySourceName));
+
+    builder.AddNpgsqlDbContext<AppDbContext>("chorepoint-db-cs");
+
     if (bool.TryParse(Environment.GetEnvironmentVariable("SEED_TEST_DATA"), out var seedData) && seedData)
     {
         builder.Services.AddScoped<PasswordHasher<Parent>>();
     }
 
     builder.Services.AddHostedService<Worker>();
-
-    builder.Services.AddOpenTelemetry().WithTracing(tracing => tracing.AddSource(Worker.ActivitySourceName));
-
-    builder.AddNpgsqlDbContext<AppDbContext>("chorepoint-db-cs");
 
     var host = builder.Build();
     await host.RunAsync();

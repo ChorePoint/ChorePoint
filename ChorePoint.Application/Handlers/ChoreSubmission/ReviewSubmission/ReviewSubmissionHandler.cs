@@ -13,8 +13,8 @@ public class ReviewSubmissionHandler(IAppDbContext context, IParentContextServic
 {
     public async Task Handle(ReviewSubmissionCommand request, CancellationToken cancellationToken)
     {
-        var choreSubmission = await context
-            .ChoreSubmissions.Include(cs => cs.Kid)
+        var choreSubmission = await context.ChoreSubmissions
+            .Include(cs => cs.Kid)
             .Include(cs => cs.Chore)
             .Where(cs =>
                 cs.ChoreSubmissionId.Equals(request.ChoreSubmissionId)

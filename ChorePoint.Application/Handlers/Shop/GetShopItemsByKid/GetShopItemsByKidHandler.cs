@@ -12,13 +12,10 @@ namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByKid;
 public class GetShopItemsByKidHandler(IAppDbContext context, IParentContextService parentContextService)
     : IRequestHandler<GetShopItemsByKidQuery, IReadOnlyList<GetShopItemsByKidResponse>>
 {
-    public async Task<IReadOnlyList<GetShopItemsByKidResponse>> Handle(
-        GetShopItemsByKidQuery request,
-        CancellationToken cancellationToken
-    )
+    public async Task<IReadOnlyList<GetShopItemsByKidResponse>> Handle(GetShopItemsByKidQuery request, CancellationToken cancellationToken)
     {
-        var shopItems = await context
-            .ShopItems.Include(si => si.Category)
+        var shopItems = await context.ShopItems
+            .Include(si => si.Category)
             .Include(si => si.KidShopItems.Where(ksi => ksi.KidId.Equals(request.KidId)))
             .Where(si => si.KidShopItems.Any(ksi => ksi.KidId.Equals(request.KidId)))
             .ToListAsync(cancellationToken);

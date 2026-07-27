@@ -83,9 +83,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetSubmissionsByParent([FromQuery] bool pending = false)
     {
-        var result = await mediator.Send(
-            new GetSubmissionsByParentQuery(pending)
-        );
+        var result = await mediator.Send(new GetSubmissionsByParentQuery(pending));
         return Ok(
             new
             {

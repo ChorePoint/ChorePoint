@@ -11,7 +11,5 @@ public partial class GetSubmissionsByParentMapper
         IReadOnlyList<ChoreSubmissionE> choreSubmissions
     );
 
-    private partial GetSubmissionsByParentResponse ChoreSubmissionToGetSubmissionsByParentResponse(
-        ChoreSubmissionE choreSubmission
-    );
+    private partial GetSubmissionsByParentResponse ChoreSubmissionToGetSubmissionsByParentResponse(ChoreSubmissionE choreSubmission);
 }

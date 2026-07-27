@@ -32,17 +32,15 @@ public static class Extensions
         return app;
     }
 
-    extension<TBuilder>(TBuilder builder)
-        where TBuilder : IHostApplicationBuilder
+    extension<TBuilder>(TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
         public TBuilder AddServiceDefaults()
         {
-            builder.Services.AddSerilog((services, lc) =>
-                lc
-                    .ReadFrom.Configuration(builder.Configuration)
-                    .ReadFrom.Services(services)
-                    .Enrich.FromLogContext()
-                    .WriteTo.OpenTelemetry()
+            builder.Services.AddSerilog((services, lc) => lc
+                .ReadFrom.Configuration(builder.Configuration)
+                .ReadFrom.Services(services)
+                .Enrich.FromLogContext()
+                .WriteTo.OpenTelemetry()
             );
 
             builder.ConfigureOpenTelemetry();
@@ -62,8 +60,8 @@ public static class Extensions
 
         private TBuilder ConfigureOpenTelemetry()
         {
-            builder
-                .Services.AddOpenTelemetry()
+            builder.Services
+                .AddOpenTelemetry()
                 .WithMetrics(metrics =>
                 {
                     metrics.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddRuntimeInstrumentation();

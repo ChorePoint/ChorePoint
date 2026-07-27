@@ -13,15 +13,12 @@ namespace ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissionsByParent
 public class GetSubmissionsByParentHandler(IAppDbContext context, IParentContextService parentContextService)
     : IRequestHandler<GetSubmissionsByParentQuery, IReadOnlyList<GetSubmissionsByParentResponse>>
 {
-    public async Task<IReadOnlyList<GetSubmissionsByParentResponse>> Handle(
-        GetSubmissionsByParentQuery request,
-        CancellationToken cancellationToken
-    )
+    public async Task<IReadOnlyList<GetSubmissionsByParentResponse>> Handle(GetSubmissionsByParentQuery request, CancellationToken cancellationToken)
     {
         var parentId = parentContextService.GetParentId();
 
-        var query = context
-            .ChoreSubmissions.Include(cs => cs.Chore)
+        var query = context.ChoreSubmissions
+            .Include(cs => cs.Chore)
             .Where(cs => cs.ParentId.Equals(parentId));
 
         if (request.Pending)

@@ -10,5 +10,5 @@ public class ParentSettings : EntityBase
     public bool RequirePhotoEvidence { get; set; }
     public IReadOnlyList<DayOfWeek> ShopOpeningDays { get; set; } = new List<DayOfWeek>();
 
-    public Parent Parent { get; set; } = new();
+    //TODO: Not sure if a new migration needs to be generated as removed the navigation property here as it was creating a stack overflow
 }

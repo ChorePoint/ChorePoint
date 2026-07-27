@@ -4,10 +4,7 @@ namespace ChorePoint.Application.Authorisation;
 
 public static class AuthorisationHelper
 {
-    public static void EnsureAssignedKidIdsAreValid(
-        IReadOnlyList<int> resourceParentIds,
-        IReadOnlyList<int> assignedKidIds
-    )
+    public static void EnsureAssignedKidIdsAreValid(IReadOnlyList<int> resourceParentIds, IReadOnlyList<int> assignedKidIds)
     {
         if (resourceParentIds.Count != assignedKidIds.Count)
         {

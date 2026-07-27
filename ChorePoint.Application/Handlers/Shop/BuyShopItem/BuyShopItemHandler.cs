@@ -8,13 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.BuyShopItem;
 
-public class BuyShopItemHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<BuyShopItemCommand>
+public class BuyShopItemHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<BuyShopItemCommand>
 {
     public async Task Handle(BuyShopItemCommand request, CancellationToken cancellationToken)
     {
-        var shopItem = await context
-            .ShopItems.Include(si => si.KidShopItems)
+        var shopItem = await context.ShopItems
+            .Include(si => si.KidShopItems)
             .Where(si => si.KidShopItems.Any(ksi => ksi.KidId.Equals(request.KidId)))
             .SingleOrDefaultAsync(si => si.ShopItemId.Equals(request.ShopItemId), cancellationToken);
 
@@ -36,13 +35,13 @@ public class BuyShopItemHandler(IAppDbContext context, IParentContextService par
             throw new NotFoundException($"No kid exists with ID [{kidShopItem.KidId}]");
         }
 
-        var approvePurchases = await context
-            .ParentSettings.Where(ps => ps.ParentId.Equals(parentId))
+        var approvePurchases = await context.ParentSettings
+            .Where(ps => ps.ParentId.Equals(parentId))
             .Select(ps => ps.ApprovePurchases)
             .SingleOrDefaultAsync(cancellationToken);
 
-        var otherAssignedKidShopItems = shopItem
-            .KidShopItems.Where(ksi => !ksi.KidId.Equals(request.KidId))
+        var otherAssignedKidShopItems = shopItem.KidShopItems
+            .Where(ksi => !ksi.KidId.Equals(request.KidId))
             .ToList();
         kidShopItem.Buy(shopItem, approvePurchases, otherAssignedKidShopItems);
 

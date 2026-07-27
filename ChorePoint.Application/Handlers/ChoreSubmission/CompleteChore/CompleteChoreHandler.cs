@@ -8,8 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.CompleteChore;
 
-public class CompleteChoreHandler(IAppDbContext context, IParentContextService parentContextService)
-    : IRequestHandler<CompleteChoreCommand>
+public class CompleteChoreHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<CompleteChoreCommand>
 {
     public async Task Handle(CompleteChoreCommand request, CancellationToken cancellationToken)
     {
@@ -23,8 +22,8 @@ public class CompleteChoreHandler(IAppDbContext context, IParentContextService p
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(chore.ParentId, parentId);
 
-        var latestSubmission = await context
-            .ChoreSubmissions.Where(cs => cs.ChoreId.Equals(request.ChoreId))
+        var latestSubmission = await context.ChoreSubmissions
+            .Where(cs => cs.ChoreId.Equals(request.ChoreId))
             .Where(cs => cs.KidId.Equals(request.KidId))
             .OrderByDescending(cs => cs.CompletedAt)
             .FirstOrDefaultAsync(cancellationToken);
