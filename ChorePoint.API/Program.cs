@@ -1,5 +1,6 @@
 using ChorePoint.API.Documentation;
 using ChorePoint.API.Middleware;
+using ChorePoint.Application;
 using ChorePoint.Application.Behaviours;
 using ChorePoint.Application.Handlers.Auth.Login;
 using ChorePoint.Infrastructure;
@@ -18,7 +19,7 @@ using ZiggyCreatures.Caching.Fusion;
 
 Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).CreateBootstrapLogger();
 
-Log.Information("Program.cs starting host ≧◡≦");
+Log.Information("Program.cs starting API ≧◡≦");
 
 try
 {
@@ -29,9 +30,10 @@ try
     builder.AddNpgsqlDbContext<AppDbContext>("chorepoint-db-cs");
 
     builder.Services.AddControllers();
-    builder.Services.AddOpenApi(options => { options.AddDocumentTransformer<BearerSecuritySchemeTransformer>(); });
+    builder.Services.AddOpenApi(options => options.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
 
     builder.Services.AddHttpContextAccessor();
+
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
     builder.Services.AddProblemDetails();
 
@@ -57,16 +59,8 @@ try
         cacheBuilder.WithNullImplementation();
     }
 
-    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginHandler).Assembly));
-    builder.Services.AddValidatorsFromAssembly(typeof(LoginValidator).Assembly);
-
-    builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
+    builder.Services.AddApplication();
     builder.Services.AddInfrastructure();
-
-    builder.Services.AddCors(options => options.AddPolicy(
-        "AllowAngular",
-        policy => policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod()));
 
     var app = builder.Build();
 
@@ -92,8 +86,6 @@ try
     app.UseHttpsRedirection();
 
     app.UseExceptionHandler();
-
-    app.UseCors("AllowAngular");
 
     app.UseAuthentication();
     app.UseAuthorization();
