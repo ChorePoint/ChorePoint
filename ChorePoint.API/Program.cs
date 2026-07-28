@@ -1,14 +1,8 @@
 using ChorePoint.API.Documentation;
 using ChorePoint.API.Middleware;
 using ChorePoint.Application;
-using ChorePoint.Application.Behaviours;
-using ChorePoint.Application.Handlers.Auth.Login;
 using ChorePoint.Infrastructure;
 using ChorePoint.ServiceDefaults;
-
-using FluentValidation;
-
-using MediatR;
 
 using Scalar.AspNetCore;
 
@@ -91,7 +85,6 @@ try
     app.UseAuthorization();
 
     app.MapControllers();
-
     app.MapDefaultEndpoints();
 
     await app.RunAsync();
