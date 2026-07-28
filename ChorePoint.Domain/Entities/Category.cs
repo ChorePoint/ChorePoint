@@ -11,5 +11,5 @@ public class Category : EntityBase
     public string Icon { get; set; } = string.Empty;
     public CategoryRole Role { get; set; }
 
-    public Parent Parent { get; set; } = new();
+    public Parent Parent { get; set; } = null!;
 }

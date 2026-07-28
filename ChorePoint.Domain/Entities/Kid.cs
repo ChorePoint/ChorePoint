@@ -15,7 +15,7 @@ public class Kid : EntityBase
     public int SpendablePoints { get; set; }
     public int? LoginCode { get; set; }
 
-    public Parent Parent { get; set; } = new();
+    public Parent Parent { get; set; } = null!;
     public ICollection<Chore> Chores { get; set; } = new List<Chore>();
     public ICollection<KidChore> KidChores { get; set; } = new List<KidChore>();
     public ICollection<ShopItem> ShopItems { get; set; } = new List<ShopItem>();
