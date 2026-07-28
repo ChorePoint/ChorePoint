@@ -12,7 +12,7 @@ public class ShopItem : EntityBase
     public int Cost { get; set; }
     public int? Quantity { get; set; }
 
-    public Parent Parent { get; set; } = new();
+    public Parent Parent { get; set; } = null!;
     public Category? Category { get; set; }
     public ICollection<Kid> Kids { get; set; } = new List<Kid>();
     public ICollection<KidShopItem> KidShopItems { get; set; } = new List<KidShopItem>();

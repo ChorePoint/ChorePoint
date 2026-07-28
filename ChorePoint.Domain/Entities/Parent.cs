@@ -9,7 +9,7 @@ public class Parent : EntityBase
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
 
-    public ParentSettings ParentSettings { get; set; } = new();
+    public ParentSettings ParentSettings { get; set; } = null!;
     public ICollection<Category> Categories { get; set; } = new List<Category>();
 
     public static Parent CreateWithoutPassword(string firstName, string lastName, string email)

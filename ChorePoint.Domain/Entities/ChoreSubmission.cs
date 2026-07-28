@@ -14,9 +14,9 @@ public class ChoreSubmission : EntityBase
     public DateTime? ReviewedAt { get; set; }
     public DateTime CompletedAt { get; set; }
 
-    public Chore Chore { get; set; } = new();
-    public Parent Parent { get; set; } = new();
-    public Kid Kid { get; set; } = new();
+    public Chore Chore { get; set; } = null!;
+    public Parent Parent { get; set; } = null!;
+    public Kid Kid { get; set; } = null!;
 
     public bool CompletedThisWeek(DateTime startOfWeek)
     {
@@ -34,7 +34,6 @@ public class ChoreSubmission : EntityBase
             return;
         }
 
-        // TODO: Due to forced nullable properties in formatting these get set to default so need to be changed to not check null
         if (Kid is null)
         {
             throw new ArgumentException(

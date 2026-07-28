@@ -18,7 +18,7 @@ public class Chore : EntityBase
     public DateTime? LastCompletedAt { get; set; }
     public int CompletionCount { get; set; }
 
-    public Parent Parent { get; set; } = new();
+    public Parent Parent { get; set; } = null!;
     public Category? Category { get; set; }
     public ICollection<Kid> Kids { get; set; } = new List<Kid>();
     public ICollection<KidChore> KidChores { get; set; } = new List<KidChore>();
