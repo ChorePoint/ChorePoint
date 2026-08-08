@@ -44,7 +44,7 @@ public class UpdateShopItemHandler(IAppDbContext context, IParentContextService 
                 );
             }
 
-            kidShopItem.Update(assignedKid.Status);
+            kidShopItem.Update(assignedKid.Status, assignedKid.IsVisible);
         }
 
         await context.SaveChangesAsync(cancellationToken);

@@ -35,7 +35,7 @@ public class NewShopItemHandler(IAppDbContext context, IParentContextService par
 
         foreach (var assignedKid in request.AssignedKids)
         {
-            var kidShopItem = KidShopItem.Create(assignedKid.KidId);
+            var kidShopItem = KidShopItem.Create(assignedKid.KidId, assignedKid.IsVisible);
             shopItem.KidShopItems.Add(kidShopItem);
         }
 

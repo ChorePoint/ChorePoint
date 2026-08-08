@@ -259,6 +259,9 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("IsVisible")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -498,13 +501,11 @@ namespace ChorePoint.Infrastructure.Migrations
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ParentSettings", b =>
                 {
-                    b.HasOne("ChorePoint.Domain.Entities.Parent", "Parent")
+                    b.HasOne("ChorePoint.Domain.Entities.Parent", null)
                         .WithOne("ParentSettings")
                         .HasForeignKey("ChorePoint.Domain.Entities.ParentSettings", "ParentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.ShopItem", b =>
