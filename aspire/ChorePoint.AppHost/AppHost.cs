@@ -2,7 +2,7 @@ using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var jwtKey = builder.AddParameter("jwt-key", true);
+var jwtKey = builder.AddParameter("jwt-key", secret: true);
 var jwtIssuer = builder.AddParameter("jwt-issuer");
 var jwtAudience = builder.AddParameter("jwt-audience");
 var jwtDuration = builder.AddParameter("jwt-duration");
@@ -51,7 +51,7 @@ var api = builder
 
 builder
     .AddJavaScriptApp("website", "../../ChorePoint.Website")
-    .WithHttpEndpoint(env: "PORT")
+    .WithHttpEndpoint(port: 4200, env: "PORT")
     .WithReference(api)
     .WaitFor(api);
 
