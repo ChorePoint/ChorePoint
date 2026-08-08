@@ -20,6 +20,7 @@ public class GetShopItemsByParentHandler(IAppDbContext context, IParentContextSe
             .Include(si => si.Category)
             .Include(si => si.KidShopItems)
             .Where(si => si.ParentId.Equals(parentId))
+            .Where(si => request.IsVisible == null || si.KidShopItems.Any(ksi => ksi.IsVisible.Equals(request.IsVisible)))
             .ToListAsync(cancellationToken);
 
         if (shopItems.Empty())

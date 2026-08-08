@@ -77,9 +77,9 @@ public class ShopController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetShopItemsByParent()
+    public async Task<IActionResult> GetShopItemsByParent([FromQuery] bool? isVisible)
     {
-        var result = await mediator.Send(new GetShopItemsByParentQuery());
+        var result = await mediator.Send(new GetShopItemsByParentQuery(isVisible));
         return Ok(
             new
             {
