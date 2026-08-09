@@ -1,5 +1,6 @@
 using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
+using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 
 using MediatR;
@@ -33,18 +34,11 @@ public class UpdateShopItemHandler(IAppDbContext context, IParentContextService 
             request.Quantity
         );
 
+        shopItem.KidShopItems.Clear();
         foreach (var assignedKid in request.AssignedKids)
         {
-            var kidShopItem = shopItem.KidShopItems.SingleOrDefault(kc => kc.KidId.Equals(assignedKid.KidId));
-
-            if (kidShopItem is null)
-            {
-                throw new DomainException(
-                    $"Kid with ID [{assignedKid.KidId}] is not assigned to shop item with ID [{request.ShopItemId}]"
-                );
-            }
-
-            kidShopItem.Update(assignedKid.Status, assignedKid.IsVisible);
+            var kidShopItem = KidShopItem.Create(assignedKid.KidId, assignedKid.IsVisible);
+            shopItem.KidShopItems.Add(kidShopItem);
         }
 
         await context.SaveChangesAsync(cancellationToken);

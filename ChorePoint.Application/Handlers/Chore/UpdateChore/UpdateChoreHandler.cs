@@ -1,5 +1,6 @@
 using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
+using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 
 using MediatR;
@@ -34,18 +35,11 @@ public class UpdateChoreHandler(IAppDbContext context, IParentContextService par
             request.Frequency
         );
 
+        chore.KidChores.Clear();
         foreach (var assignedKid in request.AssignedKids)
         {
-            var kidChore = chore.KidChores.SingleOrDefault(kc => kc.KidId.Equals(assignedKid.KidId));
-
-            if (kidChore is null)
-            {
-                throw new DomainException(
-                    $"Kid with ID [{assignedKid.KidId}] is not assigned to chore with ID [{request.ChoreId}]"
-                );
-            }
-
-            kidChore.Update(assignedKid.DueDay, assignedKid.IsVisible);
+            var kidChore = KidChore.Create(assignedKid.KidId, assignedKid.DueDay, assignedKid.IsVisible);
+            chore.KidChores.Add(kidChore);
         }
 
         await context.SaveChangesAsync(cancellationToken);
