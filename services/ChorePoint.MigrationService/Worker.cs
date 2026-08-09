@@ -171,19 +171,22 @@ public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime h
         {
             KidId = 1,
             ShopItemId = 1,
-            Status = ShopItemStatus.Available
+            Status = ShopItemStatus.Available,
+            IsVisible = true
         };
         KidShopItem kidShopItemTwo = new()
         {
             KidId = 2,
             ShopItemId = 1,
-            Status = ShopItemStatus.Available
+            Status = ShopItemStatus.Available,
+            IsVisible = true
         };
         KidShopItem kidShopItemThree = new()
         {
             KidId = 3,
             ShopItemId = 1,
-            Status = ShopItemStatus.Available
+            Status = ShopItemStatus.Available,
+            IsVisible = false
         };
         shopItemOne.KidShopItems.Add(kidShopItemOne);
         shopItemOne.KidShopItems.Add(kidShopItemTwo);
@@ -202,7 +205,8 @@ public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime h
         {
             KidId = 3,
             ShopItemId = 2,
-            Status = ShopItemStatus.Available
+            Status = ShopItemStatus.Available,
+            IsVisible = true
         };
         shopItemTwo.KidShopItems.Add(kidShopItemFour);
 

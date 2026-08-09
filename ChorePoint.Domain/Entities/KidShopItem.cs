@@ -8,15 +8,22 @@ public class KidShopItem : EntityBase
     public int ShopItemId { get; set; }
 
     public ShopItemStatus Status { get; set; }
+    public bool IsVisible { get; set; }
 
-    public static KidShopItem Create(int kidId, ShopItemStatus status = ShopItemStatus.Available)
+    public static KidShopItem Create(int kidId, bool isVisible, ShopItemStatus status = ShopItemStatus.Available)
     {
-        return new KidShopItem { KidId = kidId, Status = status };
+        return new KidShopItem
+        {
+            KidId = kidId,
+            Status = status,
+            IsVisible = isVisible
+        };
     }
 
-    public void Update(ShopItemStatus status)
+    public void Update(ShopItemStatus status, bool isVisible)
     {
         Status = status;
+        IsVisible = isVisible;
     }
 
     public void Buy(ShopItem shopItem, bool purchaseRequiresApproval, IReadOnlyList<KidShopItem> otherAssignedKidShopItems)
