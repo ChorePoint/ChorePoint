@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/chore/submissions")]
 public class ChoreSubmissionController(IMediator mediator) : ControllerBase
 {
-    [Authorize]
     [HttpPost("complete/{choreId:int}/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -34,7 +34,6 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpGet("latest/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -54,7 +53,6 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpGet("stats/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -74,7 +72,6 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -94,7 +91,6 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpPut("review")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]

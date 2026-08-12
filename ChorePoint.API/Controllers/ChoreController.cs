@@ -12,11 +12,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/chore")]
 public class ChoreController(IMediator mediator) : ControllerBase
 {
-    [Authorize]
     [HttpPost("create")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -29,7 +29,6 @@ public class ChoreController(IMediator mediator) : ControllerBase
         return Ok(new { success = true, message = $"Chore with name [{command.Name}] successfully created" });
     }
 
-    [Authorize]
     [HttpDelete("delete/{choreId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -42,7 +41,6 @@ public class ChoreController(IMediator mediator) : ControllerBase
         return Ok(new { success = true, message = $"Chore with ID [{choreId}] successfully deleted" });
     }
 
-    [Authorize]
     [HttpGet("{choreId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -62,7 +60,6 @@ public class ChoreController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpGet("kid/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -82,7 +79,6 @@ public class ChoreController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpGet("parent")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -102,7 +98,6 @@ public class ChoreController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpPut("update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]

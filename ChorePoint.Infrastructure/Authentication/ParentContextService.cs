@@ -8,6 +8,11 @@ namespace ChorePoint.Infrastructure.Authentication;
 
 public class ParentContextService(IHttpContextAccessor accessor) : IParentContextService
 {
+    public bool IsParent()
+    {
+        return GetParent()?.IsInRole("Parent") ?? false;
+    }
+
     public int GetParentId()
     {
         var parentId = GetParent()?.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -1,5 +1,3 @@
-using ChorePoint.Application.Handlers.Auth.ParentLogin;
-
 using FluentValidation;
 
 namespace ChorePoint.Application.Handlers.Auth.KidLogin;

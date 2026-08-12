@@ -14,11 +14,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/shop")]
 public class ShopController(IMediator mediator) : ControllerBase
 {
-    [Authorize]
     [HttpPost("buy/{shopItemId:int}/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -37,7 +37,6 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpDelete("delete/{shopItemId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -50,7 +49,6 @@ public class ShopController(IMediator mediator) : ControllerBase
         return Ok(new { success = true, message = $"Shop item with ID [{shopItemId}] deleted successfully" });
     }
 
-    [Authorize]
     [HttpGet("kid/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -70,7 +68,6 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpGet("parent")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -90,7 +87,6 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpPost("new")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -103,7 +99,6 @@ public class ShopController(IMediator mediator) : ControllerBase
         return Ok(new { success = true, message = $"Shop item with name [{command.Name}] created successfully" });
     }
 
-    [Authorize]
     [HttpPost("reactivate")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -118,7 +113,6 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpPost("review")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -137,7 +131,6 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpPut("update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]

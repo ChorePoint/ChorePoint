@@ -6,6 +6,7 @@ var jwtKey = builder.AddParameter("jwt-key", secret: true);
 var jwtIssuer = builder.AddParameter("jwt-issuer");
 var jwtAudience = builder.AddParameter("jwt-audience");
 var jwtDuration = builder.AddParameter("jwt-duration");
+var jwtKidDuration = builder.AddParameter("jwt-kid-duration");
 
 var seedData = builder.AddParameter("seed-test-data");
 var sensitiveDatabaseLogging = builder.AddParameter("database-log-sensitive-values");
@@ -45,6 +46,7 @@ var api = builder
     .WithEnvironment("JWT_ISSUER", jwtIssuer)
     .WithEnvironment("JWT_AUDIENCE", jwtAudience)
     .WithEnvironment("JWT_DURATION", jwtDuration)
+    .WithEnvironment("JWT_KID_DURATION", jwtKidDuration)
     .WithReference(dbConnection)
     .WithReference(migrations)
     .WaitForCompletion(migrations);

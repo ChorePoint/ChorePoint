@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers;
 
+[AllowAnonymous]
 [ApiController]
 [Route("api/auth")]
 public class AuthController(IMediator mediator) : ControllerBase
 {
-    [AllowAnonymous]
     [HttpPost("login/kid")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -31,7 +31,6 @@ public class AuthController(IMediator mediator) : ControllerBase
         );
     }
 
-    [AllowAnonymous]
     [HttpPost("login/parent")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -49,7 +48,6 @@ public class AuthController(IMediator mediator) : ControllerBase
         );
     }
 
-    [AllowAnonymous]
     [HttpPost("register")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

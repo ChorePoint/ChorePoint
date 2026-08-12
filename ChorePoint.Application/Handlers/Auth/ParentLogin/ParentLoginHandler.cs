@@ -25,7 +25,7 @@ public class ParentLoginHandler(IAppDbContext context, IPasswordHasher<ParentE> 
             throw new DomainException("Invalid email or password");
         }
 
-        var token = jwtTokenGenerator.GenerateJwtToken(parent.ParentId, parent.Email);
+        var token = jwtTokenGenerator.GenerateParentJwtToken(parent.ParentId, parent.Email);
 
         return new ParentLoginResponse(token);
     }
