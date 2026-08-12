@@ -24,7 +24,7 @@ public class KidLoginHandler(IAppDbContext context, IJwtTokenGenerator jwtTokenG
 
         if (parent is null)
         {
-            throw new DomainException($"Parent with id [{kid.ParentId}] assigned to kid with id [{kid.KidId}] does not exist");
+            throw new NotFoundException($"Parent with id [{kid.ParentId}] assigned to kid with id [{kid.KidId}] does not exist");
         }
 
         var token = jwtTokenGenerator.GenerateKidJwtToken(parent.ParentId, parent.Email);
