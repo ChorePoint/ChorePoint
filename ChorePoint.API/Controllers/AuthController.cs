@@ -1,4 +1,5 @@
-using ChorePoint.Application.Handlers.Auth.Login;
+using ChorePoint.Application.Handlers.Auth.KidLogin;
+using ChorePoint.Application.Handlers.Auth.ParentLogin;
 using ChorePoint.Application.Handlers.Auth.Register;
 
 using MediatR;
@@ -13,18 +14,36 @@ namespace ChorePoint.API.Controllers;
 public class AuthController(IMediator mediator) : ControllerBase
 {
     [AllowAnonymous]
-    [HttpPost("login")]
+    [HttpPost("login/kid")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Login([FromBody] LoginCommand command)
+    public async Task<IActionResult> KidLogin([FromBody] KidLoginCommand command)
     {
         var result = await mediator.Send(command);
         return Ok(
             new
             {
                 success = true,
-                message = "Login successful",
+                message = "Kid login successful",
+                data = result
+            }
+        );
+    }
+
+    [AllowAnonymous]
+    [HttpPost("login/parent")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> ParentLogin([FromBody] ParentLoginCommand command)
+    {
+        var result = await mediator.Send(command);
+        return Ok(
+            new
+            {
+                success = true,
+                message = "Parent login successful",
                 data = result
             }
         );

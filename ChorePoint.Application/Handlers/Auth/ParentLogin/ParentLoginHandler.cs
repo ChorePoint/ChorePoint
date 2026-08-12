@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 using ParentE = ChorePoint.Domain.Entities.Parent;
 
-namespace ChorePoint.Application.Handlers.Auth.Login;
+namespace ChorePoint.Application.Handlers.Auth.ParentLogin;
 
-public class LoginHandler(IAppDbContext context, IPasswordHasher<ParentE> passwordHasher, IJwtTokenGenerator jwtTokenGenerator)
-    : IRequestHandler<LoginCommand, LoginResponse>
+public class ParentLoginHandler(IAppDbContext context, IPasswordHasher<ParentE> passwordHasher, IJwtTokenGenerator jwtTokenGenerator)
+    : IRequestHandler<ParentLoginCommand, ParentLoginResponse>
 {
-    public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<ParentLoginResponse> Handle(ParentLoginCommand request, CancellationToken cancellationToken)
     {
         var parent = await context.Parents.SingleOrDefaultAsync(
             p => p.Email.Equals(request.Email),
@@ -27,6 +27,6 @@ public class LoginHandler(IAppDbContext context, IPasswordHasher<ParentE> passwo
 
         var token = jwtTokenGenerator.GenerateJwtToken(parent.ParentId, parent.Email);
 
-        return new LoginResponse(token);
+        return new ParentLoginResponse(token);
     }
 }
