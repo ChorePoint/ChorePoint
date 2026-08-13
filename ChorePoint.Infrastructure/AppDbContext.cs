@@ -91,6 +91,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(k => k.Name).HasMaxLength(100);
 
             entity.Property(k => k.Avatar).HasMaxLength(10);
+
+            entity.Property(k => k.LoginCode).HasMaxLength(8);
         });
 
         builder.Entity<KidShopItem>(entity =>
