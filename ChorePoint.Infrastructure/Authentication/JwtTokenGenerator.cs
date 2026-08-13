@@ -17,13 +17,11 @@ public partial class JwtTokenGenerator(ILogger<JwtTokenGenerator> logger) : IJwt
         {
             new Claim(ClaimTypes.NameIdentifier, parentId.ToString()),
             new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Role, "Kid")
+            new Claim(ClaimTypes.Role, JwtConstants.KidRole)
         };
-        LogNewClaimsCreated(parentId);
+        LogNewClaimsCreated(parentId, JwtConstants.KidRole);
 
-        var kidToken = GenerateJwtToken(claims, "JWT_KID_DURATION");
-
-        return new JwtSecurityTokenHandler().WriteToken(kidToken);
+        return GenerateJwtToken(claims, "JWT_KID_DURATION");
     }
 
     public string GenerateParentJwtToken(int parentId, string email)
@@ -32,16 +30,14 @@ public partial class JwtTokenGenerator(ILogger<JwtTokenGenerator> logger) : IJwt
         {
             new Claim(ClaimTypes.NameIdentifier, parentId.ToString()),
             new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Role, "Parent")
+            new Claim(ClaimTypes.Role, JwtConstants.ParentRole),
         };
-        LogNewClaimsCreated(parentId);
+        LogNewClaimsCreated(parentId, JwtConstants.ParentRole);
 
-        var parentToken = GenerateJwtToken(claims);
-
-        return new JwtSecurityTokenHandler().WriteToken(parentToken);
+        return GenerateJwtToken(claims);
     }
 
-    private static JwtSecurityToken GenerateJwtToken(Claim[] claims, string durationEnvVar = "JWT_DURATION")
+    private static string GenerateJwtToken(Claim[] claims, string durationEnvVar = "JWT_DURATION")
     {
         SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")!));
         SigningCredentials credentials = new(key, SecurityAlgorithms.HmacSha256);
@@ -54,9 +50,9 @@ public partial class JwtTokenGenerator(ILogger<JwtTokenGenerator> logger) : IJwt
             signingCredentials: credentials
         );
 
-        return token;
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    [LoggerMessage(LogLevel.Information, "New claims created for parent with ID [{ParentId}]")]
-    partial void LogNewClaimsCreated(int parentId);
+    [LoggerMessage(LogLevel.Information, "New claims created using parent ID [{ParentId}] with role [{Role}]")]
+    partial void LogNewClaimsCreated(int parentId, string role);
 }

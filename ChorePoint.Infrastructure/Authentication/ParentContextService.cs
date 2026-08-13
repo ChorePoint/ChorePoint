@@ -10,7 +10,8 @@ public class ParentContextService(IHttpContextAccessor accessor) : IParentContex
 {
     public bool IsParent()
     {
-        return GetParent()?.IsInRole("Parent") ?? false;
+        return GetParent()?.IsInRole(JwtConstants.ParentRole)
+               ?? throw new UnauthorizedAccessException("Parent is not authorised!");
     }
 
     public int GetParentId()
