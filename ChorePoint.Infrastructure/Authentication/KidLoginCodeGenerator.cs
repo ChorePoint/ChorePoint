@@ -1,11 +1,26 @@
+using System.Security.Cryptography;
+using System.Text;
+
 using ChorePoint.Application.Interfaces;
 
 namespace ChorePoint.Infrastructure.Authentication;
 
 public class KidLoginCodeGenerator : IKidLoginCodeGenerator
 {
-    public int GenerateLoginCode()
+    public string GenerateLoginCode()
     {
-        throw new NotImplementedException();
+        var loginCode = new StringBuilder(InfrastructureConstants.LoginCodeMaxLength);
+        while (loginCode.Length < loginCode.MaxCapacity)
+        {
+            if (loginCode.Length > 0)
+            {
+                loginCode.Append('-');
+            }
+
+            var loginCodePart = RandomNumberGenerator.GetInt32(1, 100);
+            loginCode.Append(loginCodePart);
+        }
+
+        return loginCode.ToString();
     }
 }
