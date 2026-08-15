@@ -38,8 +38,8 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpDelete("delete/{shopItemId:int}")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -89,8 +89,8 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpPost("new")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -102,8 +102,8 @@ public class ShopController(IMediator mediator) : ControllerBase
         return Ok(new { success = true, message = $"Shop item with name [{command.Name}] created successfully" });
     }
 
-    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpPost("reactivate")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -117,8 +117,8 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpPost("review")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -136,8 +136,8 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpPut("update")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

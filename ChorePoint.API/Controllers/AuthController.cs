@@ -15,8 +15,8 @@ namespace ChorePoint.API.Controllers;
 [Route("api/auth")]
 public class AuthController(IMediator mediator) : ControllerBase
 {
-    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpPost("code/add")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -34,8 +34,8 @@ public class AuthController(IMediator mediator) : ControllerBase
         );
     }
 
-    [AllowAnonymous]
     [HttpPost("login/kid")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -52,8 +52,8 @@ public class AuthController(IMediator mediator) : ControllerBase
         );
     }
 
-    [AllowAnonymous]
     [HttpPost("login/parent")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -70,8 +70,8 @@ public class AuthController(IMediator mediator) : ControllerBase
         );
     }
 
-    [AllowAnonymous]
     [HttpPost("register")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]

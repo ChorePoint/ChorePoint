@@ -18,8 +18,8 @@ namespace ChorePoint.API.Controllers;
 [Route("api/chore")]
 public class ChoreController(IMediator mediator) : ControllerBase
 {
-    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpPost("create")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -31,8 +31,8 @@ public class ChoreController(IMediator mediator) : ControllerBase
         return Ok(new { success = true, message = $"Chore with name [{command.Name}] successfully created" });
     }
 
-    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpDelete("delete/{choreId:int}")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -101,8 +101,8 @@ public class ChoreController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpPut("update")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
