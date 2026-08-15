@@ -3,6 +3,7 @@ using ChorePoint.Application.Handlers.Parent.DeleteKid;
 using ChorePoint.Application.Handlers.Parent.GetKidById;
 using ChorePoint.Application.Handlers.Parent.GetKidsByParent;
 using ChorePoint.Application.Handlers.Parent.UpdateKid;
+using ChorePoint.Infrastructure.Authentication;
 
 using MediatR;
 
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers;
 
-[Authorize]
+[Authorize(Roles = JwtConstants.ParentRole)]
 [ApiController]
 [Route("api/parent")]
 public class ParentController(IMediator mediator) : ControllerBase

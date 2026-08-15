@@ -2,6 +2,7 @@ using ChorePoint.Application.Handlers.Auth.AddKidLoginCode;
 using ChorePoint.Application.Handlers.Auth.KidLogin;
 using ChorePoint.Application.Handlers.Auth.ParentLogin;
 using ChorePoint.Application.Handlers.Auth.Register;
+using ChorePoint.Infrastructure.Authentication;
 
 using MediatR;
 
@@ -14,7 +15,7 @@ namespace ChorePoint.API.Controllers;
 [Route("api/auth")]
 public class AuthController(IMediator mediator) : ControllerBase
 {
-    [Authorize]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpPost("code/add")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
