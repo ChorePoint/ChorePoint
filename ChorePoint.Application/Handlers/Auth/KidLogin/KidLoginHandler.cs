@@ -29,7 +29,7 @@ public class KidLoginHandler(IAppDbContext context, IJwtTokenGenerator jwtTokenG
 
         var token = jwtTokenGenerator.GenerateKidJwtToken(parent.ParentId, parent.Email);
 
-        kid.LoginCode = null;
+        kid.LoginCode = string.Empty;
         await context.SaveChangesAsync(cancellationToken);
 
         return new KidLoginResponse(token);
