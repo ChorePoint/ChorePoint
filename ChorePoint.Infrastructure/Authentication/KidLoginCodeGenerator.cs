@@ -10,7 +10,7 @@ public class KidLoginCodeGenerator : IKidLoginCodeGenerator
     public string GenerateLoginCode()
     {
         var loginCode = new StringBuilder(InfrastructureConstants.LoginCodeMaxLength);
-        while (loginCode.Length < loginCode.MaxCapacity)
+        while (loginCode.Length < loginCode.Capacity)
         {
             if (loginCode.Length > 0)
             {
@@ -18,7 +18,7 @@ public class KidLoginCodeGenerator : IKidLoginCodeGenerator
             }
 
             var loginCodePart = RandomNumberGenerator.GetInt32(1, 100);
-            loginCode.Append(loginCodePart);
+            loginCode.Append(loginCodePart.ToString("D2"));
         }
 
         return loginCode.ToString();
