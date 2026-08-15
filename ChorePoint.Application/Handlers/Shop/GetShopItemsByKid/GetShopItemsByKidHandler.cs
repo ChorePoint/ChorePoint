@@ -14,6 +14,26 @@ public class GetShopItemsByKidHandler(IAppDbContext context, IParentContextServi
 {
     public async Task<IReadOnlyList<GetShopItemsByKidResponse>> Handle(GetShopItemsByKidQuery request, CancellationToken cancellationToken)
     {
+        var parentId = parentContextService.GetParentId();
+
+        if (!parentContextService.IsParent())
+        {
+            var shopOpeningDays = await context.ParentSettings
+                .Where(ps => ps.ParentId.Equals(parentId))
+                .Select(ps => ps.ShopOpeningDays)
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (shopOpeningDays is null)
+            {
+                throw new NotFoundException($"No ShopOpeningDays setting exists for parent ID [{parentId}]");
+            }
+
+            if (!shopOpeningDays.Contains(DateTime.UtcNow.DayOfWeek))
+            {
+                throw new DomainException($"Parent with ID [{parentId}] does not have today set as open for kids");
+            }
+        }
+
         var shopItems = await context.ShopItems
             .Include(si => si.Category)
             .Include(si => si.KidShopItems.Where(ksi => ksi.KidId.Equals(request.KidId)))
@@ -26,7 +46,6 @@ public class GetShopItemsByKidHandler(IAppDbContext context, IParentContextServi
         }
 
         var resourceParentIds = shopItems.Select(si => si.ParentId).ToList();
-        var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
         GetShopItemsByKidMapper mapper = new();
