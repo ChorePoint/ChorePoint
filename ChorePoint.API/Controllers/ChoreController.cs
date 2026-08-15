@@ -4,6 +4,7 @@ using ChorePoint.Application.Handlers.Chore.GetChoreById;
 using ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 using ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 using ChorePoint.Application.Handlers.Chore.UpdateChore;
+using ChorePoint.Infrastructure.Authentication;
 
 using MediatR;
 
@@ -17,6 +18,7 @@ namespace ChorePoint.API.Controllers;
 [Route("api/chore")]
 public class ChoreController(IMediator mediator) : ControllerBase
 {
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpPost("create")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -29,6 +31,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
         return Ok(new { success = true, message = $"Chore with name [{command.Name}] successfully created" });
     }
 
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpDelete("delete/{choreId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -98,6 +101,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
         );
     }
 
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpPut("update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]

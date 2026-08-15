@@ -3,6 +3,7 @@ using ChorePoint.Application.Handlers.ChoreSubmission.GetLatestSubmissionByKid;
 using ChorePoint.Application.Handlers.ChoreSubmission.GetStatsByKid;
 using ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissionsByParent;
 using ChorePoint.Application.Handlers.ChoreSubmission.ReviewSubmission;
+using ChorePoint.Infrastructure.Authentication;
 
 using MediatR;
 
@@ -91,6 +92,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
         );
     }
 
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [HttpPut("review")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
