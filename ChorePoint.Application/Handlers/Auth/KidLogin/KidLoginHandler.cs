@@ -13,7 +13,7 @@ public class KidLoginHandler(IAppDbContext context, IJwtTokenGenerator jwtTokenG
     {
         var kid = await context.Kids
             .Where(k => k.Name.Equals(request.Name))
-            .SingleOrDefaultAsync(k => k.LoginCode.Equals(request.LoginCode), cancellationToken);
+            .SingleOrDefaultAsync(k => k.LoginCode!.Equals(request.LoginCode), cancellationToken);
 
         if (kid is null)
         {
@@ -28,6 +28,9 @@ public class KidLoginHandler(IAppDbContext context, IJwtTokenGenerator jwtTokenG
         }
 
         var token = jwtTokenGenerator.GenerateKidJwtToken(parent.ParentId, parent.Email);
+
+        kid.LoginCode = null;
+        await context.SaveChangesAsync(cancellationToken);
 
         return new KidLoginResponse(token);
     }

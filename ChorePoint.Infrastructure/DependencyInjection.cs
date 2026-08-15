@@ -16,8 +16,9 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
-        services.AddScoped<IParentContextService, ParentContextService>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddScoped<IKidLoginCodeGenerator, KidLoginCodeGenerator>();
+        services.AddScoped<IParentContextService, ParentContextService>();
         services.AddScoped<IPasswordHasher<Parent>, PasswordHasher<Parent>>();
 
         services
