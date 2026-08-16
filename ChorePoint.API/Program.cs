@@ -65,13 +65,11 @@ try
         {
             options
                 .WithTitle("ChorePoint API")
-                .WithClassicLayout()
                 .ForceDarkMode()
                 .ExpandAllTags()
-                .HideSearch()
-                .HideModels();
+                .DisableTelemetry();
 
-            options.Theme = ScalarTheme.Solarized;
+            options.Theme = ScalarTheme.Moon;
         });
     }
 
