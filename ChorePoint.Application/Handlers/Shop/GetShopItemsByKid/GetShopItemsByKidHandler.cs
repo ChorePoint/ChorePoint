@@ -1,5 +1,6 @@
 using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
+using ChorePoint.Application.Policies.Shop;
 using ChorePoint.Domain.Exceptions;
 using ChorePoint.Domain.Extensions;
 
@@ -9,30 +10,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByKid;
 
-public class GetShopItemsByKidHandler(IAppDbContext context, IParentContextService parentContextService)
+public class GetShopItemsByKidHandler(IAppDbContext context, IParentContextService parentContextService, IShopOpenPolicy shopOpenPolicy)
     : IRequestHandler<GetShopItemsByKidQuery, IReadOnlyList<GetShopItemsByKidResponse>>
 {
     public async Task<IReadOnlyList<GetShopItemsByKidResponse>> Handle(GetShopItemsByKidQuery request, CancellationToken cancellationToken)
     {
-        var parentId = parentContextService.GetParentId();
-
-        if (!parentContextService.IsParent())
-        {
-            var shopOpeningDays = await context.ParentSettings
-                .Where(ps => ps.ParentId.Equals(parentId))
-                .Select(ps => ps.ShopOpeningDays)
-                .SingleOrDefaultAsync(cancellationToken);
-
-            if (shopOpeningDays is null)
-            {
-                throw new NotFoundException($"No ShopOpeningDays setting exists for parent ID [{parentId}]");
-            }
-
-            if (!shopOpeningDays.Contains(DateTime.UtcNow.DayOfWeek))
-            {
-                throw new DomainException($"Parent with ID [{parentId}] does not have today set as open for kids");
-            }
-        }
+        await shopOpenPolicy.EnsureShopIsOpen(cancellationToken);
 
         var shopItems = await context.ShopItems
             .Include(si => si.Category)
@@ -46,6 +29,7 @@ public class GetShopItemsByKidHandler(IAppDbContext context, IParentContextServi
         }
 
         var resourceParentIds = shopItems.Select(si => si.ParentId).ToList();
+        var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
         GetShopItemsByKidMapper mapper = new();
