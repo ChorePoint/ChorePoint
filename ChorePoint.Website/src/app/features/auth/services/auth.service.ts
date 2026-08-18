@@ -47,7 +47,7 @@ export class AuthService {
   }
 
   login(request: LoginRequest) {
-    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, request).pipe(
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login/parent`, request).pipe(
       tap((response) => {
         localStorage.setItem('authToken', response.data.token);
       }),
