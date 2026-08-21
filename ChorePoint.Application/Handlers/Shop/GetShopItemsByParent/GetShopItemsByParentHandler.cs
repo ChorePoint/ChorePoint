@@ -15,7 +15,7 @@ public class GetShopItemsByParentHandler(IAppDbContext context, IParentContextSe
 {
     public async Task<IReadOnlyList<GetShopItemsByParentResponse>> Handle(GetShopItemsByParentQuery request, CancellationToken cancellationToken)
     {
-        await shopOpenPolicy.EnsureShopIsOpen(cancellationToken);
+        await shopOpenPolicy.EnsureShopIsOpenIfKid(cancellationToken);
 
         var parentId = parentContextService.GetParentId();
 

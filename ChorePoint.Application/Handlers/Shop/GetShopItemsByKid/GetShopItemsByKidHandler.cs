@@ -15,7 +15,7 @@ public class GetShopItemsByKidHandler(IAppDbContext context, IParentContextServi
 {
     public async Task<IReadOnlyList<GetShopItemsByKidResponse>> Handle(GetShopItemsByKidQuery request, CancellationToken cancellationToken)
     {
-        await shopOpenPolicy.EnsureShopIsOpen(cancellationToken);
+        await shopOpenPolicy.EnsureShopIsOpenIfKid(cancellationToken);
 
         var shopItems = await context.ShopItems
             .Include(si => si.Category)

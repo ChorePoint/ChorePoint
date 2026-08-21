@@ -7,7 +7,7 @@ namespace ChorePoint.Application.Policies.Shop;
 
 public class ShopOpenPolicy(IAppDbContext context, IParentContextService parentContextService) : IShopOpenPolicy
 {
-    public async Task EnsureShopIsOpen(CancellationToken cancellationToken)
+    public async Task EnsureShopIsOpenIfKid(CancellationToken cancellationToken)
     {
         if (parentContextService.IsParent())
         {
