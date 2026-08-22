@@ -11,6 +11,7 @@ public interface IAppDbContext
     DbSet<Chore> Chores { get; }
     DbSet<ChoreSubmission> ChoreSubmissions { get; }
     DbSet<Kid> Kids { get; }
+    DbSet<LoginCode> LoginCodes { get; }
     DbSet<Parent> Parents { get; }
     DbSet<ParentSettings> ParentSettings { get; }
     DbSet<ShopItem> ShopItems { get; }

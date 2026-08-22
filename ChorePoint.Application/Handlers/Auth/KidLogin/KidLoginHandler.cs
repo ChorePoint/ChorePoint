@@ -11,11 +11,16 @@ public class KidLoginHandler(IAppDbContext context, IJwtTokenGenerator jwtTokenG
 {
     public async Task<KidLoginResponse> Handle(KidLoginCommand request, CancellationToken cancellationToken)
     {
-        var kid = await context.Kids
-            .Where(k => k.Name.Equals(request.Name))
-            .SingleOrDefaultAsync(k => k.LoginCode!.Equals(request.LoginCode), cancellationToken);
+        var kid = await context.Kids.SingleOrDefaultAsync(k => k.Name.Equals(request.Name), cancellationToken);
 
         if (kid is null)
+        {
+            throw new DomainException("Invalid name or login code");
+        }
+
+        var loginCode = await context.LoginCodes.FindAsync([kid.KidId], cancellationToken);
+
+        if (loginCode is null)
         {
             throw new DomainException("Invalid name or login code");
         }
@@ -27,11 +32,10 @@ public class KidLoginHandler(IAppDbContext context, IJwtTokenGenerator jwtTokenG
             throw new NotFoundException($"Parent with ID [{kid.ParentId}] assigned to kid with ID [{kid.KidId}] does not exist");
         }
 
-        var token = jwtTokenGenerator.GenerateKidJwtToken(parent.ParentId, parent.Email);
-
-        kid.LoginCode = string.Empty;
+        context.LoginCodes.Remove(loginCode);
         await context.SaveChangesAsync(cancellationToken);
 
+        var token = jwtTokenGenerator.GenerateKidJwtToken(parent.ParentId, parent.Email);
         return new KidLoginResponse(token);
     }
 }

@@ -1,5 +1,6 @@
 using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
+using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 
 using MediatR;
@@ -21,9 +22,10 @@ public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(kid.ParentId, parentId);
 
-        var loginCode = kidLoginCodeGenerator.GenerateLoginCode();
-        kid.LoginCode = loginCode;
+        var loginCodeString = kidLoginCodeGenerator.GenerateLoginCode();
+        var loginCode = LoginCode.Create(kid.KidId, loginCodeString);
 
+        await context.LoginCodes.AddAsync(loginCode, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
     }
 }
