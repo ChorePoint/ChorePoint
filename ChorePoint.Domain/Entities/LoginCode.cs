@@ -2,7 +2,7 @@ namespace ChorePoint.Domain.Entities;
 
 public class LoginCode : EntityBase
 {
-    public int KidId { get; set;}
+    public int KidId { get; set; }
 
     public string Code { get; set; } = string.Empty;
 
