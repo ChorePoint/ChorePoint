@@ -3,11 +3,13 @@ using ChorePoint.Domain.Exceptions;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Auth.KidLogin;
 
-public class KidLoginHandler(IAppDbContext context, IJwtTokenGenerator jwtTokenGenerator) : IRequestHandler<KidLoginCommand, KidLoginResponse>
+public class KidLoginHandler(IAppDbContext context, IPasswordHasher<string> passwordHasher, IJwtTokenGenerator jwtTokenGenerator)
+    : IRequestHandler<KidLoginCommand, KidLoginResponse>
 {
     public async Task<KidLoginResponse> Handle(KidLoginCommand request, CancellationToken cancellationToken)
     {
@@ -20,7 +22,9 @@ public class KidLoginHandler(IAppDbContext context, IJwtTokenGenerator jwtTokenG
 
         var loginCode = await context.LoginCodes.FindAsync([kid.KidId], cancellationToken);
 
-        if (loginCode is null)
+        if (loginCode is null
+            || passwordHasher.VerifyHashedPassword(string.Empty, loginCode.Code, request.LoginCode)
+            == PasswordVerificationResult.Failed)
         {
             throw new DomainException("Invalid name or login code");
         }

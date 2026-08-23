@@ -24,12 +24,13 @@ public class AuthController(IMediator mediator) : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> AddKidLoginCode([FromBody] AddKidLoginCodeCommand command)
     {
-        await mediator.Send(command);
+        var result = await mediator.Send(command);
         return Ok(
             new
             {
                 success = true,
                 message = $"Login code added to kid with ID [{command.KidId}] successfully",
+                data = result
             }
         );
     }

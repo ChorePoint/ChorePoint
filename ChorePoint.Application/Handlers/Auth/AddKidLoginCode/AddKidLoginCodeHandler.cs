@@ -5,12 +5,15 @@ using ChorePoint.Domain.Exceptions;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Identity;
+
 namespace ChorePoint.Application.Handlers.Auth.AddKidLoginCode;
 
-public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService parentContextService, IKidLoginCodeGenerator kidLoginCodeGenerator)
-    : IRequestHandler<AddKidLoginCodeCommand>
+public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService parentContextService,
+    IKidLoginCodeGenerator kidLoginCodeGenerator, IPasswordHasher<string> passwordHasher)
+    : IRequestHandler<AddKidLoginCodeCommand, AddKidLoginCodeResponse>
 {
-    public async Task Handle(AddKidLoginCodeCommand request, CancellationToken cancellationToken)
+    public async Task<AddKidLoginCodeResponse> Handle(AddKidLoginCodeCommand request, CancellationToken cancellationToken)
     {
         var kid = await context.Kids.FindAsync([request.KidId], cancellationToken);
 
@@ -23,9 +26,11 @@ public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService
         AuthorisationHelper.EnsureParentOwnsResource(kid.ParentId, parentId);
 
         var loginCodeString = kidLoginCodeGenerator.GenerateLoginCode();
-        var loginCode = LoginCode.Create(kid.KidId, loginCodeString);
+        var loginCode = LoginCode.Create(kid.KidId, passwordHasher.HashPassword(string.Empty, loginCodeString));
 
         await context.LoginCodes.AddAsync(loginCode, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
+
+        return new AddKidLoginCodeResponse(loginCodeString);
     }
 }

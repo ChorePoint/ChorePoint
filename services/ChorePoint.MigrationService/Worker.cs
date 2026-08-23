@@ -27,7 +27,7 @@ public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime h
 
             if (bool.TryParse(Environment.GetEnvironmentVariable("SEED_TEST_DATA"), out var seedData) && seedData)
             {
-                var passwordHasher = scope.ServiceProvider.GetRequiredService<PasswordHasher<Parent>>();
+                var passwordHasher = scope.ServiceProvider.GetRequiredService<PasswordHasher<string>>();
                 await SeedDatabaseAsync(dbContext, passwordHasher, cancellationToken);
             }
         }
@@ -43,18 +43,18 @@ public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime h
     private static async Task RunMigrationAsync(AppDbContext dbContext, CancellationToken cancellationToken)
     {
         var strategy = dbContext.Database.CreateExecutionStrategy();
-        await strategy.ExecuteAsync(async () => { await dbContext.Database.MigrateAsync(cancellationToken); });
+        await strategy.ExecuteAsync(async () => await dbContext.Database.MigrateAsync(cancellationToken));
     }
 
-    private static async Task SeedDatabaseAsync(AppDbContext dbContext, PasswordHasher<Parent> passwordHasher, CancellationToken cancellationToken)
+    private static async Task SeedDatabaseAsync(AppDbContext dbContext, PasswordHasher<string> passwordHasher, CancellationToken cancellationToken)
     {
         Parent parent = new()
         {
-            Email = "test.parent@dev.com",
             FirstName = "Jeff",
-            LastName = "Bayzoz"
+            LastName = "Bayzoz",
+            Email = "test.parent@dev.com",
+            Password = passwordHasher.HashPassword(string.Empty, "test")
         };
-        parent.SetPassword(passwordHasher.HashPassword(parent, "test"));
 
         ParentSettings parentSettings = new()
         {

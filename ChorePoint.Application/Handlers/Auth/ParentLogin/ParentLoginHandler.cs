@@ -6,11 +6,9 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-using ParentE = ChorePoint.Domain.Entities.Parent;
-
 namespace ChorePoint.Application.Handlers.Auth.ParentLogin;
 
-public class ParentLoginHandler(IAppDbContext context, IPasswordHasher<ParentE> passwordHasher, IJwtTokenGenerator jwtTokenGenerator)
+public class ParentLoginHandler(IAppDbContext context, IPasswordHasher<string> passwordHasher, IJwtTokenGenerator jwtTokenGenerator)
     : IRequestHandler<ParentLoginCommand, ParentLoginResponse>
 {
     public async Task<ParentLoginResponse> Handle(ParentLoginCommand request, CancellationToken cancellationToken)
@@ -20,7 +18,9 @@ public class ParentLoginHandler(IAppDbContext context, IPasswordHasher<ParentE> 
             cancellationToken
         );
 
-        if (parent is null || passwordHasher.VerifyHashedPassword(parent, parent.Password, request.Password) == PasswordVerificationResult.Failed)
+        if (parent is null
+            || passwordHasher.VerifyHashedPassword(string.Empty, parent.Password, request.Password)
+            == PasswordVerificationResult.Failed)
         {
             throw new DomainException("Invalid email or password");
         }

@@ -1,7 +1,6 @@
 using System.Text;
 
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Entities;
 using ChorePoint.Infrastructure.Authentication;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,7 +18,7 @@ public static class DependencyInjection
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IKidLoginCodeGenerator, KidLoginCodeGenerator>();
         services.AddScoped<IParentContextService, ParentContextService>();
-        services.AddScoped<IPasswordHasher<Parent>, PasswordHasher<Parent>>();
+        services.AddScoped<IPasswordHasher<string>, PasswordHasher<string>>();
 
         services
             .AddAuthentication(options =>

@@ -1,6 +1,6 @@
 namespace ChorePoint.Infrastructure;
 
-public class InfrastructureConstants
+public static class InfrastructureConstants
 {
     public const int LoginCodeMaxLength = 8;
 }

@@ -105,7 +105,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             // EF cannot find 'KidId' as a primary key by convention
             entity.HasKey(lc => lc.KidId);
 
-            entity.Property(lc => lc.Code).HasMaxLength(InfrastructureConstants.LoginCodeMaxLength);
+            entity.Property(lc => lc.Code).HasMaxLength(100);
         });
 
         builder.Entity<Parent>(entity =>

@@ -1,4 +1,3 @@
-using ChorePoint.Domain.Entities;
 using ChorePoint.Infrastructure;
 using ChorePoint.MigrationService;
 using ChorePoint.ServiceDefaults;
@@ -23,7 +22,7 @@ try
 
     if (bool.TryParse(Environment.GetEnvironmentVariable("SEED_TEST_DATA"), out var seedData) && seedData)
     {
-        builder.Services.AddScoped<PasswordHasher<Parent>>();
+        builder.Services.AddScoped<PasswordHasher<string>>();
     }
 
     builder.Services.AddHostedService<Worker>();

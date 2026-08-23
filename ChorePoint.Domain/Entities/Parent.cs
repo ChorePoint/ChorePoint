@@ -12,18 +12,14 @@ public class Parent : EntityBase
     public ParentSettings ParentSettings { get; set; } = null!;
     public ICollection<Category> Categories { get; set; } = new List<Category>();
 
-    public static Parent CreateWithoutPassword(string firstName, string lastName, string email)
+    public static Parent Create(string firstName, string lastName, string email, string password)
     {
         return new Parent
         {
             FirstName = firstName,
             LastName = lastName,
-            Email = email
+            Email = email,
+            Password = password
         };
-    }
-
-    public void SetPassword(string password)
-    {
-        Password = password;
     }
 }
