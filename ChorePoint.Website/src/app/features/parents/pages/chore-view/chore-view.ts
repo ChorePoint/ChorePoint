@@ -1,6 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { combineLatest, finalize, map, Observable, startWith, Subject, switchMap } from 'rxjs';
+import { Component, computed, inject } from '@angular/core';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
 import { KidsService } from '../../../../core/services/kids/kids.service';
 import { Chore } from '../../../../core/types/dtos/chore';
@@ -20,11 +19,9 @@ import { KidSelectorHeader } from '../../../chores/components/kid-selector-heade
   templateUrl: './chore-view.html',
   styleUrl: './chore-view.scss',
 })
-export class ChoreView implements OnInit {
+export class ChoreView {
   private kidService = inject(KidsService);
   private choreService = inject(ChoreService);
-
-  private refresh$ = new Subject<void>();
 
   selectedFrequency: ChoreFrequency | null = null;
 
@@ -33,42 +30,24 @@ export class ChoreView implements OnInit {
 
   loadingAction: LoadingAction | null = null;
 
-  vm$!: Observable<{
-    kids: Kid[];
-    kidsDictionary: Record<number, Kid>;
-    dailyChores: Chore[];
-    weeklyChores: Chore[];
-    bonusChores: Chore[];
-    selectedKid: Kid | null;
-  }>;
+  vm = {
+    kids: this.kidService.kids,
+    chores: this.choreService.chores,
+    selectedKid: null as Kid | null,
 
-  ngOnInit() {
-    this.vm$ = this.refresh$.pipe(
-      startWith(void 0),
-      switchMap(() =>
-        combineLatest([this.kidService.getKids$(), this.choreService.getChores$()]).pipe(
-          map(([kids, chores]) => ({
-            kids: kids,
-            kidsDictionary: kids.reduce(
-              (acc, kid) => {
-                acc[kid.kidId] = kid;
-                return acc;
-              },
-              {} as Record<number, Kid>,
-            ),
-            dailyChores: GetDaily(chores),
-            weeklyChores: GetWeekly(chores),
-            bonusChores: GetBonus(chores),
-            selectedKid: null,
-          })),
-          finalize(() => (this.loadingAction = null)),
-        ),
-      ),
-    );
-  }
+    dailyChores: computed(() => GetDaily(this.choreService.chores())),
+    weeklyChores: computed(() => GetWeekly(this.choreService.chores())),
+    bonusChores: computed(() => GetBonus(this.choreService.chores())),
+
+    kidsDictionary: computed(() =>
+      Object.fromEntries(this.kidService.kids().map((k) => [k.kidId, k])),
+    ),
+  };
 
   getFilteredChores(chores: Chore[], selectedKid: Kid | null) {
-    return chores.filter((c) => selectedKid == null || c.kidId === selectedKid.kidId);
+    return chores.filter(
+      (c) => selectedKid == null || c.assignedKids.some((ak) => ak.kidId === selectedKid.kidId),
+    );
   }
 
   filterByFrequency(frequency: ChoreFrequency | null) {
@@ -78,9 +57,7 @@ export class ChoreView implements OnInit {
   deleteChore(chore: Chore) {
     this.loadingAction = { choreId: chore.choreId, type: LoadingType.Delete };
 
-    this.choreService.deleteChore$(chore.choreId).subscribe(() => {
-      this.refresh$.next();
-    });
+    this.choreService.deleteChore$(chore.choreId).subscribe();
   }
 
   toggleActive(chore: Chore) {

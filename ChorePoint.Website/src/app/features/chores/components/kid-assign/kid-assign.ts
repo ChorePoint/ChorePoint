@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AssignedKidToChore } from '../../../../core/types/dtos/assigned-kid-to-chore';
+import { AssignedKidToShopItem } from '../../../../core/types/dtos/assigned-kid-to-shop-item';
 import { Kid } from '../../../../core/types/dtos/kid';
 
 @Component({
@@ -9,7 +10,7 @@ import { Kid } from '../../../../core/types/dtos/kid';
   styleUrl: './kid-assign.scss',
 })
 export class KidAssign {
-  @Input() selectedKids: AssignedKidToChore[] | undefined;
+  @Input() selectedKids: AssignedKidToChore[] | AssignedKidToShopItem[] | undefined;
   @Input() kids!: Kid[];
 
   @Output() selectedKidChange = new EventEmitter<number>();

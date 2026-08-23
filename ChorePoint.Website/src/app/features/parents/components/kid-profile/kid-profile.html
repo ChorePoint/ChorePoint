@@ -5,7 +5,7 @@
       <div class="kid-name">{{ kid.name }}</div>
       <div class="kid-meta">Age {{ kid.age }} · {{ kid.chores.length }} active chores</div>
     </div>
-    <div class="kid-points-badge">{{ kid.totalPoints }} ⭐</div>
+    <div class="kid-points-badge">{{ kid.lifetimePoints }} ⭐</div>
   </div>
   <div class="kid-progress">
     <div class="progress-label">
@@ -28,8 +28,8 @@
       <div class="kid-stat-lbl">Approval Rate</div>
     </div>
     <div class="kid-stat">
-      <div class="kid-stat-val">{{ kid.pointsToday }}</div>
-      <div class="kid-stat-lbl">Points Today</div>
+      <div class="kid-stat-val">{{ kid.spendablePoints ?? 0 }}</div>
+      <div class="kid-stat-lbl">Spendable Points</div>
     </div>
   </div>
   <div class="kid-actions">

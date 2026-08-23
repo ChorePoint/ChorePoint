@@ -50,6 +50,12 @@
             margin-bottom: 15px;
         }
 
+        .assign-kids {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
         .emoji-picker {
             display: grid;
             grid-template-columns: repeat(6, 1fr);

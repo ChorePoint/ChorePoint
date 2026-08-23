@@ -1,15 +1,15 @@
 <div id="overlay"></div>
-@if (vm$ | async; as vm) {
+@if (vm.kids().length > 0) {
   <app-header
     [config]="{
       pageTitle: '🛍️ Shop',
-      routerLink: vm.kids.length > 0 ? '/dashboard/shop/add' : '',
+      routerLink: '/dashboard/shop/add',
       buttonIcon: '+',
     }"
   >
-    @if (vm.kids.length > 0) {
+    @if (vm.kids().length > 0) {
       <app-kid-selector-header
-        [kids]="vm.kids"
+        [kids]="vm.kids()"
         [selectedKidId]="vm.selectedKid?.kidId"
         [kidHeaderText]="'Add a shop item to get started!'"
         (kidSelected)="vm.selectedKid = $event"
@@ -27,7 +27,7 @@
           {{ `${vm.shopItems.length} ${vm.shopItems.length > 1 ? 'items' : 'item'}` }}
         </div>
       </div>
-      @if (vm.kids.length === 0) {
+      @if (vm.kids().length === 0) {
         <div class="no-kids-content-state">
           <div class="no-kids-content-icon">🛍️</div>
           <div class="no-kids-content-title">Shop is waiting</div>
@@ -37,9 +37,9 @@
         </div>
       } @else {
         <div class="items-list">
-          @for (shopItem of vm.shopItems; track shopItem.shopItemId) {
+          @for (shopItem of vm.filteredShopItems(); track shopItem.shopItemId) {
             <app-shop-card
-              [shopItem]="shopItem"
+              [shopItem]="getShopItemCard(shopItem)"
               [deleteLoading]="deleteLoadingId === shopItem.shopItemId"
               (deleteEmitter)="delete($event)"
             />

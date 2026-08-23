@@ -1,5 +1,6 @@
 import { TitleCasePipe } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
@@ -9,7 +10,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { ShopItem } from '../../../core/types/dtos/shop-item';
+import { ShopItemCard } from '../../../core/types/dtos/shop-item';
 import { SHOP_ITEM_STATUS_MAP } from '../../../core/types/enums/shop-item-status';
 import { LoadingEmoji } from '../loading-emoji/loading-emoji';
 import { DEFAULT_DELETE_STATE } from './const';
@@ -20,10 +21,10 @@ import { DEFAULT_DELETE_STATE } from './const';
   templateUrl: './shop-card.html',
   styleUrl: './shop-card.scss',
 })
-export class ShopCard {
+export class ShopCard implements AfterViewInit {
   private renderer = inject(Renderer2);
 
-  @Input() shopItem!: ShopItem;
+  @Input() shopItem!: ShopItemCard;
   @Input() deleteLoading = false;
 
   @Output() deleteEmitter = new EventEmitter<number>();
@@ -33,13 +34,23 @@ export class ShopCard {
 
   deleteState = DEFAULT_DELETE_STATE;
 
-  openContextMenuId = -1;
+  contextMenuOpen = false;
   SHOP_ITEM_STATUS_MAP = SHOP_ITEM_STATUS_MAP;
 
-  constructor() {
-    this.renderer.listen('window', 'click', (e: Event) => {
-      if (!this.menu.nativeElement.contains(e.target) && e.target !== this.toggle.nativeElement) {
-        this.openContextMenuId = -1;
+  ngAfterViewInit() {
+    this.renderer.listen('window', 'click', (e: MouseEvent) => {
+      const target = e.target as Node;
+
+      if (target == this.toggle.nativeElement) {
+        this.contextMenuOpen = !this.contextMenuOpen;
+      }
+
+      if (
+        this.contextMenuOpen &&
+        !this.menu.nativeElement.contains(target) &&
+        !this.toggle.nativeElement.contains(target)
+      ) {
+        this.contextMenuOpen = false;
       }
     });
   }

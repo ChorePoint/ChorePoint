@@ -15,14 +15,14 @@ export class ChoreService {
   private baseUrl = '/api/chore';
 
   private _chores = signal<Chore[]>([]);
-  readonly chores$ = this._chores.asReadonly();
+  readonly chores = this._chores.asReadonly();
 
   constructor() {
     this.refresh();
   }
 
   refresh() {
-    this.getChores$().subscribe({
+    this.getChores().subscribe({
       next: (chores) => this._chores.set(chores),
       error: (err) => console.error('Failed to load chores', err),
     });
@@ -35,7 +35,7 @@ export class ChoreService {
     );
   }
 
-  getChores$(visible?: boolean) {
+  getChores(visible?: boolean) {
     let url = `${this.baseUrl}/parent`;
     if (visible !== undefined) {
       url += `?visible=${visible}`;

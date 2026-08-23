@@ -5,17 +5,19 @@ import { throwError } from 'rxjs/internal/observable/throwError';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
 import { Kid } from '../../types/dtos/kid';
+import { ChoreSubmissionService } from '../chore-submission/chore-submission.service';
 import { ApiGetResponse } from '../dtos/response';
 import { CreateKidRequest, UpdateKidRequest } from './kid.dtos';
 
 @Injectable({ providedIn: 'root' })
 export class KidsService {
   private http = inject(HttpClient);
+  private choreSubmissionService = inject(ChoreSubmissionService);
 
   private baseUrl = '/api/parent';
 
   private _kids = signal<Kid[]>([]);
-  readonly kids$ = this._kids.asReadonly();
+  readonly kids = this._kids.asReadonly();
 
   constructor() {
     this.refresh();
@@ -44,7 +46,10 @@ export class KidsService {
 
   createKid$(createKidRequest: CreateKidRequest) {
     return this.http.post<void>(`${this.baseUrl}/kid/create`, createKidRequest).pipe(
-      tap(() => this.refresh()),
+      tap(() => {
+        this.refresh();
+        this.choreSubmissionService.refresh();
+      }),
       map((res) => res),
       catchError((err) => (err.status === 404 ? of(null) : throwError(() => err))),
     );
@@ -60,7 +65,11 @@ export class KidsService {
 
   deleteKidById$(kidId: number) {
     return this.http.delete<void>(`${this.baseUrl}/kid/delete/${kidId}`).pipe(
-      tap(() => this.refresh()),
+      tap(() => {
+        this.refresh();
+        this.choreSubmissionService.refresh();
+        this.choreSubmissionService.removeChildFromCache(kidId);
+      }),
       map((res) => res),
       catchError((err) => (err.status === 404 ? of(null) : throwError(() => err))),
     );

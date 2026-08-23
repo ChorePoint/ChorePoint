@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,7 +15,7 @@ import { FREQUENCY_OPTIONS } from '../../config/frequency-options';
 
 @Component({
   selector: 'app-add-chore',
-  imports: [ReactiveFormsModule, AsyncPipe, LoadingScreen, ChoreForm],
+  imports: [ReactiveFormsModule, LoadingScreen, ChoreForm],
   templateUrl: './add-chore.html',
   styleUrl: './add-chore.scss',
 })
@@ -35,7 +34,7 @@ export class AddChore implements OnInit {
   choreFrequencyOptions = FREQUENCY_OPTIONS;
   choreFrequency = ChoreFrequency;
 
-  kids = this.kidsService.kids$;
+  kids = this.kidsService.kids;
 
   form = this.fb.group<ChoreFormType>({
     name: new FormControl('', { validators: [Validators.required], nonNullable: true }),
@@ -98,12 +97,10 @@ export class AddChore implements OnInit {
 
     this.choreService.createChore$(this.form.getRawValue()).subscribe({
       next: () => {
-        console.log('Chore created successfully');
         this.loading.set(false);
         this.form.reset();
       },
-      error: (err) => {
-        console.error('Error creating chore:', err);
+      error: () => {
         this.error.set('Failed to create chore. Please try again.');
         this.loading.set(false);
       },

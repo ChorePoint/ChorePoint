@@ -1,11 +1,9 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { KidsDataService } from '../../../../core/services/kids/kids-data.service';
-import { Chore } from '../../../../core/types/dtos/chore';
-import { Kid } from '../../../../core/types/dtos/kid';
+import { ChoreService } from '../../../../core/services/chore/chore.service';
+import { KidsService } from '../../../../core/services/kids/kids.service';
 import { ChoreDifficulty } from '../../../../core/types/enums/chore-difficulty';
 import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
 import { ChoreForm } from '../../../../shared/components/chore-form/chore-form';
@@ -18,8 +16,10 @@ import { ChoreFormGroup as ChoreFormType } from '../../../../shared/types/chore-
   templateUrl: './edit-chore.html',
 })
 export class EditChore implements OnInit {
+  private kidService = inject(KidsService);
+  private choreService = inject(ChoreService);
+
   private fb = inject(FormBuilder);
-  private kidsDataService = inject(KidsDataService);
   private route = inject(ActivatedRoute);
 
   loading = signal(false);
@@ -27,10 +27,9 @@ export class EditChore implements OnInit {
 
   choreId!: number;
 
-  vm$!: Observable<{
-    kids: Kid[];
-    chore: Chore | null;
-  }>;
+  vm = {
+    kids: this.kidService.kids,
+  };
 
   form = this.fb.group<ChoreFormType>({
     name: new FormControl('', { validators: [Validators.required], nonNullable: true }),
@@ -54,58 +53,46 @@ export class EditChore implements OnInit {
     description: new FormControl(''),
   });
 
-  kids$ = this.kidsDataService.kids$;
+  constructor() {
+    effect(() => {
+      const chore = this.choreService.chores().find((c) => c.choreId === this.choreId);
+
+      if (!chore) return;
+
+      this.form.patchValue({
+        name: chore.name,
+        icon: chore.icon,
+        assignedKids: chore.assignedKids,
+        frequency: chore.frequency,
+        difficulty: chore.difficulty,
+        points: chore.points,
+        description: chore.description,
+      });
+    });
+  }
 
   ngOnInit() {
     this.choreId = Number(this.route.snapshot.paramMap.get('id'));
-
-    this.loadData();
-  }
-
-  loadData() {
-    // this.vm$ = forkJoin({
-    //   kids: this.kidsDataService.getKids$(),
-    //   chore: this.choreService.getById$(this.choreId!),
-    // }).pipe(
-    //   tap(({ kids, chore }) => {
-    //     if (kids.length && !this.form.value.kidId) {
-    //       this.form.patchValue({ kidId: kids[0].kidId });
-    //     }
-    //     if (chore != null) {
-    //       this.form.patchValue({
-    //         name: chore.name,
-    //         icon: chore.icon,
-    //         kidId: chore.kidId,
-    //         frequency: chore.frequency,
-    //         difficulty: chore.difficulty,
-    //         dueDay: chore.dueDay,
-    //         points: chore.points,
-    //         description: chore.description,
-    //         isVisible: chore.isVisible,
-    //       });
-    //     }
-    //   }),
-    // );
   }
 
   submit() {
-    // if (this.form.invalid) {
-    //   this.form.markAllAsTouched();
-    //   return;
-    // }
-    // this.loading.set(true);
-    // this.choreService.updateChore$({ ...this.form.getRawValue(), id: this.choreId }).subscribe({
-    //   next: () => {
-    //     console.log('Chore updated successfully');
-    //     this.loading.set(false);
-    //     window.history.back();
-    //   },
-    //   error: (err) => {
-    //     console.error('Error updating chore:', err);
-    //     this.error.set('Failed to update chore. Please try again.');
-    //     this.loading.set(false);
-    //     window.history.back();
-    //   },
-    // });
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.loading.set(true);
+    this.choreService
+      .updateChore$({ ...this.form.getRawValue(), choreId: this.choreId })
+      .subscribe({
+        next: () => {
+          this.loading.set(false);
+          window.history.back();
+        },
+        error: () => {
+          this.error.set('Failed to update chore. Please try again.');
+          this.loading.set(false);
+          window.history.back();
+        },
+      });
   }
 }

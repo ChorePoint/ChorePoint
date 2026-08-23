@@ -3,12 +3,11 @@
     <div class="item-emoji-wrap" style="background: #fff8e1">⚡</div>
     <div class="item-name-block">
       <div class="item-name">{{ shopItem.name }}</div>
-      <div class="item-assigned">👤 All Kids</div>
-      <!-- TODO: changed following junction table implementation -->
+      <div class="item-assigned">{{ shopItem.assignedKidsString }}</div>
     </div>
-    <button class="item-menu-btn" (click)="openContextMenuId = shopItem.shopItemId" #toggle>
+    <button class="item-menu-btn" #toggle [attr.id]="'toggle-' + shopItem.shopItemId">
       ⋯
-      <div class="ctx-menu" [class.open]="openContextMenuId === shopItem.shopItemId" #menu>
+      <div class="ctx-menu" [class.open]="contextMenuOpen" #menu>
         <div class="ctx-item"><span class="ctx-icon">✏️</span> Edit</div>
         <div class="ctx-item"><span class="ctx-icon">🙈</span> Hide</div>
         <div class="ctx-item danger" (click)="delete()">
@@ -36,9 +35,11 @@
     <div class="meta-cell">
       <div class="meta-label">Status</div>
       <div class="meta-value">
-        <span class="status-badge" [class]="SHOP_ITEM_STATUS_MAP[shopItem.status].name"
-          >{{ SHOP_ITEM_STATUS_MAP[shopItem.status].icon }}
-          {{ SHOP_ITEM_STATUS_MAP[shopItem.status].name | titlecase }}</span
+        <span
+          class="status-badge"
+          [class]="SHOP_ITEM_STATUS_MAP[shopItem.assignedKids[0].status].name"
+          >{{ SHOP_ITEM_STATUS_MAP[shopItem.assignedKids[0].status].icon }}
+          {{ SHOP_ITEM_STATUS_MAP[shopItem.assignedKids[0].status].name | titlecase }}</span
         >
       </div>
     </div>

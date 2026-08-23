@@ -80,6 +80,19 @@
         </div>
       </div>
 
+      <!-- Kid Assignment -->
+      <div class="form-section">
+        <div class="section-title">Assign Kids</div>
+
+        <div class="assign-kids form-group">
+          <app-kid-assign
+            [kids]="kidsSignal()"
+            [selectedKids]="form.get('assignedKids')?.value"
+            (selectedKidChange)="selectKid($event)"
+          />
+        </div>
+      </div>
+
       <!-- Visibility -->
       <div class="form-section">
         <div class="section-title">Visibility</div>

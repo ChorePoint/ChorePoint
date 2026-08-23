@@ -1,5 +1,5 @@
 export interface UpdateKidRequest {
-  id: number;
+  kidId: number;
   name: string;
   age: number;
   avatar: string;

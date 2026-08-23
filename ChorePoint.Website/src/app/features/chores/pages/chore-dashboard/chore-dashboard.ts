@@ -25,6 +25,8 @@ export class ChoreDashboard implements OnInit {
   spinner = faSpinner;
 
   ngOnInit() {
+    this.loading = false;
+
     this.loadUser().then(() => {
       this.loadChores().then(() => {
         this.loading = false;

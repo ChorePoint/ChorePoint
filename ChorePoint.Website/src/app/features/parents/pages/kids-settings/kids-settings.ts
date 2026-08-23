@@ -1,15 +1,9 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { combineLatest, Observable, switchMap } from 'rxjs';
-import { map } from 'rxjs/internal/operators/map';
-import { KidStats } from '../../../../core/services/chore-submission/chore-submission.dtos';
+import { DEFAULT_KID_STATS } from '../../../../core/consts/default-kid-stats';
 import { ChoreSubmissionService } from '../../../../core/services/chore-submission/chore-submission.service';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
 import { KidsService } from '../../../../core/services/kids/kids.service';
-import { Chore } from '../../../../core/types/dtos/chore';
-import { Kid } from '../../../../core/types/dtos/kid';
-import { DashboardFooterMenu } from '../../../../shared/components/dashboard-footer-menu/dashboard-footer-menu';
 import { Header } from '../../../../shared/components/header/header';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
 import { KidProfile } from '../../components/kid-profile/kid-profile';
@@ -19,16 +13,7 @@ import { KidDetails } from './types';
 
 @Component({
   selector: 'app-kids-settings',
-  imports: [
-    AsyncPipe,
-    LoadingScreen,
-    RouterLink,
-    Leaderboard,
-    KidProfile,
-    KidSummary,
-    Header,
-    DashboardFooterMenu,
-  ],
+  imports: [LoadingScreen, RouterLink, Leaderboard, KidProfile, KidSummary, Header],
   templateUrl: './kids-settings.html',
   styleUrl: './kids-settings.scss',
 })
@@ -37,49 +22,32 @@ export class KidsSettings implements OnInit {
   private choreService = inject(ChoreService);
   private kidService = inject(KidsService);
 
-  vm$!: Observable<{
-    kids: KidDetails[];
-    summaryStats: {
-      totalPoints: number;
-      choresDone: number;
+  readonly vm = computed(() => {
+    const chores = this.choreService.chores();
+
+    const kidDetails = this.kidService.kids().map((kid) => ({
+      ...kid,
+      chores: chores.filter((c) => c.assignedKids.some((ak) => ak.kidId === kid.kidId)),
+      kidStats:
+        this.choreCompletionService.getChoreSubmissionStats(kid.kidId)() ?? DEFAULT_KID_STATS,
+    }));
+
+    return {
+      kidDetails,
+      summaryStats: this.calcSummary(kidDetails),
     };
-  }>;
+  });
 
   ngOnInit() {
-    this.vm$ = combineLatest([this.kidService.getKids$(), this.choreService.getChores$()]).pipe(
-      switchMap(([kids, chores]) => {
-        const kidDetails$ = kids.map((kid) => this.buildKidVm(kid, chores));
-        return combineLatest(kidDetails$).pipe(
-          map((kidsWithStats) => ({
-            kids: kidsWithStats,
-            summaryStats: this.calcSummary(kidsWithStats),
-          })),
-        );
-      }),
-    );
-  }
-
-  private buildKidVm(kid: Kid, chores: Chore[]): Observable<KidDetails> {
-    return this.choreCompletionService.getChoreSubmissionStats$(kid.kidId).pipe(
-      map((stats) => ({
-        ...kid,
-        chores: chores.filter((c) => c.kidId === kid.kidId),
-        kidStats: {
-          ...stats!,
-          weeklyCompletionPercentage: this.calcWeeklyCompletion(stats!),
-        },
-      })),
-    );
+    this.kidService.kids().forEach((kid) => {
+      this.choreCompletionService.loadChoreSubmissionStats(kid.kidId);
+    });
   }
 
   private calcSummary(kids: KidDetails[]) {
     return {
-      totalPoints: kids.reduce((sum, kid) => sum + kid.totalPoints, 0),
+      totalPoints: kids.reduce((sum, kid) => sum + kid.lifetimePoints, 0),
       choresDone: kids.reduce((sum, kid) => sum + kid.kidStats.completedThisWeek, 0),
     };
-  }
-
-  private calcWeeklyCompletion(stats: KidStats) {
-    return stats.dueThisWeek > 0 ? (stats.completedThisWeek / stats.dueThisWeek) * 100 : 100;
   }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { catchError, map, of, throwError } from 'rxjs';
+import { Injectable, inject, signal } from '@angular/core';
+import { catchError, map, of, tap, throwError } from 'rxjs';
 import { ShopItem } from '../../types/dtos/shop-item';
 import { ApiGetResponse } from '../dtos/response';
 import { NewShopItemRequest } from './shop.dtos';
@@ -11,11 +11,25 @@ export class ShopService {
 
   private baseUrl = '/api/shop';
 
-  newShopItem$(request: NewShopItemRequest) {
-    return this.http.post<void>(`${this.baseUrl}/new`, request);
+  private _shopItems = signal<ShopItem[]>([]);
+  readonly shopItems = this._shopItems.asReadonly();
+
+  constructor() {
+    this.refresh();
   }
 
-  getShopItems$() {
+  refresh() {
+    this.getShopItems().subscribe({
+      next: (shopItems) => this._shopItems.set(shopItems),
+      error: (err) => console.error('Failed to load shop items', err),
+    });
+  }
+
+  newShopItem$(request: NewShopItemRequest) {
+    return this.http.post<void>(`${this.baseUrl}/new`, request).pipe(tap(() => this.refresh()));
+  }
+
+  getShopItems() {
     return this.http.get<ApiGetResponse<ShopItem[]>>(`${this.baseUrl}/parent`).pipe(
       map((res) => res.data),
       catchError((err) => (err.status === 404 ? of([]) : throwError(() => err))),
@@ -23,7 +37,8 @@ export class ShopService {
   }
 
   deleteShopItem$(id: number) {
-    return this.http.delete<void>(`${this.baseUrl}/${id}/delete`).pipe(
+    return this.http.delete<void>(`${this.baseUrl}/delete/${id}`).pipe(
+      tap(() => this.refresh()),
       map((res) => res),
       catchError((err) => (err.status === 404 ? of(null) : throwError(() => err))),
     );

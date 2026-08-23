@@ -10,12 +10,12 @@
 
     <div class="stats-row">
       <div class="stat-card">
-        <div class="stat-value">{{ user.totalPoints }}</div>
-        <div class="stat-label">Total Points</div>
+        <div class="stat-value">{{ user.lifetimePoints }}</div>
+        <div class="stat-label">Lifetime Points</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">{{ user.pointsToday }}</div>
-        <div class="stat-label">Today</div>
+        <div class="stat-value">{{ user.spendablePoints }}</div>
+        <div class="stat-label">Spendable Points</div>
       </div>
       <div class="stat-card">
         <div class="stat-value streak-value">🔥 {{ user.dayStreak }}</div>
@@ -30,7 +30,9 @@
       <div class="featured-icon">🎮</div>
       <div class="featured-title">Minecraft DLC</div>
       <div class="featured-progress">
-        {{ user.totalPoints }} / 5,000 points ({{ ((user.totalPoints / 5000) * 100).toFixed(0) }}%)
+        {{ user.lifetimePoints }} / 5,000 points ({{
+          ((user.lifetimePoints / 5000) * 100).toFixed(0)
+        }}%)
       </div>
     </div>
 

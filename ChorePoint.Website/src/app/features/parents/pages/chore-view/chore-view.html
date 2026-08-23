@@ -1,4 +1,4 @@
-@if (vm$ | async; as vm) {
+@if (vm.kids().length !== 0) {
   <app-header
     [config]="{
       pageTitle: 'Chores',
@@ -6,7 +6,7 @@
       buttonIcon: '+',
     }"
     ><app-kid-selector-header
-      [kids]="vm.kids"
+      [kids]="vm.kids()"
       [selectedKidId]="vm.selectedKid?.kidId ?? -1"
       [kidHeaderText]="'Add a child from the kids tab to get started!'"
       (kidSelected)="vm.selectedKid = $event"
@@ -46,8 +46,8 @@
   <div class="content">
     @if (isSelectedFrequency(ChoreFrequency.Daily)) {
       <app-chore-card-wrapper
-        [chores]="getFilteredChores(vm.dailyChores, vm.selectedKid)"
-        [kidsDictionary]="vm.kidsDictionary"
+        [chores]="getFilteredChores(vm.dailyChores(), vm.selectedKid)"
+        [kidsDictionary]="vm.kidsDictionary()"
         [loadingAction]="loadingAction"
         [timeframe]="TimeFrame.Daily"
         (deleteEmitter)="deleteChore($event)"
@@ -56,8 +56,8 @@
     }
     @if (isSelectedFrequency(ChoreFrequency.Weekly)) {
       <app-chore-card-wrapper
-        [chores]="getFilteredChores(vm.weeklyChores, vm.selectedKid)"
-        [kidsDictionary]="vm.kidsDictionary"
+        [chores]="getFilteredChores(vm.weeklyChores(), vm.selectedKid)"
+        [kidsDictionary]="vm.kidsDictionary()"
         [timeframe]="TimeFrame.Weekly"
         (deleteEmitter)="deleteChore($event)"
         (toggleActiveEmitter)="toggleActive($event)"
@@ -65,8 +65,8 @@
     }
     @if (isSelectedFrequency(ChoreFrequency.Bonus)) {
       <app-chore-card-wrapper
-        [chores]="getFilteredChores(vm.bonusChores, vm.selectedKid)"
-        [kidsDictionary]="vm.kidsDictionary"
+        [chores]="getFilteredChores(vm.bonusChores(), vm.selectedKid)"
+        [kidsDictionary]="vm.kidsDictionary()"
         [timeframe]="TimeFrame.Bonus"
         (deleteEmitter)="deleteChore($event)"
         (toggleActiveEmitter)="toggleActive($event)"

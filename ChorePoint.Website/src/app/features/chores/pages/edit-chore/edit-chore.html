@@ -1,7 +1,7 @@
-@if (vm$ | async; as vm) {
+@if (vm) {
   <app-chore-form
     [form]="form"
-    [kids]="vm.kids"
+    [kids]="vm.kids()"
     [title]="'✏️ Edit Chore'"
     [submitText]="'Update Chore'"
     [loading]="loading()"

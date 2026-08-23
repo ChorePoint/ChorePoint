@@ -63,4 +63,10 @@ export class ChoreCard {
   closeMenu() {
     this.menuOpen = -1;
   }
+
+  getAssignedKids() {
+    return this.chore.assignedKids.length === 0
+      ? 'No kids assigned'
+      : this.chore.assignedKids.map((ak) => this.kidsDictionary[ak.kidId].name).join(', ');
+  }
 }

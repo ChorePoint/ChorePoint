@@ -3,8 +3,8 @@ export interface Kid {
   name: string;
   age: number;
   avatar: string;
-  totalPoints: number;
-  pointsToday: number;
+  lifetimePoints: number;
+  spendablePoints: number | null;
   dayStreak: number;
   parentId: number;
 }

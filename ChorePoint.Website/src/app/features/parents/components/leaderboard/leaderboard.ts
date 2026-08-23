@@ -15,6 +15,8 @@ export class Leaderboard implements OnInit {
   rankEmojis = ['🥇', '🥈', '🥉'];
 
   ngOnInit(): void {
-    this.leaderboardKids = this.kids.sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 3);
+    this.leaderboardKids = this.kids
+      .sort((a, b) => b.lifetimePoints - a.lifetimePoints)
+      .slice(0, 3);
   }
 }

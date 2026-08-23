@@ -12,5 +12,5 @@ import { DashboardFooterMenu } from '../../../../shared/components/dashboard-foo
 export class DashboardLayout {
   private kidsService = inject(KidsService);
 
-  kids = this.kidsService.kids$;
+  kids = this.kidsService.kids;
 }

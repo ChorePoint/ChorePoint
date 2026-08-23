@@ -24,16 +24,16 @@ export class DashboardHome implements OnInit {
 
   loading = false;
 
-  vm$ = {
-    kids: this.kidsService.kids$,
+  vm = {
+    kids: this.kidsService.kids,
     selectedKid: null as Kid | null,
-    pendingApprovals: this.choreSubmissionService.submissions$,
+    pendingApprovals: this.choreSubmissionService.submissions,
     stats: null as KidStats | null,
   };
 
   ngOnInit() {
-    if (this.vm$.kids.length === 0) {
-      this.vm$.selectedKid = this.vm$.kids()[0];
+    if (this.vm.kids.length === 0) {
+      this.vm.selectedKid = this.vm.kids()[0];
     }
   }
 
@@ -42,6 +42,6 @@ export class DashboardHome implements OnInit {
   }
 
   selectKid(kid: Kid) {
-    this.vm$.selectedKid = kid;
+    this.vm.selectedKid = kid;
   }
 }

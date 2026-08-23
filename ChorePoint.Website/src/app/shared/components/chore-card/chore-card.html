@@ -4,7 +4,7 @@
     <div class="chore-name">{{ chore.name }}</div>
     <div class="chore-meta">
       <span class="meta-tag tag-{{ timeframe }}">{{ timeframe | titlecase }}</span>
-      <span class="chore-assignee">{{ kidsDictionary[chore.kidId]?.name }}</span>
+      <span class="chore-assignee">{{ getAssignedKids() }}</span>
     </div>
   </div>
   <div class="chore-right">

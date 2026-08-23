@@ -13,4 +13,4 @@ export interface CreateChoreRequest {
   description: string | null;
 }
 
-export type UpdateChoreRequest = CreateChoreRequest & { id: number };
+export type UpdateChoreRequest = CreateChoreRequest & { choreId: number };

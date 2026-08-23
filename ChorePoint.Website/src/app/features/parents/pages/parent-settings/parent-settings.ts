@@ -15,5 +15,5 @@ import { KidList } from '../../../chores/components/kid-list/kid-list';
 export class ParentSettings {
   private kidService = inject(KidsService);
 
-  kids = this.kidService.kids$;
+  kids = this.kidService.kids;
 }

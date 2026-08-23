@@ -9,12 +9,10 @@ export class HasKidsGuard implements CanActivate {
   private router = inject(Router);
 
   canActivate(): Observable<boolean | UrlTree> {
-    // Fast path — trust the flag
     if (localStorage.getItem('chorepoint_has_kids') === 'true') {
       return of(true);
     }
 
-    // Slow path — verify with API
     return this.kidsService.getKids$().pipe(
       map((kids) => {
         if (kids.length > 0) {

@@ -57,7 +57,7 @@ export class EditKidForm implements OnInit {
           name: kid.name,
           age: kid.age,
           dayStreak: kid.dayStreak,
-          spendablePoints: kid.totalPoints,
+          spendablePoints: kid.lifetimePoints,
           avatar: kid.avatar,
         });
       }),
@@ -78,14 +78,12 @@ export class EditKidForm implements OnInit {
 
     this.saveLoading.set(true);
 
-    this.kidsService.updateKid$({ id: this.kidId, ...this.form.getRawValue() }).subscribe({
+    this.kidsService.updateKid$({ kidId: this.kidId, ...this.form.getRawValue() }).subscribe({
       next: () => {
-        console.log('Kid updated successfully');
         this.saveLoading.set(false);
         this.showToast();
       },
       error: () => {
-        console.log('Kid updated failed');
         this.saveLoading.set(false);
       },
     });
@@ -103,12 +101,10 @@ export class EditKidForm implements OnInit {
 
     this.kidsService.deleteKidById$(this.kidId).subscribe({
       next: () => {
-        console.log('Kid updated successfully');
         this.deleteLoading.set(false);
         this.router.navigate(['/kids/home']);
       },
       error: () => {
-        console.log('Kid updated failed');
         this.deleteLoading.set(false);
       },
     });

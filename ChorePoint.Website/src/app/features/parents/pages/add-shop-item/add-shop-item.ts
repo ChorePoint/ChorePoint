@@ -1,23 +1,39 @@
 import { Location } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { SHOP_EMOJIS } from '../../../../core/consts/shop-emojis';
+import { KidsService } from '../../../../core/services/kids/kids.service';
 import { ShopService } from '../../../../core/services/shop/shop.service';
+import { Kid } from '../../../../core/types/dtos/kid';
 import { ShopItemStatusStatus } from '../../../../core/types/enums/shop-item-status';
 import { CategorySelector } from '../../../../shared/components/category-selector/category-selector';
 import { LoadingEmoji } from '../../../../shared/components/loading-emoji/loading-emoji';
+import { ShopFormGroup } from '../../../../shared/types/shop-form-group';
 import { EmojiPicker } from '../../../chores/components/emoji-picker/emoji-picker';
+import { KidAssign } from '../../../chores/components/kid-assign/kid-assign';
 
 @Component({
   selector: 'app-add-shop-item',
-  imports: [ReactiveFormsModule, RouterLink, EmojiPicker, CategorySelector, LoadingEmoji],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    EmojiPicker,
+    CategorySelector,
+    LoadingEmoji,
+    KidAssign,
+  ],
   templateUrl: './add-shop-item.html',
   styleUrl: './add-shop-item.scss',
 })
-export class AddShopItem {
+export class AddShopItem implements OnInit {
   private fb = inject(FormBuilder);
   private shopService = inject(ShopService);
+  private kidsService = inject(KidsService);
+
+  kidsSignal = this.kidsService.kids;
+
+  selectedKids: Kid[] = [];
 
   location = inject(Location);
 
@@ -27,19 +43,37 @@ export class AddShopItem {
 
   stockDisplay = 'Unlimited';
 
-  form = this.fb.nonNullable.group({
-    kidId: [1], // Temporary field as endpoint will be changing
-    icon: ['⚡', { validators: [Validators.required] }],
-    name: ['', { validators: [Validators.required] }],
-    description: [''],
-    category: ['Other', { validators: [Validators.required] }],
-    cost: [0, { validators: [Validators.required] }],
-    quantity: [null as number | null, { validators: [Validators.required] }], // Endpoint not currently accepting nullable but will in
-    status: [ShopItemStatusStatus.Available, { validators: [Validators.required] }],
+  form = this.fb.group<ShopFormGroup>({
+    assignedKids: new FormControl([], {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
+    icon: new FormControl('⚡', { validators: [Validators.required], nonNullable: true }),
+    name: new FormControl('', { validators: [Validators.required], nonNullable: true }),
+    description: new FormControl(''),
+    category: new FormControl('Other', { validators: [Validators.required], nonNullable: true }),
+    cost: new FormControl(0, { validators: [Validators.required], nonNullable: true }),
+    quantity: new FormControl(null as number | null),
+    status: new FormControl(ShopItemStatusStatus.Available, {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
   });
 
+  ngOnInit() {
+    if (this.kidsSignal().length !== 0 && !this.form.value.assignedKids) {
+      this.form.patchValue({
+        assignedKids: [
+          {
+            kidId: this.kidsSignal()[0].kidId,
+            status: ShopItemStatusStatus.Available,
+          },
+        ],
+      });
+    }
+  }
+
   submit() {
-    console.log(this.form.invalid);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -53,10 +87,22 @@ export class AddShopItem {
       next: () => {
         this.loading = false;
         this.form.reset();
+        this.location.back();
       },
       error: () => {
         this.loading = false;
       },
+    });
+  }
+
+  selectKid(kidId: number) {
+    this.selectedKids = this.kidsSignal().filter((kid) => kid.kidId == kidId || kidId === -1);
+
+    this.form.patchValue({
+      assignedKids: this.selectedKids.map((selectedKid) => ({
+        kidId: selectedKid.kidId,
+        status: ShopItemStatusStatus.Available,
+      })),
     });
   }
 

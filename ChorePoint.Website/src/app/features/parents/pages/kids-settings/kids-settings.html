@@ -1,4 +1,4 @@
-@if (vm$ | async; as vm) {
+@if (vm().kidDetails.length > 0) {
   <app-header
     [config]="{
       pageTitle: 'My Kids',
@@ -10,14 +10,14 @@
   <div class="content">
     <app-kid-summary
       [summary]="{
-        kidCount: vm.kids.length,
-        choresDone: vm.summaryStats.choresDone,
-        totalPoints: vm.summaryStats.totalPoints,
+        kidCount: vm().kidDetails.length,
+        choresDone: vm().summaryStats.choresDone,
+        totalPoints: vm().summaryStats.totalPoints,
       }"
     />
 
-    @if (vm.kids.length > 0) {
-      <app-leaderboard [kids]="vm.kids" />
+    @if (vm().kidDetails.length > 0) {
+      <app-leaderboard [kids]="vm().kidDetails" />
     }
 
     <div class="section-header">
@@ -25,8 +25,8 @@
     </div>
 
     <div class="kids-list">
-      @if (vm.kids.length > 0) {
-        @for (kid of vm.kids; track kid.kidId) {
+      @if (vm().kidDetails.length > 0) {
+        @for (kid of vm().kidDetails; track kid.kidId) {
           <app-kid-profile [kid]="kid" />
         }
       }

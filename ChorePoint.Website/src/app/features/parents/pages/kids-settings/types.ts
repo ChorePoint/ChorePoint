@@ -6,3 +6,8 @@ export type KidDetails = Kid & {
   chores: Chore[];
   kidStats: KidStats;
 };
+
+export interface SummaryStats {
+  totalPoints: number;
+  choresDone: number;
+}
