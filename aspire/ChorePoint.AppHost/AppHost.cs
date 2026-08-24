@@ -12,9 +12,11 @@ var seedData = builder.AddParameter("seed-test-data");
 var sensitiveDatabaseLogging = builder.AddParameter("database-log-sensitive-values");
 
 var postgres = builder.AddPostgres("postgres").WithDbGate();
+var redis = builder.AddRedis("redis").WithRedisCommander();
 if (bool.TryParse(await seedData.Resource.GetValueAsync(CancellationToken.None), out var seedDataValue) && !seedDataValue)
 {
     postgres.WithDataVolume();
+    redis.WithDataVolume();
 }
 
 var connectionStringAdditions = string.Empty;
@@ -28,9 +30,9 @@ if (
     connectionStringAdditions = "Include Error Detail=true;Log Parameters=true";
 }
 
-var db = postgres.AddDatabase("chorepoint-db");
+var db = postgres.AddDatabase("database");
 var dbConnection = builder
-    .AddConnectionString("chorepoint-db-cs", ReferenceExpression.Create($"{db};{connectionStringAdditions}"))
+    .AddConnectionString("database-connection", ReferenceExpression.Create($"{db};{connectionStringAdditions}"))
     .WaitFor(db);
 
 var migrations = builder
@@ -47,8 +49,10 @@ var api = builder
     .WithEnvironment("JWT_AUDIENCE", jwtAudience)
     .WithEnvironment("JWT_DURATION", jwtDuration)
     .WithEnvironment("JWT_KID_DURATION", jwtKidDuration)
+    .WithReference(redis)
     .WithReference(dbConnection)
     .WithReference(migrations)
+    .WaitFor(redis)
     .WaitForCompletion(migrations);
 
 builder

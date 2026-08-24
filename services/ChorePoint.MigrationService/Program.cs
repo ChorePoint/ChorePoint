@@ -18,7 +18,7 @@ try
     builder.AddServiceDefaults();
     builder.Services.AddOpenTelemetry().WithTracing(tracing => tracing.AddSource(Worker.ActivitySourceName));
 
-    builder.AddNpgsqlDbContext<AppDbContext>("chorepoint-db-cs");
+    builder.AddNpgsqlDbContext<AppDbContext>("database-connection");
 
     if (bool.TryParse(Environment.GetEnvironmentVariable("SEED_TEST_DATA"), out var seedData) && seedData)
     {
