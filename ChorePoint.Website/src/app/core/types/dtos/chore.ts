@@ -12,7 +12,6 @@ export interface Chore {
   difficulty: ChoreDifficulty;
   frequency: ChoreFrequency;
   dueDay: DayOfWeek | null;
-  isVisible: boolean;
   lastCompleted: Date | null;
   createdAt: Date | null;
   updatedAt: Date | null;

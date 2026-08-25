@@ -31,3 +31,36 @@
     overflow-y: auto;
     height: 100%;
 }
+
+.toast {
+    position: fixed;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgb(39 174 96 / 35%);
+    opacity: 0;
+    transition:
+        opacity 0.2s,
+        transform 0.2s;
+    pointer-events: none;
+    white-space: nowrap;
+    font-family: inherit;
+
+    &.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    &.success {
+        background: #27ae60;
+    }
+
+    &.error {
+        background-color: red;
+    }
+}

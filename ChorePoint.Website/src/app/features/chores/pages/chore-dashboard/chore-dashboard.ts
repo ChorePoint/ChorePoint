@@ -45,20 +45,14 @@ export class ChoreDashboard implements OnInit {
   }
 
   getDailyChores(): Chore[] {
-    return this.chores.filter(
-      (chore) => chore.isVisible && chore.frequency == ChoreFrequency.Daily,
-    );
+    return this.chores.filter((chore) => chore.frequency == ChoreFrequency.Daily);
   }
 
   getWeeklyChores(): Chore[] {
-    return this.chores.filter(
-      (chore) => chore.isVisible && chore.frequency == ChoreFrequency.Weekly,
-    );
+    return this.chores.filter((chore) => chore.frequency == ChoreFrequency.Weekly);
   }
 
   getBonusChores(): Chore[] {
-    return this.chores.filter(
-      (chore) => chore.isVisible && chore.frequency == ChoreFrequency.Bonus,
-    );
+    return this.chores.filter((chore) => chore.frequency == ChoreFrequency.Bonus);
   }
 }

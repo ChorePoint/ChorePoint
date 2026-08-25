@@ -19,10 +19,10 @@ export class ChoreCardWrapper {
   @Input() loadingAction: LoadingAction | null = null;
 
   @Output() deleteEmitter = new EventEmitter<Chore>();
-  @Output() toggleActiveEmitter = new EventEmitter<Chore>();
+  @Output() toggleActiveEmitter = new EventEmitter<{ chore: Chore; active: boolean }>();
 
   toggleActive(chore: Chore) {
-    this.toggleActiveEmitter.emit(chore);
+    this.toggleActiveEmitter.emit({ chore, active: this.getActive() > 0 });
   }
 
   delete(chore: Chore) {
@@ -30,6 +30,6 @@ export class ChoreCardWrapper {
   }
 
   getActive() {
-    return this.chores.filter((chore) => chore.isVisible).length;
+    return this.chores.filter((chore) => chore.assignedKids.some((ak) => ak.isVisible)).length;
   }
 }
