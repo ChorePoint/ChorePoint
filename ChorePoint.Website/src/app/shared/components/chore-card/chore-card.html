@@ -18,16 +18,9 @@
     </div>
   </div>
   <div class="chore-menu-wrap">
-    <div
-      class="chore-menu"
-      [class.open]="chore.choreId === menuOpen"
-      (click)="toggleMenu(chore.choreId)"
-      #toggle
-    >
-      ⋮
-    </div>
-    <div class="context-menu" [class.show]="chore.choreId === menuOpen" #menu>
-      <div class="menu-item mi-resume" (click)="toggleActive(chore)">
+    <div class="chore-menu" [class.open]="menuOpen" (click)="toggleMenu()" #toggle>⋮</div>
+    <div class="context-menu" [class.show]="menuOpen" #menu>
+      <div class="menu-item mi-resume" (click)="toggleActive()">
         <div class="mi-icon">
           @if (loadingAction?.type === 'activate' && loadingAction?.choreId === chore.choreId) {
             <app-loading-emoji />
@@ -42,7 +35,7 @@
         Edit chore
       </div>
       <div class="menu-divider"></div>
-      <div class="menu-item mi-delete" (click)="delete(chore)">
+      <div class="menu-item mi-delete" (click)="delete()">
         <div class="mi-icon">
           @if (
             loadingAction?.type === LoadingType.Delete && loadingAction?.choreId === chore.choreId
@@ -52,7 +45,7 @@
             🗑️
           }
         </div>
-        Delete chore
+        {{ deleteState.text }}
       </div>
     </div>
   </div>
