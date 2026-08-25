@@ -15,6 +15,7 @@ import { Kid } from '../../../core/types/dtos/kid';
 import { LoadingAction, LoadingType } from '../../types/loading-action';
 import { TimeFrame } from '../../types/timeframe';
 import { LoadingEmoji } from '../loading-emoji/loading-emoji';
+import { DEFAULT_DELETE_STATE } from '../shop-card/const';
 
 @Component({
   selector: 'app-chore-card',
@@ -36,32 +37,41 @@ export class ChoreCard {
   @Output() deleteEmitter = new EventEmitter<Chore>();
   @Output() toggleActiveEmitter = new EventEmitter<Chore>();
 
+  deleteState = DEFAULT_DELETE_STATE;
+
   LoadingType = LoadingType;
 
-  menuOpen = -1;
+  menuOpen = false;
 
   constructor() {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (!this.menu.nativeElement.contains(e.target) && e.target !== this.toggle.nativeElement) {
-        this.menuOpen = -1;
+        this.menuOpen = false;
       }
     });
   }
 
-  toggleMenu(choreId: number) {
-    this.menuOpen = this.menuOpen === choreId ? -1 : choreId;
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 
-  toggleActive(chore: Chore) {
-    this.toggleActiveEmitter.emit(chore);
+  toggleActive() {
+    this.toggleActiveEmitter.emit(this.chore);
   }
 
-  delete(chore: Chore) {
-    this.deleteEmitter.emit(chore);
+  delete() {
+    if (!this.deleteState.clicked) {
+      this.deleteState = {
+        text: 'Are you sure?',
+        clicked: true,
+      };
+    } else {
+      this.deleteEmitter.emit(this.chore);
+    }
   }
 
   closeMenu() {
-    this.menuOpen = -1;
+    this.menuOpen = false;
   }
 
   getAssignedKids() {
