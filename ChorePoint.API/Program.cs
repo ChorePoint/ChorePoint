@@ -4,6 +4,8 @@ using ChorePoint.Application;
 using ChorePoint.Infrastructure;
 using ChorePoint.ServiceDefaults;
 
+using Hangfire;
+
 using Scalar.AspNetCore;
 
 using Serilog;
@@ -54,7 +56,7 @@ try
     }
 
     builder.Services.AddApplication();
-    builder.Services.AddInfrastructure();
+    builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("redis"));
 
     var app = builder.Build();
 
@@ -84,6 +86,8 @@ try
 
     app.MapControllers();
     app.MapDefaultEndpoints();
+
+    app.UseHangfireDashboard();
 
     await app.RunAsync();
 }

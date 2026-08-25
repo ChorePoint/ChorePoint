@@ -1,7 +1,10 @@
 using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
+using ChorePoint.Application.Interfaces.Hangfire;
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
+
+using Hangfire;
 
 using MediatR;
 
@@ -30,6 +33,11 @@ public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService
 
         await context.LoginCodes.AddAsync(loginCode, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
+
+        BackgroundJob.Schedule<ILoginCodeDeletionJob>(
+            j => j.StartDeleteJob(kid.KidId, cancellationToken),
+            TimeSpan.FromMinutes(int.Parse(Environment.GetEnvironmentVariable("KID_LOGIN_CODE_TIMEOUT") ?? "10"))
+        );
 
         return new AddKidLoginCodeResponse(loginCodeString);
     }
