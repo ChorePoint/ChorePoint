@@ -4,9 +4,11 @@
 </div>
 <div class="chore-list">
   @if (chores.length === 0) {
-    <div class="chore-card {{ timeframe }}">
-      <div class="chore-emoji-wrap bg-purple">🧹</div>
-      <div class="empty-text">No {{ timeframe }} chores yet. Add some to keep the kids busy!</div>
+    <div class="chore-card empty-state {{ timeframe }}">
+      <div class="chore-emoji-wrap bg-purple">📪</div>
+      <div class="empty-text-container">
+        <p>No {{ timeframe }} chores yet. Add some to keep the kids busy!</p>
+      </div>
     </div>
   } @else {
     @for (chore of chores; track chore.choreId) {

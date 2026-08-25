@@ -46,5 +46,34 @@
         .bg-purple {
             background: #f5eef8;
         }
+
+        &.empty-state {
+            justify-content: center;
+            padding: 22px 18px;
+            border: 2px dashed #e0e0e0;
+            box-shadow: none;
+            background: #fafafa;
+
+            &::before {
+                display: none;
+            }
+
+            .chore-emoji-wrap {
+                background: #f0f0f0;
+                flex-shrink: 0;
+            }
+
+            .empty-text-container {
+                font-size: 13px;
+                font-weight: 600;
+                color: #bdc3c7;
+                line-height: 1.45;
+                max-width: none;
+
+                p {
+                    font-weight: 600;
+                }
+            }
+        }
     }
 }
