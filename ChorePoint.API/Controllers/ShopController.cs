@@ -6,6 +6,7 @@ using ChorePoint.Application.Handlers.Shop.NewShopItem;
 using ChorePoint.Application.Handlers.Shop.ReactivateShopItem;
 using ChorePoint.Application.Handlers.Shop.ReviewShopItemPurchase;
 using ChorePoint.Application.Handlers.Shop.UpdateShopItem;
+using ChorePoint.Infrastructure.Authentication;
 
 using MediatR;
 
@@ -14,11 +15,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/shop")]
 public class ShopController(IMediator mediator) : ControllerBase
 {
-    [Authorize]
     [HttpPost("buy/{shopItemId:int}/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -37,8 +38,8 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpDelete("delete/{shopItemId:int}")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -50,7 +51,6 @@ public class ShopController(IMediator mediator) : ControllerBase
         return Ok(new { success = true, message = $"Shop item with ID [{shopItemId}] deleted successfully" });
     }
 
-    [Authorize]
     [HttpGet("kid/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -70,7 +70,6 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpGet("parent")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -90,8 +89,8 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpPost("new")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -103,8 +102,8 @@ public class ShopController(IMediator mediator) : ControllerBase
         return Ok(new { success = true, message = $"Shop item with name [{command.Name}] created successfully" });
     }
 
-    [Authorize]
     [HttpPost("reactivate")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -118,8 +117,8 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpPost("review")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -137,8 +136,8 @@ public class ShopController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpPut("update")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

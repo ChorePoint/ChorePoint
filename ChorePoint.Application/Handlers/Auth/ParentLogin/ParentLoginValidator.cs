@@ -1,10 +1,10 @@
 using FluentValidation;
 
-namespace ChorePoint.Application.Handlers.Auth.Login;
+namespace ChorePoint.Application.Handlers.Auth.ParentLogin;
 
-public class LoginValidator : AbstractValidator<LoginCommand>
+public class ParentLoginValidator : AbstractValidator<ParentLoginCommand>
 {
-    public LoginValidator()
+    public ParentLoginValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty()

@@ -3,6 +3,7 @@ using ChorePoint.Application.Handlers.Parent.DeleteKid;
 using ChorePoint.Application.Handlers.Parent.GetKidById;
 using ChorePoint.Application.Handlers.Parent.GetKidsByParent;
 using ChorePoint.Application.Handlers.Parent.UpdateKid;
+using ChorePoint.Infrastructure.Authentication;
 
 using MediatR;
 
@@ -11,11 +12,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers;
 
+[Authorize(Roles = JwtConstants.ParentRole)]
 [ApiController]
 [Route("api/parent")]
 public class ParentController(IMediator mediator) : ControllerBase
 {
-    [Authorize]
     [HttpPost("kid/create")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -27,7 +28,6 @@ public class ParentController(IMediator mediator) : ControllerBase
         return Ok(new { success = true, message = $"Kid with name [{command.Name}] successfully created" });
     }
 
-    [Authorize]
     [HttpDelete("kid/delete/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -40,7 +40,6 @@ public class ParentController(IMediator mediator) : ControllerBase
         return Ok(new { success = true, message = $"Kid with ID [{kidId}] successfully deleted" });
     }
 
-    [Authorize]
     [HttpGet("kid/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -60,7 +59,6 @@ public class ParentController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpGet("kids")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -80,7 +78,6 @@ public class ParentController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpPut("kid/update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]

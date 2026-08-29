@@ -6,6 +6,8 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
+using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
+
 namespace ChorePoint.Application.Handlers.ChoreSubmission.CompleteChore;
 
 public class CompleteChoreHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<CompleteChoreCommand>
@@ -35,8 +37,22 @@ public class CompleteChoreHandler(IAppDbContext context, IParentContextService p
         }
 
         var newSubmission = chore.CreateSubmission(request.KidId, now);
-
         await context.ChoreSubmissions.AddAsync(newSubmission, cancellationToken);
+
+        var autoApproveChore = await context.ParentSettings
+            .Where(ps => ps.ParentId.Equals(parentId))
+            .Select(ps => ps.AutoApproveChores)
+            .SingleOrDefaultAsync(cancellationToken);
+
+        if (autoApproveChore)
+        {
+            // Explicitly load reference navigation properties as they are not loaded on a newly created entity
+            await context.Entry(newSubmission).Reference(nameof(ChoreSubmissionE.Chore)).LoadAsync(cancellationToken);
+            await context.Entry(newSubmission).Reference(nameof(ChoreSubmissionE.Kid)).LoadAsync(cancellationToken);
+
+            newSubmission.Review("Auto-approved", true, now);
+        }
+
         await context.SaveChangesAsync(cancellationToken);
     }
 }

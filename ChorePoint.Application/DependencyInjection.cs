@@ -1,4 +1,5 @@
 using ChorePoint.Application.Behaviours;
+using ChorePoint.Application.Policies.Shop;
 
 using FluentValidation;
 
@@ -12,6 +13,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
+        services.AddScoped<IShopOpenPolicy, ShopOpenPolicy>();
+
         var applicationAssembly = typeof(DependencyInjection).Assembly;
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(applicationAssembly));
         services.AddValidatorsFromAssembly(applicationAssembly);

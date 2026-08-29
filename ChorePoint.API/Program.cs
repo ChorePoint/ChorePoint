@@ -4,6 +4,8 @@ using ChorePoint.Application;
 using ChorePoint.Infrastructure;
 using ChorePoint.ServiceDefaults;
 
+using Hangfire;
+
 using Scalar.AspNetCore;
 
 using Serilog;
@@ -21,7 +23,7 @@ try
 
     builder.AddServiceDefaults();
 
-    builder.AddNpgsqlDbContext<AppDbContext>("chorepoint-db-cs");
+    builder.AddNpgsqlDbContext<AppDbContext>("database-connection");
 
     builder.Services.AddControllers();
     builder.Services.AddOpenApi(options => options.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
@@ -54,7 +56,7 @@ try
     }
 
     builder.Services.AddApplication();
-    builder.Services.AddInfrastructure();
+    builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("redis"));
 
     var app = builder.Build();
 
@@ -65,13 +67,11 @@ try
         {
             options
                 .WithTitle("ChorePoint API")
-                .WithClassicLayout()
                 .ForceDarkMode()
                 .ExpandAllTags()
-                .HideSearch()
-                .HideModels();
+                .DisableTelemetry();
 
-            options.Theme = ScalarTheme.Solarized;
+            options.Theme = ScalarTheme.Moon;
         });
     }
 
@@ -86,6 +86,8 @@ try
 
     app.MapControllers();
     app.MapDefaultEndpoints();
+
+    app.UseHangfireDashboard();
 
     await app.RunAsync();
 }

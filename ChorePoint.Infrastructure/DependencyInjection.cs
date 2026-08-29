@@ -1,24 +1,33 @@
 using System.Text;
 
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Entities;
+using ChorePoint.Application.Interfaces.Hangfire;
 using ChorePoint.Infrastructure.Authentication;
+using ChorePoint.Infrastructure.Hangfire.Jobs;
+
+using Hangfire;
+using Hangfire.Redis.StackExchange;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
+using StackExchange.Redis;
+
 namespace ChorePoint.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    private static ConnectionMultiplexer? RedisConnection;
+
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string? redisConnectionString = null)
     {
         services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
-        services.AddScoped<IParentContextService, ParentContextService>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-        services.AddScoped<IPasswordHasher<Parent>, PasswordHasher<Parent>>();
+        services.AddScoped<IKidLoginCodeGenerator, KidLoginCodeGenerator>();
+        services.AddScoped<IParentContextService, ParentContextService>();
+        services.AddScoped<IPasswordHasher<string>, PasswordHasher<string>>();
 
         services
             .AddAuthentication(options =>
@@ -36,6 +45,16 @@ public static class DependencyInjection
                 ValidAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_KEY")!))
             });
+
+        if (redisConnectionString is not null)
+        {
+            RedisConnection = ConnectionMultiplexer.Connect(redisConnectionString);
+
+            services.AddHangfire(configuration => configuration.UseRedisStorage(RedisConnection));
+            services.AddHangfireServer();
+
+            services.AddTransient<ILoginCodeDeletionJob, LoginCodeDeletionJob>();
+        }
 
         return services;
     }

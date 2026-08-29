@@ -6,14 +6,19 @@ var jwtKey = builder.AddParameter("jwt-key", secret: true);
 var jwtIssuer = builder.AddParameter("jwt-issuer");
 var jwtAudience = builder.AddParameter("jwt-audience");
 var jwtDuration = builder.AddParameter("jwt-duration");
+var jwtKidDuration = builder.AddParameter("jwt-kid-duration");
+
+var kidLoginCodeTimeout = builder.AddParameter("kid-login-code-timeout");
 
 var seedData = builder.AddParameter("seed-test-data");
 var sensitiveDatabaseLogging = builder.AddParameter("database-log-sensitive-values");
 
 var postgres = builder.AddPostgres("postgres").WithDbGate();
+var redis = builder.AddRedis("redis").WithRedisCommander();
 if (bool.TryParse(await seedData.Resource.GetValueAsync(CancellationToken.None), out var seedDataValue) && !seedDataValue)
 {
     postgres.WithDataVolume();
+    redis.WithDataVolume();
 }
 
 var connectionStringAdditions = string.Empty;
@@ -27,9 +32,9 @@ if (
     connectionStringAdditions = "Include Error Detail=true;Log Parameters=true";
 }
 
-var db = postgres.AddDatabase("chorepoint-db");
+var db = postgres.AddDatabase("database");
 var dbConnection = builder
-    .AddConnectionString("chorepoint-db-cs", ReferenceExpression.Create($"{db};{connectionStringAdditions}"))
+    .AddConnectionString("database-connection", ReferenceExpression.Create($"{db};{connectionStringAdditions}"))
     .WaitFor(db);
 
 var migrations = builder
@@ -45,9 +50,35 @@ var api = builder
     .WithEnvironment("JWT_ISSUER", jwtIssuer)
     .WithEnvironment("JWT_AUDIENCE", jwtAudience)
     .WithEnvironment("JWT_DURATION", jwtDuration)
+    .WithEnvironment("JWT_KID_DURATION", jwtKidDuration)
+    .WithEnvironment("KID_LOGIN_CODE_TIMEOUT", kidLoginCodeTimeout)
+    .WithReference(redis)
     .WithReference(dbConnection)
     .WithReference(migrations)
+    .WaitFor(redis)
     .WaitForCompletion(migrations);
+
+api.WithUrls(context =>
+{
+    foreach (var url in context.Urls.Where(url => string.IsNullOrEmpty(url.DisplayText)).ToList())
+    {
+        if (url.Endpoint is null)
+        {
+            continue;
+        }
+
+        url.DisplayText = $"Scalar ({url.Endpoint.Scheme.ToUpper()})";
+
+        if (url.DisplayLocation is UrlDisplayLocation.SummaryAndDetails)
+        {
+            context.Urls.Add(new ResourceUrlAnnotation
+            {
+                Url = $"{url.Url[..url.Url.IndexOf("/scalar", StringComparison.Ordinal)]}/hangfire",
+                DisplayText = $"Hangfire ({url.Endpoint.Scheme.ToUpper()})"
+            });
+        }
+    }
+});
 
 builder
     .AddJavaScriptApp("website", "../../ChorePoint.Website")

@@ -3,6 +3,7 @@ using ChorePoint.Application.Handlers.ChoreSubmission.GetLatestSubmissionByKid;
 using ChorePoint.Application.Handlers.ChoreSubmission.GetStatsByKid;
 using ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissionsByParent;
 using ChorePoint.Application.Handlers.ChoreSubmission.ReviewSubmission;
+using ChorePoint.Infrastructure.Authentication;
 
 using MediatR;
 
@@ -11,11 +12,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/chore/submissions")]
 public class ChoreSubmissionController(IMediator mediator) : ControllerBase
 {
-    [Authorize]
     [HttpPost("complete/{choreId:int}/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -34,7 +35,6 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpGet("latest/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -54,7 +54,6 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpGet("stats/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -74,7 +73,6 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -94,8 +92,8 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpPut("review")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

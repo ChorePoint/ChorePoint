@@ -34,17 +34,17 @@ public class ChoreSubmission : EntityBase
             return;
         }
 
-        if (Kid is null)
-        {
-            throw new ArgumentException(
-                "Kid needs to be included in ChoreSubmission entity retrieval when a chore is approved to add points"
-            );
-        }
-
         if (Chore is null)
         {
             throw new ArgumentException(
                 "Chore needs to be included in ChoreSubmission entity retrieval when a chore is approved to add points"
+            );
+        }
+
+        if (Kid is null)
+        {
+            throw new ArgumentException(
+                "Kid needs to be included in ChoreSubmission entity retrieval when a chore is approved to add points"
             );
         }
 

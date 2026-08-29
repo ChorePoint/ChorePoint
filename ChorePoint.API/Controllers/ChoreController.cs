@@ -4,6 +4,7 @@ using ChorePoint.Application.Handlers.Chore.GetChoreById;
 using ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 using ChorePoint.Application.Handlers.Chore.GetChoresByParent;
 using ChorePoint.Application.Handlers.Chore.UpdateChore;
+using ChorePoint.Infrastructure.Authentication;
 
 using MediatR;
 
@@ -12,12 +13,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/chore")]
 public class ChoreController(IMediator mediator) : ControllerBase
 {
-    [Authorize]
     [HttpPost("create")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -29,8 +31,8 @@ public class ChoreController(IMediator mediator) : ControllerBase
         return Ok(new { success = true, message = $"Chore with name [{command.Name}] successfully created" });
     }
 
-    [Authorize]
     [HttpDelete("delete/{choreId:int}")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -42,7 +44,6 @@ public class ChoreController(IMediator mediator) : ControllerBase
         return Ok(new { success = true, message = $"Chore with ID [{choreId}] successfully deleted" });
     }
 
-    [Authorize]
     [HttpGet("{choreId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -62,7 +63,6 @@ public class ChoreController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpGet("kid/{kidId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -82,7 +82,6 @@ public class ChoreController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpGet("parent")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
@@ -102,8 +101,8 @@ public class ChoreController(IMediator mediator) : ControllerBase
         );
     }
 
-    [Authorize]
     [HttpPut("update")]
+    [Authorize(Roles = JwtConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

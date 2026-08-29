@@ -8,6 +8,12 @@ namespace ChorePoint.Infrastructure.Authentication;
 
 public class ParentContextService(IHttpContextAccessor accessor) : IParentContextService
 {
+    public bool IsParent()
+    {
+        return GetParent()?.IsInRole(JwtConstants.ParentRole)
+               ?? throw new UnauthorizedAccessException("Parent is not authorised!");
+    }
+
     public int GetParentId()
     {
         var parentId = GetParent()?.FindFirst(ClaimTypes.NameIdentifier)?.Value;

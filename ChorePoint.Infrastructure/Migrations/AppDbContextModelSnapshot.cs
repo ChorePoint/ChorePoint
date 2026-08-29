@@ -197,9 +197,6 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.Property<int>("LifetimePoints")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("LoginCode")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -275,6 +272,27 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.HasIndex("ShopItemId");
 
                     b.ToTable("KidShopItem");
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.LoginCode", b =>
+                {
+                    b.Property<int>("KidId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("KidId");
+
+                    b.ToTable("LoginCodes");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Parent", b =>
@@ -499,6 +517,17 @@ namespace ChorePoint.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ChorePoint.Domain.Entities.LoginCode", b =>
+                {
+                    b.HasOne("ChorePoint.Domain.Entities.Kid", "Kid")
+                        .WithOne("LoginCode")
+                        .HasForeignKey("ChorePoint.Domain.Entities.LoginCode", "KidId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Kid");
+                });
+
             modelBuilder.Entity("ChorePoint.Domain.Entities.ParentSettings", b =>
                 {
                     b.HasOne("ChorePoint.Domain.Entities.Parent", null)
@@ -535,6 +564,8 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.Navigation("KidChores");
 
                     b.Navigation("KidShopItems");
+
+                    b.Navigation("LoginCode");
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Parent", b =>
