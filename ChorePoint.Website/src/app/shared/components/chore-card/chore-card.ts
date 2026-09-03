@@ -59,6 +59,10 @@ export class ChoreCard {
     this.toggleActiveEmitter.emit(this.chore);
   }
 
+  getIsActive() {
+    return this.chore.assignedKids.every((ak) => ak.isVisible);
+  }
+
   delete() {
     if (!this.deleteState.clicked) {
       this.deleteState = {

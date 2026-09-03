@@ -44,6 +44,10 @@ export class KidsSettings implements OnInit {
     });
   }
 
+  sortByAge(kidDetails: KidDetails[]) {
+    return kidDetails.sort((a, b) => a.age - b.age);
+  }
+
   private calcSummary(kids: KidDetails[]) {
     return {
       totalPoints: kids.reduce((sum, kid) => sum + kid.lifetimePoints, 0),
