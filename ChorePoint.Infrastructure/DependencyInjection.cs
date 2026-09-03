@@ -11,6 +11,7 @@ using Hangfire.Redis.StackExchange;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
 using StackExchange.Redis;
@@ -57,5 +58,12 @@ public static class DependencyInjection
         }
 
         return services;
+    }
+
+    public static IHostApplicationBuilder AddDatabase(this IHostApplicationBuilder builder)
+    {
+        builder.AddNpgsqlDbContext<AppDbContext>("database-connection", configureDbContextOptions: options => options.EnableSensitiveDataLogging());
+
+        return builder;
     }
 }

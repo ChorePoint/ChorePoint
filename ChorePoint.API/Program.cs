@@ -23,8 +23,6 @@ try
 
     builder.AddServiceDefaults();
 
-    builder.AddNpgsqlDbContext<AppDbContext>("database-connection");
-
     builder.Services.AddControllers();
     builder.Services.AddOpenApi(options => options.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
 
@@ -57,6 +55,7 @@ try
 
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("redis"));
+    builder.AddDatabase();
 
     var app = builder.Build();
 
