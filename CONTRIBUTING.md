@@ -24,12 +24,12 @@ If a Pull Request gets reviewed, and they request changes, then the flow changes
 
 `Pull Request reviewer requests changes` &rarr; `Automation moves items to "Changes requested" column` &rarr; `Pull Request approved` &rarr; `Automation moves items to "Pull request" column` &rarr; `Pull Request merged` &rarr; `Automation closes issue`
 
-## Issue creation
+## Issue Creation
 When creating a new issue, make sure to create a descriptive title and add a description if any further information is required, add any labels that apply to the feature/bug, and set the issue to the correct type.
 
 If this new issue is required to be in the next release, then assign it to the latest `Milestone`. This issue should then be manually moved to the `Ready` column on the [Kanban board](https://github.com/orgs/ChorePoint/projects/2/views/1) as all issues that are assigned to a `Milestone` should be in the `Ready` column so they naturally become the next ones to be picked up.
 
-## Pull Request creation
+## Pull Request Creation
 When creating a new Pull Request, the title needs to be formatted in the following way:
 
 `#<issue_number>: <short_description>`
