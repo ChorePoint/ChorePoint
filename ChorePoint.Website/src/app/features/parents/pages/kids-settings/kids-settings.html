@@ -25,10 +25,8 @@
     </div>
 
     <div class="kids-list">
-      @if (vm().kidDetails.length > 0) {
-        @for (kid of vm().kidDetails; track kid.kidId) {
-          <app-kid-profile [kid]="kid" />
-        }
+      @for (kid of sortByAge(vm().kidDetails); track kid.kidId) {
+        <app-kid-profile [kid]="kid" />
       }
 
       <div [routerLink]="'/kids/add'" class="add-kid-card">

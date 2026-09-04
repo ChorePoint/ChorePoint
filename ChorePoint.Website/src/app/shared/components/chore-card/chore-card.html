@@ -11,10 +11,10 @@
     <div class="chore-pts">+{{ chore.points }} ⭐</div>
     <div
       class="chore-status"
-      [class.status-active]="chore.isVisible"
-      [class.status-inactive]="!chore.isVisible"
+      [class.status-active]="getIsActive()"
+      [class.status-inactive]="!getIsActive()"
     >
-      {{ chore.isVisible ? 'Active' : 'Inactive' }}
+      {{ getIsActive() ? 'Active' : 'Inactive' }}
     </div>
   </div>
   <div class="chore-menu-wrap">
@@ -28,7 +28,7 @@
             ▶️
           }
         </div>
-        {{ chore.isVisible ? 'Deactivate' : 'Activate' }} chore
+        {{ getIsActive() ? 'Deactivate' : 'Activate' }} chore
       </div>
       <div class="menu-item mi-edit" [routerLink]="['edit', chore.choreId]">
         <div class="mi-icon">✏️</div>

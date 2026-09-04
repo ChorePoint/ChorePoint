@@ -30,6 +30,12 @@ export class ChoreView {
 
   loadingAction: LoadingAction | null = null;
 
+  toastState = {
+    visible: false,
+    text: '✓ Changes saved',
+    success: true,
+  };
+
   vm = {
     kids: this.kidService.kids,
     chores: this.choreService.chores,
@@ -60,27 +66,50 @@ export class ChoreView {
     this.choreService.deleteChore$(chore.choreId).subscribe();
   }
 
-  toggleActive(chore: Chore) {
-    this.loadingAction = { choreId: chore.choreId, type: LoadingType.Activate };
+  toggleActive(activeArgs: { chore: Chore; active: boolean }) {
+    const loadingType = activeArgs.active ? LoadingType.Delete : LoadingType.Activate;
 
-    // this.choreService
-    //   .updateChore$({
-    //     id: chore.choreId,
-    //     name: chore.name,
-    //     icon: chore.icon,
-    //     kidId: chore.kidId,
-    //     frequency: chore.frequency,
-    //     dueDay: chore.dueDay,
-    //     points: chore.points,
-    //     description: chore.description,
-    //     isVisible: !chore.isVisible,
-    //   })
-    //   .subscribe(() => {
-    //     this.refresh$.next();
-    //   });
+    this.loadingAction = { choreId: activeArgs.chore.choreId, type: loadingType };
+
+    const assignedKids = activeArgs.chore.assignedKids.map((ak) => {
+      return {
+        ...ak,
+        isVisible: !activeArgs.active,
+      };
+    });
+
+    this.choreService.updateChore$({ ...activeArgs.chore, assignedKids: assignedKids }).subscribe({
+      next: () => {
+        this.toastState = {
+          ...this.toastState,
+          text: '✓ Changes saved',
+          success: true,
+        };
+
+        this.loadingAction = { choreId: -1, type: loadingType };
+        this.showToast();
+      },
+      error: () => {
+        this.toastState = {
+          ...this.toastState,
+          text: '✗ Error saving changes!',
+          success: false,
+        };
+
+        this.loadingAction = { choreId: -1, type: loadingType };
+        this.showToast();
+      },
+    });
   }
 
   isSelectedFrequency(frequency: ChoreFrequency) {
     return this.selectedFrequency === frequency || this.selectedFrequency === null;
+  }
+
+  showToast() {
+    this.toastState.visible = true;
+    setTimeout(() => {
+      this.toastState.visible = false;
+    }, 2000);
   }
 }
