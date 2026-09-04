@@ -58,6 +58,7 @@
       <app-chore-card-wrapper
         [chores]="getFilteredChores(vm.weeklyChores(), vm.selectedKid)"
         [kidsDictionary]="vm.kidsDictionary()"
+        [loadingAction]="loadingAction"
         [timeframe]="TimeFrame.Weekly"
         (deleteEmitter)="deleteChore($event)"
         (toggleActiveEmitter)="toggleActive($event)"
@@ -67,6 +68,7 @@
       <app-chore-card-wrapper
         [chores]="getFilteredChores(vm.bonusChores(), vm.selectedKid)"
         [kidsDictionary]="vm.kidsDictionary()"
+        [loadingAction]="loadingAction"
         [timeframe]="TimeFrame.Bonus"
         (deleteEmitter)="deleteChore($event)"
         (toggleActiveEmitter)="toggleActive($event)"

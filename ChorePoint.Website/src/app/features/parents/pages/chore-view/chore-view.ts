@@ -67,7 +67,9 @@ export class ChoreView {
   }
 
   toggleActive(activeArgs: { chore: Chore; active: boolean }) {
-    this.loadingAction = { choreId: activeArgs.chore.choreId, type: LoadingType.Activate };
+    const loadingType = activeArgs.active ? LoadingType.Delete : LoadingType.Activate;
+
+    this.loadingAction = { choreId: activeArgs.chore.choreId, type: loadingType };
 
     const assignedKids = activeArgs.chore.assignedKids.map((ak) => {
       return {
@@ -76,8 +78,6 @@ export class ChoreView {
       };
     });
 
-    console.log(assignedKids);
-
     this.choreService.updateChore$({ ...activeArgs.chore, assignedKids: assignedKids }).subscribe({
       next: () => {
         this.toastState = {
@@ -85,6 +85,8 @@ export class ChoreView {
           text: '✓ Changes saved',
           success: true,
         };
+
+        this.loadingAction = { choreId: -1, type: loadingType };
         this.showToast();
       },
       error: () => {
@@ -93,6 +95,8 @@ export class ChoreView {
           text: '✗ Error saving changes!',
           success: false,
         };
+
+        this.loadingAction = { choreId: -1, type: loadingType };
         this.showToast();
       },
     });
