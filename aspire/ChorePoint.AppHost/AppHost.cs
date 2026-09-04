@@ -8,6 +8,8 @@ var jwtAudience = builder.AddParameter("jwt-audience");
 var jwtDuration = builder.AddParameter("jwt-duration");
 var jwtKidDuration = builder.AddParameter("jwt-kid-duration");
 
+var enableCaching = builder.AddParameter("enable-caching");
+
 var kidLoginCodeTimeout = builder.AddParameter("kid-login-code-timeout");
 
 var seedData = builder.AddParameter("seed-test-data");

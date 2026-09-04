@@ -22,9 +22,8 @@ public static class DependencyInjection
 {
     private static ConnectionMultiplexer? RedisConnection;
 
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string? redisConnectionString = null)
+    public static IServiceCollection AddInfrastructureOptions(this IServiceCollection services, string? redisConnectionString = null)
     {
-        services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IKidLoginCodeGenerator, KidLoginCodeGenerator>();
         services.AddScoped<IParentContextService, ParentContextService>();
@@ -60,9 +59,25 @@ public static class DependencyInjection
         return services;
     }
 
+    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
+    {
+        return services;
+    }
+
+    public static IServiceCollection AddHangfire(this IServiceCollection services)
+    {
+        return services;
+    }
+
+    public static IServiceCollection AddCaching(this IServiceCollection services)
+    {
+        return services;
+    }
+
     public static IHostApplicationBuilder AddDatabase(this IHostApplicationBuilder builder)
     {
         builder.AddNpgsqlDbContext<AppDbContext>("database-connection", configureDbContextOptions: options => options.EnableSensitiveDataLogging());
+        builder.Services.AddScoped<IAppDbContext>(provider => provider.GetRequiredService<AppDbContext>());
 
         return builder;
     }

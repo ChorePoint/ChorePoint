@@ -26,4 +26,8 @@
   <ItemGroup>
     <ProjectReference Include="..\ChorePoint.Domain\ChorePoint.Domain.csproj"/>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ServiceExtensions\" />
+  </ItemGroup>
 </Project>
