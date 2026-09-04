@@ -18,11 +18,11 @@ When starting to work on a new feature/bug, an issue should already exist or be 
 
 Once you have finished development, you must create a Pull Request. This will cause the automation to move the Issue and Pull Request items to the `In progress` column in the [Kanban board](https://github.com/orgs/ChorePoint/projects/2/views/1), the complete flow can be visualised below:
 
-`Issue created` &rarr; `Branch created from issue` &rarr; `Manually move to "In progress" column` &rarr; `Develop` &rarr; `Pull Request created` &rarr; `Automation moves items to "Pull request" column` &rarr; `Pull Request merged` &rarr; `Automation closes issue`
+`Issue created` &rarr; `Branch created from issue` &rarr; `Manually move issue to "In progress" column` &rarr; `Develop` &rarr; `Pull Request created` &rarr; `Automation moves issue to "Pull request" column` &rarr; `Pull Request merged` &rarr; `Automation closes issue`
 
 If a Pull Request gets reviewed, and they request changes, then the flow changes slightly to:
 
-`Pull Request reviewer requests changes` &rarr; `Automation moves items to "Changes requested" column` &rarr; `Pull Request approved` &rarr; `Automation moves items to "Pull request" column` &rarr; `Pull Request merged` &rarr; `Automation closes issue`
+`Pull Request reviewer requests changes` &rarr; `Automation moves issue to "Changes requested" column` &rarr; `Pull Request approved` &rarr; `Automation moves issue to "Pull request" column` &rarr; `Pull Request merged` &rarr; `Automation closes issue`
 
 ## Issue Creation
 When creating a new issue, make sure to create a descriptive title and add a description if any further information is required, add any labels that apply to the feature/bug, and set the issue to the correct type.
@@ -34,4 +34,4 @@ When creating a new Pull Request, the title needs to be formatted in the followi
 
 `#<issue_number>: <short_description>`
 
-Assign yourself, then any further information can be added to the Pull Request description. Also, make sure that the Pull Request is assigned to the same `Milestone` as the linked issue.
+Assign yourself, then any further information can be added to the Pull Request description.
