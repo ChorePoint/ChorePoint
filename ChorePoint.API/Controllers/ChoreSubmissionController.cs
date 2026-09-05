@@ -93,7 +93,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("review")]
-    [Authorize(Roles = JwtConstants.ParentRole)]
+    [Authorize(Roles = AuthenticationConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

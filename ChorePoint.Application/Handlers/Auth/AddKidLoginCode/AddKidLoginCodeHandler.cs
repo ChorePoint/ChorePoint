@@ -9,13 +9,16 @@ using Hangfire;
 using MediatR;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace ChorePoint.Application.Handlers.Auth.AddKidLoginCode;
 
 public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService parentContextService,
-    IKidLoginCodeGenerator kidLoginCodeGenerator, IPasswordHasher<string> passwordHasher)
+    IKidLoginCodeGenerator kidLoginCodeGenerator, IPasswordHasher<string> passwordHasher, IOptionsSnapshot<ApiOptions> apiOptions)
     : IRequestHandler<AddKidLoginCodeCommand, AddKidLoginCodeResponse>
 {
+    private readonly ApiOptions _apiOptions = apiOptions.Value;
+
     public async Task<AddKidLoginCodeResponse> Handle(AddKidLoginCodeCommand request, CancellationToken cancellationToken)
     {
         var kid = await context.Kids.FindAsync([request.KidId], cancellationToken);
@@ -36,7 +39,7 @@ public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService
 
         BackgroundJob.Schedule<ILoginCodeDeletionJob>(
             j => j.StartDeleteJob(kid.KidId, cancellationToken),
-            TimeSpan.FromMinutes(int.Parse(Environment.GetEnvironmentVariable("KID_LOGIN_CODE_TIMEOUT") ?? "10"))
+            TimeSpan.FromMinutes(_apiOptions.KidLoginCodeTimeout)
         );
 
         return new AddKidLoginCodeResponse(loginCodeString);

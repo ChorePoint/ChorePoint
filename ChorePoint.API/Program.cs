@@ -1,7 +1,9 @@
 using ChorePoint.API.Documentation;
 using ChorePoint.API.Middleware;
 using ChorePoint.Application;
-using ChorePoint.Infrastructure;
+using ChorePoint.Application.Interfaces.Hangfire;
+using ChorePoint.Infrastructure.Hangfire.Jobs;
+using ChorePoint.Infrastructure.ServiceExtensions;
 using ChorePoint.ServiceDefaults;
 
 using Hangfire;
@@ -10,8 +12,6 @@ using Scalar.AspNetCore;
 
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
-
-using ZiggyCreatures.Caching.Fusion;
 
 Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).CreateBootstrapLogger();
 
@@ -23,40 +23,23 @@ try
 
     builder.AddServiceDefaults();
 
-    builder.AddNpgsqlDbContext<AppDbContext>("database-connection");
+    builder.AddAuthentication();
+    builder.AddDatabase();
+    builder.AddCaching();
+    builder.AddHangfire();
+    builder.AddApplication();
 
-    builder.Services.AddControllers();
-    builder.Services.AddOpenApi(options => options.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
+    var services = builder.Services;
 
-    builder.Services.AddHttpContextAccessor();
+    services.AddControllers();
+    services.AddOpenApi(options => options.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
 
-    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-    builder.Services.AddProblemDetails();
+    services.AddHttpContextAccessor();
 
-    builder.Services.AddMemoryCache();
-    var cacheBuilder = builder
-        .Services.AddFusionCache()
-        .WithDefaultEntryOptions(
-            new FusionCacheEntryOptions
-            {
-                Duration = TimeSpan.FromMinutes(5),
+    services.AddExceptionHandler<GlobalExceptionHandler>();
+    services.AddProblemDetails();
 
-                IsFailSafeEnabled = true,
-                FailSafeMaxDuration = TimeSpan.FromHours(1),
-                FailSafeThrottleDuration = TimeSpan.FromSeconds(30),
-
-                EagerRefreshThreshold = 0.9f,
-
-                FactorySoftTimeout = TimeSpan.FromSeconds(100)
-            }
-        );
-    if (builder.Environment.IsDevelopment())
-    {
-        cacheBuilder.WithNullImplementation();
-    }
-
-    builder.Services.AddApplication();
-    builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("redis"));
+    services.AddTransient<ILoginCodeDeletionJob, LoginCodeDeletionJob>();
 
     var app = builder.Build();
 

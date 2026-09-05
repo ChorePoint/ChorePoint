@@ -19,7 +19,7 @@ namespace ChorePoint.API.Controllers;
 public class ChoreController(IMediator mediator) : ControllerBase
 {
     [HttpPost("create")]
-    [Authorize(Roles = JwtConstants.ParentRole)]
+    [Authorize(Roles = AuthenticationConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -32,7 +32,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("delete/{choreId:int}")]
-    [Authorize(Roles = JwtConstants.ParentRole)]
+    [Authorize(Roles = AuthenticationConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -102,7 +102,7 @@ public class ChoreController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("update")]
-    [Authorize(Roles = JwtConstants.ParentRole)]
+    [Authorize(Roles = AuthenticationConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

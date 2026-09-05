@@ -6,13 +6,16 @@ using FluentValidation;
 using MediatR;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace ChorePoint.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IHostApplicationBuilder AddApplication(this IHostApplicationBuilder builder)
     {
+        var services = builder.Services;
+
         services.AddScoped<IShopOpenPolicy, ShopOpenPolicy>();
 
         var applicationAssembly = typeof(DependencyInjection).Assembly;
@@ -21,6 +24,8 @@ public static class DependencyInjection
 
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-        return services;
+        services.Configure<ApiOptions>(builder.Configuration.GetSection(ApiOptions.ConfigurationSectionName));
+
+        return builder;
     }
 }
