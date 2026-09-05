@@ -16,7 +16,7 @@ All the .NET services are formatted at build-time using the built-in `dotnet for
 
 When starting to work on a new feature/bug, an issue should already exist or be created. Once you have selected/opened the issue you wish to develop for, on the right-hand side of the screen, click `Create a branch` underneath the `Development` heading. Then switch to that branch locally and commit using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
-Once you have finished development, you must create a Pull Request. This will cause the automation to move the Issue and Pull Request items to the `In progress` column in the [Kanban board](https://github.com/orgs/ChorePoint/projects/2/views/1), the complete flow can be visualised below:
+Once you have finished development, you must create a Pull Request. This will cause the automation to move the issue to the `Pull request` column in the [Kanban board](https://github.com/orgs/ChorePoint/projects/2/views/1), the complete flow can be visualised below:
 
 `Issue created` &rarr; `Branch created from issue` &rarr; `Manually move issue to "In progress" column` &rarr; `Develop` &rarr; `Pull Request created` &rarr; `Automation moves issue to "Pull request" column` &rarr; `Pull Request merged` &rarr; `Automation closes issue`
 
