@@ -2,14 +2,19 @@ using System.Security.Cryptography;
 using System.Text;
 
 using ChorePoint.Application.Interfaces;
+using ChorePoint.Infrastructure.Options;
+
+using Microsoft.Extensions.Options;
 
 namespace ChorePoint.Infrastructure.Authentication;
 
-public class KidLoginCodeGenerator : IKidLoginCodeGenerator
+public class KidLoginCodeGenerator(IOptions<AuthenticationOptions> authOptions) : IKidLoginCodeGenerator
 {
+    private readonly AuthenticationOptions _authOptions = authOptions.Value;
+
     public string GenerateLoginCode()
     {
-        var loginCode = new StringBuilder(InfrastructureConstants.LoginCodeMaxLength);
+        var loginCode = new StringBuilder(_authOptions.KidLoginCodeLength);
         while (loginCode.Length < loginCode.Capacity)
         {
             if (loginCode.Length > 0)

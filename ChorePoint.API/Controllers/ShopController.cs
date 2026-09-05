@@ -39,7 +39,7 @@ public class ShopController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("delete/{shopItemId:int}")]
-    [Authorize(Roles = JwtConstants.ParentRole)]
+    [Authorize(Roles = AuthenticationConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -90,7 +90,7 @@ public class ShopController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("new")]
-    [Authorize(Roles = JwtConstants.ParentRole)]
+    [Authorize(Roles = AuthenticationConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -103,7 +103,7 @@ public class ShopController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("reactivate")]
-    [Authorize(Roles = JwtConstants.ParentRole)]
+    [Authorize(Roles = AuthenticationConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -118,7 +118,7 @@ public class ShopController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("review")]
-    [Authorize(Roles = JwtConstants.ParentRole)]
+    [Authorize(Roles = AuthenticationConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
@@ -137,7 +137,7 @@ public class ShopController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("update")]
-    [Authorize(Roles = JwtConstants.ParentRole)]
+    [Authorize(Roles = AuthenticationConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChorePoint.API.Controllers;
 
-[Authorize(Roles = JwtConstants.ParentRole)]
+[Authorize(Roles = AuthenticationConstants.ParentRole)]
 [ApiController]
 [Route("api/parent")]
 public class ParentController(IMediator mediator) : ControllerBase

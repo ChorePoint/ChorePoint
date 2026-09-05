@@ -1,4 +1,4 @@
-using ChorePoint.Infrastructure;
+using ChorePoint.Infrastructure.ServiceExtensions;
 using ChorePoint.MigrationService;
 using ChorePoint.ServiceDefaults;
 
@@ -20,15 +20,11 @@ try
 
     builder.AddDatabase();
 
-    if (bool.TryParse(Environment.GetEnvironmentVariable("SEED_TEST_DATA"), out var seedData) && seedData)
-    {
-        builder.Services.AddScoped<PasswordHasher<string>>();
-    }
+    builder.Services.AddScoped<PasswordHasher<string>>();
 
     builder.Services.AddHostedService<Worker>();
 
-    var host = builder.Build();
-    await host.RunAsync();
+    await builder.Build().RunAsync();
 }
 catch (Exception ex)
 {

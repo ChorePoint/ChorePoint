@@ -3,32 +3,37 @@ using System.Diagnostics;
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Enums;
 using ChorePoint.Infrastructure;
+using ChorePoint.Infrastructure.Options;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace ChorePoint.MigrationService;
 
-public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime hostApplicationLifetime) : BackgroundService
+public class Worker(IServiceProvider serviceProvider, IOptions<DatabaseOptions> databaseOptions, IHostApplicationLifetime hostApplicationLifetime) : BackgroundService
 {
     public const string ActivitySourceName = "Migrations";
     private static readonly ActivitySource ActivitySource = new(ActivitySourceName);
 
+    private readonly DatabaseOptions _databaseOptions = databaseOptions.Value;
+
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        using var activity = ActivitySource.StartActivity("Migrating database", ActivityKind.Client);
+        // ReSharper disable once ExplicitCallerInfoArgument
+        using var activity = ActivitySource.StartActivity("Migrating Database", ActivityKind.Client);
 
         try
         {
             using var scope = serviceProvider.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-            await RunMigrationAsync(dbContext, cancellationToken);
+            await RunMigration(dbContext, cancellationToken);
 
-            if (bool.TryParse(Environment.GetEnvironmentVariable("SEED_TEST_DATA"), out var seedData) && seedData)
+            if (_databaseOptions.SeedTestData)
             {
                 var passwordHasher = scope.ServiceProvider.GetRequiredService<PasswordHasher<string>>();
-                await SeedDatabaseAsync(dbContext, passwordHasher, cancellationToken);
+                await SeedDatabase(dbContext, passwordHasher, cancellationToken);
             }
         }
         catch (Exception ex)
@@ -40,13 +45,13 @@ public class Worker(IServiceProvider serviceProvider, IHostApplicationLifetime h
         hostApplicationLifetime.StopApplication();
     }
 
-    private static async Task RunMigrationAsync(AppDbContext dbContext, CancellationToken cancellationToken)
+    private static async Task RunMigration(AppDbContext dbContext, CancellationToken cancellationToken)
     {
         var strategy = dbContext.Database.CreateExecutionStrategy();
         await strategy.ExecuteAsync(async () => await dbContext.Database.MigrateAsync(cancellationToken));
     }
 
-    private static async Task SeedDatabaseAsync(AppDbContext dbContext, PasswordHasher<string> passwordHasher, CancellationToken cancellationToken)
+    private static async Task SeedDatabase(AppDbContext dbContext, PasswordHasher<string> passwordHasher, CancellationToken cancellationToken)
     {
         Parent parent = new()
         {

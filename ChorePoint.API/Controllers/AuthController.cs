@@ -16,7 +16,7 @@ namespace ChorePoint.API.Controllers;
 public class AuthController(IMediator mediator) : ControllerBase
 {
     [HttpPost("code/add")]
-    [Authorize(Roles = JwtConstants.ParentRole)]
+    [Authorize(Roles = AuthenticationConstants.ParentRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
