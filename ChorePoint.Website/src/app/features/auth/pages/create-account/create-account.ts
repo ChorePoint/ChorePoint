@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { FormField } from '../../../../shared/components/form-field/form-field';
 import { FormHeader } from '../../../../shared/components/form-header/form-header';
 import { LoadingEmoji } from '../../../../shared/components/loading-emoji/loading-emoji';
@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-create-account',
-  imports: [ReactiveFormsModule, FormField, FormHeader, PasswordInput, LoadingEmoji],
+  imports: [ReactiveFormsModule, FormField, FormHeader, PasswordInput, LoadingEmoji, RouterLink],
   templateUrl: './create-account.html',
   styleUrl: './create-account.scss',
 })
