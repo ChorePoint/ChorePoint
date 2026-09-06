@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { KidsService } from '../../../../core/services/kids/kids.service';
 import { ShopService } from '../../../../core/services/shop/shop.service';
@@ -24,11 +24,20 @@ export class Shop {
   loading = true;
   deleteLoadingId = -1;
 
+  filteredShopItems = computed(() => {
+    return this.vm
+      .shopItems()
+      .filter(
+        (s) =>
+          s.assignedKids.map((k) => k.kidId).includes(this.vm.selectedKid()?.kidId ?? -1) ||
+          this.vm.selectedKid() == null,
+      );
+  })
+
   vm = {
-    selectedKid: (this.kidsService.kids().at(0) ?? null) as Kid | null,
     kids: this.kidsService.kids,
-    shopItems: this.shopService.shopItems,
-    filteredShopItems: computed(() => this.getFilteredShopItems()),
+    selectedKid: signal<Kid | null>((this.kidsService.kids().at(0) ?? null) as Kid | null),
+    shopItems: this.shopService.shopItems
   };
 
   delete(id: number) {
@@ -71,14 +80,7 @@ export class Shop {
     };
   }
 
-  getFilteredShopItems(): ShopItem[] {
-    console.log('HERE');
-    return this.vm
-      .shopItems()
-      .filter(
-        (s) =>
-          s.assignedKids.map((k) => k.kidId).includes(this.vm.selectedKid?.kidId ?? -1) ||
-          this.vm.selectedKid == null,
-      );
+  updateSelectedKid($event: Kid | null) {
+    this.vm.selectedKid.set($event);
   }
 }

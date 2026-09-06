@@ -3,7 +3,8 @@ import { Injectable, inject, signal } from '@angular/core';
 import { catchError, map, of, tap, throwError } from 'rxjs';
 import { ShopItem } from '../../types/dtos/shop-item';
 import { ApiGetResponse } from '../dtos/response';
-import { NewShopItemRequest } from './shop.dtos';
+import {NewShopItemRequest, UpdateShopItemRequest} from './shop.dtos';
+import {UpdateChoreRequest} from '../chore/chore.dtos';
 
 @Injectable({ providedIn: 'root' })
 export class ShopService {
@@ -27,6 +28,14 @@ export class ShopService {
 
   newShopItem$(request: NewShopItemRequest) {
     return this.http.post<void>(`${this.baseUrl}/new`, request).pipe(tap(() => this.refresh()));
+  }
+
+  updateShopItem$(request: UpdateShopItemRequest) {
+    return this.http.put<void>(`${this.baseUrl}/update`, request).pipe(
+      tap(() => this.refresh()),
+      map((res) => res),
+      catchError((err) => (err.status === 404 ? of(null) : throwError(() => err))),
+    );
   }
 
   getShopItems() {

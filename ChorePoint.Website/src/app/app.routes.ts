@@ -18,6 +18,7 @@ import { Welcome } from './features/parents/pages/welcome/welcome';
 import { CreateProfile } from './features/start/pages/create-profile/create-profile';
 import { Start } from './features/start/pages/start/start';
 import { EditKidForm } from './shared/pages/edit-kid-form/edit-kid-form';
+import {EditShop} from './features/parents/pages/shop/edit-shop/edit-shop';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -34,6 +35,7 @@ export const routes: Routes = [
       { path: 'chores/edit/:id', component: EditChore },
       { path: 'shop', component: Shop },
       { path: 'shop/add', component: AddShopItem },
+      { path: 'shop/edit/:id', component: EditShop },
       { path: 'settings', component: ParentSettings },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],

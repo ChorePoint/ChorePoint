@@ -5,7 +5,9 @@ export interface ShopItem {
   parentId: number;
   assignedKids: AssignedKidToShopItem[];
   name: string;
+  icon: string;
   description: string;
+  category: string;
   cost: number;
   quantity: number;
   createdAt: Date | null;

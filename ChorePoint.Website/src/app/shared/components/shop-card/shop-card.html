@@ -1,6 +1,6 @@
 <div class="shop-item-card">
   <div class="item-top">
-    <div class="item-emoji-wrap" style="background: #fff8e1">⚡</div>
+    <div class="item-emoji-wrap" style="background: #fff8e1">{{ shopItem.icon }}</div>
     <div class="item-name-block">
       <div class="item-name">{{ shopItem.name }}</div>
       <div class="item-assigned">{{ shopItem.assignedKidsString }}</div>
@@ -8,7 +8,7 @@
     <button class="item-menu-btn" #toggle [attr.id]="'toggle-' + shopItem.shopItemId">
       ⋯
       <div class="ctx-menu" [class.open]="contextMenuOpen" #menu>
-        <div class="ctx-item"><span class="ctx-icon">✏️</span> Edit</div>
+        <div class="ctx-item" [routerLink]="['edit', shopItem.shopItemId]"><span class="ctx-icon">✏️</span> Edit</div>
         <div class="ctx-item"><span class="ctx-icon">🙈</span> Hide</div>
         <div class="ctx-item danger" (click)="delete()">
           <span class="ctx-icon">
