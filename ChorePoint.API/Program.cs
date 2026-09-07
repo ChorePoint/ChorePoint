@@ -70,6 +70,8 @@ try
     app.MapControllers();
     app.MapDefaultEndpoints();
 
+    app.UseRateLimiter();
+
     app.UseHangfireDashboard();
 
     await app.RunAsync();

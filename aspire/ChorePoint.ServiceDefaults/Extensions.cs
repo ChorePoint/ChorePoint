@@ -1,5 +1,8 @@
+using System.Threading.RateLimiting;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
@@ -47,6 +50,8 @@ public static class Extensions
 
             builder.AddDefaultHealthChecks();
 
+            builder.AddIpAddressRateLimiting();
+
             builder.Services.AddServiceDiscovery();
 
             builder.Services.ConfigureHttpClientDefaults(http =>
@@ -62,22 +67,16 @@ public static class Extensions
         {
             builder.Services
                 .AddOpenTelemetry()
-                .WithMetrics(metrics =>
-                {
-                    metrics.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddRuntimeInstrumentation();
-                })
-                .WithTracing(tracing =>
-                {
-                    tracing
-                        .AddSource(builder.Environment.ApplicationName)
-                        .AddAspNetCoreInstrumentation(options =>
-                            // Exclude health check requests from tracing
-                            options.Filter = context =>
-                                !context.Request.Path.StartsWithSegments(HealthEndpointPath)
-                                && !context.Request.Path.StartsWithSegments(AlivenessEndpointPath)
-                        )
-                        .AddHttpClientInstrumentation();
-                });
+                .WithMetrics(metrics => metrics.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddRuntimeInstrumentation())
+                .WithTracing(tracing => tracing
+                    .AddSource(builder.Environment.ApplicationName)
+                    .AddAspNetCoreInstrumentation(options =>
+                        // Exclude health check requests from tracing
+                        options.Filter = context =>
+                            !context.Request.Path.StartsWithSegments(HealthEndpointPath)
+                            && !context.Request.Path.StartsWithSegments(AlivenessEndpointPath)
+                    )
+                    .AddHttpClientInstrumentation());
 
             builder.AddOpenTelemetryExporters();
 
@@ -99,6 +98,20 @@ public static class Extensions
         private TBuilder AddDefaultHealthChecks()
         {
             builder.Services.AddHealthChecks().AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
+
+            return builder;
+        }
+
+        private TBuilder AddIpAddressRateLimiting()
+        {
+            builder.Services.AddRateLimiter(options => options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+                RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
+                    factory: _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = 100,
+                        Window = TimeSpan.FromMinutes(1)
+                    })));
 
             return builder;
         }
