@@ -1,0 +1,9 @@
+<app-shop-form
+    [form]="form"
+    [loading]="loading()"
+    [error]="error"
+    [title]="'Edit Item'"
+    [submitText]="'Save Changes'"
+    [kids]="kidsSignal()"
+    (submitted)="submit()"
+/>

@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {Component, effect, EventEmitter, inject, Input, Output, signal} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import {EmojiPicker} from '../../../features/chores/components/emoji-picker/emoji-picker';
@@ -36,8 +36,15 @@ export class ShopForm {
   @Input() title = 'Add Item';
   @Input() submitText = 'Save Item';
   @Input() kids!: Kid[];
+  @Input() error = signal<string | null>(null);
 
   @Output() submitted = new EventEmitter<void>();
+
+  toastState = {
+    visible: false,
+    text: '✓ Changes saved',
+    success: true,
+  };
 
   selectedKids: Kid[] = [];
 
@@ -47,6 +54,20 @@ export class ShopForm {
 
   get stockDisplay(): string {
     return this.form.controls.quantity.value?.toString() ?? 'Unlimited';
+  }
+
+  constructor() {
+    effect(() => {
+      const error = this.error();
+      console.log(error);
+      if (error) {
+        this.toastState = {
+          visible: true,
+          text: error,
+          success: false,
+        };
+      }
+    });
   }
 
   submit() {

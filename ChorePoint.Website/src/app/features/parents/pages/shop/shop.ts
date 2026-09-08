@@ -36,7 +36,7 @@ export class Shop {
 
   vm = {
     kids: this.kidsService.kids,
-    selectedKid: signal<Kid | null>((this.kidsService.kids().at(0) ?? null) as Kid | null),
+    selectedKid: signal<Kid | null>(null),
     shopItems: this.shopService.shopItems
   };
 
