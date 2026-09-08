@@ -11,7 +11,7 @@ using StackExchange.Redis;
 
 using ZiggyCreatures.Caching.Fusion;
 
-namespace ChorePoint.Infrastructure.ServiceExtensions;
+namespace ChorePoint.Infrastructure.BuilderExtensions;
 
 public static class RedisExtensions
 {

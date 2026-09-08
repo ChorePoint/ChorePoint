@@ -2,7 +2,7 @@ using ChorePoint.Application.Interfaces.Hangfire;
 
 using Microsoft.Extensions.Logging;
 
-namespace ChorePoint.Infrastructure.Hangfire.Jobs;
+namespace ChorePoint.Infrastructure.Hangfire;
 
 public partial class LoginCodeDeletionJob(AppDbContext context, ILogger<LoginCodeDeletionJob> logger) : ILoginCodeDeletionJob
 {

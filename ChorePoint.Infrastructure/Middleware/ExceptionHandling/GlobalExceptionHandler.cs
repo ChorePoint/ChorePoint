@@ -6,9 +6,11 @@ using ChorePoint.Domain.Exceptions;
 using FluentValidation;
 
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
-namespace ChorePoint.API.Middleware;
+namespace ChorePoint.Infrastructure.Middleware.ExceptionHandling;
 
 public partial class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {

@@ -1,14 +1,12 @@
-using ChorePoint.API.Documentation;
-using ChorePoint.API.Middleware;
+using ChorePoint.API.ServiceExtensions;
 using ChorePoint.Application;
-using ChorePoint.Application.Interfaces.Hangfire;
-using ChorePoint.Infrastructure.Hangfire.Jobs;
-using ChorePoint.Infrastructure.ServiceExtensions;
+using ChorePoint.Infrastructure.BuilderExtensions;
+using ChorePoint.Infrastructure.Middleware;
+using ChorePoint.Infrastructure.Middleware.ExceptionHandling;
+using ChorePoint.Infrastructure.OpenAPI;
 using ChorePoint.ServiceDefaults;
 
 using Hangfire;
-
-using Scalar.AspNetCore;
 
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -36,42 +34,23 @@ try
 
     services.AddHttpContextAccessor();
 
-    services.AddExceptionHandler<GlobalExceptionHandler>();
-    services.AddProblemDetails();
-
-    services.AddTransient<ILoginCodeDeletionJob, LoginCodeDeletionJob>();
+    services.AddExceptionHandler();
+    services.AddGlobalRateLimiter();
+    services.AddHangfireJobs();
 
     var app = builder.Build();
-
-    if (app.Environment.IsDevelopment())
-    {
-        app.MapOpenApi();
-        app.MapScalarApiReference(options =>
-        {
-            options
-                .WithTitle("ChorePoint API")
-                .ForceDarkMode()
-                .ExpandAllTags()
-                .DisableTelemetry();
-
-            options.Theme = ScalarTheme.Moon;
-        });
-    }
-
-    app.UseSerilogRequestLogging();
-
-    app.UseHttpsRedirection();
-
-    app.UseExceptionHandler();
-
-    app.UseAuthentication();
-    app.UseAuthorization();
 
     app.MapControllers();
     app.MapDefaultEndpoints();
 
-    app.UseRateLimiter();
+    app.UseAuthentication();
+    app.UseAuthorization();
 
+    app.UseExceptionHandler();
+    app.UseRateLimiter();
+    app.AddScalar();
+    app.UseSerilogRequestLogging();
+    app.UseHttpsRedirection();
     app.UseHangfireDashboard();
 
     await app.RunAsync();
