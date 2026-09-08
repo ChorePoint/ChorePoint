@@ -8,13 +8,12 @@ using Hangfire;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
 namespace ChorePoint.Application.Handlers.Auth.AddKidLoginCode;
 
 public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService parentContextService,
-    IKidLoginCodeGenerator kidLoginCodeGenerator, IPasswordHasher<string> passwordHasher, IOptionsSnapshot<ApiOptions> apiOptions)
+    IKidLoginCodeGenerator kidLoginCodeGenerator, IOptionsSnapshot<ApiOptions> apiOptions)
     : IRequestHandler<AddKidLoginCodeCommand, AddKidLoginCodeResponse>
 {
     private readonly ApiOptions _apiOptions = apiOptions.Value;
@@ -32,7 +31,7 @@ public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService
         AuthorisationHelper.EnsureParentOwnsResource(kid.ParentId, parentId);
 
         var loginCodeString = kidLoginCodeGenerator.GenerateLoginCode();
-        var loginCode = LoginCode.Create(kid.KidId, passwordHasher.HashPassword(string.Empty, loginCodeString));
+        var loginCode = LoginCode.Create(kid.KidId, loginCodeString);
 
         await context.LoginCodes.AddAsync(loginCode, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);

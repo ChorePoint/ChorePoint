@@ -1,4 +1,4 @@
-using ChorePoint.Infrastructure.ServiceExtensions;
+using ChorePoint.Infrastructure.BuilderExtensions;
 using ChorePoint.MigrationService;
 using ChorePoint.ServiceDefaults;
 

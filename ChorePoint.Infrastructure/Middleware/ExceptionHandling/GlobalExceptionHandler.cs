@@ -1,24 +1,21 @@
 using System.Net;
+using System.Security.Claims;
 
 using ChorePoint.Domain.Exceptions;
 
 using FluentValidation;
 
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
-namespace ChorePoint.API.Middleware;
+namespace ChorePoint.Infrastructure.Middleware.ExceptionHandling;
 
-public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
+public partial class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        logger.LogError(
-            exception,
-            "A global exception occurred at resource path: {ResourcePath}",
-            httpContext.Request.Path.Value
-        );
-
         ProblemDetails problemDetails = new() { Instance = $"{httpContext.Request.Method} {httpContext.Request.Path}" };
 
         (problemDetails.Status, problemDetails.Title, problemDetails.Detail) = exception switch
@@ -55,10 +52,33 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
             });
         }
 
+        if (problemDetails.Status is (int)HttpStatusCode.InternalServerError)
+        {
+            LogUnexpectedException(
+                httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                httpContext.User.FindFirst(ClaimTypes.Role)?.Value,
+                httpContext.Request.Path.Value, exception
+            );
+        }
+        else
+        {
+            LogUnsuccessfulRequest(
+                httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                httpContext.User.FindFirst(ClaimTypes.Role)?.Value,
+                httpContext.Request.Path.Value, exception
+            );
+        }
+
         httpContext.Response.StatusCode = problemDetails.Status.Value;
 
         await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
 
         return true;
     }
+
+    [LoggerMessage(LogLevel.Error, "An unexpected exception occurred during a request from parent ID [{ParentId}] using role [{Role}] on resource path [{ResourcePath}]")]
+    partial void LogUnexpectedException(string? parentId, string? role, string? resourcePath, Exception exception);
+
+    [LoggerMessage(LogLevel.Information, "An unsuccessful response occurred during a request from parent ID [{ParentId}] using role [{Role}] on resource path [{ResourcePath}]")]
+    partial void LogUnsuccessfulRequest(string? parentId, string? role, string? resourcePath, Exception exception);
 }

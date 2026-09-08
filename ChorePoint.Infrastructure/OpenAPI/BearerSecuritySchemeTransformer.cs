@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi;
 
-namespace ChorePoint.API.Documentation;
+namespace ChorePoint.Infrastructure.OpenAPI;
 
-internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvider authenticationSchemeProvider) : IOpenApiDocumentTransformer
+public class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvider authenticationSchemeProvider) : IOpenApiDocumentTransformer
 {
     public async Task TransformAsync(OpenApiDocument document, OpenApiDocumentTransformerContext context, CancellationToken cancellationToken)
     {
@@ -35,7 +35,7 @@ internal sealed class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvi
 
         foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations!.Values))
         {
-            operation.Security ??= new List<OpenApiSecurityRequirement>();
+            operation.Security ??= [];
             operation.Security.Add(securityRequirement);
         }
     }
