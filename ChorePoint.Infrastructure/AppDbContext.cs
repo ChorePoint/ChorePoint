@@ -48,11 +48,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         }
     }
 
-    protected override void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(builder);
+        base.OnModelCreating(modelBuilder);
 
-        builder.Entity<Category>(entity =>
+        modelBuilder.Entity<Category>(entity =>
         {
             entity.Property(c => c.Name).HasMaxLength(150);
 
@@ -61,7 +61,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(c => c.Role).HasMaxLength(10).HasConversion<string>();
         });
 
-        builder.Entity<Chore>(entity =>
+        modelBuilder.Entity<Chore>(entity =>
         {
             entity.Property(c => c.Name).HasMaxLength(150);
 
@@ -74,14 +74,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(c => c.Frequency).HasMaxLength(10).HasConversion<string>();
         });
 
-        builder.Entity<ChoreSubmission>(entity =>
+        modelBuilder.Entity<ChoreSubmission>(entity =>
         {
             entity.Property(cs => cs.ReviewNotes).HasMaxLength(300);
 
             entity.Property(cs => cs.ApprovalStatus).HasMaxLength(10).HasConversion<string>();
         });
 
-        builder.Entity<Kid>(entity =>
+        modelBuilder.Entity<Kid>(entity =>
         {
             // These are both explicit because otherwise EF will find the relationships by convention
             // and create the junction tables for us, which we don't want because we have payload properties on them
@@ -96,11 +96,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(k => k.Avatar).HasMaxLength(10);
         });
 
-        builder.Entity<KidShopItem>(
-            entity => entity.Property(ksi => ksi.Status).HasMaxLength(10).HasConversion<string>()
-        );
-
-        builder.Entity<LoginCode>(entity =>
+        modelBuilder.Entity<LoginCode>(entity =>
         {
             // EF cannot find 'KidId' as a primary key by convention
             entity.HasKey(lc => lc.KidId);
@@ -108,7 +104,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(lc => lc.Code).HasMaxLength(100);
         });
 
-        builder.Entity<Parent>(entity =>
+        modelBuilder.Entity<Parent>(entity =>
         {
             entity.Property(p => p.FirstName).HasMaxLength(100);
 
@@ -119,7 +115,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(p => p.Password).HasMaxLength(100);
         });
 
-        builder.Entity<ParentSettings>(entity => entity
+        modelBuilder.Entity<ParentSettings>(entity => entity
                 .Property(ps => ps.ShopOpeningDays)
                 // Convert List<DayOfWeek> to a comma-separated string for storage
                 .HasConversion(
@@ -128,7 +124,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 )
         );
 
-        builder.Entity<ShopItem>(entity =>
+        modelBuilder.Entity<ShopItem>(entity =>
         {
             entity.Property(si => si.Name).HasMaxLength(50);
 

@@ -1,5 +1,3 @@
-using ChorePoint.Domain.Enums;
-
 namespace ChorePoint.Domain.Entities;
 
 public class KidShopItem : EntityBase
@@ -7,30 +5,30 @@ public class KidShopItem : EntityBase
     public int KidId { get; set; }
     public int ShopItemId { get; set; }
 
-    public ShopItemStatus Status { get; set; }
+    public bool PendingApproval { get; set; }
     public bool IsVisible { get; set; }
 
-    public static KidShopItem Create(int kidId, bool isVisible, ShopItemStatus status = ShopItemStatus.Available)
+    public static KidShopItem Create(int kidId, bool isVisible, bool pendingApproval = false)
     {
         return new KidShopItem
         {
             KidId = kidId,
-            Status = status,
+            PendingApproval = pendingApproval,
             IsVisible = isVisible
         };
     }
 
-    public void Update(ShopItemStatus status, bool isVisible)
+    public void Update(bool pendingApproval, bool isVisible)
     {
-        Status = status;
+        PendingApproval = pendingApproval;
         IsVisible = isVisible;
     }
 
-    public void Buy(ShopItem shopItem, bool purchaseRequiresApproval, IReadOnlyList<KidShopItem> otherAssignedKidShopItems)
+    public void Buy(ShopItem shopItem, bool purchaseRequiresApproval)
     {
         if (purchaseRequiresApproval)
         {
-            Status = ShopItemStatus.Pending;
+            PendingApproval = true;
         }
         else
         {
@@ -40,28 +38,11 @@ public class KidShopItem : EntityBase
             }
 
             shopItem.Quantity -= 1;
-
-            if (shopItem.Quantity != 0)
-            {
-                return;
-            }
-
-            Status = ShopItemStatus.Hidden;
-            foreach (var kidShopItem in otherAssignedKidShopItems)
-            {
-                kidShopItem.Status = ShopItemStatus.Hidden;
-            }
         }
     }
 
-    public void Reactivate(ShopItem shopItem, int? quantity)
+    public void ResetApprovalStatus()
     {
-        Status = ShopItemStatus.Available;
-        shopItem.Quantity = quantity;
-    }
-
-    public void ResetStatus()
-    {
-        Status = ShopItemStatus.Available;
+        PendingApproval = false;
     }
 }

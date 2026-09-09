@@ -176,21 +176,21 @@ public class Worker(IServiceProvider serviceProvider, IOptions<DatabaseOptions> 
         {
             KidId = 1,
             ShopItemId = 1,
-            Status = ShopItemStatus.Available,
+            PendingApproval = false,
             IsVisible = true
         };
         KidShopItem kidShopItemTwo = new()
         {
             KidId = 2,
             ShopItemId = 1,
-            Status = ShopItemStatus.Available,
+            PendingApproval = false,
             IsVisible = true
         };
         KidShopItem kidShopItemThree = new()
         {
             KidId = 3,
             ShopItemId = 1,
-            Status = ShopItemStatus.Available,
+            PendingApproval = false,
             IsVisible = false
         };
         shopItemOne.KidShopItems.Add(kidShopItemOne);
@@ -210,7 +210,7 @@ public class Worker(IServiceProvider serviceProvider, IOptions<DatabaseOptions> 
         {
             KidId = 3,
             ShopItemId = 2,
-            Status = ShopItemStatus.Available,
+            PendingApproval = false,
             IsVisible = true
         };
         shopItemTwo.KidShopItems.Add(kidShopItemFour);
