@@ -1,6 +1,6 @@
 using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.HangfireJobs;
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Application.Interfaces.Hangfire;
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 
