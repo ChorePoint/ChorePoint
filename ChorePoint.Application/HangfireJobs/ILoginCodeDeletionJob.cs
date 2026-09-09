@@ -1,4 +1,4 @@
-namespace ChorePoint.Application.Interfaces.Hangfire;
+namespace ChorePoint.Application.HangfireJobs;
 
 public interface ILoginCodeDeletionJob
 {

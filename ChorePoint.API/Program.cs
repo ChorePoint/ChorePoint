@@ -1,4 +1,3 @@
-using ChorePoint.API.ServiceExtensions;
 using ChorePoint.Application;
 using ChorePoint.Infrastructure.BuilderExtensions;
 using ChorePoint.Infrastructure.Middleware;
@@ -36,7 +35,6 @@ try
 
     services.AddExceptionHandler();
     services.AddGlobalRateLimiter();
-    services.AddHangfireJobs();
 
     var app = builder.Build();
 

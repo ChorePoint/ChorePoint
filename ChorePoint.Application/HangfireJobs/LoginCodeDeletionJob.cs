@@ -1,10 +1,10 @@
-using ChorePoint.Application.Interfaces.Hangfire;
+using ChorePoint.Application.Interfaces;
 
 using Microsoft.Extensions.Logging;
 
-namespace ChorePoint.Infrastructure.Hangfire;
+namespace ChorePoint.Application.HangfireJobs;
 
-public partial class LoginCodeDeletionJob(AppDbContext context, ILogger<LoginCodeDeletionJob> logger) : ILoginCodeDeletionJob
+public partial class LoginCodeDeletionJob(IAppDbContext context, ILogger<LoginCodeDeletionJob> logger) : ILoginCodeDeletionJob
 {
     public async Task StartDeleteJob(int kidId, CancellationToken cancellationToken)
     {

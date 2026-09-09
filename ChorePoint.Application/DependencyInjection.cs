@@ -1,4 +1,5 @@
 using ChorePoint.Application.Behaviours;
+using ChorePoint.Application.HangfireJobs;
 using ChorePoint.Application.Policies.Shop;
 
 using FluentValidation;
@@ -15,6 +16,8 @@ public static class DependencyInjection
     public static IHostApplicationBuilder AddApplication(this IHostApplicationBuilder builder)
     {
         var services = builder.Services;
+
+        services.AddTransient<ILoginCodeDeletionJob, LoginCodeDeletionJob>();
 
         services.AddScoped<IShopOpenPolicy, ShopOpenPolicy>();
 
