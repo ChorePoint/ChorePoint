@@ -11,7 +11,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace ChorePoint.Application;
 
-public static class DependencyInjection
+public static class ApplicationExtensions
 {
     public static IHostApplicationBuilder AddApplication(this IHostApplicationBuilder builder)
     {
@@ -21,7 +21,7 @@ public static class DependencyInjection
 
         services.AddScoped<IShopOpenPolicy, ShopOpenPolicy>();
 
-        var applicationAssembly = typeof(DependencyInjection).Assembly;
+        var applicationAssembly = typeof(ApplicationExtensions).Assembly;
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(applicationAssembly));
         services.AddValidatorsFromAssembly(applicationAssembly);
 
