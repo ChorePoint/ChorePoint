@@ -1,3 +1,5 @@
+using ChorePoint.Domain.Exceptions;
+
 namespace ChorePoint.Domain.Entities;
 
 public class KidShopItem : EntityBase
@@ -18,20 +20,27 @@ public class KidShopItem : EntityBase
         };
     }
 
-    public void Update(bool pendingApproval, bool isVisible)
+    public void Buy(Kid kid, ShopItem shopItem, bool purchaseRequiresApproval)
     {
-        PendingApproval = pendingApproval;
-        IsVisible = isVisible;
-    }
+        if (shopItem.Quantity is not null && shopItem.Quantity.Equals(0))
+        {
+            throw new DomainException($"Shop item with ID [{ShopItemId}] is out of stock");
+        }
 
-    public void Buy(ShopItem shopItem, bool purchaseRequiresApproval)
-    {
+        if (PendingApproval)
+        {
+            throw new DomainException(
+                $"Kid with ID [{KidId}] attempted to purchase shop item with ID [{ShopItemId}] that is already pending approval");
+        }
+
         if (purchaseRequiresApproval)
         {
             PendingApproval = true;
         }
         else
         {
+            kid.SpendPoints(shopItem.Cost);
+
             if (shopItem.Quantity is null)
             {
                 return;

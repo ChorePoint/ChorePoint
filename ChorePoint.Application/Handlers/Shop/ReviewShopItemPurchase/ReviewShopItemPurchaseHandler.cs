@@ -51,9 +51,7 @@ public class ReviewShopItemPurchaseHandler(IAppDbContext context, IParentContext
                 throw new NotFoundException($"No kid exists with ID [{kidShopItem.KidId}]");
             }
 
-            kidShopItem.Buy(shopItem, false);
-
-            kid.SpendPoints(shopItem.Cost);
+            kidShopItem.Buy(kid, shopItem, false);
         }
 
         await context.SaveChangesAsync(cancellationToken);

@@ -17,10 +17,4 @@ public class KidChore : EntityBase
             IsVisible = isVisible
         };
     }
-
-    public void Update(DayOfWeek? dueDay, bool isVisible)
-    {
-        DueDay = dueDay;
-        IsVisible = isVisible;
-    }
 }
