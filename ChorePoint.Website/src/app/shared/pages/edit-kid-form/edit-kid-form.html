@@ -124,7 +124,7 @@
       </div>
     </div>
   </form>
-  <div class="toast" [class.show]="toastVisible">✓ Changes saved</div>
+    <app-toast-popup [toastState]="toastState" />
 } @else {
   <app-loading-screen />
 }

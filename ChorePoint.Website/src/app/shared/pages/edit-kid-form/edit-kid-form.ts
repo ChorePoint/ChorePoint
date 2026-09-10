@@ -8,10 +8,11 @@ import { KidsService } from '../../../core/services/kids/kids.service';
 import { Kid } from '../../../core/types/dtos/kid';
 import { LoadingEmoji } from '../../components/loading-emoji/loading-emoji';
 import { LoadingScreen } from '../loading-screen/loading-screen';
+import {ToastPopup} from '../../components/toast-popup/toast-popup';
 
 @Component({
   selector: 'app-edit-kid-form',
-  imports: [AsyncPipe, LoadingScreen, ReactiveFormsModule, LoadingEmoji],
+  imports: [AsyncPipe, LoadingScreen, ReactiveFormsModule, LoadingEmoji, ToastPopup],
   templateUrl: './edit-kid-form.html',
   styleUrl: './edit-kid-form.scss',
 })
@@ -25,7 +26,6 @@ export class EditKidForm implements OnInit {
   saveLoading = signal(false);
   deleteLoading = signal(false);
 
-  toastVisible = false;
   avatarPickerOpen = false;
 
   avatarOptions = AVATARS;
@@ -37,6 +37,12 @@ export class EditKidForm implements OnInit {
   kidId!: number;
 
   kid$!: Observable<Kid>;
+
+  toastState = {
+    visible: false,
+    text: '✓ Changes saved',
+    success: true,
+  };
 
   form = this.fb.nonNullable.group({
     name: ['', { validators: [Validators.required] }],
@@ -122,9 +128,9 @@ export class EditKidForm implements OnInit {
   }
 
   showToast() {
-    this.toastVisible = true;
+    this.toastState.visible = true;
     setTimeout(() => {
-      this.toastVisible = false;
+      this.toastState.visible = false;
     }, 2000);
   }
 
