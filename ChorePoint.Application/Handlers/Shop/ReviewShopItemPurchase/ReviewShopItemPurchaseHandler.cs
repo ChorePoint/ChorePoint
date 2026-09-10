@@ -1,6 +1,5 @@
 using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
 
 using MediatR;
@@ -34,14 +33,14 @@ public class ReviewShopItemPurchaseHandler(IAppDbContext context, IParentContext
             );
         }
 
-        if (kidShopItem.Status is not ShopItemStatus.Pending)
+        if (!kidShopItem.PendingApproval)
         {
             throw new DomainException(
-                $"Shop item with ID [{request.ShopItemId}] needs to have a status of {ShopItemStatus.Pending}"
+                $"Shop item with ID [{request.ShopItemId}] needs to be pending approval for kid with ID [{kidShopItem.KidId}]"
             );
         }
 
-        kidShopItem.ResetStatus();
+        kidShopItem.ResetApprovalStatus();
 
         if (request.Approve)
         {
@@ -52,12 +51,7 @@ public class ReviewShopItemPurchaseHandler(IAppDbContext context, IParentContext
                 throw new NotFoundException($"No kid exists with ID [{kidShopItem.KidId}]");
             }
 
-            var otherAssignedKidShopItems = shopItem.KidShopItems
-                .Where(ksi => !ksi.KidId.Equals(request.KidId))
-                .ToList();
-            kidShopItem.Buy(shopItem, false, otherAssignedKidShopItems);
-
-            kid.SpendPoints(shopItem.Cost);
+            kidShopItem.Buy(kid, shopItem, false);
         }
 
         await context.SaveChangesAsync(cancellationToken);

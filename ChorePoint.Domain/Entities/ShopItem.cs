@@ -48,4 +48,9 @@ public class ShopItem : EntityBase
         Cost = cost;
         Quantity = quantity;
     }
+
+    public void Restock(int? quantity)
+    {
+        Quantity = quantity;
+    }
 }

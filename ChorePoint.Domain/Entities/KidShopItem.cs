@@ -1,4 +1,4 @@
-using ChorePoint.Domain.Enums;
+using ChorePoint.Domain.Exceptions;
 
 namespace ChorePoint.Domain.Entities;
 
@@ -7,61 +7,51 @@ public class KidShopItem : EntityBase
     public int KidId { get; set; }
     public int ShopItemId { get; set; }
 
-    public ShopItemStatus Status { get; set; }
+    public bool PendingApproval { get; set; }
     public bool IsVisible { get; set; }
 
-    public static KidShopItem Create(int kidId, bool isVisible, ShopItemStatus status = ShopItemStatus.Available)
+    public static KidShopItem Create(int kidId, bool isVisible, bool pendingApproval = false)
     {
         return new KidShopItem
         {
             KidId = kidId,
-            Status = status,
+            PendingApproval = pendingApproval,
             IsVisible = isVisible
         };
     }
 
-    public void Update(ShopItemStatus status, bool isVisible)
+    public void Buy(Kid kid, ShopItem shopItem, bool purchaseRequiresApproval)
     {
-        Status = status;
-        IsVisible = isVisible;
-    }
+        if (shopItem.Quantity is not null && shopItem.Quantity.Equals(0))
+        {
+            throw new DomainException($"Shop item with ID [{ShopItemId}] is out of stock");
+        }
 
-    public void Buy(ShopItem shopItem, bool purchaseRequiresApproval, IReadOnlyList<KidShopItem> otherAssignedKidShopItems)
-    {
+        if (PendingApproval)
+        {
+            throw new DomainException(
+                $"Kid with ID [{KidId}] attempted to purchase shop item with ID [{ShopItemId}] that is already pending approval");
+        }
+
         if (purchaseRequiresApproval)
         {
-            Status = ShopItemStatus.Pending;
+            PendingApproval = true;
         }
         else
         {
+            kid.SpendPoints(shopItem.Cost);
+
             if (shopItem.Quantity is null)
             {
                 return;
             }
 
             shopItem.Quantity -= 1;
-
-            if (shopItem.Quantity != 0)
-            {
-                return;
-            }
-
-            Status = ShopItemStatus.Hidden;
-            foreach (var kidShopItem in otherAssignedKidShopItems)
-            {
-                kidShopItem.Status = ShopItemStatus.Hidden;
-            }
         }
     }
 
-    public void Reactivate(ShopItem shopItem, int? quantity)
+    public void ResetApprovalStatus()
     {
-        Status = ShopItemStatus.Available;
-        shopItem.Quantity = quantity;
-    }
-
-    public void ResetStatus()
-    {
-        Status = ShopItemStatus.Available;
+        PendingApproval = false;
     }
 }

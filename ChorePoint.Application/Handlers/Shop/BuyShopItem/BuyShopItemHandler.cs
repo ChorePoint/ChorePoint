@@ -40,12 +40,7 @@ public class BuyShopItemHandler(IAppDbContext context, IParentContextService par
             .Select(ps => ps.ApprovePurchases)
             .SingleOrDefaultAsync(cancellationToken);
 
-        var otherAssignedKidShopItems = shopItem.KidShopItems
-            .Where(ksi => !ksi.KidId.Equals(request.KidId))
-            .ToList();
-        kidShopItem.Buy(shopItem, approvePurchases, otherAssignedKidShopItems);
-
-        kid.SpendPoints(shopItem.Cost);
+        kidShopItem.Buy(kid, shopItem, approvePurchases);
 
         await context.SaveChangesAsync(cancellationToken);
     }
