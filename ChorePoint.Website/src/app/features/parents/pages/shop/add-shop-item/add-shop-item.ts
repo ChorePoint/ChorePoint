@@ -9,9 +9,7 @@ import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-shop-item',
-  imports: [
-    ShopForm,
-  ],
+  imports: [ShopForm],
   templateUrl: './add-shop-item.html',
 })
 export class AddShopItem implements OnInit {
@@ -20,6 +18,7 @@ export class AddShopItem implements OnInit {
   private kidsService = inject(KidsService);
 
   loading = signal(false);
+  error = signal<string | null>(null);
   kidsSignal = this.kidsService.kids;
 
   location = inject(Location);
@@ -62,7 +61,7 @@ export class AddShopItem implements OnInit {
           this.location.back();
         },
         error: () => {
-          this.loading.set(false);
+          this.error.set('Failed to create chore!');
         },
       });
   }
