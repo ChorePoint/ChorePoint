@@ -10,9 +10,9 @@
     @if (vm.kids().length > 0) {
       <app-kid-selector-header
         [kids]="vm.kids()"
-        [selectedKidId]="vm.selectedKid?.kidId"
+        [selectedKidId]="vm.selectedKid()?.kidId ?? -1"
         [kidHeaderText]="'Add a shop item to get started!'"
-        (kidSelected)="vm.selectedKid = $event"
+        (kidSelected)="updateSelectedKid($event)"
       />
     }
   </app-header>
@@ -24,7 +24,7 @@
       <div class="section-header">
         <div class="form-section-label">Shop Items</div>
         <div class="item-count">
-          {{ `${vm.shopItems.length} ${vm.shopItems.length > 1 ? 'items' : 'item'}` }}
+          {{ `${filteredShopItems().length} ${filteredShopItems().length > 1 ? 'items' : 'item'}` }}
         </div>
       </div>
       @if (vm.kids().length === 0) {
@@ -37,7 +37,7 @@
         </div>
       } @else {
         <div class="items-list">
-          @for (shopItem of vm.filteredShopItems(); track shopItem.shopItemId) {
+          @for (shopItem of filteredShopItems(); track shopItem.shopItemId) {
             <app-shop-card
               [shopItem]="getShopItemCard(shopItem)"
               [deleteLoading]="deleteLoadingId === shopItem.shopItemId"

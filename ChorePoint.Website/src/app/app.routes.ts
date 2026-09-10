@@ -8,7 +8,6 @@ import { ChoreDetails } from './features/chores/pages/chore-details/chore-detail
 import { EditChore } from './features/chores/pages/edit-chore/edit-chore';
 import { DashboardLayout } from './features/parents/layout/dashboard-layout/dashboard-layout';
 import { KidsLayout } from './features/parents/layout/kids-layout/kids-layout';
-import { AddShopItem } from './features/parents/pages/add-shop-item/add-shop-item';
 import { ChoreView } from './features/parents/pages/chore-view/chore-view';
 import { DashboardHome } from './features/parents/pages/dashboard-home/dashboard-home';
 import { KidsSettings } from './features/parents/pages/kids-settings/kids-settings';
@@ -18,6 +17,8 @@ import { Welcome } from './features/parents/pages/welcome/welcome';
 import { CreateProfile } from './features/start/pages/create-profile/create-profile';
 import { Start } from './features/start/pages/start/start';
 import { EditKidForm } from './shared/pages/edit-kid-form/edit-kid-form';
+import {EditShopItem} from './features/parents/pages/shop/edit-shop-item/edit-shop-item';
+import {AddShopItem} from './features/parents/pages/shop/add-shop-item/add-shop-item';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -34,6 +35,7 @@ export const routes: Routes = [
       { path: 'chores/edit/:id', component: EditChore },
       { path: 'shop', component: Shop },
       { path: 'shop/add', component: AddShopItem },
+      { path: 'shop/edit/:id', component: EditShopItem },
       { path: 'settings', component: ParentSettings },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],

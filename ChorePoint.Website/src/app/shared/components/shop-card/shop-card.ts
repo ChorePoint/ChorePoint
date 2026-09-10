@@ -14,10 +14,11 @@ import { ShopItemCard } from '../../../core/types/dtos/shop-item';
 import { SHOP_ITEM_STATUS_MAP } from '../../../core/types/enums/shop-item-status';
 import { LoadingEmoji } from '../loading-emoji/loading-emoji';
 import { DEFAULT_DELETE_STATE } from './const';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-shop-card',
-  imports: [TitleCasePipe, LoadingEmoji],
+  imports: [TitleCasePipe, LoadingEmoji, RouterLink],
   templateUrl: './shop-card.html',
   styleUrl: './shop-card.scss',
 })

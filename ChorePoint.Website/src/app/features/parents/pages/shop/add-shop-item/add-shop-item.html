@@ -1,0 +1,8 @@
+<app-shop-form
+    [form]="form"
+    [loading]="loading()"
+    [title]="'Add Item'"
+    [submitText]="'Create Item'"
+    [kids]="kidsSignal()"
+    (submitted)="submit()"
+/>
