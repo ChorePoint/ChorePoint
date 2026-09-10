@@ -119,11 +119,4 @@
         </div>
     </div>
 </form>
-<div
-    class="toast"
-    [class.error]="!toastState.success"
-    [class.success]="toastState.success"
-    [class.show]="toastState.visible"
->
-    {{ toastState.text }}
-</div>
+<app-toast-popup [toastState]="toastState" />

@@ -1,17 +1,16 @@
-import { Location } from '@angular/common';
+import {Location} from '@angular/common';
 import {Component, effect, EventEmitter, inject, Input, Output, signal} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import {FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {RouterLink} from '@angular/router';
 import {EmojiPicker} from '../../../features/chores/components/emoji-picker/emoji-picker';
 import {CategorySelector} from '../category-selector/category-selector';
 import {LoadingEmoji} from '../loading-emoji/loading-emoji';
 import {KidAssign} from '../../../features/chores/components/kid-assign/kid-assign';
-import {ShopService} from '../../../core/services/shop/shop.service';
-import {KidsService} from '../../../core/services/kids/kids.service';
 import {Kid} from '../../../core/types/dtos/kid';
 import {ShopFormGroup} from '../../types/shop-form-group';
-import { SHOP_EMOJIS } from '../../../core/consts/shop-emojis';
+import {SHOP_EMOJIS} from '../../../core/consts/shop-emojis';
 import {ShopItemStatusStatus} from '../../../core/types/enums/shop-item-status';
+import {ToastPopup} from '../toast-popup/toast-popup';
 
 @Component({
   selector: 'app-shop-form',
@@ -22,15 +21,12 @@ import {ShopItemStatusStatus} from '../../../core/types/enums/shop-item-status';
     CategorySelector,
     LoadingEmoji,
     KidAssign,
+    ToastPopup,
   ],
   templateUrl: './shop-form.html',
   styleUrl: './shop-form.scss',
 })
 export class ShopForm {
-  private fb = inject(FormBuilder);
-  private shopService = inject(ShopService);
-  private kidsService = inject(KidsService);
-
   @Input({ required: true }) form!: FormGroup<ShopFormGroup>;
   @Input() loading = false;
   @Input() title = 'Add Item';
@@ -52,22 +48,30 @@ export class ShopForm {
 
   SHOP_EMOJIS = SHOP_EMOJIS;
 
-  get stockDisplay(): string {
-    return this.form.controls.quantity.value?.toString() ?? 'Unlimited';
-  }
-
   constructor() {
     effect(() => {
       const error = this.error();
-      console.log(error);
       if (error) {
         this.toastState = {
           visible: true,
           text: error,
           success: false,
         };
+
+        this.showToast();
       }
     });
+  }
+
+  showToast() {
+    this.toastState.visible = true;
+    setTimeout(() => {
+      this.toastState.visible = false;
+    }, 2000);
+  }
+
+  get stockDisplay(): string {
+    return this.form.controls.quantity.value?.toString() ?? 'Unlimited';
   }
 
   submit() {

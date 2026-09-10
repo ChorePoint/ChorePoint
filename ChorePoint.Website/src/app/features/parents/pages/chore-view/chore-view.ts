@@ -12,10 +12,11 @@ import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-s
 import { LoadingAction, LoadingType } from '../../../../shared/types/loading-action';
 import { TimeFrame } from '../../../../shared/types/timeframe';
 import { KidSelectorHeader } from '../../../chores/components/kid-selector-header/kid-selector-header';
+import {ToastPopup} from '../../../../shared/components/toast-popup/toast-popup';
 
 @Component({
   selector: 'app-chore-view',
-  imports: [KidSelectorHeader, LoadingScreen, AsyncPipe, ChoreCardWrapper, Header],
+  imports: [KidSelectorHeader, LoadingScreen, AsyncPipe, ChoreCardWrapper, Header, ToastPopup],
   templateUrl: './chore-view.html',
   styleUrl: './chore-view.scss',
 })

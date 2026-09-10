@@ -60,8 +60,9 @@ export class AddShopItem implements OnInit {
         next: () => {
           this.location.back();
         },
-        error: () => {
+        error: (err) => {
           this.error.set('Failed to create chore!');
+          console.error(err);
         },
       });
   }

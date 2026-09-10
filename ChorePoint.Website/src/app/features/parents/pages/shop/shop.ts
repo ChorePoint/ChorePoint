@@ -1,4 +1,4 @@
-import {Component, computed, inject, signal} from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { KidsService } from '../../../../core/services/kids/kids.service';
 import { ShopService } from '../../../../core/services/shop/shop.service';
@@ -24,6 +24,12 @@ export class Shop {
   loading = true;
   deleteLoadingId = -1;
 
+  toastState = {
+    visible: false,
+    text: 'Status updated!',
+    success: true,
+  };
+
   filteredShopItems = computed(() => {
     return this.vm
       .shopItems()
@@ -48,6 +54,7 @@ export class Shop {
       .pipe(
         finalize(() => {
           this.deleteLoadingId = -1;
+
         }),
       )
       .subscribe();
