@@ -9,7 +9,7 @@ using Serilog.Sinks.SystemConsole.Themes;
 
 Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).CreateBootstrapLogger();
 
-Log.Information("Everyone get ready, we are about to migrate!!");
+Log.Information("Everyone get ready, we are about to migrate!! (ง •̀_•́)ง");
 
 try
 {
@@ -28,10 +28,10 @@ try
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "MigrationService startup terminated unexpectedly");
+    Log.Fatal(ex, "ChorePoint.MigrationService.csproj startup terminated unexpectedly, silly EF (っ'-')╮=͟͟͞🍋)`-')");
 }
 finally
 {
-    Log.Information("DAMN, we actually migrated, WOOO!");
+    Log.Information("DAMN, we actually migrated, WOOO!! ◝(ᵔᗜᵔ)◜");
     await Log.CloseAndFlushAsync();
 }
