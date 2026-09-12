@@ -29,9 +29,8 @@ try
     var services = builder.Services;
 
     services.AddControllers();
-    services.AddOpenApi(options => options.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
-
     services.AddHttpContextAccessor();
+    services.AddScalar();
 
     services.AddExceptionHandler();
     services.AddGlobalRateLimiter();
@@ -40,13 +39,13 @@ try
 
     app.MapControllers();
     app.MapDefaultEndpoints();
+    app.UseScalar();
 
     app.UseAuthentication();
     app.UseAuthorization();
 
     app.UseExceptionHandler();
     app.UseRateLimiter();
-    app.AddScalar();
     app.UseSerilogRequestLogging();
     app.UseHttpsRedirection();
     app.UseHangfireDashboard();
