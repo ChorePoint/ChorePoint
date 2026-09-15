@@ -7,9 +7,9 @@
     }"
     ><app-kid-selector-header
       [kids]="vm.kids()"
-      [selectedKidId]="vm.selectedKid?.kidId ?? -1"
+      [selectedKidId]="vm.kidId() ?? -1"
       [kidHeaderText]="'Add a child from the kids tab to get started!'"
-      (kidSelected)="vm.selectedKid = $event"
+      (kidSelected)="setKidId($event)"
   /></app-header>
 
   <div class="filter-row">
@@ -46,7 +46,7 @@
   <div class="content">
     @if (isSelectedFrequency(ChoreFrequency.Daily)) {
       <app-chore-card-wrapper
-        [chores]="getFilteredChores(vm.dailyChores(), vm.selectedKid)"
+        [chores]="getFilteredChores(vm.dailyChores(), vm.selectedKid())"
         [kidsDictionary]="vm.kidsDictionary()"
         [loadingAction]="loadingAction"
         [timeframe]="TimeFrame.Daily"
@@ -56,7 +56,7 @@
     }
     @if (isSelectedFrequency(ChoreFrequency.Weekly)) {
       <app-chore-card-wrapper
-        [chores]="getFilteredChores(vm.weeklyChores(), vm.selectedKid)"
+        [chores]="getFilteredChores(vm.weeklyChores(), vm.selectedKid())"
         [kidsDictionary]="vm.kidsDictionary()"
         [loadingAction]="loadingAction"
         [timeframe]="TimeFrame.Weekly"
@@ -66,7 +66,7 @@
     }
     @if (isSelectedFrequency(ChoreFrequency.Bonus)) {
       <app-chore-card-wrapper
-        [chores]="getFilteredChores(vm.bonusChores(), vm.selectedKid)"
+        [chores]="getFilteredChores(vm.bonusChores(), vm.selectedKid())"
         [kidsDictionary]="vm.kidsDictionary()"
         [loadingAction]="loadingAction"
         [timeframe]="TimeFrame.Bonus"

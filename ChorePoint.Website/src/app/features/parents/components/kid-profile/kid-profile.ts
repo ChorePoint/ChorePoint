@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, Input } from '@angular/core';
+import {Router, RouterLink } from '@angular/router';
 import { KidDetails } from '../../pages/kids-settings/types';
 
 @Component({
@@ -9,5 +9,13 @@ import { KidDetails } from '../../pages/kids-settings/types';
   styleUrl: './kid-profile.scss',
 })
 export class KidProfile {
+  private router = inject(Router);
+
   @Input() kid!: KidDetails;
+
+  navigateToChore() {
+    this.router.navigate(['/dashboard/chores'], {
+      queryParams: { kidId: this.kid.kidId }
+    });
+  }
 }

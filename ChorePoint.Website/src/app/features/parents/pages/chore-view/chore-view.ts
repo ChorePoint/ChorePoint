@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnInit, signal} from '@angular/core';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
 import { KidsService } from '../../../../core/services/kids/kids.service';
 import { Chore } from '../../../../core/types/dtos/chore';
@@ -13,6 +13,7 @@ import { LoadingAction, LoadingType } from '../../../../shared/types/loading-act
 import { TimeFrame } from '../../../../shared/types/timeframe';
 import { KidSelectorHeader } from '../../../chores/components/kid-selector-header/kid-selector-header';
 import {ToastPopup} from '../../../../shared/components/toast-popup/toast-popup';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-chore-view',
@@ -21,8 +22,10 @@ import {ToastPopup} from '../../../../shared/components/toast-popup/toast-popup'
   styleUrl: './chore-view.scss',
 })
 export class ChoreView {
-  private kidService = inject(KidsService);
   private choreService = inject(ChoreService);
+  private kidService = inject(KidsService);
+
+  private route = inject(ActivatedRoute);
 
   selectedFrequency: ChoreFrequency | null = null;
 
@@ -39,8 +42,9 @@ export class ChoreView {
 
   vm = {
     kids: this.kidService.kids,
+    kidId: signal<number | null>(-1),
     chores: this.choreService.chores,
-    selectedKid: null as Kid | null,
+    selectedKid: computed(() => this.getSelectedKid()),
 
     dailyChores: computed(() => GetDaily(this.choreService.chores())),
     weeklyChores: computed(() => GetWeekly(this.choreService.chores())),
@@ -50,6 +54,27 @@ export class ChoreView {
       Object.fromEntries(this.kidService.kids().map((k) => [k.kidId, k])),
     ),
   };
+
+  constructor() {
+    this.route.queryParamMap.subscribe(params => {
+      const param = params.get('kidId');
+      let kidId = null;
+
+      if (param !== null) { kidId = Number(param) }
+
+      this.vm.kidId.set(kidId);
+    });
+  }
+
+  setKidId(kid: Kid | null) {
+    this.vm.kidId.set(kid?.kidId ?? null);
+  }
+
+  getSelectedKid(): null | Kid {
+    if (this.vm.kidId === null) return null;
+
+    return this.kidService.kids().find(k => k.kidId == this.vm.kidId()) ?? null
+  }
 
   getFilteredChores(chores: Chore[], selectedKid: Kid | null) {
     return chores.filter(
@@ -113,4 +138,6 @@ export class ChoreView {
       this.toastState.visible = false;
     }, 2000);
   }
+
+  protected readonly Set = Set;
 }
