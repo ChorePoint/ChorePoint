@@ -18,4 +18,10 @@ export class KidProfile {
       queryParams: { kidId: this.kid.kidId }
     });
   }
+
+  navigateToShop() {
+    this.router.navigate(['/dashboard/shop'], {
+      queryParams: { kidId: this.kid.kidId }
+    });
+  }
 }

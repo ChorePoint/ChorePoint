@@ -9,7 +9,6 @@ import {KidAssign} from '../../../features/chores/components/kid-assign/kid-assi
 import {Kid} from '../../../core/types/dtos/kid';
 import {ShopFormGroup} from '../../types/shop-form-group';
 import {SHOP_EMOJIS} from '../../../core/consts/shop-emojis';
-import {ShopItemStatusStatus} from '../../../core/types/enums/shop-item-status';
 import {ToastPopup} from '../toast-popup/toast-popup';
 
 @Component({
@@ -84,7 +83,8 @@ export class ShopForm {
     this.form.patchValue({
       assignedKids: this.selectedKids.map((selectedKid) => ({
         kidId: selectedKid.kidId,
-        status: ShopItemStatusStatus.Available,
+        isVisible: true,
+        pendingApproval: true,
       })),
     });
   }

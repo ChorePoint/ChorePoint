@@ -1,6 +1,5 @@
 import {ShopFormGroup} from '../../../../shared/types/shop-form-group';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ShopItemStatusStatus} from '../../../../core/types/enums/shop-item-status';
 
 export function createDefaultShopItemForm(): FormGroup<ShopFormGroup> {
   return new FormGroup<ShopFormGroup>({
@@ -26,7 +25,7 @@ export function createDefaultShopItemForm(): FormGroup<ShopFormGroup> {
       nonNullable: true,
     }),
     quantity: new FormControl(null as number | null),
-    status: new FormControl(ShopItemStatusStatus.Available, {
+    isVisible: new FormControl(true, {
       validators: [Validators.required],
       nonNullable: true,
     }),

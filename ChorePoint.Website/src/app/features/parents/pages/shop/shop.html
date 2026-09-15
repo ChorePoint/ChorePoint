@@ -12,7 +12,7 @@
         [kids]="vm.kids()"
         [selectedKidId]="vm.selectedKid()?.kidId ?? -1"
         [kidHeaderText]="'Add a shop item to get started!'"
-        (kidSelected)="updateSelectedKid($event)"
+        (kidSelected)="setKidId($event)"
       />
     }
   </app-header>

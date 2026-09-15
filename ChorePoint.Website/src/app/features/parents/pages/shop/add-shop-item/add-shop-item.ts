@@ -3,7 +3,6 @@ import {Component, inject, OnInit, signal} from '@angular/core';
 import {ShopForm} from '../../../../../shared/components/shop-form/shop-form';
 import {ShopService} from '../../../../../core/services/shop/shop.service';
 import {KidsService} from '../../../../../core/services/kids/kids.service';
-import { ShopItemStatusStatus } from '../../../../../core/types/enums/shop-item-status';
 import {createDefaultShopItemForm} from '../default-form';
 import {finalize} from 'rxjs/operators';
 
@@ -31,7 +30,8 @@ export class AddShopItem implements OnInit {
         assignedKids: [
           {
             kidId: this.kidsSignal()[0].kidId,
-            status: ShopItemStatusStatus.Available,
+            isVisible: true,
+            pendingApproval: false
           },
         ],
       });
