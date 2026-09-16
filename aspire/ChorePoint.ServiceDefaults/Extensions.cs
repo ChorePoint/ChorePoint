@@ -14,20 +14,27 @@ namespace ChorePoint.ServiceDefaults;
 
 public static class Extensions
 {
+    private const string HealthChecksPolicyName = "HealthChecks";
     private const string HealthEndpointPath = "/health";
     private const string AlivenessEndpointPath = "/alive";
 
     public static WebApplication MapDefaultEndpoints(this WebApplication app)
     {
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapHealthChecks(HealthEndpointPath);
+        var healthChecks = app.MapGroup("");
 
-            app.MapHealthChecks(
-                AlivenessEndpointPath,
-                new HealthCheckOptions { Predicate = r => r.Tags.Contains("live") }
-            );
-        }
+        healthChecks
+            .CacheOutput(HealthChecksPolicyName)
+            .WithRequestTimeout(HealthChecksPolicyName);
+
+        healthChecks.MapHealthChecks(HealthEndpointPath);
+
+        healthChecks.MapHealthChecks(AlivenessEndpointPath, new HealthCheckOptions
+        {
+            Predicate = static r => r.Tags.Contains("live")
+        });
+
+        app.UseRequestTimeouts();
+        app.UseOutputCache();
 
         return app;
     }
@@ -36,9 +43,11 @@ public static class Extensions
     {
         public TBuilder AddServiceDefaults()
         {
-            builder.Services.AddSerilog((services, lc) => lc
+            var services = builder.Services;
+
+            services.AddSerilog((serviceProvider, lc) => lc
                 .ReadFrom.Configuration(builder.Configuration)
-                .ReadFrom.Services(services)
+                .ReadFrom.Services(serviceProvider)
                 .Enrich.FromLogContext()
                 .WriteTo.OpenTelemetry()
             );
@@ -47,9 +56,9 @@ public static class Extensions
 
             builder.AddDefaultHealthChecks();
 
-            builder.Services.AddServiceDiscovery();
+            services.AddServiceDiscovery();
 
-            builder.Services.ConfigureHttpClientDefaults(http =>
+            services.ConfigureHttpClientDefaults(http =>
             {
                 http.AddStandardResilienceHandler();
                 http.AddServiceDiscovery();
@@ -92,7 +101,23 @@ public static class Extensions
 
         private TBuilder AddDefaultHealthChecks()
         {
-            builder.Services.AddHealthChecks().AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
+            var services = builder.Services;
+
+            services.AddRequestTimeouts(
+                configure: static timeouts =>
+                    timeouts.AddPolicy(HealthChecksPolicyName, TimeSpan.FromSeconds(5)));
+
+            services.AddOutputCache(
+                configureOptions: static caching =>
+                    caching.AddPolicy(HealthChecksPolicyName,
+                        build: static policy => policy.Expire(TimeSpan.FromSeconds(10))));
+
+            services
+                .AddHealthChecks()
+                .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
+
+            services.AddRequestTimeouts();
+            services.AddOutputCache();
 
             return builder;
         }
