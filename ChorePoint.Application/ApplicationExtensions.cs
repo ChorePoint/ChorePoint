@@ -1,6 +1,6 @@
 using ChorePoint.Application.Behaviours;
 using ChorePoint.Application.HangfireJobs;
-using ChorePoint.Application.Policies.Shop;
+using ChorePoint.Application.Policies;
 
 using FluentValidation;
 
@@ -19,7 +19,7 @@ public static class ApplicationExtensions
 
         services.AddTransient<ILoginCodeDeletionJob, LoginCodeDeletionJob>();
 
-        services.AddScoped<IShopOpenPolicy, ShopOpenPolicy>();
+        services.AddScoped<IShopOperationPolicy, ShopOperationPolicy>();
 
         var applicationAssembly = typeof(ApplicationExtensions).Assembly;
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(applicationAssembly));

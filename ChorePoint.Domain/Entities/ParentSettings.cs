@@ -9,4 +9,5 @@ public class ParentSettings : EntityBase
     public bool ApprovePurchases { get; set; }
     public bool RequirePhotoEvidence { get; set; }
     public IReadOnlyList<DayOfWeek> ShopOpeningDays { get; set; } = new List<DayOfWeek>();
+    public bool ClosedShopOnlyGatesPurchasing { get; set; }
 }

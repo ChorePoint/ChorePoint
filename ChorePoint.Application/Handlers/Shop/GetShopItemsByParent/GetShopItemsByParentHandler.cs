@@ -1,6 +1,7 @@
 using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Application.Policies.Shop;
+using ChorePoint.Application.Policies;
+using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
 using ChorePoint.Domain.Extensions;
 
@@ -10,12 +11,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByParent;
 
-public class GetShopItemsByParentHandler(IAppDbContext context, IParentContextService parentContextService, IShopOpenPolicy shopOpenPolicy)
+file sealed class GetShopItemsByParentHandler(IAppDbContext context, IParentContextService parentContextService, IShopOperationPolicy shopOperationPolicy)
     : IRequestHandler<GetShopItemsByParentQuery, IReadOnlyList<GetShopItemsByParentResponse>>
 {
     public async Task<IReadOnlyList<GetShopItemsByParentResponse>> Handle(GetShopItemsByParentQuery request, CancellationToken cancellationToken)
     {
-        await shopOpenPolicy.EnsureShopIsOpenIfKid(cancellationToken);
+        await shopOperationPolicy.EnsureShopOperationIsValidIfKid(ShopOperationToGate.Viewing, cancellationToken);
 
         var parentId = parentContextService.GetParentId();
 

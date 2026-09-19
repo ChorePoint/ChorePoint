@@ -1,5 +1,7 @@
 using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
+using ChorePoint.Application.Policies;
+using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
 
 using MediatR;
@@ -8,10 +10,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.BuyShopItem;
 
-public class BuyShopItemHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<BuyShopItemCommand>
+file sealed class BuyShopItemHandler(IAppDbContext context, IParentContextService parentContextService, IShopOperationPolicy shopOperationPolicy)
+    : IRequestHandler<BuyShopItemCommand>
 {
     public async Task Handle(BuyShopItemCommand request, CancellationToken cancellationToken)
     {
+        await shopOperationPolicy.EnsureShopOperationIsValidIfKid(ShopOperationToGate.Purchasing, cancellationToken);
+
         var shopItem = await context.ShopItems
             .Include(si => si.KidShopItems)
             .Where(si => si.KidShopItems.Any(ksi => ksi.KidId.Equals(request.KidId)))

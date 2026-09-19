@@ -76,7 +76,8 @@ public class Worker(IServiceProvider serviceProvider, IOptions<DatabaseOptions> 
                 DayOfWeek.Friday,
                 DayOfWeek.Saturday,
                 DayOfWeek.Sunday
-            ]
+            ],
+            ClosedShopOnlyGatesPurchasing = true
         };
 
         Kid kidOne = new()
