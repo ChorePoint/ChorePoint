@@ -4,11 +4,11 @@ import { KidsService } from '../../../../core/services/kids/kids.service';
 import { ShopService } from '../../../../core/services/shop/shop.service';
 import { Kid } from '../../../../core/types/dtos/kid';
 import { ShopItem, ShopItemCard } from '../../../../core/types/dtos/shop-item';
-import { SHOP_ITEM_STATUS_MAP } from '../../../../core/types/enums/shop-item-status';
 import { Header } from '../../../../shared/components/header/header';
 import { ShopCard } from '../../../../shared/components/shop-card/shop-card';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
 import { KidSelectorHeader } from '../../../chores/components/kid-selector-header/kid-selector-header';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-shop',
@@ -17,10 +17,11 @@ import { KidSelectorHeader } from '../../../chores/components/kid-selector-heade
   styleUrl: './shop.scss',
 })
 export class Shop {
+  private kidService = inject(KidsService);
   private shopService = inject(ShopService);
-  private kidsService = inject(KidsService);
 
-  SHOP_ITEM_STATUS_MAP = SHOP_ITEM_STATUS_MAP;
+  private route = inject(ActivatedRoute);
+
   loading = true;
   deleteLoadingId = -1;
 
@@ -41,10 +42,32 @@ export class Shop {
   })
 
   vm = {
-    kids: this.kidsService.kids,
-    selectedKid: signal<Kid | null>(null),
+    kids: this.kidService.kids,
+    kidId: signal<number | null>(-1),
+    selectedKid: computed(() => this.getSelectedKid()),
     shopItems: this.shopService.shopItems
   };
+
+  constructor() {
+    this.route.queryParamMap.subscribe(params => {
+      const param = params.get('kidId');
+      let kidId = null;
+
+      if (param !== null) { kidId = Number(param) }
+
+      this.vm.kidId.set(kidId);
+    });
+  }
+
+  setKidId(kid: Kid | null) {
+    this.vm.kidId.set(kid?.kidId ?? null);
+  }
+
+  getSelectedKid(): null | Kid {
+    if (this.vm.kidId === null) return null;
+
+    return this.kidService.kids().find(k => k.kidId == this.vm.kidId()) ?? null
+  }
 
   delete(id: number) {
     this.deleteLoadingId = id;
@@ -85,9 +108,5 @@ export class Shop {
       ...shopItem,
       assignedKidsString: kidNames,
     };
-  }
-
-  updateSelectedKid($event: Kid | null) {
-    this.vm.selectedKid.set($event);
   }
 }

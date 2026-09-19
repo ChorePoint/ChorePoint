@@ -32,7 +32,7 @@ export class DashboardHome implements OnInit {
   };
 
   ngOnInit() {
-    if (this.vm.kids.length === 0) {
+    if (this.vm.kids().length === 0) {
       this.vm.selectedKid = this.vm.kids()[0];
     }
   }

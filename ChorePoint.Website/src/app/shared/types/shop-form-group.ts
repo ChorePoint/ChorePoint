@@ -1,6 +1,5 @@
 import { FormControl } from '@angular/forms';
 import { AssignedKidToShopItem } from '../../core/types/dtos/assigned-kid-to-shop-item';
-import { ShopItemStatusStatus } from '../../core/types/enums/shop-item-status';
 
 export interface ShopFormGroup {
   assignedKids: FormControl<AssignedKidToShopItem[]>;
@@ -10,5 +9,5 @@ export interface ShopFormGroup {
   category: FormControl<string>;
   cost: FormControl<number>;
   quantity: FormControl<number | null>;
-  status: FormControl<ShopItemStatusStatus>;
+  isVisible: FormControl<boolean>;
 }

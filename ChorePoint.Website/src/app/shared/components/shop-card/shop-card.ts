@@ -11,7 +11,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ShopItemCard } from '../../../core/types/dtos/shop-item';
-import { SHOP_ITEM_STATUS_MAP } from '../../../core/types/enums/shop-item-status';
 import { LoadingEmoji } from '../loading-emoji/loading-emoji';
 import { DEFAULT_DELETE_STATE } from './const';
 import {RouterLink} from '@angular/router';
@@ -36,7 +35,6 @@ export class ShopCard implements AfterViewInit {
   deleteState = DEFAULT_DELETE_STATE;
 
   contextMenuOpen = false;
-  SHOP_ITEM_STATUS_MAP = SHOP_ITEM_STATUS_MAP;
 
   ngAfterViewInit() {
     this.renderer.listen('window', 'click', (e: MouseEvent) => {

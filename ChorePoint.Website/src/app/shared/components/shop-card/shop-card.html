@@ -37,9 +37,10 @@
       <div class="meta-value">
         <span
           class="status-badge"
-          [class]="SHOP_ITEM_STATUS_MAP[shopItem.assignedKids[0].status].name"
-          >{{ SHOP_ITEM_STATUS_MAP[shopItem.assignedKids[0].status].icon }}
-          {{ SHOP_ITEM_STATUS_MAP[shopItem.assignedKids[0].status].name | titlecase }}</span
+          [class.hidden]="!shopItem.assignedKids[0].isVisible"
+          [class.available]="shopItem.assignedKids[0].isVisible"
+          >{{ shopItem.assignedKids[0].isVisible ? '✅' : '🙈' }}
+          {{ shopItem.assignedKids[0].isVisible ? 'Available' : 'Hidden' }}</span
         >
       </div>
     </div>
