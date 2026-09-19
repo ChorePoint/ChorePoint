@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, computed, inject, OnInit, signal} from '@angular/core';
+import { Component, computed, inject, signal} from '@angular/core';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
 import { KidsService } from '../../../../core/services/kids/kids.service';
 import { Chore } from '../../../../core/types/dtos/chore';
@@ -93,7 +93,7 @@ export class ChoreView {
   }
 
   toggleActive(activeArgs: { chore: Chore; active: boolean }) {
-    const loadingType = activeArgs.active ? LoadingType.Delete : LoadingType.Activate;
+    const loadingType = activeArgs.active ? LoadingType.Deactivate : LoadingType.Activate;
 
     this.loadingAction = { choreId: activeArgs.chore.choreId, type: loadingType };
 
