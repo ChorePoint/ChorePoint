@@ -87,6 +87,7 @@ export class AddChore implements OnInit {
   }
 
   submit() {
+    console.log(this.form)
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

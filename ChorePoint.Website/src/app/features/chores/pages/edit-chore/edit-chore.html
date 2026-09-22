@@ -5,7 +5,7 @@
     [title]="'✏️ Edit Chore'"
     [submitText]="'Update Chore'"
     [loading]="loading()"
-    (submitted)="submit()"
+    (submitEmitter)="submit()"
   />
 } @else {
   <app-loading-screen />
