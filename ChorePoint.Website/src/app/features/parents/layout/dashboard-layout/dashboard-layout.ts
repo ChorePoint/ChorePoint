@@ -1,7 +1,7 @@
 import { Component, ElementRef, inject } from '@angular/core';
-import {NavigationEnd, Router, RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter } from 'rxjs';
 import { DashboardFooterMenu } from '../../../../shared/components/dashboard-footer-menu/dashboard-footer-menu';
-import {filter} from 'rxjs';
 
 @Component({
   selector: 'app-parent-dashboard',
@@ -17,11 +17,14 @@ export class DashboardLayout {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
-        const content = this.elementRef.nativeElement.querySelector('.content');
+        setTimeout(() => {
+          const content = this.elementRef.nativeElement.querySelector('.content');
 
-        content?.scrollTo({
-          top: 0,
-          behavior: 'instant'
+          content?.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'instant'
+          });
         });
       });
   }
