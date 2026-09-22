@@ -33,7 +33,7 @@ export class ShopForm {
   @Input() kids!: Kid[];
   @Input() error = signal<string | null>(null);
 
-  @Output() submitted = new EventEmitter<void>();
+  @Output() submittedEmitter = new EventEmitter<void>();
 
   toastState = {
     visible: false,
@@ -42,6 +42,7 @@ export class ShopForm {
   };
 
   selectedKids: Kid[] = [];
+  submitted = false;
 
   location = inject(Location);
 
@@ -74,7 +75,8 @@ export class ShopForm {
   }
 
   submit() {
-    this.submitted.emit();
+    this.submitted = true;
+    this.submittedEmitter.emit();
   }
 
   selectKid(kidId: number) {
@@ -104,5 +106,9 @@ export class ShopForm {
     const newQuantity = updatedQuantity > -1 ? updatedQuantity : null;
 
     this.form.controls.quantity.patchValue(newQuantity);
+  }
+
+  fieldHasError(fieldName: string) {
+    return this.submitted && this.form.get(fieldName)?.invalid;
   }
 }

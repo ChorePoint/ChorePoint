@@ -27,7 +27,7 @@ export class ChoreForm {
   @Input() submitText = 'Save Chore';
   @Input() kids!: Kid[];
 
-  @Output() submitted = new EventEmitter<void>();
+  @Output() submitEmitter = new EventEmitter<void>();
 
   DaysOfWeek = DAYS_OF_WEEK;
   ChoreFrequencyOptions = FREQUENCY_OPTIONS;
@@ -37,8 +37,11 @@ export class ChoreForm {
 
   selectedKids: Kid[] = [];
 
+  submitted = false;
+
   submit(): void {
-    this.submitted.emit();
+    this.submitted = true;
+    this.submitEmitter.emit();
   }
 
   adjustPoints(amount: number) {
@@ -78,5 +81,9 @@ export class ChoreForm {
 
     const newSetting = currentAssignedKids!.filter((kid) => kid.kidId == kidId)[0];
     newSetting[control] = value;
+  }
+
+  fieldHasError(fieldName: string) {
+    return this.submitted && this.form.get(fieldName)?.invalid;
   }
 }
