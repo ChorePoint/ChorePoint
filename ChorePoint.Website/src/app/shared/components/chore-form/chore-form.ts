@@ -43,7 +43,7 @@ export class ChoreForm {
 
   adjustPoints(amount: number) {
     const current = this.form.get('points')?.value || 0;
-    const next = Math.max(50, current + amount);
+    const next = Math.max(10, current + amount);
     this.form.patchValue({ points: next });
   }
 

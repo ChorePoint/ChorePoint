@@ -1,5 +1,5 @@
 @if (kids()) {
-  <app-chore-form [form]="form" [kids]="kids()" [loading]="loading()" (submitted)="submit()" />
+  <app-chore-form [form]="form" [kids]="kids()" [loading]="loading()" (submitEmitter)="submit()" />
 } @else {
   <app-loading-screen />
 }

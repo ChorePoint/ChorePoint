@@ -13,8 +13,4 @@ export class CategorySelector {
   @Input() categories = CATEGORIES;
 
   @Output() selectedCategoryChanged = new EventEmitter<Category>();
-
-  ngOnInit(): void {
-    console.log(this.selectedCategory);
-  }
 }

@@ -41,7 +41,12 @@
             </div>
 
             <div class="form-group">
-                <p class="label">Category <span class="required">*</span></p>
+                <div class="form-label-row">
+                    <p class="label">Category <span class="required">*</span></p>
+                    @if (fieldHasError('category')) {
+                        <span class="field-error-icon" title="Category is required">!</span>
+                    }
+                </div>
                 <app-category-selector
                         [selectedCategory]="form.controls.category.value"
                         (selectedCategoryChanged)="form.patchValue({ category: $event.name })"
