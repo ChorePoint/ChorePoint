@@ -22,7 +22,7 @@
     <div class="context-menu" [class.show]="menuOpen" #menu>
       <div class="menu-item mi-resume" (click)="toggleActive()">
         <div class="mi-icon">
-          @if (loadingAction?.type === 'activate' && loadingAction?.choreId === chore.choreId) {
+          @if ((loadingAction?.type === LoadingType.Activate || loadingAction?.type === LoadingType.Deactivate) && loadingAction?.choreId === chore.choreId) {
             <app-loading-emoji />
           } @else {
             ▶️

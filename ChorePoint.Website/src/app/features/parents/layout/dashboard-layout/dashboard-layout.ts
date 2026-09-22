@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { KidsService } from '../../../../core/services/kids/kids.service';
+import { Component, ElementRef, inject } from '@angular/core';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter } from 'rxjs';
 import { DashboardFooterMenu } from '../../../../shared/components/dashboard-footer-menu/dashboard-footer-menu';
 
 @Component({
@@ -10,7 +10,22 @@ import { DashboardFooterMenu } from '../../../../shared/components/dashboard-foo
   styleUrl: './dashboard-layout.scss',
 })
 export class DashboardLayout {
-  private kidsService = inject(KidsService);
+  private router = inject(Router);
+  private elementRef = inject(ElementRef);
 
-  kids = this.kidsService.kids;
+  constructor() {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        setTimeout(() => {
+          const content = this.elementRef.nativeElement.querySelector('.content');
+
+          content?.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'instant'
+          });
+        });
+      });
+  }
 }

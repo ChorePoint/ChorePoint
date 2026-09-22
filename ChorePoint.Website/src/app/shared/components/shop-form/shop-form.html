@@ -21,7 +21,12 @@
             <div class="section-title">Basic Information</div>
 
             <div class="form-group">
-                <p class="label">Product Name <span class="required">*</span></p>
+                <div class="form-label-row">
+                    <p class="label">Product Name <span class="required">*</span></p>
+                    @if (fieldHasError('name')) {
+                        <span class="field-error-icon" title="Chore name is required">!</span>
+                    }
+                </div>
                 <input
                         formControlName="name"
                         type="text"
@@ -81,15 +86,23 @@
 
             <!-- Kid Assignment -->
             <div class="form-section">
-                <div class="section-title">Assign Kids</div>
+                <div class="form-group">
+                    <div class="form-label-row">
+                        <p class="section-title">Assign Kids <span class="required">*</span></p>
+                        @if (fieldHasError('assignedKids')) {
+                            <span class="field-error-icon" title="Assigning kids are required to create this item">!</span>
+                        }
+                    </div>
 
-                <div class="assign-kids form-group">
-                    <app-kid-assign
-                            [kids]="kids"
-                            [selectedKids]="form.get('assignedKids')?.value"
-                            (selectedKidChange)="selectKid($event)"
-                    />
+                    <div class="assign-kids form-group">
+                        <app-kid-assign
+                                [kids]="kids"
+                                [selectedKids]="form.get('assignedKids')?.value"
+                                (selectedKidChange)="selectKid($event)"
+                        />
+                    </div>
                 </div>
+
             </div>
 
             <!-- Visibility -->

@@ -7,19 +7,29 @@
 <div class="sheet-content">
   <form [formGroup]="form" (submit)="submit()">
     <!-- Chore name -->
-    <div class="form-group">
-      <label class="form-label">Chore Name</label>
-      <input
-        class="form-input filled"
-        type="text"
-        placeholder="e.g. Tidy Bedroom"
-        formControlName="name"
-      />
-    </div>
-
+      <div class="form-group">
+          <div class="form-label-row">
+              <label class="form-label">Chore Name</label>
+              @if (fieldHasError('name')) {
+                  <span class="field-error-icon" title="Chore name is required">!</span>
+              }
+          </div>
+          <input
+                  class="form-input filled"
+                  [class.error]="fieldHasError('name')"
+                  type="text"
+                  placeholder="e.g. Tidy Bedroom"
+                  formControlName="name"
+          />
+      </div>
     <!-- Emoji picker -->
     <div class="form-group">
-      <label class="form-label">Pick an Icon</label>
+        <div class="form-label-row">
+            <label class="form-label">Pick an Icon</label>
+            @if (fieldHasError('icon')) {
+                <span class="field-error-icon" title="An icon is required">!</span>
+            }
+        </div>
       <app-emoji-picker
         [selectedEmoji]="form.get('icon')?.value"
         (selectedEmojiChange)="form.patchValue({ icon: $event })"
@@ -28,7 +38,12 @@
 
     <!-- Assign to -->
     <div class="form-group">
-      <label class="form-label">Assign To</label>
+        <div class="form-label-row">
+            <label class="form-label">Assign To</label>
+            @if (fieldHasError('assignedKids')) {
+                <span class="field-error-icon" title="Assigned kids are required">!</span>
+            }
+        </div>
       <div class="assign-row">
         <app-kid-assign
           [kids]="kids"
@@ -141,7 +156,7 @@
       ></textarea>
     </div>
 
-    <button class="btn-save" [disabled]="loading || form.invalid" type="submit">
+    <button class="btn-save" [disabled]="loading" type="submit">
       @if (loading) {
         Saving <app-loading-emoji />
       } @else {

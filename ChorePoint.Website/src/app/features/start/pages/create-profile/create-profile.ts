@@ -45,7 +45,7 @@ export class CreateProfile {
 
     this.kidService.createKid$({ name, age, avatar }).subscribe({
       next: () => {
-        this.router.navigate(['dashboard/home']);
+        this.router.navigate(['dashboard/kids']);
       },
     });
   }
