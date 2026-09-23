@@ -86,7 +86,6 @@ public class Worker(IServiceProvider serviceProvider, IOptions<DatabaseOptions> 
             Name = "Billy Bob",
             Avatar = "🧒",
             Age = 12,
-            DayStreak = 2,
             LifetimePoints = 350,
             SpendablePoints = 350
         };
@@ -96,7 +95,6 @@ public class Worker(IServiceProvider serviceProvider, IOptions<DatabaseOptions> 
             Name = "Feddy Fazbear",
             Avatar = "🐻",
             Age = 6,
-            DayStreak = 0,
             LifetimePoints = 1000,
             SpendablePoints = 50
         };
@@ -106,7 +104,6 @@ public class Worker(IServiceProvider serviceProvider, IOptions<DatabaseOptions> 
             Name = "Waluigi",
             Avatar = "🧙‍♂️",
             Age = 6,
-            DayStreak = 0,
             LifetimePoints = 1000,
             SpendablePoints = 0
         };

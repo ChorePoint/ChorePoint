@@ -24,7 +24,6 @@ public class UpdateKidHandler(IAppDbContext context, IParentContextService paren
             request.Name,
             request.Avatar,
             request.Age,
-            request.DayStreak,
             request.LifetimePoints,
             request.SpendablePoints
         );

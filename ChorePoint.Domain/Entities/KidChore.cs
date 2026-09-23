@@ -7,6 +7,9 @@ public class KidChore : EntityBase
 
     public DayOfWeek? DueDay { get; set; }
     public bool IsVisible { get; set; }
+    public int CompletionStreak { get; set; }
+    public DateTime? StreakLastUpdated { get; set; }
+
 
     public static KidChore Create(int kidId, DayOfWeek? dueDay, bool isVisible)
     {

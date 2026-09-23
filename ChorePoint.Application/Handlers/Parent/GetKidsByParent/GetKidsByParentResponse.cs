@@ -5,7 +5,6 @@ public record GetKidsByParentResponse(
     string Name,
     string Avatar,
     int? Age,
-    int DayStreak,
     int LifetimePoints,
     int SpendablePoints
 );

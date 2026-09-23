@@ -10,7 +10,6 @@ public class Kid : EntityBase
     public string Name { get; set; } = string.Empty;
     public string Avatar { get; set; } = string.Empty;
     public int? Age { get; set; }
-    public int DayStreak { get; set; }
     public int LifetimePoints { get; set; }
     public int SpendablePoints { get; set; }
 
@@ -32,12 +31,11 @@ public class Kid : EntityBase
         };
     }
 
-    public void Update(string name, string avatar, int? age, int dayStreak, int lifetimePoints, int spendablePoints)
+    public void Update(string name, string avatar, int? age, int lifetimePoints, int spendablePoints)
     {
         Name = name;
         Avatar = avatar;
         Age = age;
-        DayStreak = dayStreak;
         LifetimePoints = lifetimePoints;
         SpendablePoints = spendablePoints;
     }
