@@ -1,7 +1,7 @@
 using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Extensions;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
-using ChorePoint.Domain.Extensions;
 
 using MediatR;
 

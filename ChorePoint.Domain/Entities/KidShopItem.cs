@@ -20,37 +20,18 @@ public class KidShopItem : EntityBase
         };
     }
 
-    public void Buy(Kid kid, ShopItem shopItem, bool purchaseRequiresApproval)
+    public void SetToPendingApproval()
     {
-        if (shopItem.Quantity is not null && shopItem.Quantity.Equals(0))
-        {
-            throw new DomainException($"Shop item with ID [{ShopItemId}] is out of stock");
-        }
-
         if (PendingApproval)
         {
             throw new DomainException(
                 $"Kid with ID [{KidId}] attempted to purchase shop item with ID [{ShopItemId}] that is already pending approval");
         }
 
-        if (purchaseRequiresApproval)
-        {
-            PendingApproval = true;
-        }
-        else
-        {
-            kid.SpendPoints(shopItem.Cost);
-
-            if (shopItem.Quantity is null)
-            {
-                return;
-            }
-
-            shopItem.Quantity -= 1;
-        }
+        PendingApproval = true;
     }
 
-    public void ResetApprovalStatus()
+    public void ResetPendingApproval()
     {
         PendingApproval = false;
     }

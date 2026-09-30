@@ -1,9 +1,9 @@
 using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Extensions;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Application.Policies;
 using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
-using ChorePoint.Domain.Extensions;
 
 using MediatR;
 

@@ -2,6 +2,7 @@ using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
+using ChorePoint.Domain.Services;
 
 using MediatR;
 
@@ -14,7 +15,7 @@ public class ReviewSubmissionHandler(IAppDbContext context, IParentContextServic
     public async Task Handle(ReviewSubmissionCommand request, CancellationToken cancellationToken)
     {
         var choreSubmission = await context.ChoreSubmissions
-            .Include(cs => cs.Kid)
+            .Include(cs => cs.Kid.KidChores)
             .Include(cs => cs.Chore)
             .Where(cs =>
                 cs.ChoreSubmissionId.Equals(request.ChoreSubmissionId)
@@ -30,7 +31,11 @@ public class ReviewSubmissionHandler(IAppDbContext context, IParentContextServic
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(choreSubmission.ParentId, parentId);
 
-        choreSubmission.Review(request.ReviewNotes, request.Approve, DateTime.UtcNow);
+        var kid = choreSubmission.Kid;
+        var chore = choreSubmission.Chore;
+        var kidChore = kid.KidChores.Single(kc => kc.KidId.Equals(choreSubmission.KidId));
+        var now = DateTime.UtcNow;
+        ChoreSubmissionReviewService.Review(request.ReviewNotes, request.Approve, choreSubmission, kid, chore, kidChore, now);
 
         await context.SaveChangesAsync(cancellationToken);
     }

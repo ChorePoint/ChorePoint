@@ -1,6 +1,7 @@
 using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
+using ChorePoint.Domain.Services;
 
 using MediatR;
 
@@ -47,10 +48,11 @@ public class CompleteChoreHandler(IAppDbContext context, IParentContextService p
         if (autoApproveChore)
         {
             // Explicitly load reference navigation properties as they are not loaded on a newly created entity
-            await context.Entry(newSubmission).Reference(nameof(ChoreSubmissionE.Chore)).LoadAsync(cancellationToken);
-            await context.Entry(newSubmission).Reference(nameof(ChoreSubmissionE.Kid)).LoadAsync(cancellationToken);
+            await context.Entry(newSubmission).Reference(nameof(ChoreSubmissionE.Kid.KidChores)).LoadAsync(cancellationToken);
 
-            newSubmission.Review("Auto-approved", true, now);
+            var kid = newSubmission.Kid;
+            var kidChore = kid.KidChores.Single(kc => kc.KidId.Equals(newSubmission.KidId));
+            ChoreSubmissionReviewService.Review("Auto-approved", true, newSubmission, kid, chore, kidChore, now);
         }
 
         await context.SaveChangesAsync(cancellationToken);

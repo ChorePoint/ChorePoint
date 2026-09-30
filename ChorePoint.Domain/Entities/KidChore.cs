@@ -20,4 +20,10 @@ public class KidChore : EntityBase
             IsVisible = isVisible
         };
     }
+
+    public void IncreaseCompletionStreak(DateTime now)
+    {
+        CompletionStreak++;
+        StreakLastUpdated = now;
+    }
 }

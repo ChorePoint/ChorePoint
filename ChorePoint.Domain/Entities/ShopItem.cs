@@ -1,3 +1,5 @@
+using ChorePoint.Domain.Exceptions;
+
 namespace ChorePoint.Domain.Entities;
 
 public class ShopItem : EntityBase
@@ -47,6 +49,21 @@ public class ShopItem : EntityBase
         Description = description;
         Cost = cost;
         Quantity = quantity;
+    }
+
+    public void Buy()
+    {
+        if (Quantity is null)
+        {
+            return;
+        }
+
+        if (Quantity.Equals(0))
+        {
+            throw new DomainException($"Shop item with ID [{ShopItemId}] is out of stock");
+        }
+
+        Quantity -= 1;
     }
 
     public void Restock(int? quantity)

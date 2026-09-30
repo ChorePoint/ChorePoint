@@ -1,8 +1,8 @@
 using ChorePoint.Application.Authorisation;
+using ChorePoint.Application.Extensions;
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
-using ChorePoint.Domain.Extensions;
+using ChorePoint.Domain.Services;
 
 using MediatR;
 
@@ -16,8 +16,7 @@ public class GetStatsByKidHandler(IAppDbContext context, IParentContextService p
     public async Task<GetStatsByKidResponse> Handle(GetStatsByKidQuery request, CancellationToken cancellationToken)
     {
         var choreSubmissions = await context.ChoreSubmissions
-            .Include(cs => cs.Chore)
-            .ThenInclude(c => c.KidChores)
+            .Include(cs => cs.Chore.KidChores)
             .Where(cs => cs.KidId.Equals(request.KidId))
             .ToListAsync(cancellationToken);
 
@@ -30,30 +29,21 @@ public class GetStatsByKidHandler(IAppDbContext context, IParentContextService p
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsAllResources(resourceParentIds, parentId);
 
-        var startOfWeek = DateTime.UtcNow.Date.AddDays(-(int)DateTime.UtcNow.DayOfWeek);
         var chores = choreSubmissions.Select(cs => cs.Chore).ToList();
-
-        var completedThisWeek = choreSubmissions.Count(cs =>
-            cs.CompletedThisWeek(startOfWeek) && cs.Chore.Frequency is not ChoreFrequency.Bonus
-        );
-        var dueThisWeek = chores.Count(c => c.Frequency is ChoreFrequency.Weekly or ChoreFrequency.Daily);
-        var approvalRate = (int)(
-            choreSubmissions.Count(cs => cs.ApprovalStatus is ChoreApprovalStatus.Approved)
-            * 100.0
-            / choreSubmissions.Count
-        );
-
-        var dueToday = chores
+        var kidChores = chores
             .Select(c =>
-                c.KidChores.Where(cs => cs.KidId.Equals(request.KidId)).Select(kc => kc.DueDay).SingleOrDefault()
+                c.KidChores.Single(kc => kc.KidId.Equals(request.KidId))
             )
-            .Count(dow => dow.Equals(DateTime.Today.DayOfWeek));
+            .ToList();
 
+        var now = DateTime.UtcNow;
+        var completedThisWeek = KidStatsCalculatorService.CalculateNumberOfChoresCompletedThisWeek(choreSubmissions, now);
+        var dueThisWeek = KidStatsCalculatorService.CalculateNumberOfChoresDueThisWeek(chores);
         return new GetStatsByKidResponse(
             choreSubmissions.Count,
             completedThisWeek,
-            approvalRate,
-            dueToday,
+            KidStatsCalculatorService.CalculateSubmissionApprovalRate(choreSubmissions),
+            KidStatsCalculatorService.CalculateNumberOfChoresDueToday(kidChores, now),
             dueThisWeek,
             completedThisWeek / dueThisWeek * 100
         );

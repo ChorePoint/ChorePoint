@@ -1,6 +1,6 @@
-namespace ChorePoint.Domain.Extensions;
+namespace ChorePoint.Application.Extensions;
 
-public static class IReadOnlyListExtension
+internal static class IReadOnlyListExtension
 {
     public static bool Empty<T>(this IReadOnlyList<T>? list)
     {

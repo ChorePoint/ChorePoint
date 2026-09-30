@@ -1,6 +1,7 @@
 using ChorePoint.Application.Authorisation;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Exceptions;
+using ChorePoint.Domain.Services;
 
 using MediatR;
 
@@ -33,26 +34,14 @@ public class ReviewShopItemPurchaseHandler(IAppDbContext context, IParentContext
             );
         }
 
-        if (!kidShopItem.PendingApproval)
+        var kid = await context.Kids.FindAsync([kidShopItem.KidId], cancellationToken);
+
+        if (kid is null)
         {
-            throw new DomainException(
-                $"Shop item with ID [{request.ShopItemId}] needs to be pending approval for kid with ID [{kidShopItem.KidId}]"
-            );
+            throw new NotFoundException($"No kid exists with ID [{kidShopItem.KidId}]");
         }
 
-        kidShopItem.ResetApprovalStatus();
-
-        if (request.Approve)
-        {
-            var kid = await context.Kids.FindAsync([kidShopItem.KidId], cancellationToken);
-
-            if (kid is null)
-            {
-                throw new NotFoundException($"No kid exists with ID [{kidShopItem.KidId}]");
-            }
-
-            kidShopItem.Buy(kid, shopItem, false);
-        }
+        ShopItemPurchaseService.ReviewPurchase(request.Approve, kidShopItem, shopItem, kid);
 
         await context.SaveChangesAsync(cancellationToken);
     }

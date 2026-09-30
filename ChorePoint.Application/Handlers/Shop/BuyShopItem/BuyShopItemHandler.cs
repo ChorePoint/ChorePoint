@@ -3,6 +3,7 @@ using ChorePoint.Application.Interfaces;
 using ChorePoint.Application.Policies;
 using ChorePoint.Domain.Enums;
 using ChorePoint.Domain.Exceptions;
+using ChorePoint.Domain.Services;
 
 using MediatR;
 
@@ -30,9 +31,7 @@ file sealed class BuyShopItemHandler(IAppDbContext context, IParentContextServic
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(shopItem.ParentId, parentId);
 
-        // No AndDefault because we already know one must exist because of the .Where() above
         var kidShopItem = shopItem.KidShopItems.Single(ksi => ksi.KidId.Equals(request.KidId));
-
         var kid = await context.Kids.FindAsync([kidShopItem.KidId], cancellationToken);
 
         if (kid is null)
@@ -40,12 +39,12 @@ file sealed class BuyShopItemHandler(IAppDbContext context, IParentContextServic
             throw new NotFoundException($"No kid exists with ID [{kidShopItem.KidId}]");
         }
 
-        var approvePurchases = await context.ParentSettings
+        var purchaseRequiresApproval = await context.ParentSettings
             .Where(ps => ps.ParentId.Equals(parentId))
             .Select(ps => ps.ApprovePurchases)
             .SingleOrDefaultAsync(cancellationToken);
 
-        kidShopItem.Buy(kid, shopItem, approvePurchases);
+        ShopItemPurchaseService.Purchase(purchaseRequiresApproval, kidShopItem, shopItem, kid);
 
         await context.SaveChangesAsync(cancellationToken);
     }

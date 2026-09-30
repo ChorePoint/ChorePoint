@@ -48,18 +48,6 @@ public class Chore : EntityBase
         };
     }
 
-    public ChoreSubmission CreateSubmission(int kidId, DateTime now)
-    {
-        return new ChoreSubmission
-        {
-            ChoreId = ChoreId,
-            ParentId = ParentId,
-            KidId = kidId,
-            ApprovalStatus = ChoreApprovalStatus.Pending,
-            CompletedAt = now
-        };
-    }
-
     public void Update(
         int? categoryId,
         string name,
@@ -77,6 +65,18 @@ public class Chore : EntityBase
         Points = points;
         Difficulty = difficulty;
         Frequency = frequency;
+    }
+
+    public ChoreSubmission CreateSubmission(int kidId, DateTime now)
+    {
+        return new ChoreSubmission
+        {
+            ChoreId = ChoreId,
+            ParentId = ParentId,
+            KidId = kidId,
+            ApprovalStatus = ChoreApprovalStatus.Pending,
+            CompletedAt = now
+        };
     }
 
     public void EnsureCanBeCompleted(ChoreSubmission latestSubmission, DateTime now)

@@ -18,8 +18,15 @@ public class ChoreSubmission : EntityBase
     public Parent Parent { get; set; } = null!;
     public Kid Kid { get; set; } = null!;
 
-    public bool CompletedThisWeek(DateTime startOfWeek)
+    public bool ApprovedToday(DateTime now)
     {
+        var today = now.Date;
+        return ApprovalStatus == ChoreApprovalStatus.Approved && CompletedAt.Date.Equals(today);
+    }
+
+    public bool ApprovedThisWeek(DateTime now)
+    {
+        var startOfWeek = now.Date.AddDays(-(int)now.DayOfWeek);
         return ApprovalStatus == ChoreApprovalStatus.Approved && CompletedAt >= startOfWeek;
     }
 
@@ -28,26 +35,5 @@ public class ChoreSubmission : EntityBase
         ReviewNotes = reviewNotes;
         ApprovalStatus = approve ? ChoreApprovalStatus.Approved : ChoreApprovalStatus.Rejected;
         ReviewedAt = now;
-
-        if (!approve)
-        {
-            return;
-        }
-
-        if (Chore is null)
-        {
-            throw new ArgumentException(
-                "Chore needs to be included in ChoreSubmission entity retrieval when a chore is approved to add points"
-            );
-        }
-
-        if (Kid is null)
-        {
-            throw new ArgumentException(
-                "Kid needs to be included in ChoreSubmission entity retrieval when a chore is approved to add points"
-            );
-        }
-
-        Kid.AddPoints(Chore.Points);
     }
 }
