@@ -1,0 +1,48 @@
+<app-modal-overlay (changeLoginModalVisibility)="changeLoginModalVisibility.emit($event)">
+  @if (!generatedCode()) {
+    <div class="kid-select-list">
+      @for (kid of kids; track kid.kidId) {
+        <div
+          class="kid-select-item"
+          [class.selected]="selectedKidId() === kid.kidId"
+          (click)="selectKidForCode(kid.kidId)"
+        >
+          <div class="kid-avatar">{{ kid.avatar }}</div>
+          <div class="kid-select-name">{{ kid.name }}</div>
+          @if (selectedKidId() === kid.kidId) {
+            <div class="kid-select-check">✓</div>
+          }
+        </div>
+      }
+    </div>
+
+    <button
+      class="generate-button"
+      [disabled]="!selectedKidId() || isGeneratingCode()"
+      (click)="generateLoginCode()"
+    >
+      @if (isGeneratingCode()) {
+        <span class="spinner"></span> Generating…
+      } @else {
+        Generate Code
+      }
+    </button>
+  } @else {
+    <div class="code-result">
+      <div class="code-result-label">Login code for twat</div>
+
+      <div class="code-display">
+        @for (digit of generatedCode(); track $index) {
+          <span class="code-digit">{{ digit }}</span>
+        }
+      </div>
+
+      <div class="code-expiry">Expires in {{ codeExpiryMinutes() }} minutes</div>
+
+      <div class="code-actions">
+        <button class="code-action-btn secondary" (click)="regenerateCode()">🔄 New Code</button>
+        <button class="code-action-btn primary" (click)="closeLoginCodeModal()">Done</button>
+      </div>
+    </div>
+  }
+</app-modal-overlay>
