@@ -17,9 +17,10 @@ import { Welcome } from './features/parents/pages/welcome/welcome';
 import { CreateProfile } from './features/start/pages/create-profile/create-profile';
 import { Start } from './features/start/pages/start/start';
 import { EditKidForm } from './shared/pages/edit-kid-form/edit-kid-form';
-import {EditShopItem} from './features/parents/pages/shop/edit-shop-item/edit-shop-item';
-import {AddShopItem} from './features/parents/pages/shop/add-shop-item/add-shop-item';
-import {ChoreDashboard} from './features/chores/pages/chore-dashboard/chore-dashboard';
+import { EditShopItem } from './features/parents/pages/shop/edit-shop-item/edit-shop-item';
+import { AddShopItem } from './features/parents/pages/shop/add-shop-item/add-shop-item';
+import { ChoreDashboard } from './features/chores/pages/chore-dashboard/chore-dashboard';
+import { KidLogin } from './features/kids/pages/login/kid-login';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -50,7 +51,11 @@ export const routes: Routes = [
       { path: 'edit/:id', component: EditKidForm },
     ],
   },
-  {path: 'test', component: ChoreDashboard},
+  {
+    path: 'kid/login',
+    component: KidLogin,
+  },
+  { path: 'test', component: ChoreDashboard },
   { path: 'kids/add', component: CreateProfile, canActivate: [authGuard] },
   { path: 'chore/:id', component: ChoreDetails, canActivate: [authGuard, HasKidsGuard] },
   { path: 'login', component: Login },

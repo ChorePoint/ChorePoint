@@ -4,7 +4,7 @@ import { catchError, of, tap, throwError } from 'rxjs';
 import { AUTH_ERROR_MAP } from '../models/auth.error';
 import { AuthError, AuthErrorType } from '../models/auth.types';
 import { RegisterRequest } from '../models/create-account-request';
-import { LoginRequest, LoginResponse } from '../models/login-request';
+import { KidLoginRequest, LoginRequest, LoginResponse } from '../models/login-request';
 import { map } from 'rxjs/internal/operators/map';
 import { ApiGetResponse } from '../../../core/services/dtos/response';
 import { GetLoginCodeResponse } from '../models/get-login-code-response';
@@ -51,6 +51,18 @@ export class AuthService {
 
   login(request: LoginRequest) {
     return this.http.post<LoginResponse>(`${this.baseUrl}/login/parent`, request).pipe(
+      tap((response) => {
+        localStorage.setItem('authToken', response.data.token);
+      }),
+      catchError((err: HttpErrorResponse) => {
+        const type = AUTH_ERROR_MAP[err.status] ?? AuthErrorType.LoginFailed;
+        return throwError(() => ({ type }) as AuthError);
+      }),
+    );
+  }
+
+  kidLogin(request: KidLoginRequest) {
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login/kid`, request).pipe(
       tap((response) => {
         localStorage.setItem('authToken', response.data.token);
       }),
