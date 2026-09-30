@@ -1,0 +1,11 @@
+<div class="modal-overlay" (click)="closeLoginCodeModal()">
+  <div class="modal-sheet" (click)="$event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-title">Generate Login Code</div>
+      <button class="modal-close" (click)="closeLoginCodeModal()">✕</button>
+    </div>
+    <div class="modal-subtitle">Select a child to generate a login code</div>
+    <ng-content />
+  </div>
+</div>

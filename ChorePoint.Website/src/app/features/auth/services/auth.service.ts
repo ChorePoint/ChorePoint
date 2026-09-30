@@ -1,10 +1,13 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { catchError, tap, throwError } from 'rxjs';
+import { catchError, of, tap, throwError } from 'rxjs';
 import { AUTH_ERROR_MAP } from '../models/auth.error';
 import { AuthError, AuthErrorType } from '../models/auth.types';
 import { RegisterRequest } from '../models/create-account-request';
 import { LoginRequest, LoginResponse } from '../models/login-request';
+import { map } from 'rxjs/internal/operators/map';
+import { ApiGetResponse } from '../../../core/services/dtos/response';
+import { GetLoginCodeResponse } from '../models/get-login-code-response';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -56,6 +59,15 @@ export class AuthService {
         return throwError(() => ({ type }) as AuthError);
       }),
     );
+  }
+
+  getLoginCode(kidId: number) {
+    return this.http
+      .post<ApiGetResponse<GetLoginCodeResponse>>(`${this.baseUrl}/code/add`, { KidId: kidId })
+      .pipe(
+        map((res) => res.data),
+        catchError((err) => (err.status === 404 ? of(null) : throwError(() => err))),
+      );
   }
 
   logout() {

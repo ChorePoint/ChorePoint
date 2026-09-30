@@ -1,0 +1,66 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 50%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1000;
+
+  .modal-sheet {
+    box-sizing: border-box;
+    background: white;
+    width: 100%;
+    max-width: 480px;
+    border-radius: 20px 20px 0 0;
+    padding: 12px 20px 24px;
+    animation: slide-up 0.25s ease-out;
+
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: #ecf0f1;
+      border-radius: 2px;
+      margin: 0 auto 16px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+
+      .modal-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #2c3e50;
+      }
+
+      .modal-close {
+        background: #f8f9fa;
+        border: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        font-size: 14px;
+        color: #7f8c8d;
+        cursor: pointer;
+      }
+    }
+
+    .modal-subtitle {
+      font-size: 13px;
+      color: #7f8c8d;
+      margin-bottom: 16px;
+    }
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
