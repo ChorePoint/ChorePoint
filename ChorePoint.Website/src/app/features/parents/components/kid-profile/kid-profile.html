@@ -18,20 +18,7 @@
       ></div>
     </div>
   </div>
-  <div class="kid-stats">
-    <div class="kid-stat">
-      <div class="kid-stat-val">🔥 {{ kid.dayStreak }}</div>
-      <div class="kid-stat-lbl">Day Streak</div>
-    </div>
-    <div class="kid-stat">
-      <div class="kid-stat-val">{{ kid.kidStats.approvalRate }} %</div>
-      <div class="kid-stat-lbl">Approval Rate</div>
-    </div>
-    <div class="kid-stat">
-      <div class="kid-stat-val">{{ kid.spendablePoints ?? 0 }}</div>
-      <div class="kid-stat-lbl">Spendable Points</div>
-    </div>
-  </div>
+  <app-kid-stats />
   <div class="kid-actions">
     <button class="kid-action-btn" (click)="navigateToChore()">📋 Chores</button>
     <button class="kid-action-btn" (click)="navigateToShop()">🎁 Rewards</button>

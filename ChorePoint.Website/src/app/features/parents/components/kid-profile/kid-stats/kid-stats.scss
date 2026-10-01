@@ -1,0 +1,29 @@
+  .kid-stats {
+      display: flex;
+      border-top: 1px solid #f0f0f0;
+      margin-top: 12px;
+
+      .kid-stat {
+          flex: 1;
+          padding: 10px 0;
+          text-align: center;
+          border-right: 1px solid #f0f0f0;
+
+          &:last-child {
+              border-right: none;
+          }
+
+          .kid-stat-val {
+              font-size: 16px;
+              font-weight: 800;
+              color: #2c3e50;
+          }
+
+          .kid-stat-lbl {
+              font-size: 10px;
+              color: #7f8c8d;
+              font-weight: 600;
+              margin-top: 2px;
+          }
+      }
+  }

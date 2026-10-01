@@ -17,7 +17,6 @@ import { FREQUENCY_OPTIONS } from '../../config/frequency-options';
   selector: 'app-add-chore',
   imports: [ReactiveFormsModule, LoadingScreen, ChoreForm],
   templateUrl: './add-chore.html',
-  styleUrl: './add-chore.scss',
 })
 export class AddChore implements OnInit {
   private choreService = inject(ChoreService);
