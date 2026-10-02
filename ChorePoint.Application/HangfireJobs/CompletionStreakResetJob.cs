@@ -24,7 +24,14 @@ internal sealed partial class CompletionStreakResetJob(IAppDbContext context, IL
             return;
         }
 
-        var kidChore = kid.KidChores.Single(kc => kc.ChoreId.Equals(choreId));
+        var kidChore = kid.KidChores.SingleOrDefault(kc => kc.ChoreId.Equals(choreId));
+
+        if (kidChore is null)
+        {
+            LogKidChoreNotFound(choreId, kidId);
+            return;
+        }
+
         kidChore.ResetCompletionStreak();
 
         await context.SaveChangesAsync(cancellationToken);
@@ -32,4 +39,7 @@ internal sealed partial class CompletionStreakResetJob(IAppDbContext context, IL
 
     [LoggerMessage(LogLevel.Information, "No kid found with ID [{KidId}] during completion streak reset job")]
     partial void LogKidNotFound(int kidId);
+
+    [LoggerMessage(LogLevel.Information, "No chore with ID [{ChoreId}] found assigned to kid with ID [{KidId}] during completion streak reset job")]
+    partial void LogKidChoreNotFound(int choreId, int kidId);
 }
