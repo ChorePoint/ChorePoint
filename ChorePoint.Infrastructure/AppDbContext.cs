@@ -115,14 +115,17 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(p => p.Password).HasMaxLength(100);
         });
 
-        modelBuilder.Entity<ParentSettings>(entity => entity
-                .Property(ps => ps.ShopOpeningDays)
+        modelBuilder.Entity<ParentSettings>(entity =>
+        {
+            entity.Property(ps => ps.IanaTimeZone).HasMaxLength(30);
+
+            entity.Property(ps => ps.ShopOpeningDays)
                 // Convert List<DayOfWeek> to a comma-separated string for storage
                 .HasConversion(
                     dow => JsonSerializer.Serialize(dow, (JsonSerializerOptions?)null),
                     dow => JsonSerializer.Deserialize<IReadOnlyList<DayOfWeek>>(dow, (JsonSerializerOptions?)null)!
-                )
-        );
+                );
+        });
 
         modelBuilder.Entity<ShopItem>(entity =>
         {

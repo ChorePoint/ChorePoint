@@ -4,9 +4,14 @@ using Microsoft.Extensions.Logging;
 
 namespace ChorePoint.Application.HangfireJobs;
 
-public partial class LoginCodeDeletionJob(IAppDbContext context, ILogger<LoginCodeDeletionJob> logger) : ILoginCodeDeletionJob
+internal interface ILoginCodeDeletionJob
 {
-    public async Task StartDeleteJob(int kidId, CancellationToken cancellationToken)
+    Task StartLoginCodeDeletionJob(int kidId, CancellationToken cancellationToken);
+}
+
+internal sealed partial class LoginCodeDeletionJob(IAppDbContext context, ILogger<LoginCodeDeletionJob> logger) : ILoginCodeDeletionJob
+{
+    public async Task StartLoginCodeDeletionJob(int kidId, CancellationToken cancellationToken)
     {
         var loginCode = await context.LoginCodes.FindAsync([kidId], cancellationToken);
 
@@ -20,6 +25,6 @@ public partial class LoginCodeDeletionJob(IAppDbContext context, ILogger<LoginCo
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    [LoggerMessage(LogLevel.Error, "No login code found for kid with ID [{KidId}] during deletion job")]
+    [LoggerMessage(LogLevel.Information, "No login code found for kid with ID [{KidId}] during login code deletion job")]
     partial void LogLoginCodeNotFound(int kidId);
 }

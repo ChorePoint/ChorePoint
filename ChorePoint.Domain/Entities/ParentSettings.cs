@@ -5,6 +5,7 @@ public class ParentSettings : EntityBase
     public int ParentSettingsId { get; set; }
     public int ParentId { get; set; }
 
+    public string IanaTimeZone { get; set; } = string.Empty;
     public bool AutoApproveChores { get; set; }
     public bool ApprovePurchases { get; set; }
     public bool RequirePhotoEvidence { get; set; }

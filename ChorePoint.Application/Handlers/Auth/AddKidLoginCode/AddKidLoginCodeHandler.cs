@@ -13,7 +13,7 @@ using Microsoft.Extensions.Options;
 namespace ChorePoint.Application.Handlers.Auth.AddKidLoginCode;
 
 public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService parentContextService,
-    IKidLoginCodeGenerator kidLoginCodeGenerator, IOptionsSnapshot<ApiOptions> apiOptions)
+    IKidLoginCodeGenerator kidLoginCodeGenerator, IBackgroundJobClient backgroundJobClient, IOptionsSnapshot<ApiOptions> apiOptions)
     : IRequestHandler<AddKidLoginCodeCommand, AddKidLoginCodeResponse>
 {
     private readonly ApiOptions _apiOptions = apiOptions.Value;
@@ -36,8 +36,8 @@ public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService
         await context.LoginCodes.AddAsync(loginCode, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 
-        BackgroundJob.Schedule<ILoginCodeDeletionJob>(
-            j => j.StartDeleteJob(kid.KidId, cancellationToken),
+        backgroundJobClient.Schedule<ILoginCodeDeletionJob>(
+            j => j.StartLoginCodeDeletionJob(kid.KidId, cancellationToken),
             TimeSpan.FromMinutes(_apiOptions.KidLoginCodeTimeout)
         );
 

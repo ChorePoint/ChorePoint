@@ -26,4 +26,9 @@ public class KidChore : EntityBase
         CompletionStreak++;
         StreakLastUpdated = now;
     }
+
+    public void ResetCompletionStreak()
+    {
+        CompletionStreak = 0;
+    }
 }
