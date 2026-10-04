@@ -22,4 +22,13 @@ public class Parent : EntityBase
             Password = password
         };
     }
+
+    public void AddDefaultSettings(string? ianaTimeZone)
+    {
+        ParentSettings = new ParentSettings
+        {
+            IanaTimeZone = ianaTimeZone ?? ParentSettings.DefaultTimeZone,
+            ShopOpeningDays = [DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday]
+        };
+    }
 }

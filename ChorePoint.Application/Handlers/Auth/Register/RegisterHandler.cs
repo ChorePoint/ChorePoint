@@ -14,12 +14,10 @@ public class RegisterHandler(IAppDbContext context, IPasswordHasher<string> pass
 {
     public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var existingParent = await context.Parents.SingleOrDefaultAsync(
-            p => p.Email.Equals(request.Email),
-            cancellationToken
-        );
+        var emailAlreadyInUse = await context.Parents
+            .AnyAsync(p => p.Email.Equals(request.Email), cancellationToken);
 
-        if (existingParent is not null)
+        if (emailAlreadyInUse)
         {
             throw new ParentAlreadyExistsException(request.Email);
         }
@@ -30,6 +28,7 @@ public class RegisterHandler(IAppDbContext context, IPasswordHasher<string> pass
             request.Email,
             passwordHasher.HashPassword(string.Empty, request.Password)
         );
+        parent.AddDefaultSettings(request.IanaTimeZone);
 
         await context.Parents.AddAsync(parent, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);

@@ -2,6 +2,8 @@ namespace ChorePoint.Domain.Entities;
 
 public class ParentSettings : EntityBase
 {
+    public const string DefaultTimeZone = "UTC";
+
     public int ParentSettingsId { get; set; }
     public int ParentId { get; set; }
 
