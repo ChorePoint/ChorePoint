@@ -60,25 +60,7 @@ public class Worker(IServiceProvider serviceProvider, IOptions<DatabaseOptions> 
             Email = "test.parent@dev.com",
             Password = passwordHasher.HashPassword(string.Empty, "test")
         };
-
-        ParentSettings parentSettings = new()
-        {
-            ParentId = 1,
-            AutoApproveChores = false,
-            ApprovePurchases = true,
-            RequirePhotoEvidence = false,
-            ShopOpeningDays =
-            [
-                DayOfWeek.Monday,
-                DayOfWeek.Tuesday,
-                DayOfWeek.Wednesday,
-                DayOfWeek.Thursday,
-                DayOfWeek.Friday,
-                DayOfWeek.Saturday,
-                DayOfWeek.Sunday
-            ],
-            ClosedShopOnlyGatesPurchasing = true
-        };
+        parent.AddDefaultSettings(null);
 
         Kid kidOne = new()
         {
@@ -222,7 +204,6 @@ public class Worker(IServiceProvider serviceProvider, IOptions<DatabaseOptions> 
             // Extra SaveChangesAsync() as otherwise Parent.ParentId [1] does not exist yet for foreign key constraints
             await dbContext.SaveChangesAsync(cancellationToken);
 
-            await dbContext.ParentSettings.AddAsync(parentSettings, cancellationToken);
             await dbContext.Kids.AddAsync(kidOne, cancellationToken);
             await dbContext.Kids.AddAsync(kidTwo, cancellationToken);
             await dbContext.Kids.AddAsync(kidThree, cancellationToken);

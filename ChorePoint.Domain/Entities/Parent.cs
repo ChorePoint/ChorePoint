@@ -28,7 +28,11 @@ public class Parent : EntityBase
         ParentSettings = new ParentSettings
         {
             IanaTimeZone = ianaTimeZone ?? ParentSettings.DefaultTimeZone,
-            ShopOpeningDays = [DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday]
+            AutoApproveChores = false,
+            ApprovePurchases = true,
+            RequirePhotoEvidence = false,
+            ShopOpeningDays = [DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday, DayOfWeek.Sunday],
+            ClosedShopOnlyGatesPurchasing = false
         };
     }
 }
