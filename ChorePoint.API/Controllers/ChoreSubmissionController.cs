@@ -1,8 +1,8 @@
-using ChorePoint.Application.Handlers.ChoreSubmission.CompleteChore;
-using ChorePoint.Application.Handlers.ChoreSubmission.GetLatestSubmissionByKid;
-using ChorePoint.Application.Handlers.ChoreSubmission.GetStatsByKid;
-using ChorePoint.Application.Handlers.ChoreSubmission.GetSubmissionsByParent;
-using ChorePoint.Application.Handlers.ChoreSubmission.ReviewSubmission;
+using ChorePoint.Application.RequestHandlers.ChoreSubmission.CompleteChore;
+using ChorePoint.Application.RequestHandlers.ChoreSubmission.GetLatestSubmissionByKid;
+using ChorePoint.Application.RequestHandlers.ChoreSubmission.GetStatsByKid;
+using ChorePoint.Application.RequestHandlers.ChoreSubmission.GetSubmissionsByParent;
+using ChorePoint.Application.RequestHandlers.ChoreSubmission.ReviewSubmission;
 using ChorePoint.Infrastructure.Authentication;
 
 using MediatR;

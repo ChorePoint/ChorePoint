@@ -1,7 +1,7 @@
-using ChorePoint.Application.Handlers.Auth.AddKidLoginCode;
-using ChorePoint.Application.Handlers.Auth.KidLogin;
-using ChorePoint.Application.Handlers.Auth.ParentLogin;
-using ChorePoint.Application.Handlers.Auth.Register;
+using ChorePoint.Application.RequestHandlers.Auth.AddKidLoginCode;
+using ChorePoint.Application.RequestHandlers.Auth.KidLogin;
+using ChorePoint.Application.RequestHandlers.Auth.ParentLogin;
+using ChorePoint.Application.RequestHandlers.Auth.Register;
 using ChorePoint.Infrastructure.Authentication;
 
 using MediatR;

@@ -1,8 +1,8 @@
-using ChorePoint.Application.Handlers.Parent.CreateKid;
-using ChorePoint.Application.Handlers.Parent.DeleteKid;
-using ChorePoint.Application.Handlers.Parent.GetKidById;
-using ChorePoint.Application.Handlers.Parent.GetKidsByParent;
-using ChorePoint.Application.Handlers.Parent.UpdateKid;
+using ChorePoint.Application.RequestHandlers.Parent.CreateKid;
+using ChorePoint.Application.RequestHandlers.Parent.DeleteKid;
+using ChorePoint.Application.RequestHandlers.Parent.GetKidById;
+using ChorePoint.Application.RequestHandlers.Parent.GetKidsByParent;
+using ChorePoint.Application.RequestHandlers.Parent.UpdateKid;
 using ChorePoint.Infrastructure.Authentication;
 
 using MediatR;

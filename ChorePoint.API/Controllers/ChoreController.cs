@@ -1,9 +1,9 @@
-using ChorePoint.Application.Handlers.Chore.CreateChore;
-using ChorePoint.Application.Handlers.Chore.DeleteChore;
-using ChorePoint.Application.Handlers.Chore.GetChoreById;
-using ChorePoint.Application.Handlers.Chore.GetChoresByKid;
-using ChorePoint.Application.Handlers.Chore.GetChoresByParent;
-using ChorePoint.Application.Handlers.Chore.UpdateChore;
+using ChorePoint.Application.RequestHandlers.Chore.CreateChore;
+using ChorePoint.Application.RequestHandlers.Chore.DeleteChore;
+using ChorePoint.Application.RequestHandlers.Chore.GetChoreById;
+using ChorePoint.Application.RequestHandlers.Chore.GetChoresByKid;
+using ChorePoint.Application.RequestHandlers.Chore.GetChoresByParent;
+using ChorePoint.Application.RequestHandlers.Chore.UpdateChore;
 using ChorePoint.Infrastructure.Authentication;
 
 using MediatR;

@@ -1,11 +1,11 @@
-using ChorePoint.Application.Handlers.Shop.BuyShopItem;
-using ChorePoint.Application.Handlers.Shop.DeleteShopItem;
-using ChorePoint.Application.Handlers.Shop.GetShopItemsByKid;
-using ChorePoint.Application.Handlers.Shop.GetShopItemsByParent;
-using ChorePoint.Application.Handlers.Shop.NewShopItem;
-using ChorePoint.Application.Handlers.Shop.ReactivateShopItem;
-using ChorePoint.Application.Handlers.Shop.ReviewShopItemPurchase;
-using ChorePoint.Application.Handlers.Shop.UpdateShopItem;
+using ChorePoint.Application.RequestHandlers.Shop.BuyShopItem;
+using ChorePoint.Application.RequestHandlers.Shop.DeleteShopItem;
+using ChorePoint.Application.RequestHandlers.Shop.GetShopItemsByKid;
+using ChorePoint.Application.RequestHandlers.Shop.GetShopItemsByParent;
+using ChorePoint.Application.RequestHandlers.Shop.NewShopItem;
+using ChorePoint.Application.RequestHandlers.Shop.ReactivateShopItem;
+using ChorePoint.Application.RequestHandlers.Shop.ReviewShopItemPurchase;
+using ChorePoint.Application.RequestHandlers.Shop.UpdateShopItem;
 using ChorePoint.Infrastructure.Authentication;
 
 using MediatR;
