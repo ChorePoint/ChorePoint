@@ -1,0 +1,46 @@
+<div class="login-page">
+    <div class="login-card">
+        <div class="login-logo">🏆</div>
+        <div class="login-title">Hi there! 👋</div>
+        <div class="login-subtitle">Type the 6 character code your parent gave you</div>
+
+        <div class="code-inputs">
+            @for (i of [0, 1, 2, 3, 4, 5]; track i) {
+                <input
+                    #codeInput
+                    class="code-box"
+                    [class.error]="error()"
+                    type="text"
+                    maxlength="1"
+                    inputmode="text"
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    spellcheck="false"
+                    (keydown.backspace)="onBackspace($event, i)"
+                    (input)="onInput($event, i )"
+                />
+                @if (i === 1 || i === 3) {
+                    <span class="code-dash" aria-hidden="true">-</span>
+                }
+            }
+        </div>
+
+        @if (error()) {
+            <div class="error-message">{{ error() }}</div>
+        }
+
+        <button class="login-button" [disabled]="loading()" (click)="submit()">
+            @if (loading()) {
+                Checking...
+            } @else {
+                Let's go! 🚀
+            }
+        </button>
+
+        <div class="login-help">
+            Don't have a code? Ask a parent to find it in <strong>Parent Settings</strong>.
+        </div>
+    </div>
+
+    <a class="parent-link" routerLink="/login">I'm a parent</a>
+</div>

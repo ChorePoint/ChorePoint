@@ -10,3 +10,7 @@ export interface LoginResponse {
     token: string;
   };
 }
+
+export interface KidLoginRequest {
+  loginCode: string;
+}

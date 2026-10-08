@@ -168,6 +168,17 @@
           </div>
         </div>
 
+      <div class="setting-item" (click)="openLoginCodeModal()">
+          <div class="setting-icon teal">🔑</div>
+          <div class="setting-info">
+              <div class="setting-title">Generate Login Code</div>
+              <div class="setting-description">Create a one-time code for your kid to sign in</div>
+          </div>
+          <div class="setting-action">
+              <div class="chevron">›</div>
+          </div>
+      </div>
+
         <div class="setting-item">
           <div class="setting-icon blue">🔐</div>
           <div class="setting-info">
@@ -281,6 +292,9 @@
       </div>
     </div>
   </div>
+    @if (showLoginCodeModal()) {
+        <app-login-code-generation [kids]="kids()" />
+    }
 } @else {
   <app-loading-screen />
 }
