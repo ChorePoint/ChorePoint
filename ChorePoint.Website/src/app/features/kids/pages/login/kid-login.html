@@ -16,8 +16,12 @@
                     autocomplete="off"
                     autocapitalize="characters"
                     spellcheck="false"
+                    (keydown.backspace)="onBackspace($event, i)"
                     (input)="onInput($event, i )"
                 />
+                @if (i === 1 || i === 3) {
+                    <span class="code-dash" aria-hidden="true">-</span>
+                }
             }
         </div>
 

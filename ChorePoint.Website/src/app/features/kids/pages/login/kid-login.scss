@@ -44,8 +44,18 @@
     .code-inputs {
       display: flex;
       justify-content: center;
-      gap: 8px;
+      align-items: center;
+      gap: 6px;
       margin-bottom: 12px;
+
+      .code-dash {
+        width: 10px;
+        font-size: 24px;
+        font-weight: 800;
+        color: #bdc3c7;
+        text-align: center;
+        user-select: none;
+      }
 
       .code-box {
         width: 46px;
@@ -153,9 +163,18 @@
 }
 
 @media (max-width: 360px) {
-  .login-page .login-card .code-inputs .code-box {
-    width: 40px;
-    height: 50px;
-    font-size: 20px;
+  .login-page .login-card .code-inputs {
+    gap: 4px;
+
+    .code-dash {
+      width: 8px;
+      font-size: 20px;
+    }
+
+    .code-box {
+      width: 36px;
+      height: 50px;
+      font-size: 20px;
+    }
   }
 }
