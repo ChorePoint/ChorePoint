@@ -21,6 +21,7 @@ import { EditShopItem } from './features/parents/pages/shop/edit-shop-item/edit-
 import { AddShopItem } from './features/parents/pages/shop/add-shop-item/add-shop-item';
 import { ChoreDashboard } from './features/chores/pages/chore-dashboard/chore-dashboard';
 import { KidLogin } from './features/kids/pages/login/kid-login';
+import { KidDashboardHome } from './features/kids/pages/dashboard-home/dashboard-home';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -54,6 +55,10 @@ export const routes: Routes = [
   {
     path: 'kid/login',
     component: KidLogin,
+  },
+  {
+    path: 'kid/dashboard',
+    component: KidDashboardHome,
   },
   { path: 'test', component: ChoreDashboard },
   { path: 'kids/add', component: CreateProfile, canActivate: [authGuard] },

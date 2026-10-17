@@ -21,6 +21,7 @@ public static class AuthenticationExtensions
 
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IKidLoginCodeGenerator, KidLoginCodeGenerator>();
+        services.AddScoped<IKidContextService, KidContextService>();
         services.AddScoped<IParentContextService, ParentContextService>();
         services.AddScoped<IPasswordHasher<string>, PasswordHasher<string>>();
 

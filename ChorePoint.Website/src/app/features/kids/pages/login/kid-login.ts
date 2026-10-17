@@ -31,7 +31,7 @@ export class KidLogin {
 
     this.authService.kidLogin({ loginCode: this.loginCode }).subscribe({
       next: () => {
-        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/kid/dashboard';
         this.router.navigateByUrl(returnUrl);
       },
       error: (err: AuthError) => {

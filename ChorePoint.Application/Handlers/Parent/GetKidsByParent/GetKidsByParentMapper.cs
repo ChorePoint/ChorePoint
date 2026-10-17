@@ -1,13 +1,13 @@
-using ChorePoint.Domain.Entities;
-
 using Riok.Mapperly.Abstractions;
+
+using KidE = ChorePoint.Domain.Entities.Kid;
 
 namespace ChorePoint.Application.Handlers.Parent.GetKidsByParent;
 
 [Mapper]
 public partial class GetKidsByParentMapper
 {
-    public partial IReadOnlyList<GetKidsByParentResponse> KidsToGetKidsByParentResponseList(IReadOnlyList<Kid> kids);
+    public partial IReadOnlyList<GetKidsByParentResponse> KidsToGetKidsByParentResponseList(IReadOnlyList<KidE> kids);
 
-    private partial GetKidsByParentResponse KidToGetKidsByParentResponse(Kid kid);
+    private partial GetKidsByParentResponse KidToGetKidsByParentResponse(KidE kid);
 }
