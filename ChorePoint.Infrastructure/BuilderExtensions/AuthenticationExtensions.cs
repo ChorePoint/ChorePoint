@@ -22,6 +22,7 @@ public static class AuthenticationExtensions
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IKidLoginCodeGenerator, KidLoginCodeGenerator>();
         services.AddScoped<IParentContextService, ParentContextService>();
+        services.AddScoped<IKidContextService, KidContextService>();
         services.AddScoped<IPasswordHasher<string>, PasswordHasher<string>>();
 
         var authOptions = builder.Configuration.GetSection(AuthenticationOptions.ConfigurationSectionName).Get<AuthenticationOptions>()
