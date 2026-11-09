@@ -1,6 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { finalize } from 'rxjs/operators';
-import { KidsService } from '../../../../core/services/kids/kids.service';
 import { ShopService } from '../../../../core/services/shop/shop.service';
 import { Kid } from '../../../../core/types/dtos/kid';
 import { ShopItem, ShopItemCard } from '../../../../core/types/dtos/shop-item';
@@ -8,7 +7,8 @@ import { Header } from '../../../../shared/components/header/header';
 import { ShopCard } from '../../../../shared/components/shop-card/shop-card';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
 import { KidSelectorHeader } from '../../../chores/components/kid-selector-header/kid-selector-header';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { KidsService } from '../../../../core/parent/kids/kids.service';
 
 @Component({
   selector: 'app-shop',
@@ -39,21 +39,23 @@ export class Shop {
           s.assignedKids.map((k) => k.kidId).includes(this.vm.selectedKid()?.kidId ?? -1) ||
           this.vm.selectedKid() == null,
       );
-  })
+  });
 
   vm = {
     kids: this.kidService.kids,
     kidId: signal<number | null>(-1),
     selectedKid: computed(() => this.getSelectedKid()),
-    shopItems: this.shopService.shopItems
+    shopItems: this.shopService.shopItems,
   };
 
   constructor() {
-    this.route.queryParamMap.subscribe(params => {
+    this.route.queryParamMap.subscribe((params) => {
       const param = params.get('kidId');
       let kidId = null;
 
-      if (param !== null) { kidId = Number(param) }
+      if (param !== null) {
+        kidId = Number(param);
+      }
 
       this.vm.kidId.set(kidId);
     });
@@ -66,7 +68,7 @@ export class Shop {
   getSelectedKid(): null | Kid {
     if (this.vm.kidId === null) return null;
 
-    return this.kidService.kids().find(k => k.kidId == this.vm.kidId()) ?? null
+    return this.kidService.kids().find((k) => k.kidId == this.vm.kidId()) ?? null;
   }
 
   delete(id: number) {
@@ -77,7 +79,6 @@ export class Shop {
       .pipe(
         finalize(() => {
           this.deleteLoadingId = -1;
-
         }),
       )
       .subscribe();

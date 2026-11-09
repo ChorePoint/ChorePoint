@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angu
 import { Router } from '@angular/router';
 import { CHORE_EMOJIS } from '../../../../core/consts/chore-emojis';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
-import { KidsService } from '../../../../core/services/kids/kids.service';
+import { KidsService } from '../../../../core/parent/kids/kids.service';
 import { ChoreDifficulty } from '../../../../core/types/enums/chore-difficulty';
 import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
 import { ChoreForm } from '../../../../shared/components/chore-form/chore-form';
@@ -87,7 +87,7 @@ export class AddChore implements OnInit {
   }
 
   submit() {
-    console.log(this.form)
+    console.log(this.form);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

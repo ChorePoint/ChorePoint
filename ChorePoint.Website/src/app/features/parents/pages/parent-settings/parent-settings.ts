@@ -1,12 +1,12 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, signal} from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { KidsService } from '../../../../core/services/kids/kids.service';
+import { KidsService } from '../../../../core/parent/kids/kids.service';
 import { Header } from '../../../../shared/components/header/header';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
 import { KidList } from '../../../chores/components/kid-list/kid-list';
-import {AuthService} from '../../../auth/services/auth.service';
-import {LoginCodeGeneration} from '../../components/login-code-generation/login-code-generation';
+import { AuthService } from '../../../auth/services/auth.service';
+import { LoginCodeGeneration } from '../../components/login-code-generation/login-code-generation';
 
 @Component({
   selector: 'app-parent-settings',
@@ -22,5 +22,7 @@ export class ParentSettings {
 
   showLoginCodeModal = signal(false);
 
-  openLoginCodeModal() { this.showLoginCodeModal.set(true); }
+  openLoginCodeModal() {
+    this.showLoginCodeModal.set(true);
+  }
 }

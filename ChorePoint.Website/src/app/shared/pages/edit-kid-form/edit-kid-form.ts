@@ -4,11 +4,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, shareReplay, tap } from 'rxjs';
 import { AvatarOption, AVATARS } from '../../../core/consts/avatars';
-import { KidsService } from '../../../core/services/kids/kids.service';
 import { Kid } from '../../../core/types/dtos/kid';
 import { LoadingEmoji } from '../../components/loading-emoji/loading-emoji';
 import { LoadingScreen } from '../loading-screen/loading-screen';
-import {ToastPopup} from '../../components/toast-popup/toast-popup';
+import { ToastPopup } from '../../components/toast-popup/toast-popup';
+import { KidsService } from '../../../core/parent/kids/kids.service';
 
 @Component({
   selector: 'app-edit-kid-form',

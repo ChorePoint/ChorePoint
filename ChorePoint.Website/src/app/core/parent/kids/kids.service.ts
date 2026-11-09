@@ -5,9 +5,9 @@ import { throwError } from 'rxjs/internal/observable/throwError';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
 import { Kid } from '../../types/dtos/kid';
-import { ChoreSubmissionService } from '../chore-submission/chore-submission.service';
-import { ApiGetResponse } from '../dtos/response';
 import { CreateKidRequest, UpdateKidRequest } from './kid.dtos';
+import { ApiGetResponse } from '../../services/dtos/response';
+import { ChoreSubmissionService } from '../../services/chore-submission/chore-submission.service';
 
 @Injectable({ providedIn: 'root' })
 export class KidsService {

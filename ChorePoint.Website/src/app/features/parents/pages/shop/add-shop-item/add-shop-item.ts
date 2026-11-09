@@ -1,10 +1,10 @@
 import { Location } from '@angular/common';
-import {Component, inject, OnInit, signal} from '@angular/core';
-import {ShopForm} from '../../../../../shared/components/shop-form/shop-form';
-import {ShopService} from '../../../../../core/services/shop/shop.service';
-import {KidsService} from '../../../../../core/services/kids/kids.service';
-import {createDefaultShopItemForm} from '../default-form';
-import {finalize} from 'rxjs/operators';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { ShopForm } from '../../../../../shared/components/shop-form/shop-form';
+import { ShopService } from '../../../../../core/services/shop/shop.service';
+import { KidsService } from '../../../../../core/parent/kids/kids.service';
+import { createDefaultShopItemForm } from '../default-form';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-shop-item',
@@ -12,7 +12,6 @@ import {finalize} from 'rxjs/operators';
   templateUrl: './add-shop-item.html',
 })
 export class AddShopItem implements OnInit {
-
   private shopService = inject(ShopService);
   private kidsService = inject(KidsService);
 
@@ -31,7 +30,7 @@ export class AddShopItem implements OnInit {
           {
             kidId: this.kidsSignal()[0].kidId,
             isVisible: true,
-            pendingApproval: false
+            pendingApproval: false,
           },
         ],
       });
@@ -54,7 +53,7 @@ export class AddShopItem implements OnInit {
         finalize(() => {
           this.loading.set(false);
           this.form.reset();
-        })
+        }),
       )
       .subscribe({
         next: () => {

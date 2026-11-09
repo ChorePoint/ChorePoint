@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { DEFAULT_KID_STATS } from '../../../../core/consts/default-kid-stats';
 import { ChoreSubmissionService } from '../../../../core/services/chore-submission/chore-submission.service';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
-import { KidsService } from '../../../../core/services/kids/kids.service';
+import { KidsService } from '../../../../core/parent/kids/kids.service';
 import { Header } from '../../../../shared/components/header/header';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';
 import { KidProfile } from '../../components/kid-profile/kid-profile';

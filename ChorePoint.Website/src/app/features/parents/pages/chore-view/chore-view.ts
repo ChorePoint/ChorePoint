@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, computed, inject, signal} from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
-import { KidsService } from '../../../../core/services/kids/kids.service';
+import { KidsService } from '../../../../core/parent/kids/kids.service';
 import { Chore } from '../../../../core/types/dtos/chore';
 import { Kid } from '../../../../core/types/dtos/kid';
 import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
@@ -12,8 +12,8 @@ import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-s
 import { LoadingAction, LoadingType } from '../../../../shared/types/loading-action';
 import { TimeFrame } from '../../../../shared/types/timeframe';
 import { KidSelectorHeader } from '../../../chores/components/kid-selector-header/kid-selector-header';
-import {ToastPopup} from '../../../../shared/components/toast-popup/toast-popup';
-import {ActivatedRoute} from '@angular/router';
+import { ToastPopup } from '../../../../shared/components/toast-popup/toast-popup';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chore-view',
@@ -56,11 +56,13 @@ export class ChoreView {
   };
 
   constructor() {
-    this.route.queryParamMap.subscribe(params => {
+    this.route.queryParamMap.subscribe((params) => {
       const param = params.get('kidId');
       let kidId = null;
 
-      if (param !== null) { kidId = Number(param) }
+      if (param !== null) {
+        kidId = Number(param);
+      }
 
       this.vm.kidId.set(kidId);
     });
@@ -73,7 +75,7 @@ export class ChoreView {
   getSelectedKid(): null | Kid {
     if (this.vm.kidId === null) return null;
 
-    return this.kidService.kids().find(k => k.kidId == this.vm.kidId()) ?? null
+    return this.kidService.kids().find((k) => k.kidId == this.vm.kidId()) ?? null;
   }
 
   getFilteredChores(chores: Chore[], selectedKid: Kid | null) {
