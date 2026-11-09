@@ -3,11 +3,13 @@ using System.Text.Json;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
 
+using MediatR;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Infrastructure;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options), IAppDbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options, IMediator mediator) : DbContext(options), IAppDbContext
 {
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Chore> Chores => Set<Chore>();
@@ -18,33 +20,46 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<ParentSettings> ParentSettings => Set<ParentSettings>();
     public DbSet<ShopItem> ShopItems => Set<ShopItem>();
 
-    public override int SaveChanges()
-    {
-        AddTimestampsToChangedBaseEntities();
-        return base.SaveChanges();
-    }
-
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        AddTimestampsToChangedBaseEntities();
+        await DispatchDomainEvents();
+        AddTimestampsToChangedEntities();
+
         return await base.SaveChangesAsync(cancellationToken);
     }
 
-    private void AddTimestampsToChangedBaseEntities()
+    private async Task DispatchDomainEvents()
+    {
+        var baseEntitiesWithDomainEvents = ChangeTracker
+            .Entries<EntityBase>()
+            .Where(x => x.Entity.DomainEvents.Count != 0)
+            .ToList();
+
+        var domainEvents = baseEntitiesWithDomainEvents
+            .SelectMany(x => x.Entity.DomainEvents)
+            .ToList();
+
+        baseEntitiesWithDomainEvents.ForEach(entity => entity.Entity.ClearDomainEvents());
+
+        foreach (var domainEvent in domainEvents)
+            await mediator.Publish(domainEvent);
+    }
+
+    private void AddTimestampsToChangedEntities()
     {
         var changedBaseEntities = ChangeTracker
-            .Entries()
-            .Where(ee => ee is { Entity: EntityBase, State: EntityState.Added or EntityState.Modified });
+            .Entries<EntityBase>()
+            .Where(ee => ee is { State: EntityState.Added or EntityState.Modified });
 
         var now = DateTime.UtcNow;
         foreach (var baseEntity in changedBaseEntities)
         {
             if (baseEntity.State is EntityState.Added)
             {
-                ((EntityBase)baseEntity.Entity).CreatedAt = now;
+                baseEntity.Entity.CreatedAt = now;
             }
 
-            ((EntityBase)baseEntity.Entity).UpdatedAt = now;
+            baseEntity.Entity.UpdatedAt = now;
         }
     }
 

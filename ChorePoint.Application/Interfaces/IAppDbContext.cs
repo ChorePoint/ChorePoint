@@ -15,7 +15,6 @@ public interface IAppDbContext
     DbSet<Parent> Parents { get; }
     DbSet<ParentSettings> ParentSettings { get; }
     DbSet<ShopItem> ShopItems { get; }
-    int SaveChanges();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     EntityEntry Entry(object entity);
 }
