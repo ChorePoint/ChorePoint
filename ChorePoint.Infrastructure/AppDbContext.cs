@@ -42,7 +42,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IMediator medi
         baseEntitiesWithDomainEvents.ForEach(entity => entity.Entity.ClearDomainEvents());
 
         foreach (var domainEvent in domainEvents)
+        {
             await mediator.Publish(domainEvent);
+        }
     }
 
     private void AddTimestampsToChangedEntities()
