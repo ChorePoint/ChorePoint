@@ -10,6 +10,7 @@ public interface IAppDbContext
     DbSet<Category> Categories { get; }
     DbSet<Chore> Chores { get; }
     DbSet<ChoreSubmission> ChoreSubmissions { get; }
+    DbSet<IntegrationEvent> IntegrationEvents { get; }
     DbSet<Kid> Kids { get; }
     DbSet<LoginCode> LoginCodes { get; }
     DbSet<Parent> Parents { get; }

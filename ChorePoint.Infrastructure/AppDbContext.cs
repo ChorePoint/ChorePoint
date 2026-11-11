@@ -14,6 +14,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IMediator medi
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Chore> Chores => Set<Chore>();
     public DbSet<ChoreSubmission> ChoreSubmissions => Set<ChoreSubmission>();
+    public DbSet<IntegrationEvent> IntegrationEvents => Set<IntegrationEvent>();
     public DbSet<Kid> Kids => Set<Kid>();
     public DbSet<LoginCode> LoginCodes => Set<LoginCode>();
     public DbSet<Parent> Parents => Set<Parent>();
@@ -96,6 +97,19 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IMediator medi
             entity.Property(cs => cs.ReviewNotes).HasMaxLength(300);
 
             entity.Property(cs => cs.ApprovalStatus).HasMaxLength(10).HasConversion<string>();
+        });
+
+        modelBuilder.Entity<IntegrationEvent>(entity =>
+        {
+            entity.ToTable("IntegrationEventOutbox");
+
+            entity.Property(ie => ie.Status).HasMaxLength(10).HasConversion<string>();
+
+            entity.Property(ie => ie.EntityType).HasMaxLength(100);
+
+            entity.Property(ie => ie.EventType).HasMaxLength(100);
+
+            entity.Property(ie => ie.Payload).HasMaxLength(1000).HasColumnType("jsonb");
         });
 
         modelBuilder.Entity<Kid>(entity =>
