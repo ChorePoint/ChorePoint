@@ -1,3 +1,4 @@
+using ChorePoint.Application;
 using ChorePoint.Infrastructure.BuilderExtensions;
 using ChorePoint.MigrationService;
 using ChorePoint.ServiceDefaults;
@@ -20,9 +21,13 @@ try
 
     builder.AddDatabase();
 
-    builder.Services.AddScoped<PasswordHasher<string>>();
+    var services = builder.Services;
 
-    builder.Services.AddHostedService<Worker>();
+    services.AddDomainEventHandlers();
+
+    services.AddScoped<PasswordHasher<string>>();
+
+    services.AddHostedService<Worker>();
 
     await builder.Build().RunAsync();
 }

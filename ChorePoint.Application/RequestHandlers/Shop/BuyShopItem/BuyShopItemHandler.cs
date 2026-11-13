@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.RequestHandlers.Shop.BuyShopItem;
 
-file sealed class BuyShopItemHandler(IAppDbContext context, IParentContextService parentContextService, IShopOperationPolicy shopOperationPolicy)
+internal sealed class BuyShopItemHandler(IAppDbContext context, IParentContextService parentContextService, IShopOperationPolicy shopOperationPolicy)
     : IRequestHandler<BuyShopItemCommand>
 {
     public async Task Handle(BuyShopItemCommand request, CancellationToken cancellationToken)

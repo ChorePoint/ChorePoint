@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.RequestHandlers.Shop.GetShopItemsByKid;
 
-file sealed class GetShopItemsByKidHandler(IAppDbContext context, IParentContextService parentContextService, IShopOperationPolicy shopOperationPolicy)
+internal sealed class GetShopItemsByKidHandler(IAppDbContext context, IParentContextService parentContextService, IShopOperationPolicy shopOperationPolicy)
     : IRequestHandler<GetShopItemsByKidQuery, IReadOnlyList<GetShopItemsByKidResponse>>
 {
     public async Task<IReadOnlyList<GetShopItemsByKidResponse>> Handle(GetShopItemsByKidQuery request, CancellationToken cancellationToken)

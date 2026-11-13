@@ -28,6 +28,9 @@ try
 
     var services = builder.Services;
 
+    services.AddRequestHandlers();
+    services.AddDomainEventHandlers();
+
     services.AddControllers();
     services.AddHttpContextAccessor();
     services.AddScalar();
