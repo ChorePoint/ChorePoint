@@ -17,7 +17,7 @@ namespace ChorePoint.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.11")
+                .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -170,6 +170,51 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("ChoreSubmissions");
+                });
+
+            modelBuilder.Entity("ChorePoint.Domain.Entities.IntegrationEvent", b =>
+                {
+                    b.Property<int>("IntegrationEventId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IntegrationEventId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Payload")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("jsonb");
+
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("IntegrationEventId");
+
+                    b.ToTable("IntegrationEventOutbox", (string)null);
                 });
 
             modelBuilder.Entity("ChorePoint.Domain.Entities.Kid", b =>
