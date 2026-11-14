@@ -16,9 +16,7 @@ import { KidsSettings } from './pages/parent/kids-settings/kids-settings';
 import { EditKidForm } from './pages/parent/edit-kid-form/edit-kid-form';
 import { KidLogin } from './pages/kid/login/kid-login';
 import { KidDashboardHome } from './pages/kid/dashboard-home/dashboard-home';
-import { ChoreDashboard } from './pages/parent/chore/chore-dashboard/chore-dashboard';
 import { CreateProfile } from './pages/common/start/create-profile/create-profile';
-import { ChoreDetails } from './pages/parent/chore/chore-details/chore-details';
 import { ParentLogin } from './pages/parent/login/parent-login.component';
 import { CreateAccount } from './pages/parent/create-account/create-account';
 
