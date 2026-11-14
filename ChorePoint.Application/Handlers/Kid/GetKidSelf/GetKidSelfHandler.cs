@@ -13,7 +13,7 @@ public class GetKidSelfHandler(IAppDbContext context, IKidContextService kidCont
     {
         var kidId = kidContextService.GetKidId();
 
-        var kid = await context.Kids.Where(k => k.KidId.Equals(kidId)).FirstOrDefaultAsync(cancellationToken);
+        var kid = await context.Kids.Where(k => k.KidId.Equals(kidId)).SingleOrDefaultAsync(cancellationToken);
 
         if (kid == null)
         {
