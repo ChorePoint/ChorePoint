@@ -58,6 +58,13 @@ public static class ApplicationExtensions
 
     extension(IServiceCollection services)
     {
+        public IServiceCollection AddMediatR()
+        {
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IMediator).Assembly));
+
+            return services;
+        }
+
         public IServiceCollection AddRequestHandlers()
         {
             services.AddScoped<IRequestHandler<AddKidLoginCodeCommand, AddKidLoginCodeResponse>, AddKidLoginCodeHandler>();
@@ -98,8 +105,6 @@ public static class ApplicationExtensions
 
         public IServiceCollection AddDomainEventHandlers()
         {
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IMediator).Assembly));
-
             return services;
         }
     }

@@ -28,6 +28,7 @@ try
 
     var services = builder.Services;
 
+    services.AddMediatR();
     services.AddRequestHandlers();
     services.AddDomainEventHandlers();
 

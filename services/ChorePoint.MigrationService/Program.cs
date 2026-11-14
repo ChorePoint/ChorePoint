@@ -23,6 +23,7 @@ try
 
     var services = builder.Services;
 
+    services.AddMediatR();
     services.AddDomainEventHandlers();
 
     services.AddScoped<PasswordHasher<string>>();
