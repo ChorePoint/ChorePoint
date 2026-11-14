@@ -1,0 +1,327 @@
+@use "../../../../styles/parent/buttons.scss" as buttons;
+
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 100px 20px 40px;
+    position: relative;
+
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 40px;
+        height: 40px;
+        background: rgb(255 255 255 / 30%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 20px;
+        color: white;
+    }
+
+    .chore-icon-large {
+        width: 100px;
+        height: 100px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 50px;
+        margin: 0 auto 20px;
+        box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+    }
+
+    .chore-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: white;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .chore-subtitle {
+        font-size: 14px;
+        color: rgb(255 255 255 / 90%);
+        text-align: center;
+    }
+}
+
+.points-banner {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    padding: 20px;
+    text-align: center;
+    color: white;
+
+    .points-label {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .points-value {
+        font-size: 36px;
+        font-weight: 800;
+    }
+}
+
+.content {
+    padding: 25px 20px;
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 25px;
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+
+            .info-icon {
+                font-size: 24px;
+                margin-bottom: 8px;
+            }
+
+            .info-value {
+                font-size: 18px;
+                font-weight: 700;
+                color: #2c3e50;
+                margin-bottom: 4px;
+            }
+
+            .info-label {
+                font-size: 12px;
+                color: #7f8c8d;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 25px;
+
+        .btn-success {
+            cursor: not-allowed;
+            opacity: 0.6;
+            background: #28a745;
+            color: #fff;
+        }
+    }
+}
+
+.section {
+    margin-bottom: 25px;
+}
+
+.section-title {
+    margin-bottom: 12px;
+}
+
+.description-box {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #2c3e50;
+}
+
+.steps-list {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.step-item {
+    padding: 15px;
+    border-bottom: 1px solid #ecf0f1;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.step-item:last-child {
+    border-bottom: none;
+}
+
+.step-number {
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.step-text {
+    flex: 1;
+    font-size: 14px;
+    color: #2c3e50;
+    padding-top: 4px;
+}
+
+.examples-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.example-image {
+    aspect-ratio: 1;
+    background: #ecf0f1;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+}
+
+.timer-section {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    color: white;
+}
+
+.timer-display {
+    font-size: 48px;
+    font-weight: 800;
+    margin: 15px 0;
+}
+
+.timer-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.timer-btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 2px solid white;
+    background: transparent;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.timer-btn.primary {
+    background: white;
+    color: #3498db;
+}
+
+.photo-upload {
+    background: #f8f9fa;
+    border: 2px dashed #bdc3c7;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.upload-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.upload-text {
+    font-size: 14px;
+    color: #7f8c8d;
+    font-weight: 600;
+}
+
+.btn {
+    flex: 1;
+    padding: 18px;
+    border-radius: 15px;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-primary {
+    @include buttons.btn-success;
+}
+
+.btn-secondary {
+    background: white;
+    color: #2c3e50;
+    border: 2px solid #e0e0e0;
+}
+
+.btn-success {
+    @include buttons.btn-success;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgb(230 126 34 / 30%);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgb(231 76 60 / 30%);
+}
+
+.error-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+
+    .error-header {
+        top: 10px;
+        left: 0;
+
+        .back-button {
+            top: 16px;
+            left: 16px;
+            padding: 16px;
+            border-radius: 15px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgb(102 126 234 / 30%);
+        }
+    }
+
+    .error-message {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 20px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+
+        .error-icon {
+            font-size: 30px;
+        }
+
+        .error-text {
+            font-size: 16px;
+            font-weight: 600;
+        }
+    }
+}

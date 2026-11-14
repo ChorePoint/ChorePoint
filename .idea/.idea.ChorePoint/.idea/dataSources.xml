@@ -161,23 +161,63 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="redis" uuid="a7cf715c-3a9f-4c49-8fc8-9ec84b9c6992">
+    <data-source source="LOCAL" name="redis" uuid="189d7400-cf17-420c-bfdb-94b8136e042d">
       <driver-ref>redis</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>jdbc.RedisDriver</jdbc-driver>
-      <jdbc-url>jdbc:redis://R5rwqXvYtu08XG0dhvTh5Q@localhost:32783</jdbc-url>
+      <jdbc-url>jdbc:redis://R5rwqXvYtu08XG0dhvTh5Q@localhost:39851</jdbc-url>
       <jdbc-additional-properties>
-        <property name="aspireResourceId" value="redis-tynjjffc" />
+        <property name="aspireResourceId" value="redis-svfqdagd" />
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="postgres" uuid="1e1f7b1d-f2b6-4eee-8976-cf4fbdb1a729">
+    <data-source source="LOCAL" name="postgres" uuid="3c340383-bc3b-4f5f-aa05-d34ca0440f17">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:33923/?password=0%2BCFMazfc%7Er%7BnruBWVSYsE&amp;user=postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:44519/?password=0%2BCFMazfc%7Er%7BnruBWVSYsE&amp;user=postgres</jdbc-url>
       <jdbc-additional-properties>
-        <property name="aspireResourceId" value="postgres-jgbvmmzz" />
+        <property name="aspireResourceId" value="postgres-rscwpray" />
+      </jdbc-additional-properties>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="redis" uuid="8d934c37-8dab-4cb3-b352-de2c362a9209">
+      <driver-ref>redis</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>jdbc.RedisDriver</jdbc-driver>
+      <jdbc-url>jdbc:redis://R5rwqXvYtu08XG0dhvTh5Q@localhost:37971</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="aspireResourceId" value="redis-ydkvtchx" />
+      </jdbc-additional-properties>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="postgres" uuid="191480bf-0da2-4afd-95c9-fafa52ba69cc">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:46759/?password=0%2BCFMazfc%7Er%7BnruBWVSYsE&amp;user=postgres</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="aspireResourceId" value="postgres-rsfxjabb" />
+      </jdbc-additional-properties>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="redis" uuid="2b25d477-096a-4945-ba0a-cd60e54e633b">
+      <driver-ref>redis</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>jdbc.RedisDriver</jdbc-driver>
+      <jdbc-url>jdbc:redis://R5rwqXvYtu08XG0dhvTh5Q@localhost:33725</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="aspireResourceId" value="redis-htmpbrkk" />
+      </jdbc-additional-properties>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="postgres" uuid="b7a1888c-ea30-4635-8b01-2242a1a00072">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:40985/?password=0%2BCFMazfc%7Er%7BnruBWVSYsE&amp;user=postgres</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="aspireResourceId" value="postgres-uztdtvtg" />
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>

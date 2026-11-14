@@ -1,0 +1,106 @@
+@if (vm) {
+  <app-header
+    [config]="{
+      pageTitle: 'Parent Dashboard',
+    }"
+  >
+    <app-kid-selector-header
+      [kids]="vm.kids()"
+      [selectedKidId]="vm.selectedKid?.kidId ?? -1"
+      [kidHeaderText]="'Add a child from the kids tab to get started!'"
+      (kidSelected)="vm.selectedKid = $event"
+    />
+  </app-header>
+
+  <div class="content">
+    <app-dashboard-stats
+      [stats]="{
+        completedThisWeek: vm.stats?.completedThisWeek ?? 0,
+        dayStreak: vm.selectedKid?.dayStreak ?? 0,
+        approvalRate: vm.stats?.approvalRate ?? 0,
+      }"
+    />
+
+    <div class="section-header">
+      <div class="section-title section-title-md">Pending Approvals</div>
+      <div class="badge">{{ vm.pendingApprovals().length }}</div>
+    </div>
+
+    <div class="pending-list">
+      @for (approval of vm.pendingApprovals(); track approval.choreId) {
+        <app-pending-approval
+          [pendingApproval]="{
+            id: approval.choreId,
+            choreName: approval.chore.name,
+            completedAt: approval.completedAt,
+            points: approval.chore.points,
+            icon: approval.chore.icon,
+          }"
+          [loading]="loading"
+          (refresh)="onReviewComplete()"
+        />
+      }
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section-header">
+      <div class="section-title section-title-md">Quick Actions</div>
+    </div>
+
+    <div class="quick-actions">
+      <div class="quick-action-card" [routerLink]="'/parent/chores/add'">
+        <div class="quick-action-icon">➕</div>
+        <div class="quick-action-label">Add Chore</div>
+      </div>
+      <div class="quick-action-card orange">
+        <div class="quick-action-icon">🎁</div>
+        <div class="quick-action-label">Add Reward</div>
+      </div>
+      <div class="quick-action-card green">
+        <div class="quick-action-icon">💰</div>
+        <div class="quick-action-label">Give Bonus</div>
+      </div>
+      <div class="quick-action-card blue">
+        <div class="quick-action-icon">💬</div>
+        <div class="quick-action-label">Send Message</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title section-title-md">Recent Activity</div>
+    </div>
+
+    <div class="activity-list">
+      <div class="activity-item">
+        <div class="activity-icon">✅</div>
+        <div class="activity-content">
+          <div class="activity-text">Approved "Made Bed" chore</div>
+          <div class="activity-time">2 hours ago</div>
+        </div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon">💰</div>
+        <div class="activity-content">
+          <div class="activity-text">Zach earned 250 points</div>
+          <div class="activity-time">2 hours ago</div>
+        </div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon">🎁</div>
+        <div class="activity-content">
+          <div class="activity-text">Zach redeemed Extra Screen Time</div>
+          <div class="activity-time">Yesterday</div>
+        </div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon">🏆</div>
+        <div class="activity-content">
+          <div class="activity-text">Zach unlocked "Week Streak" badge</div>
+          <div class="activity-time">2 days ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <app-loading-screen />
+}
