@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { KidStats } from '../../../../core/services/chore-submission/chore-submission.dtos';
 import { ChoreSubmissionService } from '../../../../core/services/chore-submission/chore-submission.service';
-import { KidsService } from '../../../../core/services/kids/kids.service';
+import { KidsService } from '../../../../core/parent/kids/kids.service';
 import { Kid } from '../../../../core/types/dtos/kid';
 import { Header } from '../../../../shared/components/header/header';
 import { LoadingScreen } from '../../../../shared/pages/loading-screen/loading-screen';

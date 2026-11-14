@@ -2,8 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AVATARS } from '../../../../core/consts/avatars';
-import { KidsService } from '../../../../core/services/kids/kids.service';
 import { LoadingEmoji } from '../../../../shared/components/loading-emoji/loading-emoji';
+import { KidsService } from '../../../../core/parent/kids/kids.service';
 
 @Component({
   selector: 'app-create-profile',

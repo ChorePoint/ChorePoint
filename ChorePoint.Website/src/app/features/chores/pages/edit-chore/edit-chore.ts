@@ -3,7 +3,7 @@ import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ChoreService } from '../../../../core/services/chore/chore.service';
-import { KidsService } from '../../../../core/services/kids/kids.service';
+import { KidsService } from '../../../../core/parent/kids/kids.service';
 import { ChoreDifficulty } from '../../../../core/types/enums/chore-difficulty';
 import { ChoreFrequency } from '../../../../core/types/enums/chore-frequency';
 import { ChoreForm } from '../../../../shared/components/chore-form/chore-form';

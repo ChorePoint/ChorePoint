@@ -1,11 +1,11 @@
-import {Component, effect, inject, signal, OnInit} from '@angular/core';
-import {ShopForm} from '../../../../../shared/components/shop-form/shop-form';
-import {ShopService} from '../../../../../core/services/shop/shop.service';
-import {KidsService} from '../../../../../core/services/kids/kids.service';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
-import {createDefaultShopItemForm} from '../default-form';
-import {finalize} from 'rxjs/operators';
+import { Component, effect, inject, signal, OnInit } from '@angular/core';
+import { ShopForm } from '../../../../../shared/components/shop-form/shop-form';
+import { ShopService } from '../../../../../core/services/shop/shop.service';
+import { KidsService } from '../../../../../core/parent/kids/kids.service';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { createDefaultShopItemForm } from '../default-form';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-shop-item',
@@ -29,8 +29,7 @@ export class EditShopItem implements OnInit {
 
   constructor() {
     effect(() => {
-      const shopItem = this.shopService.shopItems()
-        .find((s) => s.shopItemId === this.shopItemId);
+      const shopItem = this.shopService.shopItems().find((s) => s.shopItemId === this.shopItemId);
 
       if (!shopItem) return;
 
@@ -41,7 +40,7 @@ export class EditShopItem implements OnInit {
         description: shopItem.description,
         category: shopItem.category,
         cost: shopItem.cost,
-        quantity: shopItem.quantity
+        quantity: shopItem.quantity,
       });
     });
   }
@@ -66,7 +65,7 @@ export class EditShopItem implements OnInit {
         finalize(() => {
           this.loading.set(false);
           this.form.reset();
-        })
+        }),
       )
       .subscribe({
         next: () => {

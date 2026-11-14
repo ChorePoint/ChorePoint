@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 import { map, Observable, of } from 'rxjs';
-import { KidsService } from '../services/kids/kids.service';
+import { KidsService } from '../parent/kids/kids.service';
 
 @Injectable({ providedIn: 'root' })
 export class HasKidsGuard implements CanActivate {
