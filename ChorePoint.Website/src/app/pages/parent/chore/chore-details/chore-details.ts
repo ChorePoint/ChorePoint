@@ -91,7 +91,7 @@ export class ChoreDetails implements OnInit {
   }
 
   backToDashboard() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/parent']);
   }
 
   markComplete() {

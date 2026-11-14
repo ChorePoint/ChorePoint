@@ -44,7 +44,7 @@ export class CreateAccount {
 
     this.authService.createAccount({ firstName, lastName, email, password }).subscribe({
       next: () => {
-        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/login';
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/parent/login';
         this.router.navigateByUrl(returnUrl);
       },
       error: (err: HttpErrorResponse) => {

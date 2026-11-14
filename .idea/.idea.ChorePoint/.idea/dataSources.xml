@@ -201,5 +201,25 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="redis" uuid="2b25d477-096a-4945-ba0a-cd60e54e633b">
+      <driver-ref>redis</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>jdbc.RedisDriver</jdbc-driver>
+      <jdbc-url>jdbc:redis://R5rwqXvYtu08XG0dhvTh5Q@localhost:33725</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="aspireResourceId" value="redis-htmpbrkk" />
+      </jdbc-additional-properties>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="postgres" uuid="b7a1888c-ea30-4635-8b01-2242a1a00072">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:40985/?password=0%2BCFMazfc%7Er%7BnruBWVSYsE&amp;user=postgres</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="aspireResourceId" value="postgres-uztdtvtg" />
+      </jdbc-additional-properties>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

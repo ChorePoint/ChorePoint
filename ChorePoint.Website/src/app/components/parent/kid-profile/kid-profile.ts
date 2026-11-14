@@ -14,13 +14,13 @@ export class KidProfile {
   @Input() kid!: KidDetails;
 
   navigateToChore() {
-    this.router.navigate(['/dashboard/chores'], {
+    this.router.navigate(['/parent/chores'], {
       queryParams: { kidId: this.kid.kidId },
     });
   }
 
   navigateToShop() {
-    this.router.navigate(['/dashboard/shop'], {
+    this.router.navigate(['/parent/shop'], {
       queryParams: { kidId: this.kid.kidId },
     });
   }

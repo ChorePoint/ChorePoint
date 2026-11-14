@@ -107,6 +107,6 @@ export class AddChore implements OnInit {
       },
     });
 
-    this.router.navigate(['/dashboard/chores']);
+    this.router.navigate(['/parent/chores']);
   }
 }

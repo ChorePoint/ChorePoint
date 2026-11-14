@@ -27,7 +27,7 @@ export const authInterceptor = (
       if (error.status === 401) {
         localStorage.removeItem('authToken');
 
-        router.navigate(['/login'], {
+        router.navigate(['/parent/login'], {
           queryParams: { returnUrl: router.url },
         });
       }

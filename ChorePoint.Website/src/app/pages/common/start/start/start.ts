@@ -43,6 +43,6 @@ export class Start implements OnInit {
 
   finishOnboarding() {
     this.authService.setOnboardingSeen();
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/parent']);
   }
 }

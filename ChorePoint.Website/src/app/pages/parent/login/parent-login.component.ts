@@ -11,10 +11,10 @@ import { getAuthErrorMessage } from '../../../core/consts/common/auth-error';
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule, LoadingEmoji, RouterModule, PasswordInput, FormField],
-  templateUrl: './login.html',
-  styleUrl: './login.scss',
+  templateUrl: './parent-login.component.html',
+  styleUrl: './parent-login.component.scss',
 })
-export class Login {
+export class ParentLogin {
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
@@ -41,7 +41,7 @@ export class Login {
 
     this.authService.login({ email, password }).subscribe({
       next: () => {
-        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/parent';
         this.router.navigateByUrl(returnUrl);
       },
       error: (err: AuthError) => {

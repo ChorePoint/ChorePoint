@@ -9,10 +9,11 @@ import { ChoreSubmissionService } from '../../../core/services/parent/chore-subm
 import { KidsService } from '../../../core/services/parent/kids/kids.service';
 import { Kid } from '../../../core/types/dtos/parent/kid';
 import { KidStats } from '../../../core/services/parent/chore-submission/chore-submission.dtos';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard-home',
-  imports: [LoadingScreen, DashboardStats, PendingApproval, KidSelectorHeader, Header],
+  imports: [LoadingScreen, DashboardStats, PendingApproval, KidSelectorHeader, Header, RouterLink],
   templateUrl: './dashboard-home.html',
   styleUrl: './dashboard-home.scss',
 })

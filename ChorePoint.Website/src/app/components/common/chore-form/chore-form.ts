@@ -63,7 +63,7 @@ export class ChoreForm {
   }
 
   back() {
-    this.router.navigate(['/dashboard/chores']);
+    this.router.navigate(['/parent/chores']);
   }
 
   getKidSetting(kidId: number, control: keyof AssignedKidToChore) {

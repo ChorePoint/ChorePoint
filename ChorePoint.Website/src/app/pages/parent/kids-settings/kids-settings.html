@@ -2,7 +2,7 @@
   <app-header
     [config]="{
       pageTitle: 'My Kids',
-      routerLink: '/kids/add',
+      routerLink: '/parent/kids/add',
       buttonIcon: '+',
     }"
   >
@@ -29,7 +29,7 @@
         <app-kid-profile [kid]="kid" />
       }
 
-      <div [routerLink]="'/kids/add'" class="add-kid-card">
+      <div [routerLink]="'/parent/kids/add'" class="add-kid-card">
         <div class="add-kid-icon">➕</div>
         <div class="add-kid-text">Add another child</div>
       </div>
