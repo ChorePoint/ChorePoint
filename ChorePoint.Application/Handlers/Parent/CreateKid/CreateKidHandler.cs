@@ -1,7 +1,8 @@
 using ChorePoint.Application.Interfaces;
-using ChorePoint.Domain.Entities;
 
 using MediatR;
+
+using KidE = ChorePoint.Domain.Entities.Kid;
 
 namespace ChorePoint.Application.Handlers.Parent.CreateKid;
 
@@ -11,7 +12,7 @@ public class CreateKidHandler(IAppDbContext context, IParentContextService paren
     {
         var parentId = parentContextService.GetParentId();
 
-        var kid = Kid.Create(parentId, request.Name, request.Avatar, request.Age);
+        var kid = KidE.Create(parentId, request.Name, request.Avatar, request.Age);
 
         await context.Kids.AddAsync(kid, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);

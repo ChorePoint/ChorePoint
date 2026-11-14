@@ -1,0 +1,97 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { catchError, of, tap, throwError } from 'rxjs';
+import { map } from 'rxjs/internal/operators/map';
+import {
+  GetLoginCodeResponse,
+  KidLoginRequest,
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+} from './auth.service.types';
+import { AUTH_ERROR_MAP } from '../../../consts/common/auth-error';
+import { AuthErrorType } from '../../../types/enums/common/auth-error-type';
+import { AuthError } from '../../../types/interfaces/common/auth-error';
+import { ApiGetResponse } from '../dtos/response';
+
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private http = inject(HttpClient);
+
+  private baseUrl = '/api/auth';
+
+  private ONBOARDING_KEY = 'hasSeenOnboarding';
+
+  isTokenExpired(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.exp * 1000 < Date.now();
+    } catch {
+      return true; // Invalid token is considered expired
+    }
+  }
+
+  isAuthenticated(): boolean {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken) return false;
+
+    const isExpired = this.isTokenExpired(authToken);
+
+    if (isExpired) {
+      localStorage.removeItem('authToken');
+      return false;
+    }
+
+    return true;
+  }
+
+  hasSeenOnboarding(): boolean {
+    return localStorage.getItem(this.ONBOARDING_KEY) === 'true';
+  }
+
+  setOnboardingSeen(): void {
+    localStorage.setItem(this.ONBOARDING_KEY, 'true');
+  }
+
+  login(request: LoginRequest) {
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login/parent`, request).pipe(
+      tap((response) => {
+        localStorage.setItem('authToken', response.data.token);
+      }),
+      catchError((err: HttpErrorResponse) => {
+        const type = AUTH_ERROR_MAP[err.status] ?? AuthErrorType.LoginFailed;
+        return throwError(() => ({ type }) as AuthError);
+      }),
+    );
+  }
+
+  kidLogin(request: KidLoginRequest) {
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login/kid`, request).pipe(
+      tap((response) => {
+        localStorage.setItem('authToken', response.data.token);
+      }),
+      catchError((err: HttpErrorResponse) => {
+        const type = AUTH_ERROR_MAP[err.status] ?? AuthErrorType.LoginFailed;
+        return throwError(() => ({ type }) as AuthError);
+      }),
+    );
+  }
+
+  getLoginCode(kidId: number) {
+    return this.http
+      .post<ApiGetResponse<GetLoginCodeResponse>>(`${this.baseUrl}/code/add`, { KidId: kidId })
+      .pipe(
+        map((res) => res.data),
+        catchError((err) => (err.status === 404 ? of(null) : throwError(() => err))),
+      );
+  }
+
+  logout() {
+    localStorage.removeItem('authToken');
+  }
+
+  createAccount(request: RegisterRequest) {
+    return this.http.post<void>(`${this.baseUrl}/register`, request);
+  }
+}

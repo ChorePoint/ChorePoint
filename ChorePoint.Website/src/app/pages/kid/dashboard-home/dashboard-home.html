@@ -1,0 +1,130 @@
+@if (vm.identity()) {
+    <app-header
+            [config]="{
+      pageTitle: 'My Dashboard',
+    }"
+    >
+        <div class="kid-badge">{{ vm.identity()!.avatar }} {{ vm.identity()!.name }}</div>
+    </app-header>
+
+    <div class="content">
+        <!-- Points Hero -->
+        <div class="points-card">
+            <div class="points-greeting">Hey {{ vm.identity()!.name }}! 👋</div>
+            <div class="points-balance">
+                <span class="points-number">{{ vm.identity()!.spendablePoints }}</span>
+                <span class="points-label">points</span>
+            </div>
+
+            <button class="shop-button" [routerLink]="'/dashboard/shop'">🎁 Spend Points</button>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-value">{{ vm.identity()!.dayStreak }}</div>
+                <div class="stat-label">Day streak</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-value">0/{{ vm.chores().length }}</div>
+                <div class="stat-label">Done today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-value">{{ vm.identity()!.lifetimePoints }}</div>
+                <div class="stat-label">Lifetime points</div>
+            </div>
+        </div>
+
+        <!-- Today's Chores -->
+        <div class="section">
+            <div class="section-title">Today's Chores</div>
+            <div class="chore-list">
+                @for (chore of vm.chores(); track chore.choreId) {
+<!--                    <div class="chore-item" [class.done]="chore.status === 'approved'">-->
+<!--                        <div class="chore-icon" [ngClass]="chore.color">{{ chore.icon }}</div>-->
+<!--                        <div class="chore-info">-->
+<!--                            <div class="chore-title">{{ chore.title }}</div>-->
+<!--                            <div class="chore-description">{{ chore.description }}</div>-->
+<!--                        </div>-->
+<!--                        <div class="chore-action">-->
+<!--                            <div class="chore-points">+{{ chore.points }}</div>-->
+<!--                            @switch (chore.status) {-->
+<!--                                @case ('todo') {-->
+<!--                                    <button class="chore-button" (click)="completeChore(chore)">Done!</button>-->
+<!--                                }-->
+<!--                                @case ('pending') {-->
+<!--                                    <div class="chore-status pending">⏳ Waiting</div>-->
+<!--                                }-->
+<!--                                @case ('approved') {-->
+<!--                                    <div class="chore-status approved">✓ Approved</div>-->
+<!--                                }-->
+<!--                                @case ('rejected') {-->
+<!--                                    <button class="chore-button retry" (click)="completeChore(chore)">Try again</button>-->
+<!--                                }-->
+<!--                            }-->
+<!--                        </div>-->
+<!--                    </div>-->
+                } @empty {
+                    <div class="empty-state">
+                        <div class="empty-icon">🎉</div>
+                        <div class="empty-title">No chores today</div>
+                        <div class="empty-text">Enjoy your free time!</div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Weekly Progress -->
+<!--        <div class="section">-->
+<!--            <div class="section-title">This Week</div>-->
+<!--            <div class="week-card">-->
+<!--                <div class="week-days">-->
+<!--                    @for (day of week(); track day.label) {-->
+<!--                        <div class="day" [class.today]="day.isToday">-->
+<!--                            <div class="day-bar">-->
+<!--                                <div class="day-fill" [style.height.%]="day.percent"></div>-->
+<!--                            </div>-->
+<!--                            <div class="day-label">{{ day.label }}</div>-->
+<!--                        </div>-->
+<!--                    }-->
+<!--                </div>-->
+<!--                <div class="week-summary">You earned <strong>{{ weekPoints() }} points</strong> this week</div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <!-- Rewards Goal -->
+<!--        <div class="section">-->
+<!--            <div class="section-title">Saving Up For</div>-->
+<!--            <div class="goal-card">-->
+<!--                <div class="goal-icon">🎮</div>-->
+<!--                <div class="goal-info">-->
+<!--                    <div class="goal-title">{{ goal().title }}</div>-->
+<!--                    <div class="goal-progress-text">{{ kid()!.points }} / {{ goal().cost }} pts</div>-->
+<!--                    <div class="progress-track small">-->
+<!--                        <div class="progress-fill" [style.width.%]="goalProgress()"></div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <!-- Family Leaderboard -->
+<!--        <div class="section">-->
+<!--            <div class="section-title">Family Leaderboard</div>-->
+<!--            <div class="leaderboard">-->
+<!--                @for (member of leaderboard(); track member.id; let i = $index) {-->
+<!--                    <div class="leader-item" [class.me]="member.id === kid()!.id">-->
+<!--                        <div class="leader-rank">{{ i + 1 }}</div>-->
+<!--                        <div class="leader-avatar">{{ member.avatar }}</div>-->
+<!--                        <div class="leader-name">{{ member.name }}</div>-->
+<!--                        <div class="leader-points">{{ member.weekPoints }} pts</div>-->
+<!--                    </div>-->
+<!--                }-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
+} @else {
+    <app-loading-screen />
+}

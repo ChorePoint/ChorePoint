@@ -1,0 +1,28 @@
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AssignedKidToChore } from '../../../../core/types/dtos/parent/assigned-kid-to-chore';
+import { AssignedKidToShopItem } from '../../../../core/types/dtos/parent/assigned-kid-to-shop-item';
+import { Kid } from '../../../../core/types/dtos/parent/kid';
+
+@Component({
+  selector: 'app-kid-assign',
+  imports: [],
+  templateUrl: './kid-assign.html',
+  styleUrl: './kid-assign.scss',
+})
+export class KidAssign {
+  @Input() selectedKids: AssignedKidToChore[] | AssignedKidToShopItem[] | undefined;
+  @Input() kids!: Kid[];
+
+  @Output() selectedKidChange = new EventEmitter<number>();
+
+  select(kidId: number) {
+    this.selectedKidChange.emit(kidId);
+  }
+
+  isSelected(kidId: number) {
+    return (
+      this.selectedKids?.map((selectedKid) => selectedKid.kidId).includes(kidId) &&
+      this.selectedKids.length === 1
+    );
+  }
+}
