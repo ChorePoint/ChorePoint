@@ -107,7 +107,7 @@ public static class ApplicationExtensions
 
         public IServiceCollection AddDomainEventHandlers()
         {
-            services.AddTransient<INotificationHandler<CompletionStreakIncreasedDomainEvent>, CompletionStreakIncreasedDomainEventHandler>();
+            services.AddTransient<INotificationHandler<CompletionStreakIncreasedDomainEvent>, OnCompletionStreakIncreasedDomainEventWriteIntegrationEventHandler>();
 
             return services;
         }

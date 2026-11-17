@@ -7,7 +7,7 @@ using MediatR;
 
 namespace ChorePoint.Application.DomainEventHandlers.CompletionStreakIncreased;
 
-public class CompletionStreakIncreasedDomainEventHandler(IAppDbContext context) : INotificationHandler<CompletionStreakIncreasedDomainEvent>
+public class OnCompletionStreakIncreasedDomainEventWriteIntegrationEventHandler(IAppDbContext context) : INotificationHandler<CompletionStreakIncreasedDomainEvent>
 {
     public async Task Handle(CompletionStreakIncreasedDomainEvent domainEvent, CancellationToken cancellationToken)
     {
