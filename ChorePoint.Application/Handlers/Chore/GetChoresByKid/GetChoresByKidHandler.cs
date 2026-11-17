@@ -9,20 +9,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Chore.GetChoresByKid;
 
-public class GetChoresByKidHandler(IAppDbContext context, IParentContextService parentContextService)
+public class GetChoresByKidHandler(IAppDbContext context, IParentContextService parentContextService, IKidContextService kidContextService)
     : IRequestHandler<GetChoresByKidQuery, IReadOnlyList<GetChoresByKidResponse>>
 {
     public async Task<IReadOnlyList<GetChoresByKidResponse>> Handle(GetChoresByKidQuery request, CancellationToken cancellationToken)
     {
+        var kidId = request.KidId == null ? kidContextService.GetKidId() : (int)request!.KidId!;
+
         var chores = await context.Chores
             .Include(c => c.Category)
-            .Include(c => c.KidChores.Where(kc => kc.KidId.Equals(request.KidId)))
-            .Where(c => c.KidChores.Any(kc => kc.KidId.Equals(request.KidId)))
+            .Include(c => c.KidChores.Where(kc => kc.KidId.Equals(kidId)))
+            .Where(c => c.KidChores.Any(kc => kc.KidId.Equals(kidId)))
             .ToListAsync(cancellationToken);
 
         if (chores.Empty())
         {
-            throw new NotFoundException($"No chores exist with kid ID [{request.KidId}]");
+            throw new NotFoundException($"No chores exist with kid ID [{kidId}]");
         }
 
         var resourceParentIds = chores.Select(c => c.ParentId).ToList();

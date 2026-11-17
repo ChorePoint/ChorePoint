@@ -41,7 +41,7 @@ export class ParentLogin {
 
     this.authService.login({ email, password }).subscribe({
       next: () => {
-        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/parent';
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/parent/home';
         this.router.navigateByUrl(returnUrl);
       },
       error: (err: AuthError) => {

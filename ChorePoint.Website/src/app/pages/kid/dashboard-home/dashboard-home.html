@@ -42,31 +42,31 @@
         <div class="section">
             <div class="section-title">Today's Chores</div>
             <div class="chore-list">
-                @for (chore of vm.chores(); track chore.choreId) {
-<!--                    <div class="chore-item" [class.done]="chore.status === 'approved'">-->
-<!--                        <div class="chore-icon" [ngClass]="chore.color">{{ chore.icon }}</div>-->
-<!--                        <div class="chore-info">-->
-<!--                            <div class="chore-title">{{ chore.title }}</div>-->
-<!--                            <div class="chore-description">{{ chore.description }}</div>-->
-<!--                        </div>-->
-<!--                        <div class="chore-action">-->
-<!--                            <div class="chore-points">+{{ chore.points }}</div>-->
-<!--                            @switch (chore.status) {-->
-<!--                                @case ('todo') {-->
-<!--                                    <button class="chore-button" (click)="completeChore(chore)">Done!</button>-->
-<!--                                }-->
-<!--                                @case ('pending') {-->
-<!--                                    <div class="chore-status pending">⏳ Waiting</div>-->
-<!--                                }-->
-<!--                                @case ('approved') {-->
-<!--                                    <div class="chore-status approved">✓ Approved</div>-->
-<!--                                }-->
-<!--                                @case ('rejected') {-->
-<!--                                    <button class="chore-button retry" (click)="completeChore(chore)">Try again</button>-->
-<!--                                }-->
+                @for (chore of getChoresToCompleteToday(); track chore.choreId) {
+                    <div class="chore-item">
+                        <div class="chore-icon">{{ chore.icon }}</div>
+                        <div class="chore-info">
+                            <div class="chore-title">{{ chore.name }}</div>
+                            <div class="chore-description">{{ chore.description }}</div>
+                        </div>
+                        <div class="chore-action">
+                            <div class="chore-points">+{{ chore.points }}</div>
+                            @switch ('todo') {
+                                @case ('todo') {
+                                    <button class="chore-button" >Done!</button>
+                                }
+<!--                            @case ('pending') {-->
+<!--                                <div class="chore-status pending">⏳ Waiting</div>-->
 <!--                            }-->
-<!--                        </div>-->
-<!--                    </div>-->
+<!--                            @case ('approved') {-->
+<!--                                <div class="chore-status approved">✓ Approved</div>-->
+<!--                            }-->
+<!--                            @case ('rejected') {-->
+<!--                                <button class="chore-button retry">Try again</button>-->
+<!--                            }-->
+                            }
+                        </div>
+                    </div>
                 } @empty {
                     <div class="empty-state">
                         <div class="empty-icon">🎉</div>
