@@ -22,6 +22,7 @@ import { CreateAccount } from './pages/parent/create-account/create-account';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'parent/home', pathMatch: 'full' },
+  { path: 'parent', redirectTo: 'parent/home', pathMatch: 'full' },
   { path: 'home', component: Start, canActivate: [authGuard] },
   { path: 'welcome', component: Welcome, canActivate: [authGuard] },
 
