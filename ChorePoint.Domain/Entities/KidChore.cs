@@ -1,3 +1,5 @@
+using ChorePoint.Domain.DomainEventModels;
+
 namespace ChorePoint.Domain.Entities;
 
 public class KidChore : EntityBase
@@ -25,6 +27,8 @@ public class KidChore : EntityBase
     {
         CompletionStreak++;
         StreakLastUpdated = now;
+
+        AddDomainEvent(new CompletionStreakIncreasedDomainEvent(this));
     }
 
     public void ResetCompletionStreak()

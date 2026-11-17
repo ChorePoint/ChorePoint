@@ -1,4 +1,5 @@
 using ChorePoint.Application.Behaviours;
+using ChorePoint.Application.DomainEventHandlers.CompletionStreakIncreased;
 using ChorePoint.Application.HangfireJobs;
 using ChorePoint.Application.Policies;
 using ChorePoint.Application.RequestHandlers.Auth.AddKidLoginCode;
@@ -29,6 +30,7 @@ using ChorePoint.Application.RequestHandlers.Shop.NewShopItem;
 using ChorePoint.Application.RequestHandlers.Shop.ReactivateShopItem;
 using ChorePoint.Application.RequestHandlers.Shop.ReviewShopItemPurchase;
 using ChorePoint.Application.RequestHandlers.Shop.UpdateShopItem;
+using ChorePoint.Domain.DomainEventModels;
 
 using FluentValidation;
 
@@ -67,44 +69,46 @@ public static class ApplicationExtensions
 
         public IServiceCollection AddRequestHandlers()
         {
-            services.AddScoped<IRequestHandler<AddKidLoginCodeCommand, AddKidLoginCodeResponse>, AddKidLoginCodeHandler>();
-            services.AddScoped<IRequestHandler<KidLoginCommand, KidLoginResponse>, KidLoginHandler>();
-            services.AddScoped<IRequestHandler<ParentLoginCommand, ParentLoginResponse>, ParentLoginHandler>();
-            services.AddScoped<IRequestHandler<RegisterCommand>, RegisterHandler>();
+            services.AddTransient<IRequestHandler<AddKidLoginCodeCommand, AddKidLoginCodeResponse>, AddKidLoginCodeHandler>();
+            services.AddTransient<IRequestHandler<KidLoginCommand, KidLoginResponse>, KidLoginHandler>();
+            services.AddTransient<IRequestHandler<ParentLoginCommand, ParentLoginResponse>, ParentLoginHandler>();
+            services.AddTransient<IRequestHandler<RegisterCommand>, RegisterHandler>();
 
-            services.AddScoped<IRequestHandler<CreateChoreCommand>, CreateChoreHandler>();
-            services.AddScoped<IRequestHandler<DeleteChoreCommand>, DeleteChoreHandler>();
-            services.AddScoped<IRequestHandler<GetChoreByIdQuery, GetChoreByIdResponse>, GetChoreByIdHandler>();
-            services.AddScoped<IRequestHandler<GetChoresByKidQuery, IReadOnlyList<GetChoresByKidResponse>>, GetChoresByKidHandler>();
-            services.AddScoped<IRequestHandler<GetChoresByParentQuery, IReadOnlyList<GetChoresByParentResponse>>, GetChoresByParentHandler>();
-            services.AddScoped<IRequestHandler<UpdateChoreCommand>, UpdateChoreHandler>();
+            services.AddTransient<IRequestHandler<CreateChoreCommand>, CreateChoreHandler>();
+            services.AddTransient<IRequestHandler<DeleteChoreCommand>, DeleteChoreHandler>();
+            services.AddTransient<IRequestHandler<GetChoreByIdQuery, GetChoreByIdResponse>, GetChoreByIdHandler>();
+            services.AddTransient<IRequestHandler<GetChoresByKidQuery, IReadOnlyList<GetChoresByKidResponse>>, GetChoresByKidHandler>();
+            services.AddTransient<IRequestHandler<GetChoresByParentQuery, IReadOnlyList<GetChoresByParentResponse>>, GetChoresByParentHandler>();
+            services.AddTransient<IRequestHandler<UpdateChoreCommand>, UpdateChoreHandler>();
 
-            services.AddScoped<IRequestHandler<CompleteChoreCommand>, CompleteChoreHandler>();
-            services.AddScoped<IRequestHandler<GetLatestSubmissionByKidQuery, GetLatestSubmissionByKidResponse>, GetLatestSubmissionByKidHandler>();
-            services.AddScoped<IRequestHandler<GetStatsByKidQuery, GetStatsByKidResponse>, GetStatsByKidHandler>();
-            services.AddScoped<IRequestHandler<GetSubmissionsByParentQuery, IReadOnlyList<GetSubmissionsByParentResponse>>, GetSubmissionsByParentHandler>();
-            services.AddScoped<IRequestHandler<ReviewSubmissionCommand>, ReviewSubmissionHandler>();
+            services.AddTransient<IRequestHandler<CompleteChoreCommand>, CompleteChoreHandler>();
+            services.AddTransient<IRequestHandler<GetLatestSubmissionByKidQuery, GetLatestSubmissionByKidResponse>, GetLatestSubmissionByKidHandler>();
+            services.AddTransient<IRequestHandler<GetStatsByKidQuery, GetStatsByKidResponse>, GetStatsByKidHandler>();
+            services.AddTransient<IRequestHandler<GetSubmissionsByParentQuery, IReadOnlyList<GetSubmissionsByParentResponse>>, GetSubmissionsByParentHandler>();
+            services.AddTransient<IRequestHandler<ReviewSubmissionCommand>, ReviewSubmissionHandler>();
 
-            services.AddScoped<IRequestHandler<CreateKidCommand>, CreateKidHandler>();
-            services.AddScoped<IRequestHandler<DeleteKidCommand>, DeleteKidHandler>();
-            services.AddScoped<IRequestHandler<GetKidByIdQuery, GetKidByIdResponse>, GetKidByIdHandler>();
-            services.AddScoped<IRequestHandler<GetKidsByParentQuery, IReadOnlyList<GetKidsByParentResponse>>, GetKidsByParentHandler>();
-            services.AddScoped<IRequestHandler<UpdateKidCommand>, UpdateKidHandler>();
+            services.AddTransient<IRequestHandler<CreateKidCommand>, CreateKidHandler>();
+            services.AddTransient<IRequestHandler<DeleteKidCommand>, DeleteKidHandler>();
+            services.AddTransient<IRequestHandler<GetKidByIdQuery, GetKidByIdResponse>, GetKidByIdHandler>();
+            services.AddTransient<IRequestHandler<GetKidsByParentQuery, IReadOnlyList<GetKidsByParentResponse>>, GetKidsByParentHandler>();
+            services.AddTransient<IRequestHandler<UpdateKidCommand>, UpdateKidHandler>();
 
-            services.AddScoped<IRequestHandler<BuyShopItemCommand>, BuyShopItemHandler>();
-            services.AddScoped<IRequestHandler<DeleteShopItemCommand>, DeleteShopItemHandler>();
-            services.AddScoped<IRequestHandler<GetShopItemsByKidQuery, IReadOnlyList<GetShopItemsByKidResponse>>, GetShopItemsByKidHandler>();
-            services.AddScoped<IRequestHandler<GetShopItemsByParentQuery, IReadOnlyList<GetShopItemsByParentResponse>>, GetShopItemsByParentHandler>();
-            services.AddScoped<IRequestHandler<NewShopItemCommand>, NewShopItemHandler>();
-            services.AddScoped<IRequestHandler<ReactivateShopItemCommand>, ReactivateShopItemHandler>();
-            services.AddScoped<IRequestHandler<ReviewShopItemPurchaseCommand>, ReviewShopItemPurchaseHandler>();
-            services.AddScoped<IRequestHandler<UpdateShopItemCommand>, UpdateShopItemHandler>();
+            services.AddTransient<IRequestHandler<BuyShopItemCommand>, BuyShopItemHandler>();
+            services.AddTransient<IRequestHandler<DeleteShopItemCommand>, DeleteShopItemHandler>();
+            services.AddTransient<IRequestHandler<GetShopItemsByKidQuery, IReadOnlyList<GetShopItemsByKidResponse>>, GetShopItemsByKidHandler>();
+            services.AddTransient<IRequestHandler<GetShopItemsByParentQuery, IReadOnlyList<GetShopItemsByParentResponse>>, GetShopItemsByParentHandler>();
+            services.AddTransient<IRequestHandler<NewShopItemCommand>, NewShopItemHandler>();
+            services.AddTransient<IRequestHandler<ReactivateShopItemCommand>, ReactivateShopItemHandler>();
+            services.AddTransient<IRequestHandler<ReviewShopItemPurchaseCommand>, ReviewShopItemPurchaseHandler>();
+            services.AddTransient<IRequestHandler<UpdateShopItemCommand>, UpdateShopItemHandler>();
 
             return services;
         }
 
         public IServiceCollection AddDomainEventHandlers()
         {
+            services.AddTransient<INotificationHandler<CompletionStreakIncreasedDomainEvent>, CompletionStreakIncreasedDomainEventHandler>();
+
             return services;
         }
     }

@@ -183,9 +183,6 @@ namespace ChorePoint.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("EntityId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("EntityType")
                         .IsRequired()
                         .HasMaxLength(100)
