@@ -5,7 +5,6 @@ import { Header } from '../../../components/common/header/header';
 import { KidIdentityService } from '../../../core/services/kid/identity/kid-identity.service';
 import { CommonChoreService } from '../../../core/services/common/chore/chore.service';
 import { ChoreFrequency } from '../../../core/types/enums/parent/chore-frequency';
-import { DayOfWeek } from '../../../core/types/enums/parent/day-of-week';
 
 @Component({
   selector: 'app-kid-dashboard-home',
