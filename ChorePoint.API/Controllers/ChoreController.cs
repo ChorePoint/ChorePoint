@@ -63,20 +63,25 @@ public class ChoreController(IMediator mediator) : ControllerBase
         );
     }
 
-    [HttpGet("kid/{kidId:int}")]
+    [HttpGet("kid/{kidId:int?}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetChoresByKid(int kidId)
+    public async Task<IActionResult> GetChoresByKid(int? kidId)
     {
         var result = await mediator.Send(new GetChoresByKidQuery(kidId));
+
+        var message = kidId == null
+            ? "Chores assigned to logged in kid successfully retrieved"
+            : $"Chores assigned to kid with ID [{kidId}] successfully retrieved";
+
         return Ok(
             new
             {
                 success = true,
-                message = $"Chores assigned to kid with ID [{kidId}] successfully retrieved",
+                message,
                 data = result
             }
         );
