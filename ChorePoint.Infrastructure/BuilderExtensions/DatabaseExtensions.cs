@@ -10,27 +10,17 @@ namespace ChorePoint.Infrastructure.BuilderExtensions;
 
 public static class DatabaseExtensions
 {
-    private const string DatabaseConnectionStringName = "database-connection";
-
     public static IHostApplicationBuilder AddDatabase(this IHostApplicationBuilder builder)
     {
         var databaseOptions = builder.Configuration.GetSection(DatabaseOptions.ConfigurationSectionName).Get<DatabaseOptions>()
                           ?? throw new InvalidOperationException("Database options could not be populated correctly");
 
         // No DbContext pooling due to issue with scopes when using IMediator from AppDbContext.cs
-        Action<DbContextOptionsBuilder>? optionsBuilder;
+        Action<DbContextOptionsBuilder> optionsBuilder = options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("database-connection"));
         if (databaseOptions.EnableSensitiveLogging)
         {
-            optionsBuilder = options =>
-            {
-                options.EnableSensitiveDataLogging();
-                options.UseNpgsql(builder.Configuration.GetConnectionString(DatabaseConnectionStringName));
-            };
-        }
-        else
-        {
-            optionsBuilder = options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString(DatabaseConnectionStringName));
+            optionsBuilder += options => options.EnableSensitiveDataLogging();
         }
         builder.Services.AddDbContext<AppDbContext>(optionsBuilder);
         builder.EnrichNpgsqlDbContext<AppDbContext>();
