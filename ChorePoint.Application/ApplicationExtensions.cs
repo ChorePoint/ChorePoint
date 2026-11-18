@@ -1,5 +1,7 @@
 using ChorePoint.Application.Behaviours;
+using ChorePoint.Application.DomainEventHandlers.CompletionStreakBroken;
 using ChorePoint.Application.DomainEventHandlers.CompletionStreakIncreased;
+using ChorePoint.Application.DomainEventHandlers.LoginCodeCreated;
 using ChorePoint.Application.HangfireJobs;
 using ChorePoint.Application.Policies;
 using ChorePoint.Application.RequestHandlers.Auth.AddKidLoginCode;
@@ -49,6 +51,10 @@ public static class ApplicationExtensions
 
         services.AddTransient<ILoginCodeDeletionJob, LoginCodeDeletionJob>();
         services.AddScoped<IShopOperationPolicy, ShopOperationPolicy>();
+
+        // Domain handlers specific to the API so do not want to be registered to all services
+        services.AddTransient<INotificationHandler<LoginCodeCreatedDomainEvent>, OnLoginCodeCreatedDomainEventScheduleDeletionJobHandler>();
+        services.AddTransient<INotificationHandler<LoginCodeCreatedDomainEvent>, OnLoginCodeCreatedDomainEventWriteIntegrationEventHandler>();
 
         services.AddValidatorsFromAssembly(typeof(ApplicationExtensions).Assembly);
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
@@ -107,6 +113,8 @@ public static class ApplicationExtensions
 
         public IServiceCollection AddDomainEventHandlers()
         {
+            services.AddTransient<INotificationHandler<CompletionStreakBrokenDomainEvent>, OnCompletionStreakBrokenDomainEventWriteIntegrationEventHandler>();
+
             services.AddTransient<INotificationHandler<CompletionStreakIncreasedDomainEvent>, OnCompletionStreakIncreasedDomainEventWriteIntegrationEventHandler>();
 
             return services;

@@ -1,3 +1,5 @@
+using ChorePoint.Domain.DomainEventModels;
+
 namespace ChorePoint.Domain.Entities;
 
 public class LoginCode : EntityBase
@@ -10,10 +12,14 @@ public class LoginCode : EntityBase
 
     public static LoginCode Create(int kidId, string code)
     {
-        return new LoginCode
+        var loginCode = new LoginCode
         {
             KidId = kidId,
             Code = code
         };
+        loginCode.AddDomainEvent(new LoginCodeCreatedDomainEvent(loginCode));
+
+        return loginCode;
     }
+
 }

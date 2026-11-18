@@ -23,13 +23,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IMediator medi
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        await DispatchDomainEvents();
+        await PublishDomainEvents(cancellationToken);
         AddTimestampsToChangedEntities();
 
         return await base.SaveChangesAsync(cancellationToken);
     }
 
-    private async Task DispatchDomainEvents()
+    private async Task PublishDomainEvents(CancellationToken cancellationToken)
     {
         var baseEntitiesWithDomainEvents = ChangeTracker
             .Entries<EntityBase>()
@@ -44,7 +44,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, IMediator medi
 
         foreach (var domainEvent in domainEvents)
         {
-            await mediator.Publish(domainEvent);
+            await mediator.Publish(domainEvent, cancellationToken);
         }
     }
 

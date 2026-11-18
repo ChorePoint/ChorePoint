@@ -34,5 +34,7 @@ public class KidChore : EntityBase
     public void ResetCompletionStreak()
     {
         CompletionStreak = 0;
+
+        AddDomainEvent(new CompletionStreakBrokenDomainEvent(this));
     }
 }

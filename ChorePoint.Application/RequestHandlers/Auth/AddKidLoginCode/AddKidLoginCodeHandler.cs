@@ -1,23 +1,15 @@
 using ChorePoint.Application.Authorisation;
-using ChorePoint.Application.HangfireJobs;
 using ChorePoint.Application.Interfaces;
 using ChorePoint.Domain.Entities;
 using ChorePoint.Domain.Exceptions;
 
-using Hangfire;
-
 using MediatR;
-
-using Microsoft.Extensions.Options;
 
 namespace ChorePoint.Application.RequestHandlers.Auth.AddKidLoginCode;
 
-public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService parentContextService,
-    IKidLoginCodeGenerator kidLoginCodeGenerator, IBackgroundJobClient backgroundJobClient, IOptionsSnapshot<ApiOptions> apiOptions)
+public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService parentContextService, IKidLoginCodeGenerator kidLoginCodeGenerator)
     : IRequestHandler<AddKidLoginCodeCommand, AddKidLoginCodeResponse>
 {
-    private readonly ApiOptions _apiOptions = apiOptions.Value;
-
     public async Task<AddKidLoginCodeResponse> Handle(AddKidLoginCodeCommand request, CancellationToken cancellationToken)
     {
         var kid = await context.Kids.FindAsync([request.KidId], cancellationToken);
@@ -35,11 +27,6 @@ public class AddKidLoginCodeHandler(IAppDbContext context, IParentContextService
 
         await context.LoginCodes.AddAsync(loginCode, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
-
-        backgroundJobClient.Schedule<ILoginCodeDeletionJob>(
-            j => j.StartLoginCodeDeletionJob(kid.KidId, cancellationToken),
-            TimeSpan.FromMinutes(_apiOptions.KidLoginCodeTimeout)
-        );
 
         return new AddKidLoginCodeResponse(loginCodeString);
     }

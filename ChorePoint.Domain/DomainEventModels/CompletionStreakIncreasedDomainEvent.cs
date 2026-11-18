@@ -6,5 +6,5 @@ namespace ChorePoint.Domain.DomainEventModels;
 
 public class CompletionStreakIncreasedDomainEvent(KidChore kidChore) : INotification
 {
-    public KidChore KidChore { get; set; } = kidChore;
+    public KidChore KidChore { get; } = kidChore;
 }
