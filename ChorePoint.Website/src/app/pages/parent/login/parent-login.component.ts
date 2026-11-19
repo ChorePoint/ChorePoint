@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormField } from '../../../components/common/form-field/form-field';
@@ -24,8 +24,8 @@ export class ParentLogin {
   error = signal<string | null>(null);
 
   form = this.fb.nonNullable.group({
-    email: ['', { validators: [Validators.required, Validators.email], updateOn: 'blur' }],
-    password: ['', { validators: [Validators.required], updateOn: 'blur' }],
+    email: ['', { validators: [Validators.required, Validators.email] }],
+    password: ['', { validators: [Validators.required] }],
   });
 
   submit() {
