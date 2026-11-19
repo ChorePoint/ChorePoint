@@ -10,16 +10,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.BuyShopItem;
 
-file sealed class BuyShopItemHandler(IAppDbContext context, IParentContextService parentContextService, IShopOperationPolicy shopOperationPolicy)
+file sealed class BuyShopItemHandler(IAppDbContext context, IParentContextService parentContextService, IKidContextService kidContextService, IShopOperationPolicy shopOperationPolicy)
     : IRequestHandler<BuyShopItemCommand>
 {
     public async Task Handle(BuyShopItemCommand request, CancellationToken cancellationToken)
     {
         await shopOperationPolicy.EnsureShopOperationIsValidIfKid(ShopOperationToGate.Purchasing, cancellationToken);
 
+        var kidId = request.KidId == null ? kidContextService.GetKidId() : (int)request!.KidId!;
+
         var shopItem = await context.ShopItems
             .Include(si => si.KidShopItems)
-            .Where(si => si.KidShopItems.Any(ksi => ksi.KidId.Equals(request.KidId)))
+            .Where(si => si.KidShopItems.Any(ksi => ksi.KidId.Equals(kidId)))
             .SingleOrDefaultAsync(si => si.ShopItemId.Equals(request.ShopItemId), cancellationToken);
 
         if (shopItem is null)
@@ -31,7 +33,7 @@ file sealed class BuyShopItemHandler(IAppDbContext context, IParentContextServic
         AuthorisationHelper.EnsureParentOwnsResource(shopItem.ParentId, parentId);
 
         // No AndDefault because we already know one must exist because of the .Where() above
-        var kidShopItem = shopItem.KidShopItems.Single(ksi => ksi.KidId.Equals(request.KidId));
+        var kidShopItem = shopItem.KidShopItems.Single(ksi => ksi.KidId.Equals(kidId));
 
         var kid = await context.Kids.FindAsync([kidShopItem.KidId], cancellationToken);
 

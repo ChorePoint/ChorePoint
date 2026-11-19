@@ -10,7 +10,7 @@ using ChoreSubmissionE = ChorePoint.Domain.Entities.ChoreSubmission;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.CompleteChore;
 
-public class CompleteChoreHandler(IAppDbContext context, IParentContextService parentContextService) : IRequestHandler<CompleteChoreCommand>
+public class CompleteChoreHandler(IAppDbContext context, IParentContextService parentContextService, IKidContextService kidContextService) : IRequestHandler<CompleteChoreCommand>
 {
     public async Task Handle(CompleteChoreCommand request, CancellationToken cancellationToken)
     {
@@ -24,9 +24,11 @@ public class CompleteChoreHandler(IAppDbContext context, IParentContextService p
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(chore.ParentId, parentId);
 
+        var kidId = request.KidId == null ? kidContextService.GetKidId() : (int)request!.KidId!;
+
         var latestSubmission = await context.ChoreSubmissions
             .Where(cs => cs.ChoreId.Equals(request.ChoreId))
-            .Where(cs => cs.KidId.Equals(request.KidId))
+            .Where(cs => cs.KidId.Equals(kidId))
             .OrderByDescending(cs => cs.CompletedAt)
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -36,7 +38,7 @@ public class CompleteChoreHandler(IAppDbContext context, IParentContextService p
             chore.EnsureCanBeCompleted(latestSubmission, now);
         }
 
-        var newSubmission = chore.CreateSubmission(request.KidId, now);
+        var newSubmission = chore.CreateSubmission(kidId, now);
         await context.ChoreSubmissions.AddAsync(newSubmission, cancellationToken);
 
         var autoApproveChore = await context.ParentSettings
