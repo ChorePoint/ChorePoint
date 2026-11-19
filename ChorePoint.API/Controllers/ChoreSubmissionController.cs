@@ -17,57 +17,72 @@ namespace ChorePoint.API.Controllers;
 [Route("api/chore/submissions")]
 public class ChoreSubmissionController(IMediator mediator) : ControllerBase
 {
-    [HttpPost("complete/{choreId:int}/{kidId:int}")]
+    [HttpPost("complete/{choreId:int}/{kidId:int?}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> CompleteChore(int choreId, int kidId)
+    public async Task<IActionResult> CompleteChore(int choreId, int? kidId)
     {
         await mediator.Send(new CompleteChoreCommand(choreId, kidId));
+
+        var message = kidId == null
+            ? $"Chore with ID [{choreId}] completed successfully by logged in kid"
+            : $"Chore with ID [{choreId}] completed successfully by kid with ID [{kidId}]";
+
         return Ok(
             new
             {
                 success = true,
-                message = $"Chore with ID [{choreId}] completed successfully by kid with ID [{kidId}]"
+                message
             }
         );
     }
 
-    [HttpGet("latest/{kidId:int}")]
+    [HttpGet("latest/{kidId:int?}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetLatestSubmissionByKid(int kidId)
+    public async Task<IActionResult> GetLatestSubmissionByKid(int? kidId)
     {
         var result = await mediator.Send(new GetLatestSubmissionByKidQuery(kidId));
+
+        var message = kidId == null
+            ? $"Latest chore submission for logged in kid successfully retrieved"
+            : $"Latest chore submission with kid ID [{kidId}] successfully retrieved";
+
         return Ok(
             new
             {
                 success = true,
-                message = $"Latest chore submission with kid ID [{kidId}] successfully retrieved",
+                message,
                 data = result
             }
         );
     }
 
-    [HttpGet("stats/{kidId:int}")]
+    [HttpGet("stats/{kidId:int?}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetStatsByKid(int kidId)
+    public async Task<IActionResult> GetStatsByKid(int? kidId)
     {
         var result = await mediator.Send(new GetStatsByKidQuery(kidId));
+
+        var message = kidId == null
+            ? $"Logged in kid's stats retrieved successfully"
+            : $"Kid with ID [{kidId}] stats retrieved successfully";
+
         return Ok(
             new
             {
                 success = true,
-                message = $"Kid with ID [{kidId}] stats retrieved successfully",
+                message,
                 data = result
             }
         );

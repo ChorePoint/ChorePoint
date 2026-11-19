@@ -14,7 +14,7 @@ public class GetChoresByKidHandler(IAppDbContext context, IParentContextService 
 {
     public async Task<IReadOnlyList<GetChoresByKidResponse>> Handle(GetChoresByKidQuery request, CancellationToken cancellationToken)
     {
-        var kidId = request.KidId == null ? kidContextService.GetKidId() : (int)request!.KidId!;
+        var kidId = request.KidId ?? kidContextService.GetKidId();
 
         var chores = await context.Chores
             .Include(c => c.Category)

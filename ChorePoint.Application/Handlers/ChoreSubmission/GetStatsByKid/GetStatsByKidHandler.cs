@@ -10,20 +10,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetStatsByKid;
 
-public class GetStatsByKidHandler(IAppDbContext context, IParentContextService parentContextService)
+public class GetStatsByKidHandler(IAppDbContext context, IParentContextService parentContextService, IKidContextService kidContextService)
     : IRequestHandler<GetStatsByKidQuery, GetStatsByKidResponse>
 {
     public async Task<GetStatsByKidResponse> Handle(GetStatsByKidQuery request, CancellationToken cancellationToken)
     {
+        var kidId = request.KidId ?? kidContextService.GetKidId();
+
         var choreSubmissions = await context.ChoreSubmissions
             .Include(cs => cs.Chore)
             .ThenInclude(c => c.KidChores)
-            .Where(cs => cs.KidId.Equals(request.KidId))
+            .Where(cs => cs.KidId.Equals(kidId))
             .ToListAsync(cancellationToken);
 
         if (choreSubmissions.Empty())
         {
-            throw new NotFoundException($"No submissions found with kid ID [{request.KidId}]");
+            throw new NotFoundException($"No submissions found with kid ID [{kidId}]");
         }
 
         var resourceParentIds = choreSubmissions.Select(cs => cs.ParentId).ToList();

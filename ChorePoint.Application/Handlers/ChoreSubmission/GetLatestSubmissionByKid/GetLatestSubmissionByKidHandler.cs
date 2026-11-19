@@ -8,20 +8,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.ChoreSubmission.GetLatestSubmissionByKid;
 
-public class GetLatestSubmissionByKidHandler(IAppDbContext context, IParentContextService parentContextService)
+public class GetLatestSubmissionByKidHandler(IAppDbContext context, IParentContextService parentContextService, IKidContextService kidContextService)
     : IRequestHandler<GetLatestSubmissionByKidQuery, GetLatestSubmissionByKidResponse>
 {
     public async Task<GetLatestSubmissionByKidResponse> Handle(GetLatestSubmissionByKidQuery request, CancellationToken cancellationToken)
     {
+        var kidId = request.KidId ?? kidContextService.GetKidId();
+
         var latestSubmission = await context.ChoreSubmissions
             .Include(cs => cs.Chore)
-            .Where(cs => cs.KidId.Equals(request.KidId))
+            .Where(cs => cs.KidId.Equals(kidId))
             .OrderByDescending(cs => cs.CompletedAt)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (latestSubmission is null)
         {
-            throw new NotFoundException($"No submission exists for kid ID [{request.KidId}]");
+            throw new NotFoundException($"No submission exists for kid ID [{kidId}]");
         }
 
         var parentId = parentContextService.GetParentId();

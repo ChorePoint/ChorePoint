@@ -11,22 +11,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ChorePoint.Application.Handlers.Shop.GetShopItemsByKid;
 
-file sealed class GetShopItemsByKidHandler(IAppDbContext context, IParentContextService parentContextService, IShopOperationPolicy shopOperationPolicy)
+file sealed class GetShopItemsByKidHandler(IAppDbContext context, IParentContextService parentContextService, IKidContextService kidContextService, IShopOperationPolicy shopOperationPolicy)
     : IRequestHandler<GetShopItemsByKidQuery, IReadOnlyList<GetShopItemsByKidResponse>>
 {
     public async Task<IReadOnlyList<GetShopItemsByKidResponse>> Handle(GetShopItemsByKidQuery request, CancellationToken cancellationToken)
     {
         await shopOperationPolicy.EnsureShopOperationIsValidIfKid(ShopOperationToGate.Viewing, cancellationToken);
 
+        var kidId = request.KidId ?? kidContextService.GetKidId();
+
         var shopItems = await context.ShopItems
             .Include(si => si.Category)
             .Include(si => si.KidShopItems.Where(ksi => ksi.KidId.Equals(request.KidId)))
-            .Where(si => si.KidShopItems.Any(ksi => ksi.KidId.Equals(request.KidId)))
+            .Where(si => si.KidShopItems.Any(ksi => ksi.KidId.Equals(kidId)))
             .ToListAsync(cancellationToken);
 
         if (shopItems.Empty())
         {
-            throw new NotFoundException($"No shop items are assigned to kid ID [{request.KidId}]");
+            throw new NotFoundException($"No shop items are assigned to kid ID [{kidId}]");
         }
 
         var resourceParentIds = shopItems.Select(si => si.ParentId).ToList();
