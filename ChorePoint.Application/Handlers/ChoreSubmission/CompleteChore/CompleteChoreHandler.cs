@@ -24,7 +24,7 @@ public class CompleteChoreHandler(IAppDbContext context, IParentContextService p
         var parentId = parentContextService.GetParentId();
         AuthorisationHelper.EnsureParentOwnsResource(chore.ParentId, parentId);
 
-        var kidId = request.KidId == null ? kidContextService.GetKidId() : (int)request!.KidId!;
+        var kidId = request.KidId ?? kidContextService.GetKidId();
 
         var latestSubmission = await context.ChoreSubmissions
             .Where(cs => cs.ChoreId.Equals(request.ChoreId))

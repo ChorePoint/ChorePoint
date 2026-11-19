@@ -75,7 +75,7 @@ public class ChoreSubmissionController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(new GetStatsByKidQuery(kidId));
 
         var message = kidId == null
-            ? $"Logged in kid stats retrieved successfully"
+            ? $"Logged in kid's stats retrieved successfully"
             : $"Kid with ID [{kidId}] stats retrieved successfully";
 
         return Ok(

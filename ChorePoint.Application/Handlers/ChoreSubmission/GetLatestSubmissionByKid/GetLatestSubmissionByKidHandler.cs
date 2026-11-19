@@ -13,7 +13,7 @@ public class GetLatestSubmissionByKidHandler(IAppDbContext context, IParentConte
 {
     public async Task<GetLatestSubmissionByKidResponse> Handle(GetLatestSubmissionByKidQuery request, CancellationToken cancellationToken)
     {
-        var kidId = request.KidId == null ? kidContextService.GetKidId() : (int)request!.KidId!;
+        var kidId = request.KidId ?? kidContextService.GetKidId();
 
         var latestSubmission = await context.ChoreSubmissions
             .Include(cs => cs.Chore)

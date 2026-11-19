@@ -18,7 +18,7 @@ file sealed class GetShopItemsByKidHandler(IAppDbContext context, IParentContext
     {
         await shopOperationPolicy.EnsureShopOperationIsValidIfKid(ShopOperationToGate.Viewing, cancellationToken);
 
-        var kidId = request.KidId == null ? kidContextService.GetKidId() : (int)request!.KidId!;
+        var kidId = request.KidId ?? kidContextService.GetKidId();
 
         var shopItems = await context.ShopItems
             .Include(si => si.Category)

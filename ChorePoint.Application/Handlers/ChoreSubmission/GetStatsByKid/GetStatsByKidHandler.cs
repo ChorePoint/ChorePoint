@@ -15,7 +15,7 @@ public class GetStatsByKidHandler(IAppDbContext context, IParentContextService p
 {
     public async Task<GetStatsByKidResponse> Handle(GetStatsByKidQuery request, CancellationToken cancellationToken)
     {
-        var kidId = request.KidId == null ? kidContextService.GetKidId() : (int)request!.KidId!;
+        var kidId = request.KidId ?? kidContextService.GetKidId();
 
         var choreSubmissions = await context.ChoreSubmissions
             .Include(cs => cs.Chore)
