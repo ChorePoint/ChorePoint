@@ -34,7 +34,7 @@ try
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "ChorePoint.MigrationService.csproj startup terminated unexpectedly, silly EF (っ'-')╮=͟͟͞🍋)`-')");
+    Log.Fatal(ex, "ChorePoint.MigrationService startup terminated unexpectedly, silly EF (っ'-')╮=͟͟͞🍋)`-')");
 }
 finally
 {

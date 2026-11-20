@@ -12,7 +12,7 @@ using Serilog.Sinks.SystemConsole.Themes;
 
 Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).CreateBootstrapLogger();
 
-Log.Information("Starting ChorePoint.API.csproj ≧◡≦");
+Log.Information("Starting ChorePoint.API ≧◡≦");
 
 try
 {
@@ -59,7 +59,7 @@ try
 // See https://github.com/dotnet/efcore/issues/29923
 catch (Exception ex) when (ex is not HostAbortedException && ex.Source is not "Microsoft.EntityFrameworkCore.Design")
 {
-    Log.Fatal(ex, "ChorePoint.API.csproj startup terminated unexpectedly! (╯'□')╯︵ ┻━┻");
+    Log.Fatal(ex, "ChorePoint.API startup terminated unexpectedly! (╯'□')╯︵ ┻━┻");
 }
 finally
 {

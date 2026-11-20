@@ -5,7 +5,7 @@ using Serilog.Sinks.SystemConsole.Themes;
 
 Log.Logger = new LoggerConfiguration().WriteTo.Console(theme: AnsiConsoleTheme.Code).CreateBootstrapLogger();
 
-Log.Information("Starting ChorePoint.AppHost.csproj 〜(꒪꒳꒪)〜");
+Log.Information("Starting ChorePoint.AppHost 〜(꒪꒳꒪)〜");
 
 try
 {
@@ -128,7 +128,7 @@ try
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "ChorePoint.AppHost.csproj startup terminated unexpectedly... ⎛⎝( ` ᢍ ´ )⎠⎞ᵐᵘʰᵃʰᵃ");
+    Log.Fatal(ex, "ChorePoint.AppHost startup terminated unexpectedly... ⎛⎝( ` ᢍ ´ )⎠⎞ᵐᵘʰᵃʰᵃ");
 }
 finally
 {

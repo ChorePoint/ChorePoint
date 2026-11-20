@@ -29,6 +29,12 @@
                   <Item>
                     <option name="path" value="services/ChorePoint.MigrationService/appsettings.Development.json" />
                   </Item>
+                  <Item>
+                    <option name="path" value="services/ChorePoint.IntegrationEventRelayService/appsettings.json" />
+                  </Item>
+                  <Item>
+                    <option name="path" value="services/ChorePoint.IntegrationEventRelayService/appsettings.Development.json" />
+                  </Item>
                 </list>
               </option>
             </SchemaInfo>
